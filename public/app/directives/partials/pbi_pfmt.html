@@ -1,0 +1,32 @@
+<section class="function-section pbi-pfmt">
+  <div class="report-type-selection">
+    <h5>Select Report Type</h6>
+    <div class="report-type-select">
+      <select class="form-control" ng-model="uploader.reportType">
+        <option value=""> -- select type -- </option>
+        <option value="TriMetrix HD Talent (Legacy)">TriMetrix HD Talent (Legacy)</option>
+        <option value="Talent Insights">Talent Insights</option>
+        <option value="Hartman Value Profile">Hartman Value Profile</option>
+        <option value="TTI DNA Personal Soft Skills Indicator">TTI DNA Personal Soft Skills Indicator</option>
+      </select>
+    </div>
+  </div>
+  <form name="fileUploader" class="add-reports" ng-submit="uploader.addChosenReports()">
+    <input class="upload-csv form-control" id="tti-file-uploader" name="files"  type="file" accept=".csv" fileread="uploader.file"></input>
+    <button type="submit" class="add-reports form-control">Add Report(s) to Formatting Queue</button>
+  </form>
+  <div class="queued-reports">
+    <h5>Reports To Be Formatted:</h5>
+    <table class="table queued-reports">
+      <thead>
+        <th>File Name</th>
+        <th>Report Type</th>
+      </thead>
+      <tr ng-repeat="file in uploader.loadedFiles">
+        <td>{{file.name}}</td>
+        <td>{{file.reportType}}</td>
+      </tr>
+    </table>
+  </div>
+  <button class="format-data form-control" ng-click="data.formatCSVFiles()">Format TTI Data</button>
+</section>

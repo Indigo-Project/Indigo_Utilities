@@ -1,0 +1,61 @@
+body {
+  padding: 0px 20px 0px 20px;
+}
+
+section.select-function {
+  margin-top: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid black;
+}
+
+h4.select-function {
+  margin: 30px 0px 5px 0px;
+  padding: 0px;
+}
+
+select.form-control {
+  width: 300px;
+}
+
+section.function-section {
+  margin-top: 20px;
+}
+
+input.upload-csv {
+  width: 300px;
+  background-color: rgb(196, 214, 255);
+  border: 1px solid black;
+  box-shadow: -1px 1px 1px 0px black;
+}
+
+div.report-type-selection {
+  margin-bottom: 20px;
+}
+
+button {
+  &.add-reports {
+    width: 300px;
+  }
+  &.format-data {
+    width: 300px;
+  }
+}
+
+form.add-reports {
+  display: flex;
+  input {
+    margin-right: 20px;
+  }
+}
+
+div.queued-reports {
+  margin: 30px 0px 50px 0px;
+}
+
+table.queued-reports {
+  margin-left: 20px;
+  width: 500px;
+  thead th {
+    font-weight: bold;
+  }
+}
