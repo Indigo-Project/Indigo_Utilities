@@ -22,6 +22,11 @@ input.upload-csv {
   border: 1px solid black;
   box-shadow: -1px 1px 1px 0px black; }
 
+button.add-reports {
+  background-color: #c4d6ff;
+  border: 1px solid black;
+  box-shadow: -1px 1px 1px 0px black; }
+
 div.report-type-selection {
   margin-bottom: 20px; }
 
@@ -40,8 +45,29 @@ div.queued-reports {
 
 table.queued-reports {
   margin-left: 20px;
-  width: 500px; }
+  width: 800px; }
   table.queued-reports thead th {
     font-weight: bold; }
+
+input.format-file-name {
+  width: 300px;
+  margin-bottom: 10px; }
+
+div.student-options {
+  display: flex; }
+
+div.year-taken {
+  margin-right: 20px; }
+
+form.download-form {
+  display: flex;
+  padding-top: 20px;
+  border-top: 1px solid black; }
+  form.download-form input {
+    margin-right: 20px; }
+  form.download-form button {
+    background-color: #b0b3ff;
+    border: 1px solid black;
+    box-shadow: -1px 1px 1px 0px black; }
 
 /*# sourceMappingURL=style.css.map */

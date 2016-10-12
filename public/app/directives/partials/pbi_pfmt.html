@@ -1,7 +1,7 @@
 <section class="function-section pbi-pfmt">
   <div class="report-type-selection">
-    <h5>Select Report Type</h6>
     <div class="report-type-select">
+      <h6>Select Report Type</h6>
       <select class="form-control" ng-model="uploader.reportType">
         <option value=""> -- select type -- </option>
         <option value="TriMetrix HD Talent (Legacy)">TriMetrix HD Talent (Legacy)</option>
@@ -9,6 +9,22 @@
         <option value="Hartman Value Profile">Hartman Value Profile</option>
         <option value="TTI DNA Personal Soft Skills Indicator">TTI DNA Personal Soft Skills Indicator</option>
       </select>
+      <h6>Select Report Type</h6>
+      <select class="form-control" ng-model="uploader.role">
+        <option value=""> -- select type -- </option>
+        <option value="Students">Students</option>
+        <option value="Staff">Staff</option>
+      </select>
+    </div>
+    <div class="student-options" ng-show="uploader.role === 'Students'">
+      <div class="year-taken">
+        <h6>Enter School Year Taken (format: 2016-2017)</h6>
+        <input type="text" class="form-control year-taken" pattern=".{9}" ng-model="uploader.schoolYearTaken">
+      </div>
+      <div>
+        <h6>Enter Class (format: 2020)</h6>
+        <input type="number" class="form-control" pattern=".{4}" ng-model="uploader.class">
+      </div>
     </div>
   </div>
   <form name="fileUploader" class="add-reports" ng-submit="uploader.addChosenReports()">
@@ -21,12 +37,21 @@
       <thead>
         <th>File Name</th>
         <th>Report Type</th>
+        <th>Role</th>
+        <th>School Year Taken</th>
+        <th>Class</th>
       </thead>
       <tr ng-repeat="file in uploader.loadedFiles">
         <td>{{file.name}}</td>
         <td>{{file.reportType}}</td>
+        <td>{{file.role}}</td>
+        <td>{{file.schoolYearTaken}}</td>
+        <td>{{file.class}}</td>
       </tr>
     </table>
   </div>
-  <button class="format-data form-control" ng-click="data.formatCSVFiles()">Format TTI Data</button>
+  <form class="download-form" ng-submit="data.formatCSVFiles(data.formatFileName)">
+    <input class="form-control format-file-name" type="text" placeholder="enter desired file name (without extension)" ng-model="data.formatFileName">
+    <button type="submit" class="format-data form-control">Format TTI Data for Download</button>
+  </form>
 </section>

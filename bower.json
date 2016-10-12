@@ -1,0 +1,17 @@
+{
+  "name": "Indigo_Utilities",
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "homepage": "https://github.com/Indigo-Project/Indigo_Utilities",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-file-saver": "^1.1.2"
+  }
+}

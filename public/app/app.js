@@ -1,4 +1,4 @@
-var app = angular.module('Indigo_Utilities',['ui.router', 'angularFileUpload'])
+var app = angular.module('Indigo_Utilities',['ui.router', 'ngFileSaver'])
 
 app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
 
