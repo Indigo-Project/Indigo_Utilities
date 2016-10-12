@@ -10,9 +10,6 @@ app.controller('Pbi_Pfmt_Controller', ['$scope', '$state', '$http', 'FileSaver',
   $scope.uploader.file = undefined;
   $scope.uploader.loadedFiles = [];
 
-  console.log($scope.uploader.reportType);
-  console.log($scope.uploader.file);
-
   // dynamically change options based on selected function
   $scope.view.accessFunction = function() {
     console.log($state);
@@ -29,18 +26,9 @@ app.controller('Pbi_Pfmt_Controller', ['$scope', '$state', '$http', 'FileSaver',
     }
   }
 
-  // $scope.server.uploadCsv = function() {
-  //   $http.get("/api/upload-csv")
-  //   .then(function(data) {
-  //     console.log(data);
-  //   })
-  // }
-
   $scope.uploader.addChosenReports = function() {
-    // console.log($scope.uploader.reportType);
-    // console.log($scope.uploader.file);
+
     if($scope.uploader.reportType === undefined || $scope.uploader.file === undefined || $scope.uploader.role === undefined)  {
-      console.log("REPORT TYPE, ROLE, AND FILE UPLOAD ARE ALL REQUIRED");
       alert("REPORT TYPE, ROLE, AND FILE UPLOAD ARE ALL REQUIRED");
     } else if ($scope.uploader.role === "Students" && ($scope.uploader.class === undefined || $scope.uploader.schoolYearTaken === undefined)) {
       alert("FOR STUDENTS, SCHOOL YEAR TAKEN AND CLASS ARE REQUIRED. IF FIELDS HAVE BEEN POPULATED, CORRECT THE FORMAT");
@@ -78,13 +66,7 @@ app.controller('Pbi_Pfmt_Controller', ['$scope', '$state', '$http', 'FileSaver',
       }).success(function(data, status, headers, config) {
         var blob = new Blob([data], {type: 'text/csv' });
         var fileName = headers('content-disposition');
-        console.log(blob);
-        console.log(fileName);
         FileSaver.saveAs(blob, fileName);
-        // console.log(data);
-        // console.log(status);
-        // console.log(headers);
-        // console.log(config);
       }).catch(function(err) {
         console.log(err);
       })
