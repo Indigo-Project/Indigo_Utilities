@@ -1,14 +1,13 @@
 var express = require('express');
 var router = express.Router();
 var csv = require('csv');
+var csvParse = require('csv-parse');
 var syncParse = require('csv-parse/lib/sync');
+require('should');
 var fs = require('fs');
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.send("local api");
-});
 
+//*** TTI - POWER BI FORMATTING ENDPOINT ***
 router.post('/upload-csv', function(req, res, next) {
 
   var filesToFormat = req.body.inputFiles;
@@ -56,7 +55,7 @@ router.post('/upload-csv', function(req, res, next) {
 
       for (var b = 0; b < output.length; b++) {
         parseVar.push(output[b]);
-        console.log(output[b]);
+        // console.log(output[b]);
         console.log("6 ------ BEGINNING OF PARSEFROMCSV");
       }
       console.log("PARSEVAR ----- PARSEVAR:", parseVar);
@@ -107,7 +106,6 @@ router.post('/upload-csv', function(req, res, next) {
       } else {
         reject(console.log("parseFromCSV() ERROR"));
       }
-      // })
     })
   }
 
@@ -125,8 +123,6 @@ router.post('/upload-csv', function(req, res, next) {
       })
     })
   }
-
-  function writeCSV() {}
 
   // Filters all reports into allStudents_AllReports based on column headers
   function processReports(filesToFormat) {
@@ -229,5 +225,164 @@ router.post('/upload-csv', function(req, res, next) {
   })
 
 });
+
+
+router.post('/ent-list', function(req, res, next) {
+
+  var filesToFormat = req.body.inputFiles;
+
+  // FOR EACH INPUT FILE (TTI LINK), RELATIVE COLUMN HEADER INDICES ARE SET
+  function setColumnHeaders(data) {
+    return new Promise(function(resolve, reject) {
+      // console.log(data);
+      // D NATURAL (%)
+      var DomIndex = "";
+      // C NATURAL (%)
+      var ComIndex = "";
+      // TEN_UTI
+      var UtiIndex = "";
+      //TEN_IND
+      var IndIndex = "";
+      // TEN_SOC
+      var SocIndex = "";
+
+      csvParse(data.data, function(err, output) {
+        // console.log(output);
+        var columnHeaders = output[0];
+        for (var j = 0; j < columnHeaders.length; j++) {
+          if (columnHeaders[j] === "D NATURAL (%)") {
+            DomIndex = j;
+          }
+          if (columnHeaders[j] === "C NATURAL (%)") {
+            ComIndex = j;
+          }
+          if (columnHeaders[j] === "TEN_UTI") {
+            UtiIndex = j;
+          }
+          if (columnHeaders[j] === "TEN_IND") {
+            IndIndex = j;
+          }
+          if (columnHeaders[j] === "TEN_SOC") {
+            SocIndex = j;
+          }
+        }
+        if (DomIndex === "" || ComIndex === "" || UtiIndex === "" || IndIndex === "" || SocIndex === "") {
+          reject('One or more Indices is null')
+        } else {
+          var indexArr = [DomIndex, ComIndex, UtiIndex, IndIndex, SocIndex];
+          var body = { data: output, indexArr: indexArr };
+          resolve(body);
+        }
+      });
+    })
+  }
+
+  // OUTPUT ENT LIST FOR INPUT FILE (TTI LINK) USING RELATIVE DATA INDICES
+  function outputEntData(data, indexArr) {
+    return new Promise(function(resolve, reject) {
+
+      var entListArr = [];
+
+      for (var i = 1; i < data.length; i++) {
+
+        // GET SCORES
+        var DomScore = data[i][indexArr[0]]
+        var ComScore = data[i][indexArr[1]]
+        var UtiScore = data[i][indexArr[2]]
+        var IndScore = data[i][indexArr[3]]
+        var SocScore = data[i][indexArr[4]]
+
+        // CREATE CALCS
+        var DomCalc = Math.max(-20, (DomScore - 50) );
+        var ComCalc = Math.max(-20, Math.min((40 - ComScore), 20) );
+        var UtiCalc = Math.max(-20, Math.min(10*(UtiScore - 4), 20) );
+        var IndCalc = Math.max(-20, 10 * (IndScore - 5) );
+
+        // ENT LIST OR NOT, SOC-ENT OR NOT
+        var socialEntr;
+        var studentOutput;
+
+        if ((DomCalc + ComCalc + UtiCalc + IndCalc) > 19) {
+          if ( (SocScore >= UtiScore) && (SocScore > 4.9) ){
+            socialEntr = "Yes";
+          } else {
+            socialEntr = "No";
+          }
+          studentOutput = [ data[i][0], data[i][1], data[i][6], data[i][14], data[i][15], data[i][16], data[i][17], data[i][43], data[i][44], data[i][45], data[i][46], data[i][47], data[i][48], socialEntr]
+          entListArr.push(studentOutput)
+        }
+      }
+      if (data) {
+        resolve(entListArr);
+      } else {
+        reject('no data');
+      }
+    })
+  }
+
+  // FINAL EXECUTION FUNCTION
+  function generateEntList() {
+
+    var exportFile = [];
+
+    function compileEntLists() {
+      return new Promise(function(resolve, reject) {
+
+        var count = 0;
+
+        function forLoop(count) {
+          if (count < filesToFormat.length) {
+            setColumnHeaders(filesToFormat[count])
+            .then(function(data1) {
+              outputEntData(data1.data, data1.indexArr)
+              .then(function(data2) {
+                for (var j = 0; j < data2.length; j++) {
+                  exportFile.push(data2[j]);
+                }
+                if (count === (filesToFormat.length - 1)) {
+                  exportFile.unshift(['First', 'Last', 'Gender', 'Dominance-Nat', 'Infl-Nat', 'Stead', 'Compl', 'Theo', 'Util', 'Aesth', 'Soci', 'Indiv', 'Trad', 'SocialEntr'])
+                  resolve(exportFile)
+                } else {
+                  count ++;
+                  forLoop(count)
+                }
+              })
+            })
+          }
+        }
+        forLoop(count);
+      })
+    }
+    compileEntLists()
+    .then(function(data){
+      csv.stringify(exportFile, function(err, output) {
+        if(output) {
+          fs.writeFile("Output_Files/Entrepreneur_Lists/" + req.body.outputFileName + ".csv", output, function(err) {
+            if (err) {
+              console.log(err);
+            } else {
+              console.log(req.body.outputFileName + ".csv Created");
+              var filename = req.body.outputFileName + ".csv";
+              var filePath = "./Output_Files/Entrepreneur_Lists/" + filename;
+              var stat = fs.statSync(filePath);
+              var fileToSend = fs.readFileSync(filePath);
+              res.writeHead(200, {
+                'Content-Type': 'text/csv',
+                'Content-Length': stat.size,
+                'Content-Disposition': filename
+              })
+              res.end(fileToSend);
+            }
+          })
+        }
+      })
+    });
+    // console.log('-------------FINISHED');
+    // console.log(exportFile);
+  }
+
+  generateEntList();
+
+})
 
 module.exports = router;
