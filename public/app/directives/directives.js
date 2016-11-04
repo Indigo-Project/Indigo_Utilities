@@ -27,7 +27,8 @@ app.directive('fileread', function() {
         reader.readAsDataURL(changeEvent.target.files[0]);
         reader.onload = function(loadEvent) {
           console.log(loadEvent);
-          var csv_file = window.atob(loadEvent.target.result.substring(21));
+          var atobStartIndex = loadEvent.target.result.indexOf('base64') + 7;
+          var csv_file = window.atob(loadEvent.target.result.substring(atobStartIndex));
           console.log(csv_file);
           scope.$apply(function () {
             scope.fileread = csv_file;
