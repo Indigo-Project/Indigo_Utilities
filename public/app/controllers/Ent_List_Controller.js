@@ -11,7 +11,6 @@ app.controller('Ent_List_Controller', ['$scope', '$state', '$http', 'FileSaver',
 
   // dynamically change options based on selected function
   $scope.view.accessFunction = function() {
-    // console.log($state);
     if ($scope.view.selectedFunction === "pbi_pfmt") {
       $state.go("pbi_pfmt");
     } else if ($scope.view.selectedFunction === "blue_list") {
@@ -25,13 +24,13 @@ app.controller('Ent_List_Controller', ['$scope', '$state', '$http', 'FileSaver',
     }
   }
 
+
   $scope.uploader.addChosenReports = function() {
     console.log('addChosenReports()');
     console.log($scope.uploader.file);
-    // if($scope.uploader.file === undefined)  {
-    //   alert("NO FILE UPLOADED");
-    // }
-    // else {
+    if($scope.uploader.file === undefined)  {
+      alert("NO FILE UPLOADED");
+    } else {
     $scope.uploader.loadedFiles.push(
       {name: $('input[type=file]').val().substring(12),
       reportType: $scope.uploader.reportType,
@@ -40,7 +39,7 @@ app.controller('Ent_List_Controller', ['$scope', '$state', '$http', 'FileSaver',
       schoolYearTaken: $scope.uploader.schoolYearTaken,
       class: $scope.uploader.class});
     angular.element("input[type='file']").val(null);
-      // }
+      }
     $scope.uploader.reportType = undefined;
     $scope.uploader.file = undefined;
     $scope.uploader.role = undefined;

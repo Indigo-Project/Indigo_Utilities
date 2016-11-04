@@ -5,6 +5,7 @@ app.directive('header', function() {
     controller: 'Main_Controller'
   }
 })
+
 app.directive('pbiPfmt', function() {
   return {
     restrict: 'E',
@@ -12,6 +13,7 @@ app.directive('pbiPfmt', function() {
     controller: "Pbi_Pfmt_Controller"
   }
 })
+
 app.directive('fileread', function() {
   return {
     restrict: 'A',
@@ -21,17 +23,17 @@ app.directive('fileread', function() {
     link: function (scope, element, attributes) {
       element.bind("change", function (changeEvent) {
         var reader = new FileReader();
-          reader.onload = function (loadEvent) {
-            console.log(loadEvent);
-            var csv_file = atob(loadEvent.target.result.substring(21));
-            console.log(csv_file);
-            scope.$apply(function () {
-              scope.fileread = csv_file;
-            });
-          }
-          console.log(changeEvent);
-          reader.readAsDataURL(changeEvent.target.files[0]);
-        });
+        console.log(changeEvent.target.files[0]);
+        reader.readAsDataURL(changeEvent.target.files[0]);
+        reader.onload = function(loadEvent) {
+          console.log(loadEvent);
+          var csv_file = atob(loadEvent.target.result.substring(21));
+          console.log(csv_file);
+          scope.$apply(function () {
+            scope.fileread = csv_file;
+          });
+        }
+      });
     },
   }
 })
@@ -43,6 +45,7 @@ app.directive('blueList', function() {
     controller: "Blue_List_Controller"
   }
 })
+
 app.directive('entList', function() {
   return {
     restrict: 'E',
@@ -50,6 +53,7 @@ app.directive('entList', function() {
     controller: 'Ent_List_Controller'
   }
 })
+
 app.directive('ttiMassdl', function() {
   return {
     restrict: 'E',
