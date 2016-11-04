@@ -6,12 +6,12 @@ app.controller('Ent_List_Controller', ['$scope', '$state', '$http', 'FileSaver',
 
   $scope.view.selectedFunction = "ent_list";
 
-  $scope.uploader.file = undefined;
+  // $scope.uploader.file = undefined;
   $scope.uploader.loadedFiles = [];
 
   // dynamically change options based on selected function
   $scope.view.accessFunction = function() {
-    console.log($state);
+    // console.log($state);
     if ($scope.view.selectedFunction === "pbi_pfmt") {
       $state.go("pbi_pfmt");
     } else if ($scope.view.selectedFunction === "blue_list") {
@@ -26,7 +26,8 @@ app.controller('Ent_List_Controller', ['$scope', '$state', '$http', 'FileSaver',
   }
 
   $scope.uploader.addChosenReports = function() {
-
+    console.log('addChosenReports()');
+    console.log($scope.uploader.file);
     if($scope.uploader.file === undefined)  {
       alert("NO FILE UPLOADED");
     } else {

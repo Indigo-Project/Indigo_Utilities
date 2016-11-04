@@ -7,7 +7,7 @@ app.controller('Pbi_Pfmt_Controller', ['$scope', '$state', '$http', 'FileSaver',
   $scope.view.selectedFunction = "pbi_pfmt";
   // $scope.view.fileNames = [];
 
-  $scope.uploader.file = undefined;
+  // $scope.uploader.file = undefined;
   $scope.uploader.loadedFiles = [];
 
   // dynamically change options based on selected function
@@ -27,6 +27,8 @@ app.controller('Pbi_Pfmt_Controller', ['$scope', '$state', '$http', 'FileSaver',
   }
 
   $scope.uploader.addChosenReports = function() {
+    console.log('addChosenReports()');
+    console.log($scope.uploader.file);
 
     if($scope.uploader.reportType === undefined || $scope.uploader.file === undefined || $scope.uploader.role === undefined)  {
       alert("REPORT TYPE, ROLE, AND FILE UPLOAD ARE ALL REQUIRED");

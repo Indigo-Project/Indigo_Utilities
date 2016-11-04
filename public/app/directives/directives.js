@@ -24,7 +24,7 @@ app.directive('fileread', function() {
           reader.onload = function (loadEvent) {
             console.log(loadEvent);
             var csv_file = atob(loadEvent.target.result.substring(21));
-            // console.log(csv_file);
+            console.log(csv_file);
             scope.$apply(function () {
               scope.fileread = csv_file;
             });
@@ -33,9 +33,9 @@ app.directive('fileread', function() {
           reader.readAsDataURL(changeEvent.target.files[0]);
         });
     },
-    // controller: "Pbi_Pfmt_Controller"
   }
 })
+
 app.directive('blueList', function() {
   return {
     restrict: 'E',
