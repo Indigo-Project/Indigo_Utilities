@@ -328,6 +328,7 @@ router.post('/ent-list', function(req, res, next) {
     return new Promise(function(resolve, reject) {
 
       var count = 0;
+      var exportFile = [];
 
       function forLoop(count) {
         if (count < filesToFormat.length) {
@@ -356,11 +357,9 @@ router.post('/ent-list', function(req, res, next) {
   // FINAL EXECUTION FUNCTION
   function generateEntList() {
 
-    var exportFile = [];
-
     compileEntLists()
     .then(function(data){
-      csv.stringify(exportFile, function(err, output) {
+      csv.stringify(data, function(err, output) {
         if(output) {
           fs.writeFile("Output_Files/Entrepreneur_Lists/" + req.body.outputFileName + ".csv", output, function(err) {
             if (err) {
@@ -382,8 +381,6 @@ router.post('/ent-list', function(req, res, next) {
         }
       })
     });
-    // console.log('-------------FINISHED');
-    // console.log(exportFile);
   }
 
   generateEntList();
@@ -417,6 +414,7 @@ router.post('/blue-list', function(req, res, next) {
       csvParse(data.data, function(err, output) {
         // console.log(output);
         var columnHeaders = output[0];
+
         for (var j = 0; j < columnHeaders.length; j++) {
           if (columnHeaders[j] === "HANDLING STRESS") {
             stressIndex = j;
@@ -450,17 +448,6 @@ router.post('/blue-list', function(req, res, next) {
           }
         }
 
-        var stressIndex = "";
-        var confIndex = "";
-        var selfIndex = "";
-        var belongIndex = "";
-        var resilIndex = "";
-        var dirIndex = "";
-        var dirbIndex = "";
-        var eoIndex = "";
-        var ptIndex = "";
-        var sjIndex = "";
-
         if (stressIndex === "" || confIndex === "" || selfIndex === "" || belongIndex === "" || resilIndex === "" || dirIndex === "" || dirbIndex === "" || eoIndex === "" || ptIndex === "" || sjIndex === "") {
           reject('One or more Indices is null')
         } else {
@@ -473,7 +460,7 @@ router.post('/blue-list', function(req, res, next) {
   }
 
   // OUTPUT ENT LIST FOR INPUT FILE (TTI LINK) USING RELATIVE DATA INDICES
-  function outputEntData(data, indexArr) {
+  function outputBlueData(data, indexArr) {
     return new Promise(function(resolve, reject) {
 
       var blueListArr = [];
@@ -488,62 +475,48 @@ router.post('/blue-list', function(req, res, next) {
         var resilScore = data[i][indexArr[4]]
         var dirScore = data[i][indexArr[5]]
         var dirbScore = data[i][indexArr[6]]
+        if (dirbScore === '1') {
+          dirbScore = 'POS';
+        } else if (dirbScore === '0') {
+          dirbScore = 'NEU';
+        } else if (dirbScore === '-1') {
+          dirbScore = 'NEG';
+        }
         var eoScore = data[i][indexArr[7]]
         var ptScore = data[i][indexArr[8]]
         var sjScore = data[i][indexArr[9]]
 
+        var studentOutput = [ data[i][0], data[i][1], data[i][6], data[i][indexArr[0]], data[i][indexArr[1]], data[i][indexArr[2]], data[i][indexArr[3]], data[i][indexArr[4]], data[i][indexArr[5]], dirbScore, data[i][indexArr[7]], data[i][indexArr[8]], data[i][indexArr[9]] ];
+
         var ct0 = 0;   // counter for how many of the first 4 variables are below a set threshold; to be used for at-risk flagging
-        // if ((stressScore < 2) && (belongScore < 5 && belongScore >= 3.5) && (resilScore < 5)){   // FIRST TEST, if flagged, grab student and cascade thru if-then
-        //     blueListArr.push(data[i]);
-        // }
-        // else {
-        //   if (stressScore < 3) { ct0++; }
-        //   if (confScore < 3.5) { ct0++; }
-        //   if (selfScore < 3.5) { ct0++; }
-        //   if (belongScore < 3.5) { ct0++; }
-        //
-        //   if ((ct0 >= 2) && (resilScore < 5)){   // SECOND TEST
-        //      blueListArr.push(data[i]);
-        //   }
-        //   else {
-        //     var ct = 0;   // use 2 diff conter vars to determine third test…
-        //     var ct2 = 0;
-        //     if (confScore < 3.5) { ct++; }
-        //     if (dirScore < 3) { ct++; }
-        //     if (selfScore < 3.5) { ct++; }
-        //     if (belongScore < 3.5) { ct++; }
-        //     if ((confScore < 2) || (dirScore < 2) || (selfScore < 2) || (belongScore < 2)) {
-        //        ct2++;
-        //     }
-        //     if ( (stressScore < 4) && ((ct >=2) || (ct2>=1)) && (resilScore < 5)) {   // THIRD TEST
-        //        blueListArr.push(data[i]);
-        //     }
-        //   }
-        // }
+        if ((stressScore < 2) && (belongScore < 5 && belongScore >= 3.5) && (resilScore < 5)) {   // FIRST TEST, if flagged, grab student and cascade thru if-then
+            blueListArr.push(studentOutput);
+        } else {
+          if (stressScore < 3) { ct0++; }
+          if (confScore < 3.5) { ct0++; }
+          if (selfScore < 3.5) { ct0++; }
+          if (belongScore < 3.5) { ct0++; }
 
-
-        // CREATE CALCS
-        var DomCalc = Math.max(-20, (DomScore - 50) );
-        var ComCalc = Math.max(-20, Math.min((40 - ComScore), 20) );
-        var UtiCalc = Math.max(-20, Math.min(10*(UtiScore - 4), 20) );
-        var IndCalc = Math.max(-20, 10 * (IndScore - 5) );
-
-        // ENT LIST OR NOT, SOC-ENT OR NOT
-        var socialEntr;
-        var studentOutput;
-
-        if ((DomCalc + ComCalc + UtiCalc + IndCalc) > 19) {
-          if ( (SocScore >= UtiScore) && (SocScore > 4.9) ){
-            socialEntr = "Yes";
+          if ((ct0 >= 2) && (resilScore < 5)) {   // SECOND TEST
+             blueListArr.push(studentOutput);
           } else {
-            socialEntr = "No";
+            var ct1 = 0;   // use 2 diff conter vars to determine third test…
+            var ct2 = 0;
+            if (confScore < 3.5) { ct1++; }
+            if (dirScore < 3) { ct1++; }
+            if (selfScore < 3.5) { ct1++; }
+            if (belongScore < 3.5) { ct1++; }
+            if ((confScore < 2) || (dirScore < 2) || (selfScore < 2) || (belongScore < 2)) {
+               ct2++;
+            }
+            if ( (stressScore < 4) && ((ct1 >=2) || (ct2>=1)) && (resilScore < 5)) {   // THIRD TEST
+               blueListArr.push(studentOutput);
+            }
           }
-          studentOutput = [ data[i][0], data[i][1], data[i][6], data[i][14], data[i][15], data[i][16], data[i][17], data[i][43], data[i][44], data[i][45], data[i][46], data[i][47], data[i][48], socialEntr]
-          entListArr.push(studentOutput)
         }
       }
       if (data) {
-        resolve(entListArr);
+        resolve(blueListArr);
       } else {
         reject('no data');
       }
@@ -551,28 +524,32 @@ router.post('/blue-list', function(req, res, next) {
   }
 
   // COMPILE ENT LISTS FROM ALL INSTANCES
-  function compileEntLists() {
+  function compileBlueLists() {
     return new Promise(function(resolve, reject) {
 
       var count = 0;
+      var exportFile = [];
 
       function forLoop(count) {
         if (count < filesToFormat.length) {
           setColumnHeaders(filesToFormat[count])
           .then(function(data1) {
-            outputEntData(data1.data, data1.indexArr)
+            outputBlueData(data1.data, data1.indexArr)
             .then(function(data2) {
               for (var j = 0; j < data2.length; j++) {
                 exportFile.push(data2[j]);
               }
               if (count === (filesToFormat.length - 1)) {
-                exportFile.unshift(['First', 'Last', 'Gender', 'Dominance-Nat', 'Infl-Nat', 'Stead', 'Compl', 'Theo', 'Util', 'Aesth', 'Soci', 'Indiv', 'Trad', 'SocialEntr'])
+                exportFile.unshift(['First', 'Last', 'Gender', 'HANDLING STRESS', 'SELF CONFIDENCE', 'SENSE OF SELF', 'SENSE OF BELONGING', 'RESILIENCY', 'SELF DIRECTION', 'SELF DIRECTION BIAS', 'EMPATHETIC OUTLOOK', 'PRACTICAL THINKING', 'SYSTEMS JUDGMENT'])
+                console.log('resolve', exportFile);
                 resolve(exportFile)
               } else {
                 count ++;
                 forLoop(count)
               }
             })
+          }).catch(function(error) {
+            console.log(error);
           })
         }
       }
@@ -581,21 +558,19 @@ router.post('/blue-list', function(req, res, next) {
   }
 
   // FINAL EXECUTION FUNCTION
-  function generateEntList() {
+  function generateBlueList() {
 
-    var exportFile = [];
-
-    compileEntLists()
+    compileBlueLists()
     .then(function(data){
-      csv.stringify(exportFile, function(err, output) {
+      csv.stringify(data, function(err, output) {
         if(output) {
-          fs.writeFile("Output_Files/Entrepreneur_Lists/" + req.body.outputFileName + ".csv", output, function(err) {
+          fs.writeFile("Output_Files/Blue_Lists/" + req.body.outputFileName + ".csv", output, function(err) {
             if (err) {
               console.log(err);
             } else {
               console.log(req.body.outputFileName + ".csv Created");
               var filename = req.body.outputFileName + ".csv";
-              var filePath = "./Output_Files/Entrepreneur_Lists/" + filename;
+              var filePath = "./Output_Files/Blue_Lists/" + filename;
               var stat = fs.statSync(filePath);
               var fileToSend = fs.readFileSync(filePath);
               res.writeHead(200, {
@@ -609,11 +584,9 @@ router.post('/blue-list', function(req, res, next) {
         }
       })
     });
-    // console.log('-------------FINISHED');
-    // console.log(exportFile);
   }
 
-  generateEntList();
+  generateBlueList();
 
 })
 

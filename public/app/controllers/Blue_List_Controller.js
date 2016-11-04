@@ -1,4 +1,4 @@
-app.controller('Ent_List_Controller', ['$scope', '$state', '$http', 'FileSaver', 'Blob', function($scope, $state, $http, FileSaver, Blob) {
+app.controller('Blue_List_Controller', ['$scope', '$state', '$http', 'FileSaver', 'Blob', function($scope, $state, $http, FileSaver, Blob) {
 
   $scope.view = {};
   $scope.uploader = {};
@@ -62,11 +62,13 @@ app.controller('Ent_List_Controller', ['$scope', '$state', '$http', 'FileSaver',
         responseType: 'blob'
       })
       .success(function(data, status, headers, config) {
+        console.log(data);
         var blob = new Blob([data], {type: 'text/csv' });
         var fileName = headers('content-disposition');
         FileSaver.saveAs(blob, fileName);
       }).catch(function(err) {
         console.log(err);
+        alert(err.statusText);
       })
     }
   }
