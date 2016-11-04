@@ -10,24 +10,24 @@
     <table class="table queued-reports">
       <thead>
         <th>File Name</th>
-        <th>Report Type</th>
+        <!-- <th>Report Type</th>
         <th>Role</th>
         <th>School Year Taken</th>
-        <th>Class</th>
+        <th>Class</th> -->
       </thead>
       <tr ng-repeat="file in uploader.loadedFiles">
         <td>{{file.name}}</td>
-        <td>{{file.reportType}}</td>
+        <!-- <td>{{file.reportType}}</td>
         <td>{{file.role}}</td>
         <td>{{file.schoolYearTaken}}</td>
-        <td>{{file.class}}</td>
+        <td>{{file.class}}</td> -->
       </tr>
     </table>
   </div>
 
   <form class="download-form" ng-submit="data.generateEntList(data.formatFileName)">
     <input class="form-control format-file-name" type="text" placeholder="enter desired file name (without extension)" ng-model="data.formatFileName">
-    <button type="submit" class="format-data form-control">Format TTI Data for Download</button>
+    <button type="submit" class="format-data form-control">Generate Entrepreneur List</button>
   </form>
 
 </section>

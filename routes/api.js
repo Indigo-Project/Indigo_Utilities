@@ -7,7 +7,8 @@ require('should');
 var fs = require('fs');
 
 
-//*** TTI - POWER BI FORMATTING ENDPOINT ***
+/** TTI - POWER BI FORMATTING ENDPOINT **/
+
 router.post('/upload-csv', function(req, res, next) {
 
   var filesToFormat = req.body.inputFiles;
@@ -227,6 +228,8 @@ router.post('/upload-csv', function(req, res, next) {
 });
 
 
+/**ENT LIST**/
+
 router.post('/ent-list', function(req, res, next) {
 
   var filesToFormat = req.body.inputFiles;
@@ -320,39 +323,268 @@ router.post('/ent-list', function(req, res, next) {
     })
   }
 
+  // COMPILE ENT LISTS FROM ALL INSTANCES
+  function compileEntLists() {
+    return new Promise(function(resolve, reject) {
+
+      var count = 0;
+
+      function forLoop(count) {
+        if (count < filesToFormat.length) {
+          setColumnHeaders(filesToFormat[count])
+          .then(function(data1) {
+            outputEntData(data1.data, data1.indexArr)
+            .then(function(data2) {
+              for (var j = 0; j < data2.length; j++) {
+                exportFile.push(data2[j]);
+              }
+              if (count === (filesToFormat.length - 1)) {
+                exportFile.unshift(['First', 'Last', 'Gender', 'Dominance-Nat', 'Infl-Nat', 'Stead', 'Compl', 'Theo', 'Util', 'Aesth', 'Soci', 'Indiv', 'Trad', 'SocialEntr'])
+                resolve(exportFile)
+              } else {
+                count ++;
+                forLoop(count)
+              }
+            })
+          })
+        }
+      }
+      forLoop(count);
+    })
+  }
+
   // FINAL EXECUTION FUNCTION
   function generateEntList() {
 
     var exportFile = [];
 
-    function compileEntLists() {
-      return new Promise(function(resolve, reject) {
-
-        var count = 0;
-
-        function forLoop(count) {
-          if (count < filesToFormat.length) {
-            setColumnHeaders(filesToFormat[count])
-            .then(function(data1) {
-              outputEntData(data1.data, data1.indexArr)
-              .then(function(data2) {
-                for (var j = 0; j < data2.length; j++) {
-                  exportFile.push(data2[j]);
-                }
-                if (count === (filesToFormat.length - 1)) {
-                  exportFile.unshift(['First', 'Last', 'Gender', 'Dominance-Nat', 'Infl-Nat', 'Stead', 'Compl', 'Theo', 'Util', 'Aesth', 'Soci', 'Indiv', 'Trad', 'SocialEntr'])
-                  resolve(exportFile)
-                } else {
-                  count ++;
-                  forLoop(count)
-                }
+    compileEntLists()
+    .then(function(data){
+      csv.stringify(exportFile, function(err, output) {
+        if(output) {
+          fs.writeFile("Output_Files/Entrepreneur_Lists/" + req.body.outputFileName + ".csv", output, function(err) {
+            if (err) {
+              console.log(err);
+            } else {
+              console.log(req.body.outputFileName + ".csv Created");
+              var filename = req.body.outputFileName + ".csv";
+              var filePath = "./Output_Files/Entrepreneur_Lists/" + filename;
+              var stat = fs.statSync(filePath);
+              var fileToSend = fs.readFileSync(filePath);
+              res.writeHead(200, {
+                'Content-Type': 'text/csv',
+                'Content-Length': stat.size,
+                'Content-Disposition': filename
               })
-            })
+              res.end(fileToSend);
+            }
+          })
+        }
+      })
+    });
+    // console.log('-------------FINISHED');
+    // console.log(exportFile);
+  }
+
+  generateEntList();
+
+})
+
+
+/**BLUE LIST**/
+
+
+
+router.post('/blue-list', function(req, res, next) {
+
+  var filesToFormat = req.body.inputFiles;
+
+  // FOR EACH INPUT FILE (TTI LINK), RELATIVE COLUMN HEADER INDICES ARE SET
+  function setColumnHeaders(data) {
+    return new Promise(function(resolve, reject) {
+      // console.log(data);
+      var stressIndex = "";
+      var confIndex = "";
+      var selfIndex = "";
+      var belongIndex = "";
+      var resilIndex = "";
+      var dirIndex = "";
+      var dirbIndex = "";
+      var eoIndex = "";
+      var ptIndex = "";
+      var sjIndex = "";
+
+      csvParse(data.data, function(err, output) {
+        // console.log(output);
+        var columnHeaders = output[0];
+        for (var j = 0; j < columnHeaders.length; j++) {
+          if (columnHeaders[j] === "HANDLING STRESS") {
+            stressIndex = j;
+          }
+          if (columnHeaders[j] === "SELF CONFIDENCE") {
+            confIndex = j;
+          }
+          if (columnHeaders[j] === "SENSE OF SELF") {
+            selfIndex = j;
+          }
+          if (columnHeaders[j] === "SENSE OF BELONGING") {
+            belongIndex = j;
+          }
+          if (columnHeaders[j] === "RESILIENCY") {
+            resilIndex = j;
+          }
+          if (columnHeaders[j] === "SELF DIRECTION") {
+            dirIndex = j;
+          }
+          if (columnHeaders[j] === "SELF DIRECTION BIAS") {
+            dirbIndex = j;
+          }
+          if (columnHeaders[j] === "EMPATHETIC OUTLOOK") {
+            eoIndex = j;
+          }
+          if (columnHeaders[j] === "PRACTICAL THINKING") {
+            ptIndex = j;
+          }
+          if (columnHeaders[j] === "SYSTEMS JUDGMENT") {
+            sjIndex = j;
           }
         }
-        forLoop(count);
-      })
-    }
+
+        var stressIndex = "";
+        var confIndex = "";
+        var selfIndex = "";
+        var belongIndex = "";
+        var resilIndex = "";
+        var dirIndex = "";
+        var dirbIndex = "";
+        var eoIndex = "";
+        var ptIndex = "";
+        var sjIndex = "";
+
+        if (stressIndex === "" || confIndex === "" || selfIndex === "" || belongIndex === "" || resilIndex === "" || dirIndex === "" || dirbIndex === "" || eoIndex === "" || ptIndex === "" || sjIndex === "") {
+          reject('One or more Indices is null')
+        } else {
+          var indexArr = [stressIndex, confIndex, selfIndex, belongIndex, resilIndex, dirIndex, dirbIndex, eoIndex, ptIndex, sjIndex];
+          var body = { data: output, indexArr: indexArr };
+          resolve(body);
+        }
+      });
+    })
+  }
+
+  // OUTPUT ENT LIST FOR INPUT FILE (TTI LINK) USING RELATIVE DATA INDICES
+  function outputEntData(data, indexArr) {
+    return new Promise(function(resolve, reject) {
+
+      var blueListArr = [];
+
+      for (var i = 1; i < data.length; i++) {
+
+        // GET SCORES
+        var stressScore = data[i][indexArr[0]]
+        var confScore = data[i][indexArr[1]]
+        var selfScore = data[i][indexArr[2]]
+        var belongScore = data[i][indexArr[3]]
+        var resilScore = data[i][indexArr[4]]
+        var dirScore = data[i][indexArr[5]]
+        var dirbScore = data[i][indexArr[6]]
+        var eoScore = data[i][indexArr[7]]
+        var ptScore = data[i][indexArr[8]]
+        var sjScore = data[i][indexArr[9]]
+
+        var ct0 = 0;   // counter for how many of the first 4 variables are below a set threshold; to be used for at-risk flagging
+        // if ((stressScore < 2) && (belongScore < 5 && belongScore >= 3.5) && (resilScore < 5)){   // FIRST TEST, if flagged, grab student and cascade thru if-then
+        //     blueListArr.push(data[i]);
+        // }
+        // else {
+        //   if (stressScore < 3) { ct0++; }
+        //   if (confScore < 3.5) { ct0++; }
+        //   if (selfScore < 3.5) { ct0++; }
+        //   if (belongScore < 3.5) { ct0++; }
+        //
+        //   if ((ct0 >= 2) && (resilScore < 5)){   // SECOND TEST
+        //      blueListArr.push(data[i]);
+        //   }
+        //   else {
+        //     var ct = 0;   // use 2 diff conter vars to determine third test…
+        //     var ct2 = 0;
+        //     if (confScore < 3.5) { ct++; }
+        //     if (dirScore < 3) { ct++; }
+        //     if (selfScore < 3.5) { ct++; }
+        //     if (belongScore < 3.5) { ct++; }
+        //     if ((confScore < 2) || (dirScore < 2) || (selfScore < 2) || (belongScore < 2)) {
+        //        ct2++;
+        //     }
+        //     if ( (stressScore < 4) && ((ct >=2) || (ct2>=1)) && (resilScore < 5)) {   // THIRD TEST
+        //        blueListArr.push(data[i]);
+        //     }
+        //   }
+        // }
+
+
+        // CREATE CALCS
+        var DomCalc = Math.max(-20, (DomScore - 50) );
+        var ComCalc = Math.max(-20, Math.min((40 - ComScore), 20) );
+        var UtiCalc = Math.max(-20, Math.min(10*(UtiScore - 4), 20) );
+        var IndCalc = Math.max(-20, 10 * (IndScore - 5) );
+
+        // ENT LIST OR NOT, SOC-ENT OR NOT
+        var socialEntr;
+        var studentOutput;
+
+        if ((DomCalc + ComCalc + UtiCalc + IndCalc) > 19) {
+          if ( (SocScore >= UtiScore) && (SocScore > 4.9) ){
+            socialEntr = "Yes";
+          } else {
+            socialEntr = "No";
+          }
+          studentOutput = [ data[i][0], data[i][1], data[i][6], data[i][14], data[i][15], data[i][16], data[i][17], data[i][43], data[i][44], data[i][45], data[i][46], data[i][47], data[i][48], socialEntr]
+          entListArr.push(studentOutput)
+        }
+      }
+      if (data) {
+        resolve(entListArr);
+      } else {
+        reject('no data');
+      }
+    })
+  }
+
+  // COMPILE ENT LISTS FROM ALL INSTANCES
+  function compileEntLists() {
+    return new Promise(function(resolve, reject) {
+
+      var count = 0;
+
+      function forLoop(count) {
+        if (count < filesToFormat.length) {
+          setColumnHeaders(filesToFormat[count])
+          .then(function(data1) {
+            outputEntData(data1.data, data1.indexArr)
+            .then(function(data2) {
+              for (var j = 0; j < data2.length; j++) {
+                exportFile.push(data2[j]);
+              }
+              if (count === (filesToFormat.length - 1)) {
+                exportFile.unshift(['First', 'Last', 'Gender', 'Dominance-Nat', 'Infl-Nat', 'Stead', 'Compl', 'Theo', 'Util', 'Aesth', 'Soci', 'Indiv', 'Trad', 'SocialEntr'])
+                resolve(exportFile)
+              } else {
+                count ++;
+                forLoop(count)
+              }
+            })
+          })
+        }
+      }
+      forLoop(count);
+    })
+  }
+
+  // FINAL EXECUTION FUNCTION
+  function generateEntList() {
+
+    var exportFile = [];
+
     compileEntLists()
     .then(function(data){
       csv.stringify(exportFile, function(err, output) {
