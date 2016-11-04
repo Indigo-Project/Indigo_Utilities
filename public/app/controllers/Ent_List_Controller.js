@@ -28,18 +28,19 @@ app.controller('Ent_List_Controller', ['$scope', '$state', '$http', 'FileSaver',
   $scope.uploader.addChosenReports = function() {
     console.log('addChosenReports()');
     console.log($scope.uploader.file);
-    if($scope.uploader.file === undefined)  {
-      alert("NO FILE UPLOADED");
-    } else {
-      $scope.uploader.loadedFiles.push(
-        {name: $('input[type=file]').val().substring(12),
-        reportType: $scope.uploader.reportType,
-        role: $scope.uploader.role,
-        data: $scope.uploader.file,
-        schoolYearTaken: $scope.uploader.schoolYearTaken,
-        class: $scope.uploader.class});
-      angular.element("input[type='file']").val(null);
-      }
+    // if($scope.uploader.file === undefined)  {
+    //   alert("NO FILE UPLOADED");
+    // }
+    // else {
+    $scope.uploader.loadedFiles.push(
+      {name: $('input[type=file]').val().substring(12),
+      reportType: $scope.uploader.reportType,
+      role: $scope.uploader.role,
+      data: $scope.uploader.file,
+      schoolYearTaken: $scope.uploader.schoolYearTaken,
+      class: $scope.uploader.class});
+    angular.element("input[type='file']").val(null);
+      // }
     $scope.uploader.reportType = undefined;
     $scope.uploader.file = undefined;
     $scope.uploader.role = undefined;
