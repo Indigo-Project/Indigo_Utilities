@@ -449,7 +449,7 @@ router.post('/blue-list', function(req, res, next) {
         }
 
         if (stressIndex === "" || confIndex === "" || selfIndex === "" || belongIndex === "" || resilIndex === "" || dirIndex === "" || dirbIndex === "" || eoIndex === "" || ptIndex === "" || sjIndex === "") {
-          reject('One or more Indices is null')
+          reject({ reason: "1", internalMessage: "One or more indices is null", externalMessage: "Incorrect Report Type for current Application. List of acceptable Report Types:\n-Hartman Value Profile"})
         } else {
           var indexArr = [stressIndex, confIndex, selfIndex, belongIndex, resilIndex, dirIndex, dirbIndex, eoIndex, ptIndex, sjIndex];
           var body = { data: output, indexArr: indexArr };

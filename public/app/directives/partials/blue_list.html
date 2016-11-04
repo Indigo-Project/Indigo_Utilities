@@ -1,5 +1,14 @@
 <section class="function-section ent_list">
 
+  <section class="instructions">
+    <h5>Instructions</h5>
+    <ol>
+      <li>1. Export 'Hartman Value Profile' instrument data from TTI. This function only works with 'Hartman Value Profile', and will not accept other instrument types</li>
+      <li>2. Click 'Choose File' to load .csv files one at a time, then 'Add Report'. Multiple .csv files can be processed at one time. </li>
+      <li>3. Enter the output file name, and click 'Generate Blue List' to generate the blue list for the given population. </li>
+    </ol>
+  </section>
+
   <form name="fileUploader" class="add-reports" ng-submit="uploader.addChosenReports()">
     <input class="upload-csv form-control" id="tti-file-uploader" name="files"  type="file" accept=".csv" fileread="uploader.file"></input>
     <button type="submit" class="add-reports form-control">Add Report (1 at a time)</button>

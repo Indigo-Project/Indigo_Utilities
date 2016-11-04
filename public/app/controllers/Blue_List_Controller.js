@@ -63,13 +63,16 @@ app.controller('Blue_List_Controller', ['$scope', '$state', '$http', 'FileSaver'
         responseType: 'blob'
       })
       .success(function(data, status, headers, config) {
-        console.log(data);
-        var blob = new Blob([data], {type: 'text/csv' });
-        var fileName = headers('content-disposition');
-        FileSaver.saveAs(blob, fileName);
-      }).catch(function(err) {
-        console.log(err);
-        alert(err.statusText);
+          var blob = new Blob([data], {type: 'text/csv' });
+          var fileName = headers('content-disposition');
+          FileSaver.saveAs(blob, fileName);
+      }).catch(function(error) {
+        // console.log(error);
+        // if(error.statusText) {
+        //   alert(error.statusText);
+        // } else {
+        //   alert(error.externalMessage);
+        // }
       })
     }
   }

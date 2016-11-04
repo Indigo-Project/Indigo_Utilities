@@ -35,6 +35,9 @@ button.add-reports {
 button.format-data {
   width: 300px; }
 
+section.instructions {
+  margin-bottom: 30px; }
+
 form.add-reports {
   display: flex; }
   form.add-reports input {
