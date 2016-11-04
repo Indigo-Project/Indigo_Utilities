@@ -67,6 +67,7 @@ app.controller('Ent_List_Controller', ['$scope', '$state', '$http', 'FileSaver',
         FileSaver.saveAs(blob, fileName);
       }).catch(function(err) {
         console.log(err);
+        alert(err.statusText);
       })
     }
   }

@@ -340,7 +340,7 @@ router.post('/ent-list', function(req, res, next) {
                 exportFile.push(data2[j]);
               }
               if (count === (filesToFormat.length - 1)) {
-                exportFile.unshift(['First', 'Last', 'Gender', 'Dominance-Nat', 'Infl-Nat', 'Stead', 'Compl', 'Theo', 'Util', 'Aesth', 'Soci', 'Indiv', 'Trad', 'SocialEntr'])
+                exportFile.unshift(['First', 'Last', 'Gender', 'Dominance-Nat', 'Infl-Nat', 'Stead-Nat', 'Compl-Nat', 'Theo', 'Util', 'Aesth', 'Soci', 'Indiv', 'Trad', 'SocialEntr'])
                 resolve(exportFile)
               } else {
                 count ++;
