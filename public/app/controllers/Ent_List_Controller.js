@@ -26,8 +26,6 @@ app.controller('Ent_List_Controller', ['$scope', '$state', '$http', 'FileSaver',
 
 
   $scope.uploader.addChosenReports = function() {
-    console.log('addChosenReports()');
-    console.log($scope.uploader.file);
     if($scope.uploader.file === undefined)  {
       alert("NO FILE UPLOADED");
     } else {
@@ -59,16 +57,16 @@ app.controller('Ent_List_Controller', ['$scope', '$state', '$http', 'FileSaver',
       $http({
         method: 'POST',
         url: '/api/ent-list',
-        data: { inputFiles:$scope.uploader.loadedFiles, outputFileName: fileName },
-        responseType: 'blob'
+        data: { inputFiles:$scope.uploader.loadedFiles, outputFileName: fileName }
+        // responseType: 'blob'
       })
       .success(function(data, status, headers, config) {
         var blob = new Blob([data], {type: 'text/csv' });
         var fileName = headers('content-disposition');
         FileSaver.saveAs(blob, fileName);
-      }).catch(function(err) {
-        console.log(err);
-        alert(err.statusText);
+      }).catch(function(error) {
+        console.log(error);
+        alert(error.data.externalMessage);
       })
     }
   }

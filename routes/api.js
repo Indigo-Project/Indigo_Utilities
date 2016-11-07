@@ -228,6 +228,7 @@ router.post('/upload-csv', function(req, res, next) {
 });
 
 
+
 /**ENT LIST**/
 
 router.post('/ent-list', function(req, res, next) {
@@ -270,7 +271,7 @@ router.post('/ent-list', function(req, res, next) {
           }
         }
         if (DomIndex === "" || ComIndex === "" || UtiIndex === "" || IndIndex === "" || SocIndex === "") {
-          reject('One or more Indices is null')
+          resolve({ errReason: "Client Error: Incorrect Report Type", internalMessage: "One or more indices is null", externalMessage: "One or more uploaded reports is the incorrect report type for entrepreneur list generation. Refresh and try again. List of acceptable Report Types:\n\n-Talent Insights\n-Trimetrix"})
         } else {
           var indexArr = [DomIndex, ComIndex, UtiIndex, IndIndex, SocIndex];
           var body = { data: output, indexArr: indexArr };
@@ -334,19 +335,26 @@ router.post('/ent-list', function(req, res, next) {
         if (count < filesToFormat.length) {
           setColumnHeaders(filesToFormat[count])
           .then(function(data1) {
-            outputEntData(data1.data, data1.indexArr)
-            .then(function(data2) {
-              for (var j = 0; j < data2.length; j++) {
-                exportFile.push(data2[j]);
-              }
-              if (count === (filesToFormat.length - 1)) {
-                exportFile.unshift(['First', 'Last', 'Gender', 'Dominance-Nat', 'Infl-Nat', 'Stead-Nat', 'Compl-Nat', 'Theo', 'Util', 'Aesth', 'Soci', 'Indiv', 'Trad', 'SocialEntr'])
-                resolve(exportFile)
-              } else {
-                count ++;
-                forLoop(count)
-              }
-            })
+            if (data1.errReason) {
+              res.writeHeader(406, {"Content-Type": "application/json"});
+              res.end(JSON.stringify(data1));
+            } else {
+              outputEntData(data1.data, data1.indexArr)
+              .then(function(data2) {
+                for (var j = 0; j < data2.length; j++) {
+                  exportFile.push(data2[j]);
+                }
+                if (count === (filesToFormat.length - 1)) {
+                  exportFile.unshift(['First', 'Last', 'Gender', 'Dominance-Nat', 'Infl-Nat', 'Stead-Nat', 'Compl-Nat', 'Theo', 'Util', 'Aesth', 'Soci', 'Indiv', 'Trad', 'SocialEntr'])
+                  resolve(exportFile)
+                } else {
+                  count ++;
+                  forLoop(count)
+                }
+              })
+            }
+          }).catch(function(error) {
+            console.log(error);
           })
         }
       }
@@ -388,9 +396,8 @@ router.post('/ent-list', function(req, res, next) {
 })
 
 
+
 /**BLUE LIST**/
-
-
 
 router.post('/blue-list', function(req, res, next) {
 
@@ -449,7 +456,7 @@ router.post('/blue-list', function(req, res, next) {
         }
 
         if (stressIndex === "" || confIndex === "" || selfIndex === "" || belongIndex === "" || resilIndex === "" || dirIndex === "" || dirbIndex === "" || eoIndex === "" || ptIndex === "" || sjIndex === "") {
-          reject({ reason: "1", internalMessage: "One or more indices is null", externalMessage: "Incorrect Report Type for current Application. List of acceptable Report Types:\n-Hartman Value Profile"})
+          resolve({ errReason: "Client Error: Incorrect Report Type", internalMessage: "One or more indices is null", externalMessage: "One or more uploaded reports is the incorrect report type for blue list generation. Refresh and try again. List of acceptable Report Types:\n\n-Hartman Value Profile"})
         } else {
           var indexArr = [stressIndex, confIndex, selfIndex, belongIndex, resilIndex, dirIndex, dirbIndex, eoIndex, ptIndex, sjIndex];
           var body = { data: output, indexArr: indexArr };
@@ -523,7 +530,7 @@ router.post('/blue-list', function(req, res, next) {
     })
   }
 
-  // COMPILE ENT LISTS FROM ALL INSTANCES
+  // COMPILE BLUE LISTS FROM ALL INSTANCES
   function compileBlueLists() {
     return new Promise(function(resolve, reject) {
 
@@ -534,20 +541,26 @@ router.post('/blue-list', function(req, res, next) {
         if (count < filesToFormat.length) {
           setColumnHeaders(filesToFormat[count])
           .then(function(data1) {
-            outputBlueData(data1.data, data1.indexArr)
-            .then(function(data2) {
-              for (var j = 0; j < data2.length; j++) {
-                exportFile.push(data2[j]);
-              }
-              if (count === (filesToFormat.length - 1)) {
-                exportFile.unshift(['First', 'Last', 'Gender', 'HANDLING STRESS', 'SELF CONFIDENCE', 'SENSE OF SELF', 'SENSE OF BELONGING', 'RESILIENCY', 'SELF DIRECTION', 'SELF DIRECTION BIAS', 'EMPATHETIC OUTLOOK', 'PRACTICAL THINKING', 'SYSTEMS JUDGMENT'])
-                console.log('resolve', exportFile);
-                resolve(exportFile)
-              } else {
-                count ++;
-                forLoop(count)
-              }
-            })
+            console.log(data1);
+            if (data1.errReason) {
+              res.writeHeader(406, {"Content-Type": "application/json"});
+              res.end(JSON.stringify(data1));
+            } else {
+              outputBlueData(data1.data, data1.indexArr)
+              .then(function(data2) {
+                for (var j = 0; j < data2.length; j++) {
+                  exportFile.push(data2[j]);
+                }
+                if (count === (filesToFormat.length - 1)) {
+                  exportFile.unshift(['First', 'Last', 'Gender', 'HANDLING STRESS', 'SELF CONFIDENCE', 'SENSE OF SELF', 'SENSE OF BELONGING', 'RESILIENCY', 'SELF DIRECTION', 'SELF DIRECTION BIAS', 'EMPATHETIC OUTLOOK', 'PRACTICAL THINKING', 'SYSTEMS JUDGMENT'])
+                  console.log('resolve', exportFile);
+                  resolve(exportFile)
+                } else {
+                  count ++;
+                  forLoop(count)
+                }
+              })
+            }
           }).catch(function(error) {
             console.log(error);
           })
