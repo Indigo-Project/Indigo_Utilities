@@ -30,6 +30,11 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
       templateUrl: "templates/tti_massdl.html",
       // controller: "TTI_MassDL_Controller"
     })
+    .state('sum_page', {
+      url: '/sum_page',
+      templateUrl: "templates/sum_page.html",
+      // controller: "TTI_MassDL_Controller"
+    })
 
     $locationProvider.html5Mode(true);
 })

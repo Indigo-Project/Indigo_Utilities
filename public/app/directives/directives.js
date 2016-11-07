@@ -62,3 +62,11 @@ app.directive('ttiMassdl', function() {
     controller: 'TTI_MassDL_Controller'
   }
 })
+
+app.directive('sumPage', function() {
+  return {
+    restrict: 'E',
+    templateUrl: 'app/directives/partials/sum_page.html',
+    controller: 'Sum_Page_Controller'
+  }
+})

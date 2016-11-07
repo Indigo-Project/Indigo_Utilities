@@ -25,6 +25,7 @@ app.use("/pbi_pfmt", express.static(__dirname + "/public/index.html"));
 app.use("/blue_list", express.static(__dirname + "/public/index.html"));
 app.use("/ent_list", express.static(__dirname + "/public/index.html"));
 app.use("/tti_massdl", express.static(__dirname + "/public/index.html"));
+app.use("/sum_page", express.static(__dirname + "/public/index.html"));
 
 app.use('/api', api);
 
