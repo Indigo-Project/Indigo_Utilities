@@ -17,3 +17,57 @@ app.factory('Main_Service', ['$state', function($state) {
     }
   }
 }])
+
+app.factory('TTI_API', ['$state', '$http', function($state, $http) {
+  return {
+    validateLocalDir: function(dirPath) {
+      return new Promise(function(resolve, reject) {
+        $http({
+          method: "POST",
+          url: "/api/validate-local-dir",
+          data: { localDir: dirPath }
+        }).then(function(data) {
+          resolve(data);
+        }).catch(function(error) {
+          console.log(error);
+        })
+      })
+    },
+    validateRequestData: function(login, password, accountID, linkID) {
+      return new Promise(function(resolve, reject) {
+        $http({
+          method: "POST",
+          url: "/api/validate-tti-request",
+          data: { login: login, password: password, accountID: accountID, linkID: linkID }
+        }).then(function(data) {
+          if(data) {
+            resolve(data);
+          }
+        }).catch(function(error) {
+          console.log(error);
+          if(error) {
+            reject(error);
+          }
+        })
+      })
+    },
+    batchDownload: function(login, password, accountID, linkID) {
+      return new Promise(function(resolve, reject) {
+        $http({
+          method: "POST",
+          url: "/api/batch-download",
+          data: { login: login, password: password, accountID: accountID, linkID: linkID }
+        }).then(function(data) {
+          if(data) {
+            resolve(data);
+          }
+        }).catch(function(error) {
+          console.log(error);
+          if(error) {
+            reject(error);
+          }
+        })
+      })
+    }
+  }
+}])

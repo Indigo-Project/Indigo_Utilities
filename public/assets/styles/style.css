@@ -1,6 +1,9 @@
 body {
   padding: 0px 20px 0px 20px; }
 
+h1.head-logo {
+  color: #4f4498; }
+
 section.select-function {
   margin-top: 30px;
   padding-bottom: 20px;
@@ -72,5 +75,51 @@ form.download-form {
     background-color: #b0b3ff;
     border: 1px solid black;
     box-shadow: -1px 1px 1px 0px black; }
+
+form.mass-dl-form {
+  display: flex;
+  flex-direction: column; }
+  form.mass-dl-form input {
+    margin-bottom: 5px; }
+    form.mass-dl-form input.short {
+      width: 300px; }
+    form.mass-dl-form input.long {
+      width: 700px;
+      margin-bottom: 20px; }
+    form.mass-dl-form input.submit {
+      width: 300px;
+      background-color: #98fea2;
+      border: 1px solid black;
+      box-shadow: -1px 1px 1px 0px black; }
+
+p.input-subtext {
+  font-size: 10px; }
+
+div.mass-dl-row-1 {
+  display: flex;
+  margin-bottom: 20px; }
+  div.mass-dl-row-1 div {
+    margin-right: 50px; }
+  div.mass-dl-row-1 h5 {
+    padding-top: 30px; }
+
+div.mass-dl-row-2 {
+  display: flex;
+  margin-bottom: 20px; }
+  div.mass-dl-row-2 div {
+    margin-right: 50px; }
+  div.mass-dl-row-2 div.ver-msg {
+    margin-right: 25px; }
+  div.mass-dl-row-2 h5 {
+    padding-top: 30px; }
+
+div.report-type {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px; }
+
+label.checkbox {
+  font-weight: normal;
+  font-size: 14px; }
 
 /*# sourceMappingURL=style.css.map */

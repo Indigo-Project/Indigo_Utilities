@@ -2,6 +2,10 @@ body {
   padding: 0px 20px 0px 20px;
 }
 
+h1.head-logo {
+  color: rgba(79, 68, 152, 1);
+}
+
 section.select-function {
   margin-top: 30px;
   padding-bottom: 20px;
@@ -95,4 +99,65 @@ form.download-form {
     border: 1px solid black;
     box-shadow: -1px 1px 1px 0px black;
   }
+}
+
+form.mass-dl-form {
+  display: flex;
+  flex-direction: column;
+  input {
+    margin-bottom: 5px;
+    &.short {
+      width: 300px;
+    }
+    &.long {
+      width: 700px;
+      margin-bottom: 20px;
+    }
+    &.submit {
+      width: 300px;
+      background-color: rgb(152, 254, 162);
+      border: 1px solid black;
+      box-shadow: -1px 1px 1px 0px black;
+    }
+  }
+}
+
+p.input-subtext {
+  font-size: 10px;
+}
+
+div.mass-dl-row-1 {
+  display: flex;
+  margin-bottom: 20px;
+  div {
+    margin-right: 50px;
+  }
+  h5 {
+    padding-top: 30px;;
+  }
+}
+
+div.mass-dl-row-2 {
+  display: flex;
+  margin-bottom: 20px;
+  div {
+    margin-right: 50px;
+  }
+  div.ver-msg {
+    margin-right: 25px;
+  }
+  h5 {
+    padding-top: 30px;
+  }
+}
+
+div.report-type {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+label.checkbox {
+  font-weight: normal;
+  font-size: 14px;
 }

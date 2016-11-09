@@ -1,11 +1,14 @@
 var express = require('express');
 var router = express.Router();
+var request = require('request');
+var fs = require('fs');
+var tilde = require('tilde-expansion');
+var TTI = require('../APIs/TTI_API')
 var csv = require('csv');
 var csvParse = require('csv-parse');
 var syncParse = require('csv-parse/lib/sync');
-require('should');
-var fs = require('fs');
 
+require('should');
 
 /** TTI - POWER BI FORMATTING ENDPOINT **/
 
@@ -254,26 +257,50 @@ router.post('/ent-list', function(req, res, next) {
         // console.log(output);
         var columnHeaders = output[0];
         for (var j = 0; j < columnHeaders.length; j++) {
+          if (columnHeaders[j] === "FIRST NAME") {
+            fnIndex = j;
+          }
+          if (columnHeaders[j] === "LAST NAME") {
+            lnIndex = j;
+          }
+          if (columnHeaders[j] === "GENDER") {
+            genderIndex = j;
+          }
           if (columnHeaders[j] === "D NATURAL (%)") {
             DomIndex = j;
+          }
+          if (columnHeaders[j] === "I NATURAL (%)") {
+            InfIndex = j;
+          }
+          if (columnHeaders[j] === "S NATURAL (%)") {
+            SteIndex = j;
           }
           if (columnHeaders[j] === "C NATURAL (%)") {
             ComIndex = j;
           }
+          if (columnHeaders[j] === "TEN_THE") {
+            TheIndex = j;
+          }
           if (columnHeaders[j] === "TEN_UTI") {
             UtiIndex = j;
           }
-          if (columnHeaders[j] === "TEN_IND") {
-            IndIndex = j;
+          if (columnHeaders[j] === "TEN_AES") {
+            AesIndex = j;
           }
           if (columnHeaders[j] === "TEN_SOC") {
             SocIndex = j;
           }
+          if (columnHeaders[j] === "TEN_IND") {
+            IndIndex = j;
+          }
+          if (columnHeaders[j] === "TEN_TRA") {
+            TraIndex = j;
+          }
         }
-        if (DomIndex === "" || ComIndex === "" || UtiIndex === "" || IndIndex === "" || SocIndex === "") {
+        if (fnIndex === "" || lnIndex === "" || genderIndex === "" || DomIndex === "" || InfIndex === "" || SteIndex === "" || ComIndex === "" || TheIndex === "" || UtiIndex === "" || AesIndex === "" || SocIndex === "" || IndIndex === "" || TraIndex === "") {
           resolve({ errReason: "Client Error: Incorrect Report Type", internalMessage: "One or more indices is null", externalMessage: "One or more uploaded reports is the incorrect report type for entrepreneur list generation. Refresh and try again. List of acceptable Report Types:\n\n-Talent Insights\n-Trimetrix"})
         } else {
-          var indexArr = [DomIndex, ComIndex, UtiIndex, IndIndex, SocIndex];
+          var indexArr = [fnIndex, lnIndex, genderIndex, DomIndex, InfIndex, SteIndex, ComIndex, TheIndex, UtiIndex, AesIndex, SocIndex, IndIndex, TraIndex];
           var body = { data: output, indexArr: indexArr };
           resolve(body);
         }
@@ -290,11 +317,11 @@ router.post('/ent-list', function(req, res, next) {
       for (var i = 1; i < data.length; i++) {
 
         // GET SCORES
-        var DomScore = data[i][indexArr[0]]
-        var ComScore = data[i][indexArr[1]]
-        var UtiScore = data[i][indexArr[2]]
-        var IndScore = data[i][indexArr[3]]
-        var SocScore = data[i][indexArr[4]]
+        var DomScore = data[i][indexArr[3]]
+        var ComScore = data[i][indexArr[4]]
+        var UtiScore = data[i][indexArr[5]]
+        var IndScore = data[i][indexArr[6]]
+        var SocScore = data[i][indexArr[7]]
 
         // CREATE CALCS
         var DomCalc = Math.max(-20, (DomScore - 50) );
@@ -312,7 +339,7 @@ router.post('/ent-list', function(req, res, next) {
           } else {
             socialEntr = "No";
           }
-          studentOutput = [ data[i][0], data[i][1], data[i][6], data[i][14], data[i][15], data[i][16], data[i][17], data[i][43], data[i][44], data[i][45], data[i][46], data[i][47], data[i][48], socialEntr]
+          studentOutput = [ data[i][indexArr[0]], data[i][indexArr[1]], data[i][indexArr[2]], data[i][indexArr[3]], data[i][indexArr[4]], data[i][indexArr[5]], data[i][indexArr[6]], data[i][indexArr[7]], data[i][indexArr[8]], data[i][indexArr[9]], data[i][indexArr[10]], data[i][indexArr[10]], data[i][indexArr[10]], socialEntr];
           entListArr.push(studentOutput)
         }
       }
@@ -423,6 +450,15 @@ router.post('/blue-list', function(req, res, next) {
         var columnHeaders = output[0];
 
         for (var j = 0; j < columnHeaders.length; j++) {
+          if (columnHeaders[j] === "FIRST NAME") {
+            fnIndex = j;
+          }
+          if (columnHeaders[j] === "LAST NAME") {
+            lnIndex = j;
+          }
+          if (columnHeaders[j] === "GENDER") {
+            genderIndex = j;
+          }
           if (columnHeaders[j] === "HANDLING STRESS") {
             stressIndex = j;
           }
@@ -455,10 +491,10 @@ router.post('/blue-list', function(req, res, next) {
           }
         }
 
-        if (stressIndex === "" || confIndex === "" || selfIndex === "" || belongIndex === "" || resilIndex === "" || dirIndex === "" || dirbIndex === "" || eoIndex === "" || ptIndex === "" || sjIndex === "") {
+        if (fnIndex === "" || lnIndex === "" || genderIndex === "" || stressIndex === "" || confIndex === "" || selfIndex === "" || belongIndex === "" || resilIndex === "" || dirIndex === "" || dirbIndex === "" || eoIndex === "" || ptIndex === "" || sjIndex === "") {
           resolve({ errReason: "Client Error: Incorrect Report Type", internalMessage: "One or more indices is null", externalMessage: "One or more uploaded reports is the incorrect report type for blue list generation. Refresh and try again. List of acceptable Report Types:\n\n-Hartman Value Profile"})
         } else {
-          var indexArr = [stressIndex, confIndex, selfIndex, belongIndex, resilIndex, dirIndex, dirbIndex, eoIndex, ptIndex, sjIndex];
+          var indexArr = [fnIndex, lnIndex, genderIndex, stressIndex, confIndex, selfIndex, belongIndex, resilIndex, dirIndex, dirbIndex, eoIndex, ptIndex, sjIndex];
           var body = { data: output, indexArr: indexArr };
           resolve(body);
         }
@@ -475,13 +511,13 @@ router.post('/blue-list', function(req, res, next) {
       for (var i = 1; i < data.length; i++) {
 
         // GET SCORES
-        var stressScore = data[i][indexArr[0]]
-        var confScore = data[i][indexArr[1]]
-        var selfScore = data[i][indexArr[2]]
-        var belongScore = data[i][indexArr[3]]
-        var resilScore = data[i][indexArr[4]]
-        var dirScore = data[i][indexArr[5]]
-        var dirbScore = data[i][indexArr[6]]
+        var stressScore = data[i][indexArr[3]]
+        var confScore = data[i][indexArr[4]]
+        var selfScore = data[i][indexArr[5]]
+        var belongScore = data[i][indexArr[6]]
+        var resilScore = data[i][indexArr[7]]
+        var dirScore = data[i][indexArr[8]]
+        var dirbScore = data[i][indexArr[9]]
         if (dirbScore === '1') {
           dirbScore = 'POS';
         } else if (dirbScore === '0') {
@@ -489,11 +525,11 @@ router.post('/blue-list', function(req, res, next) {
         } else if (dirbScore === '-1') {
           dirbScore = 'NEG';
         }
-        var eoScore = data[i][indexArr[7]]
-        var ptScore = data[i][indexArr[8]]
-        var sjScore = data[i][indexArr[9]]
+        var eoScore = data[i][indexArr[10]]
+        var ptScore = data[i][indexArr[11]]
+        var sjScore = data[i][indexArr[12]]
 
-        var studentOutput = [ data[i][0], data[i][1], data[i][6], data[i][indexArr[0]], data[i][indexArr[1]], data[i][indexArr[2]], data[i][indexArr[3]], data[i][indexArr[4]], data[i][indexArr[5]], dirbScore, data[i][indexArr[7]], data[i][indexArr[8]], data[i][indexArr[9]] ];
+        var studentOutput = [ data[i][indexArr[0]], data[i][indexArr[1]], data[i][indexArr[2]], data[i][indexArr[3]], data[i][indexArr[4]], data[i][indexArr[5]], data[i][indexArr[6]], data[i][indexArr[7]], data[i][indexArr[8]], dirbScore, data[i][indexArr[10]], data[i][indexArr[11]], data[i][indexArr[12]] ];
 
         var ct0 = 0;   // counter for how many of the first 4 variables are below a set threshold; to be used for at-risk flagging
         if ((stressScore < 2) && (belongScore < 5 && belongScore >= 3.5) && (resilScore < 5)) {   // FIRST TEST, if flagged, grab student and cascade thru if-then
@@ -602,5 +638,51 @@ router.post('/blue-list', function(req, res, next) {
   generateBlueList();
 
 })
+
+
+router.post("/validate-local-dir", function(req, res, next) {
+  tilde('~', function(userHome) {
+    var localDir = userHome + req.body.localDir;
+    fs.access(localDir, fs.constants.F_OK, function(err) {
+      if (!err) {
+        res.send(localDir);
+      } else {
+        res.send({ error: "Download Directory is misspelled or does not exist - Please try again."})
+      }
+    })
+  })
+})
+
+router.post("/validate-tti-request", function(req, res, next) {
+  var listReportsEndpoint = TTI.APIs.listReports.generateEndpoint(req.body.accountID, req.body.linkID);
+  TTI.APIs.requestFormat("GET", listReportsEndpoint, req.body.login, req.body.password)
+  .then(function(data) {
+    var fixedData = [data.slice(0,133), ",", data.slice(133)].join('');
+    csv.parse(fixedData, function(error, data) {
+      console.log("ERROR:", error);
+      data.shift();
+      console.log("PARSED DATA:", data);
+      res.send(data);
+    })
+  }).catch(function(error) {
+    res.send({ error: error });
+  })
+
+})
+
+/**TTI BATCH DOWNLOADER**/
+
+router.post("/batch-dl", function(req, res, next) {
+  TTI.APIs.listReports.generateEndpoint(req.body.accountID, req.body.linkID);
+  TTI.APIs.requestFormat("GET", showLinkEndpoint, req.body.login, req.body.password).
+  then(function(data) {
+    console.log("data:", data);
+    csv.parse(data, function(err, data) {
+      data.shift();
+      console.log(data);
+      // console.log("PARSED DATA:", newData);
+    })
+  })
+});
 
 module.exports = router;

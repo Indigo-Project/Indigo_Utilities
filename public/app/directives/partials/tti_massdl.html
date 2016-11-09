@@ -1,1 +1,50 @@
-<h4>coming soon</h4>
+<section class="function-section ent_list">
+
+  <section class="instructions">
+    <h5>Instructions</h5>
+    <ol>
+      <li>1. Populate each input field with the correct information, and click 'Download'.</li>
+      <li>2. Treat yourself.</li>
+    </ol>
+  </section>
+
+  <form class="mass-dl-form form-group" ng-submit="data.batchDownload()">
+    <div class="mass-dl-row-1">
+      <div>
+        <label for="" >Enter Authentication Account Name</label>
+        <input class="form-control short" type="text" ng-model="form.login" ng-change="data.validateLink()" required>
+      </div>
+      <div>
+        <label for="">Enter Authentication Account Password</label>
+        <input class="form-control short" type="text" ng-model="form.password" ng-change="data.validateLink()" required>
+      </div>
+      <!-- <h5>{{view.authStatus}}</h5> -->
+    </div>
+    <div class="mass-dl-row-2">
+      <div>
+        <label for="">Enter Download Account Name</label>
+        <input class="form-control short" type="text" ng-model="form.accountID" ng-change="data.validateLink()" required>
+      </div>
+      <div class="ver-msg">
+        <label for="">Enter Link ID</label>
+        <input class="form-control short" type="text" ng-model="form.linkID" ng-change="data.validateLink()" required>
+        <!-- pattern=".{9}" title="all links should consist of 9 characters" -->
+      </div>
+      <h5>{{view.linkIdStatus}}</h5>
+    </div>
+    <div ng-show="view.linkIdStatus === 'Link Verified'">
+      <label>Select Report Types For Download (must select at least 1)</label>
+      <div class="report-type container">
+        <label class="checkbox" ng-repeat="reportType in data.reportTypeOptions">
+          <input type="checkbox" value="{{reportType}}" ng-click="form.toggleCheckboxSelection(reportType)" ng-checked="form.reportTypeSelection.indexOf(reportType) > -1" ng-model="form.reportTypes[$index]">{{reportType}}
+        </label>
+      </div>
+    </div>
+    <label for="">Enter Desination Path (Download Directory)</label>
+    <p class="input-subtext">Must be an already existing directory. Prepend with '/' to place reference from the currently logged in user's home directory, and build the path from there.
+    For example, "/Documents/Indigo/SchoolData/SchoolName/Assessments".</p>
+    <input class="form-control long" type="text" ng-model="form.directory" placeholder="/Documents/Indigo/SchoolData/SchoolName/Assessments" required>
+    <input class="form-control submit" type="submit" ng-value="view.formStatus">
+  </form>
+
+</section>
