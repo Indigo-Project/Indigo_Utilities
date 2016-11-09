@@ -339,7 +339,7 @@ router.post('/ent-list', function(req, res, next) {
           } else {
             socialEntr = "No";
           }
-          studentOutput = [ data[i][indexArr[0]], data[i][indexArr[1]], data[i][indexArr[2]], data[i][indexArr[3]], data[i][indexArr[4]], data[i][indexArr[5]], data[i][indexArr[6]], data[i][indexArr[7]], data[i][indexArr[8]], data[i][indexArr[9]], data[i][indexArr[10]], data[i][indexArr[10]], data[i][indexArr[10]], socialEntr];
+          studentOutput = [ data[i][indexArr[0]], data[i][indexArr[1]], data[i][indexArr[2]], data[i][indexArr[3]], data[i][indexArr[4]], data[i][indexArr[5]], data[i][indexArr[6]], data[i][indexArr[7]], data[i][indexArr[8]], data[i][indexArr[9]], data[i][indexArr[10]], data[i][indexArr[11]], data[i][indexArr[12]], socialEntr];
           entListArr.push(studentOutput)
         }
       }
