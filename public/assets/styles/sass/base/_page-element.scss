@@ -161,3 +161,22 @@ label.checkbox {
   font-weight: normal;
   font-size: 14px;
 }
+
+span.glyphicon-ok {
+  color: green;
+}
+
+span.glyphicon-remove {
+  color: red;
+}
+
+div.submit-cta {
+  display: flex;
+  input {
+    margin-right: 20px;
+  }
+}
+
+h4.success-message {
+  color: green;
+}

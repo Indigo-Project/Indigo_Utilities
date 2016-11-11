@@ -2,8 +2,40 @@ var request = require('request');
 var base64 = require('base-64');
 
 // Link Location Index
-var linkLocations = {
+var assessmentInfoByCode = {
+  "6754": {
+    name: "Indigo Assessment",
+    code: "IDS-INDIGO",
+    suffix: ""
+  },
+  "6797": {
+    name: "Indigo Me",
+    code: "IDS-INDIGO2",
+    suffix: " - indigo-me"
+  },
+  "6966": {
+    name: "Indigo Skills",
+    code: "INDIGO5",
+    suffix: " - indigo-skills"
+  }
+}
 
+var assessmentInfoByName = {
+  "Indigo Assessment": {
+    code: "6754",
+    code: "IDS-INDIGO",
+    suffix: ""
+  },
+  "Indigo Me": {
+    code: "6797",
+    code: "IDS-INDIGO2",
+    suffix: " - indigo-me"
+  },
+  "Indigo Skills": {
+    code: "6966",
+    code: "INDIGO5",
+    suffix: " - indigo-skills"
+  }
 }
 
 // APIs
@@ -55,10 +87,16 @@ var APIs = {
       return APIs.baseURL + "/api/accounts/" + accountID + "/links/" + linkID + "/reports.csv";
     }
   },
+  showReport: {
+    generateEndpoint: function(accountID, linkID, reportID) {
+      return APIs.baseURL + "/api/accounts/" + accountID + "/links/" + linkID + "/reports/" + reportID + ".pdf";
+    }
+  },
 
 }
 
 module.exports = {
-  linkLocations,
+  assessmentInfoByCode,
+  assessmentInfoByName,
   APIs
 }
