@@ -101,7 +101,8 @@ app.controller('TTI_MassDL_Controller', ['$scope', '$state', '$http', 'Main_Serv
           TTI_API.validateLocalDir($scope.form.directory)
           .then(function(data2) {
             if (data2.data.error) {
-              alert(data2.data.error)
+              console.log(data2.data);
+              alert(data2.data.message)
               $scope.view.formStatus = "Download";
               $scope.$apply();
             } else {
