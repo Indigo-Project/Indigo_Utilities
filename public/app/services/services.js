@@ -27,13 +27,14 @@ app.factory('TTI_API', ['$state', '$http', function($state, $http) {
           url: "/api/validate-local-dir",
           data: { localDir: dirPath }
         }).then(function(data) {
+          console.log(data);
           resolve(data);
         }).catch(function(error) {
-          console.log(error);
+          console.log('vdrErr:', error);
         })
       })
     },
-    
+
     validateRequestData: function(login, password, accountID, linkID, optionalReportTypes) {
       optionalReportTypes = optionalReportTypes || null;
       return new Promise(function(resolve, reject) {
