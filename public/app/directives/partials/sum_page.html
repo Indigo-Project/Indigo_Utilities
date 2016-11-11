@@ -1,1 +1,56 @@
-<h4>coming soon</h4>
+<section class="function-section ent_list">
+
+  <section class="instructions">
+    <h5>Instructions</h5>
+    <ol>
+      <li>1. Populate each input field with the correct information, and click 'Download'.</li>
+      <li>2. Wait for download to finish.</li>
+    </ol>
+  </section>
+
+  <form class="mass-dl-form form-group" ng-submit="data.batchDownload()">
+    <div class="mass-dl-row-1">
+      <div>
+        <label for="" >Enter Authentication Account Name</label>
+        <input class="form-control short" type="text" ng-model="form.login" ng-change="data.validateLink()" required autocomplete="on">
+      </div>
+      <div>
+        <label for="">Enter Authentication Account Password</label>
+        <input class="form-control short" type="text" ng-model="form.password" ng-change="data.validateLink()" required autocomplete="on">
+      </div>
+      <!-- <h5>{{view.authStatus}}</h5> -->
+    </div>
+    <div class="mass-dl-row-2">
+      <div>
+        <label for="">Enter Download Account Name</label>
+        <input class="form-control short" type="text" ng-model="form.accountID" ng-change="data.validateLink()" required autocomplete="on">
+      </div>
+      <div class="ver-msg">
+        <label for="">Enter Link ID</label>
+        <input class="form-control short" type="text" ng-model="form.linkID" ng-change="data.validateLink()" required autocomplete="on">
+        <!-- pattern=".{9}" title="all links should consist of 9 characters" -->
+      </div>
+      <h5 ng-show="view.linkIdStatus === 'verifying'">Verifying Link...</h5>
+      <h5 ng-show="view.linkIdStatus === 'verified'"><span class="glyphicon glyphicon-ok"></span> Link Verified</h5>
+      <h5 ng-show="view.linkIdStatus === 'unverified'"><span class="glyphicon glyphicon-remove"></span> Link Not Verified</h5>
+    </div>
+    <div ng-show="view.linkIdStatus === 'verified'">
+      <label>Select Report Types For Download (must select at least 1)</label>
+      <div class="report-type container">
+        <label class="checkbox" ng-repeat="reportType in data.reportTypeOptions">
+          <input type="checkbox" value="{{reportType}}" ng-click="form.toggleCheckboxSelection(reportType)" ng-checked="form.reportTypeSelection.indexOf(reportType) > -1" ng-model="form.reportTypes[$index]">{{reportType}}
+        </label>
+      </div>
+    </div>
+    <label for="">Enter Desination Path (Download Directory)</label>
+    <p class="input-subtext">Must be an already existing directory. Prepend with '/' to place reference from the currently logged in user's home directory, and build the path from there.
+    For example, "/Documents/Indigo/SchoolData/SchoolName/Assessments".</p>
+    <input class="form-control long" type="text" ng-model="form.directory" placeholder="/Documents/Indigo/SchoolData/SchoolName/Assessments" value="/Documents/IndigoProject/TestDir" required>
+    <div class="submit-cta">
+      <input class="form-control submit" type="submit" ng-value="view.formStatus">
+      <h4 ng-show="data.downloadStatus = 'Complete'" class="success-message">{{view.successMessage}}</h4>
+      <h4 ng-show="data.downloadStatus = 'Complete'" class="dup-status">{{view.dupNumber}}</h4>
+    </div>
+  </form>
+
+</section>

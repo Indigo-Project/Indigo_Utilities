@@ -33,6 +33,7 @@ app.factory('TTI_API', ['$state', '$http', function($state, $http) {
         })
       })
     },
+    
     validateRequestData: function(login, password, accountID, linkID, optionalReportTypes) {
       optionalReportTypes = optionalReportTypes || null;
       return new Promise(function(resolve, reject) {
@@ -52,11 +53,32 @@ app.factory('TTI_API', ['$state', '$http', function($state, $http) {
         })
       })
     },
+
     batchDownload: function(login, password, accountID, linkID, directory, reportList, reportTypes) {
       return new Promise(function(resolve, reject) {
         $http({
           method: "POST",
           url: "/api/batch-download",
+          data: { login: login, password: password, accountID: accountID, linkID: linkID, destination: directory, reportList: reportList, reportTypes: reportTypes }
+        }).then(function(data) {
+          if(data) {
+            console.log(data);
+            resolve(data);
+          }
+        }).catch(function(error) {
+          console.log(error);
+          if(error) {
+            reject(error);
+          }
+        })
+      })
+    },
+
+    sumPageDownload: function(login, password, accountID, linkID, directory, reportList, reportTypes) {
+      return new Promise(function(resolve, reject) {
+        $http({
+          method: "POST",
+          url: "/api/sumpage-download",
           data: { login: login, password: password, accountID: accountID, linkID: linkID, destination: directory, reportList: reportList, reportTypes: reportTypes }
         }).then(function(data) {
           if(data) {

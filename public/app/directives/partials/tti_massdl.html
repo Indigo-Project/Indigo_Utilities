@@ -4,7 +4,7 @@
     <h5>Instructions</h5>
     <ol>
       <li>1. Populate each input field with the correct information, and click 'Download'.</li>
-      <li>2. Treat yourself.</li>
+      <li>2. Wait for download to finish.</li>
     </ol>
   </section>
 
@@ -49,7 +49,7 @@
     <div class="submit-cta">
       <input class="form-control submit" type="submit" ng-value="view.formStatus">
       <h4 ng-show="data.downloadStatus = 'Complete'" class="success-message">{{view.successMessage}}</h4>
-      <h4 ng-show="data.downloadStatus = 'Complete'" class="dup-status"> {{view.dupNumber}}</h4>
+      <h4 ng-show="data.downloadStatus = 'Complete'" class="dup-status">{{view.dupNumber}}</h4>
     </div>
   </form>
 
