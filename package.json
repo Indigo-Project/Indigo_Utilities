@@ -15,7 +15,6 @@
     "csv-parse": "^1.1.7",
     "debug": "~2.2.0",
     "downloadjs": "^1.4.6",
-    "expand-tilde": "^2.0.1",
     "express": "~4.13.1",
     "filesaver.js": "^0.2.0",
     "fs": "0.0.1-security",
