@@ -116,7 +116,7 @@ app.controller('TTI_MassDL_Controller', ['$scope', '$state', '$http', 'Main_Serv
                   $scope.view.successMessage = "Success! " + data.data.dlCount + "/" + data.data.reportListLength + " Reports Downloaded";
                   $scope.data.downloadStatus = "Complete";
                   if (data.data.dupNumber > 0) {
-                    $scope.view.dupNumber = "- (" + data.data.dupNumber + " duplicate removed)";
+                    $scope.view.dupNumber = "- (" + data.data.dupNumber + " duplicates removed)";
                   }
                   $scope.$apply();
                 }).catch(function(error) {

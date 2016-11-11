@@ -48,7 +48,8 @@
     <input class="form-control long" type="text" ng-model="form.directory" placeholder="/Documents/Indigo/SchoolData/SchoolName/Assessments" value="/Documents/IndigoProject/TestDir" required>
     <div class="submit-cta">
       <input class="form-control submit" type="submit" ng-value="view.formStatus">
-      <h4 ng-show="data.downloadStatus = 'Complete'" class="success-message">{{view.successMessage}} {{view.dupNumber}}</h4>
+      <h4 ng-show="data.downloadStatus = 'Complete'" class="success-message">{{view.successMessage}}</h4>
+      <h4 ng-show="data.downloadStatus = 'Complete'" class="dup-status"> {{view.dupNumber}}</h4>
     </div>
   </form>
 
