@@ -649,11 +649,15 @@ router.post('/blue-list', function(req, res, next) {
 router.post("/validate-local-dir", function(req, res, next) {
   tilde('~', function(userHome) {
     var localDir = userHome + req.body.localDir;
+    if (localDir.substring(0,4) === "/app") {
+      localDir.splice(4)
+    }
+    console.log(localDir);
     fs.access(localDir, function(error) {
       if (!error) {
         res.send(localDir);
       } else {
-        res.send({ error: error, message: "Download Directory is misspelled or does not exist - Please try again."})
+        res.send({ error: error, message: "Download Directory is misspelled or does not exist - Please try again.", localDir: localDir})
       }
     })
   })
