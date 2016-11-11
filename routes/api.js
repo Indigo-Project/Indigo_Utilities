@@ -647,21 +647,21 @@ router.post('/blue-list', function(req, res, next) {
 
 
 router.post("/validate-local-dir", function(req, res, next) {
-  tilde('~', function(userHome) {
-    var localDir = userHome + req.body.localDir;
-    console.log(localDir.substring(0,4));
-    if (localDir.substring(0,4) === "/app") {
-      localDir.slice(4);
+  // tilde('~', function(userHome) {
+  var localDir = userHome + req.body.localDir;
+  console.log(localDir.substring(0,4));
+  if (localDir.substring(0,4) === "/app") {
+    localDir.slice(4);
+  }
+  console.log(localDir);
+  fs.access(localDir, function(error) {
+    if (!error) {
+      res.send(localDir);
+    } else {
+      res.send({ error: error, message: "Download Directory is misspelled or does not exist - Please try again.", localDir: localDir})
     }
-    console.log(localDir);
-    fs.access(localDir, function(error) {
-      if (!error) {
-        res.send(localDir);
-      } else {
-        res.send({ error: error, message: "Download Directory is misspelled or does not exist - Please try again.", localDir: localDir})
-      }
-    })
   })
+  // })
 })
 
 router.post("/validate-tti-request", function(req, res, next) {
