@@ -647,7 +647,7 @@ router.post('/blue-list', function(req, res, next) {
 
 
 router.post("/validate-local-dir", function(req, res, next) {
-  tilde('~', function(userHome) {
+  tilde('~/', function(userHome) {
     var localDir = userHome + req.body.localDir;
     console.log(localDir.substring(0,4));
     if (localDir.substring(0,4) === "/app") {
