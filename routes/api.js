@@ -647,21 +647,21 @@ router.post('/blue-list', function(req, res, next) {
 
 
 router.post("/validate-local-dir", function(req, res, next) {
-  // tilde('~', function(userHome) {
-  var localDir = req.body.localDir;
-  console.log(localDir.substring(0,4));
-  if (localDir.substring(0,4) === "/app") {
-    localDir.slice(4);
-  }
-  console.log(localDir);
-  fs.access(localDir, function(error) {
-    if (!error) {
-      res.send(localDir);
-    } else {
-      res.send({ error: error, message: "Download Directory is misspelled or does not exist - Please try again.", localDir: localDir})
+  tilde('~', function(userHome) {
+    var localDir = userHome + req.body.localDir;
+    console.log(localDir.substring(0,4));
+    if (localDir.substring(0,4) === "/app") {
+      localDir.slice(4);
     }
+    console.log(localDir);
+    fs.access(localDir, function(error) {
+      if (!error) {
+        res.send(localDir);
+      } else {
+        res.send({ error: error, message: "Download Directory is misspelled or does not exist - Please try again.", localDir: localDir})
+      }
+    })
   })
-  // })
 })
 
 router.post("/validate-tti-request", function(req, res, next) {
@@ -917,8 +917,15 @@ router.post("/batch-download", function(req, res, next) {
             var lastName = reportsOfCurrentType[j][2];
             console.log("----------");
             console.log(showReportEndpoint);
-            tilde('~', function(userHome) {
-              var destination = userHome + req.body.destination + "/" + lastName + ", " + firstName + suffix + ".pdf";
+            tilde('~/', function(userHome) {
+              console.log(userHome);
+              console.log(process.env.NODE_ENV);
+              if (process.env.NODE_ENV === "development") {
+                var destination = userHome + req.body.destination + "/" + lastName + ", " + firstName + suffix + ".pdf";
+
+              } else if (process.env.NODE_ENV === "production") {
+                var destination = userHome + req.body.destination + "/" + lastName + ", " + firstName + suffix + ".pdf";
+              }
               console.log(destination);
               var file = fs.createWriteStream(destination);
               var options = {
