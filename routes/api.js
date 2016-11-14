@@ -924,7 +924,7 @@ router.post("/batch-download", function(req, res, next) {
                 var destination = userHome + req.body.destination + "/" + lastName + ", " + firstName + suffix + ".pdf";
 
               } else if (process.env.NODE_ENV === "production") {
-                var destination = userHome + req.body.destination + "/" + lastName + ", " + firstName + suffix + ".pdf";
+                var destination = 'C:/Users/Paul' + req.body.destination + "/" + lastName + ", " + firstName + suffix + ".pdf";
               }
               console.log(destination);
               var file = fs.createWriteStream(destination);
