@@ -106,6 +106,7 @@ app.controller('TTI_MassDL_Controller', ['$scope', '$state', '$http', 'Main_Serv
               $scope.view.formStatus = "Download";
               $scope.$apply();
             } else {
+              console.log('inside-----');
               // if(confirm("download " + filteredReportList.length + " reports from '" + linkInfo.link.name + "' to " + data2.data + "?")) {
               if (confirm("download " + filteredReportList.length + " reports from '" + linkInfo.link.name + "' ?")) {
                 $scope.view.formStatus = "Download in progress...";

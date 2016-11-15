@@ -663,7 +663,7 @@ router.post("/validate-local-dir", function(req, res, next) {
           res.send({ error: error, message: "Download Directory is misspelled or does not exist - Please try again.", localDir: localDir})
         }
       })
-    } else if (process.env.NODE_ENV === "development_test") {
+    } else if (process.env.NODE_ENV === "development_test" || process.env.NODE_ENV === "production") {
       mkdirp(userHome + 'Documents/IndigoProject/Indigo_Utilities/Output_Files/Assessments/Indigo_Assessments_Tmp/', function(error) {
         var localDir = userHome + 'Documents/IndigoProject/Indigo_Utilities/Output_Files/Assessments/Indigo_Assessments_Tmp/';
         if (!error) {
@@ -985,7 +985,7 @@ router.post("/batch-download", function(req, res, next) {
               console.log(process.env.NODE_ENV);
               if (process.env.NODE_ENV === "development") {
                 destination = userHome + req.body.destination + "/" + lastName + ", " + firstName + suffix + ".pdf";
-              } else if (process.env.NODE_ENV === "development_test") {
+              } else if (process.env.NODE_ENV === "development_test" || process.env.NODE_ENV === "production") {
                 destination = userHome + '/Documents/IndigoProject/Indigo_Utilities/Output_Files/Assessments/Indigo_Assessments_Tmp/' + lastName + ", " + firstName + suffix + ".pdf";
                 var file = fs.createWriteStream(destination);
                 var options = {
