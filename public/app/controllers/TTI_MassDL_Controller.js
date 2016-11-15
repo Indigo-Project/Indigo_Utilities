@@ -106,7 +106,8 @@ app.controller('TTI_MassDL_Controller', ['$scope', '$state', '$http', 'Main_Serv
               $scope.view.formStatus = "Download";
               $scope.$apply();
             } else {
-              if(confirm("download " + filteredReportList.length + " reports from '" + linkInfo.link.name + "' to " + data2.data + "?")) {
+              // if(confirm("download " + filteredReportList.length + " reports from '" + linkInfo.link.name + "' to " + data2.data + "?")) {
+              if (confirm("download " + filteredReportList.length + " reports from '" + linkInfo.link.name + "' ?")) {
                 $scope.view.formStatus = "Download in progress...";
                 TTI_API.batchDownload($scope.form.login, $scope.form.password, $scope.form.accountID, $scope.form.linkID, $scope.form.directory, filteredReportList, reportTypesUserOutput)
                 .then(function(data) {
@@ -115,7 +116,7 @@ app.controller('TTI_MassDL_Controller', ['$scope', '$state', '$http', 'Main_Serv
                   $scope.view.successMessage = "Success! " + data.data.dlCount + "/" + data.data.reportListLength + " Reports Downloaded";
                   $scope.data.downloadStatus = "Complete";
                   if (data.data.dupNumber > 0) {
-                    $scope.view.dupNumber = "(" + data.data.dupNumber + " duplicates removed)";
+                    $scope.view.dupNumber = "(" + data.data.dupNumber + " duplicate(s) removed)";
                   }
                   $scope.$apply();
                 }).catch(function(error) {
@@ -128,7 +129,7 @@ app.controller('TTI_MassDL_Controller', ['$scope', '$state', '$http', 'Main_Serv
           })
         }
       }).catch(function(error) {
-        console.log(error);
+            console.log(error);
       })
     }
   }

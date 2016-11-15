@@ -42,10 +42,13 @@
         </label>
       </div>
     </div>
-    <label for="">Enter Desination Path (Download Directory)</label>
+    <label for="">Download Files</label>
+    <p class="input-subtext">Upon completion of download, you will receive a zipped file with the assessments.</p>
+    <!-- <input class="form-control long" type="text" ng-model="form.directory" placeholder="/Documents/Indigo/SchoolData/SchoolName/Assessments" value="/Documents/IndigoProject/TestDir" required> -->
+    <!-- <label for="">Enter Desination Path (Download Directory)</label>
     <p class="input-subtext">Must be an already existing directory. Prepend with '/' to place reference from the currently logged in user's home directory, and build the path from there.
     For example, "/Documents/Indigo/SchoolData/SchoolName/Assessments".</p>
-    <input class="form-control long" type="text" ng-model="form.directory" placeholder="/Documents/Indigo/SchoolData/SchoolName/Assessments" value="/Documents/IndigoProject/TestDir" required>
+    <input class="form-control long" type="text" ng-model="form.directory" placeholder="/Documents/Indigo/SchoolData/SchoolName/Assessments" value="/Documents/IndigoProject/TestDir" required> -->
     <div class="submit-cta">
       <input class="form-control submit" type="submit" ng-value="view.formStatus">
       <h4 ng-show="data.downloadStatus = 'Complete'" class="success-message">{{view.successMessage}}</h4>

@@ -18,7 +18,7 @@ app.factory('Main_Service', ['$state', function($state) {
   }
 }])
 
-app.factory('TTI_API', ['$state', '$http', function($state, $http) {
+app.factory('TTI_API', ['$state', '$http', 'FileSaver', 'Blob', function($state, $http, FileSaver, Blob) {
   return {
     validateLocalDir: function(dirPath) {
       return new Promise(function(resolve, reject) {
@@ -61,10 +61,27 @@ app.factory('TTI_API', ['$state', '$http', function($state, $http) {
           method: "POST",
           url: "/api/batch-download",
           data: { login: login, password: password, accountID: accountID, linkID: linkID, destination: directory, reportList: reportList, reportTypes: reportTypes }
-        }).then(function(data) {
-          if(data) {
-            console.log(data);
-            resolve(data);
+        }).then(function(data1) {
+          console.log('INSIDE');
+          console.log(data1);
+          if (data1.data.message === "success") {
+            $http({
+              method: "POST",
+              url: "/api/dl-to-client",
+              data: { dataPath: data1.data.dataPath },
+              responseType: 'arraybuffer'
+            })
+            .then(function(data2) {
+              console.log(data2);
+              var dateTmp = new Date();
+              var dateObj = dateTmp.getMonth() + "-" + dateTmp.getDate() + "-" + dateTmp.getFullYear() + "_" + dateTmp.getHours() + "h" + dateTmp.getMinutes() + "m";
+              var blob = new Blob([data2.data], { type: "application/zip" });
+              var fileName = "assessments_" + dateObj + ".zip";
+              FileSaver.saveAs(blob, fileName);
+            }).catch(function(error) {
+              console.log(error);
+            })
+              resolve(data1);
           }
         }).catch(function(error) {
           console.log(error);
