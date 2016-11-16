@@ -732,12 +732,18 @@ router.post("/dl-to-client", function(req, res, next) {
     var download = fs.createReadStream(req.body.dataPath).pipe(res);
     download.on('finish', function() {
       tilde('~', function(userHome) {
-        fsE.remove(userHome + '/Documents/IndigoProject/Indigo_Utilities/Output_Files/Assessments/Zips/assessments.zip', function(error) {
+        if (process.env.NODE_ENV === "production") {
+          var removeZip =  userHome + '/Output_Files/Assessments/Zips/assessments.zip'
+        } else if (process.env.NODE_ENV === "development_test") {
+          var removeZip = userHome + '/Documents/IndigoProject/Indigo_Utilities/Output_Files/Assessments/Zips/assessments.zip'
+        }
+        fsE.remove(removeZip, function(error) {
           if (error) console.log(error);
           else console.log('assessments.zip removed');
         })
       })
     })
+
   }
 })
 
@@ -900,8 +906,15 @@ router.post("/batch-download", function(req, res, next) {
       console.log('success?', success);
       tilde('~', function(userHome) {
 
-        var destDir = userHome + '/Documents/IndigoProject/Indigo_Utilities/Output_Files/Assessments/Zips/';
-        var sendDir = userHome + '/Documents/IndigoProject/Indigo_Utilities/Output_Files/Assessments/Indigo_Assessments_Tmp/';
+        if (process.env.NODE_ENV === "production") {
+          var destDir = userHome + '/Output_Files/Assessments/Zips/';
+          var sendDir = userHome + '/Output_Files/Assessments/Indigo_Assessments_Tmp/';
+          var removeDir = userHome + '/Output_Files/Assessments/Indigo_Assessments_Tmp';
+        } else if (process.env.NODE_ENV === "development_test") {
+          var destDir = userHome + '/Documents/IndigoProject/Indigo_Utilities/Output_Files/Assessments/Zips/';
+          var sendDir = userHome + '/Documents/IndigoProject/Indigo_Utilities/Output_Files/Assessments/Indigo_Assessments_Tmp/';
+          var removeDir = userHome + '/Documents/IndigoProject/Indigo_Utilities/Output_Files/Assessments/Indigo_Assessments_Tmp';
+        }
 
         var output = fs.createWriteStream(destDir + 'assessments.zip');
         var archive = archiver('zip');
@@ -911,7 +924,7 @@ router.post("/batch-download", function(req, res, next) {
         });
 
         archive.on('end', function() {
-          fsE.remove(userHome + '/Documents/IndigoProject/Indigo_Utilities/Output_Files/Assessments/Indigo_Assessments_Tmp', function(error) {
+          fsE.remove(removeDir, function(error) {
             if (error) console.log(error);
             res.send({ message: success, dataPath: output.path, dlCount: dlCount, reportListLength: reportList.length, dupNumber: data.dupNumber });
           })
