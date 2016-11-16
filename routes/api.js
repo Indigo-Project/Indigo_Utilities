@@ -1010,8 +1010,20 @@ router.post("/batch-download", function(req, res, next) {
 
               mkdirp(makeDir, function(err) {
                 if (err) console.log(err);
-                
+
+                console.log(destination);
+                fs.access('/app/Output_Files/', function(err) {
+                  console.log('access 1:,', err);
+                })
+                fs.access('/app/Output_Files/Assessments/', function(err) {
+                  console.log('access 2:,', err);
+                })
+                fs.access('/app/Output_Files/Assessments/Indigo_Assessments_Tmp/', function(err) {
+                  console.log('access 3:,', err);
+                })
+                console.log('before cws');
                 var file = fs.createWriteStream(destination);
+                console.log('after cws');
                 var options = {
                   method: "GET",
                   url: showReportEndpoint,
