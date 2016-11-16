@@ -921,7 +921,7 @@ router.post("/batch-download", function(req, res, next) {
         }
 
         mkdirp(userHome + '/Output_Files/Assessments/Zips', function() {
-
+          console.log('ZIPS DIR MADE');
           var output = fs.createWriteStream(destDir + 'assessments.zip');
 
           // output.on('open', function() {
@@ -929,10 +929,13 @@ router.post("/batch-download", function(req, res, next) {
           var archive = archiver('zip');
 
           archive.on('error', function(err) {
+            console.log('ERROR:', error);
+            console.log('ERROR MESSAGE:', err.message);
             res.status(500).send({error: err.message});
           });
 
           archive.on('end', function() {
+            console.log('WRITE STREAM FINISHED');
             fsE.remove(removeDir, function(error) {
               if (error) console.log(error);
               res.send({ message: success, dataPath: output.path, dlCount: dlCount, reportListLength: reportList.length, dupNumber: data.dupNumber });
