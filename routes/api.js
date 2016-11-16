@@ -1004,49 +1004,57 @@ router.post("/batch-download", function(req, res, next) {
               } else if (process.env.NODE_ENV === "development_test") {
                 destination = userHome + '/Documents/IndigoProject/Indigo_Utilities/Output_Files/Assessments/Indigo_Assessments_Tmp/' + lastName + ", " + firstName + suffix + ".pdf";
               }
-              console.log(destination);
+              fs.mkdirp(destination, function(err) {
+                if (err) console.log(err);
 
-              fs.access('/app/Output_Files/', function(err) {
-                console.log('access output files:,', err);
-              })
-              fs.access('/app/Indigo_Utilities/', function(err) {
-                console.log('access output files:,', err);
-              })
-              console.log('before cws');
-              var file = fs.createWriteStream(destination);
-              console.log('after cws');
-              var options = {
-                method: "GET",
-                url: showReportEndpoint,
-                headers: {
-                  'Authorization': 'Basic ' + encodeString
-                },
-                maxRedirects: 1000
-              }
-              download(options, destination)
-              .then(function(dlCount) {
-                console.log('dlCount:', dlCount);
-                console.log('dlIndex: ' + j, 'segLength: ' + segmentLength);
-                console.log('i:', i);
-                console.log('length:', rOKeysLength);
-                if(j === segmentLength-1) {
-                  console.log('I-ITERATION:', i);
-                  if (i === longestrOKeyIndex) {
-                    console.log('all downloads complete for all ' + rOKeysLength + ' report types');
-                    resolve({message:'all downloads complete for all ' + rOKeysLength + ' report types', status: 'ac'});
-                  } else {
-                    console.log('all downloads complete for ' + currentReportType + ' report type');
-                    resolve({message:'all downloads complete for ' + currentReportType + ' report type', status: 'crt'});
-                  }
+                console.log(destination);
+                fs.access('/app/Output_Files/', function(err) {
+                  console.log('access output files:,', err);
+                })
+                fs.access('/app/Output_Files/Assessments/', function(err) {
+                  console.log('access Indigo Util:,', err);
+                })
+                fs.access('/app/Output_Files/Assessments/Indigo_Assessments_Tmp/', function(err) {
+                  console.log('access Indigo Util:,', err);
+                })
+                console.log('before cws');
+                var file = fs.createWriteStream(destination);
+                console.log('after cws');
+                var options = {
+                  method: "GET",
+                  url: showReportEndpoint,
+                  headers: {
+                    'Authorization': 'Basic ' + encodeString
+                  },
+                  maxRedirects: 1000
                 }
-                else {
-                  dlIndex++;
-                  if (segmentLength < 150) {
-                    downloadReport(dlIndex);
-                  } else {
-                    setTimeout(downloadReport(dlIndex), 0)
+                download(options, destination)
+                .then(function(dlCount) {
+                  console.log('dlCount:', dlCount);
+                  console.log('dlIndex: ' + j, 'segLength: ' + segmentLength);
+                  console.log('i:', i);
+                  console.log('length:', rOKeysLength);
+                  if(j === segmentLength-1) {
+                    console.log('I-ITERATION:', i);
+                    if (i === longestrOKeyIndex) {
+                      console.log('all downloads complete for all ' + rOKeysLength + ' report types');
+                      resolve({message:'all downloads complete for all ' + rOKeysLength + ' report types', status: 'ac'});
+                    } else {
+                      console.log('all downloads complete for ' + currentReportType + ' report type');
+                      resolve({message:'all downloads complete for ' + currentReportType + ' report type', status: 'crt'});
+                    }
                   }
-                }
+                  else {
+                    dlIndex++;
+                    if (segmentLength < 150) {
+                      downloadReport(dlIndex);
+                    } else {
+                      setTimeout(downloadReport(dlIndex), 0)
+                    }
+                  }
+                }).catch(function(error) {
+                  console.log(error);
+                })
               })
             })
           }).then(function(data) {
