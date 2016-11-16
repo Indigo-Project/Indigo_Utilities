@@ -65,6 +65,7 @@ app.factory('TTI_API', ['$state', '$http', 'FileSaver', 'Blob', function($state,
           console.log('INSIDE');
           console.log(data1);
           if (data1.data.message === "success") {
+            console.log('before post to api/dl-to-client');
             $http({
               method: "POST",
               url: "/api/dl-to-client",

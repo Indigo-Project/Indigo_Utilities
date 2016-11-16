@@ -716,6 +716,7 @@ router.post("/validate-tti-request", function(req, res, next) {
 
 
 router.post("/dl-to-client", function(req, res, next) {
+  console.log('inside /dl-to-client');
   if (req.body.dataPath) {
 
     var dateTmp = new Date();
@@ -938,6 +939,7 @@ router.post("/batch-download", function(req, res, next) {
             console.log('WRITE STREAM FINISHED');
             fsE.remove(removeDir, function(error) {
               if (error) console.log(error);
+              else console.log(removeDir + " REMOVED");
               res.send({ message: success, dataPath: output.path, dlCount: dlCount, reportListLength: reportList.length, dupNumber: data.dupNumber });
             })
           });
