@@ -917,12 +917,7 @@ router.post("/batch-download", function(req, res, next) {
           var removeDir = userHome + '/Documents/IndigoProject/Indigo_Utilities/Output_Files/Assessments/Indigo_Assessments_Tmp';
         }
 
-        console.log('d', destDir);
-        console.log('s', sendDir);
-        console.log('r', removeDir);
-
         var output = fs.createWriteStream(destDir + 'assessments.zip');
-        console.log('write stream', output);
         var archive = archiver('zip');
 
         archive.on('error', function(err) {
@@ -930,13 +925,15 @@ router.post("/batch-download", function(req, res, next) {
         });
 
         archive.on('end', function() {
+          console.log('archive on end');
           fsE.remove(removeDir, function(error) {
+            console.log('fsE.remove:', removeDir);
             if (error) console.log(error);
             res.send({ message: success, dataPath: output.path, dlCount: dlCount, reportListLength: reportList.length, dupNumber: data.dupNumber });
           })
         });
 
-        archive.directory(sendDir, 'Assessments')
+        archive.directory(sendDir, 'Assessments');
         archive.pipe(output);
         archive.finalize();
       })
