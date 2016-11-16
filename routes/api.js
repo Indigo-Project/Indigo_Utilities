@@ -917,30 +917,38 @@ router.post("/batch-download", function(req, res, next) {
           var removeDir = userHome + '/Documents/IndigoProject/Indigo_Utilities/Output_Files/Assessments/Indigo_Assessments_Tmp';
         }
 
-        var output = fs.createWriteStream(destDir + 'assessments.zip');
-        var archive = archiver('zip');
+        mkdirp(userHome + '/Output_Files/Assessments/Zips', function() {
+          
+          var output = fs.createWriteStream(destDir + 'assessments.zip');
 
-        archive.on('error', function(err) {
-          console.log(err);
-          console.log(err.message);
-          res.status(500).send({error: err.message});
-        });
+          // output.on('open', function() {
+            // console.log('open');
+          var archive = archiver('zip');
 
-        archive.on('end', function() {
-          console.log('archive on end');
-          fsE.remove(removeDir, function(error) {
-            console.log('fsE.remove:', removeDir);
-            if (error) console.log(error);
-            res.send({ message: success, dataPath: output.path, dlCount: dlCount, reportListLength: reportList.length, dupNumber: data.dupNumber });
-          })
-        });
+          archive.on('error', function(err) {
+            console.log(err);
+            console.log(err.message);
+            res.status(500).send({error: err.message});
+          });
 
-        console.log('1');
-        archive.directory(sendDir, 'Assessments');
-        console.log('2');
-        archive.pipe(output);
-        console.log('3');
-        archive.finalize();
+          archive.on('end', function() {
+            console.log('archive on end');
+            fsE.remove(removeDir, function(error) {
+              console.log('fsE.remove:', removeDir);
+              if (error) console.log(error);
+              res.send({ message: success, dataPath: output.path, dlCount: dlCount, reportListLength: reportList.length, dupNumber: data.dupNumber });
+            })
+          });
+
+          console.log('1');
+          archive.directory(sendDir, 'Assessments');
+          console.log('2');
+          archive.pipe(output);
+          console.log('3');
+          archive.finalize();
+
+          // })
+        })
       })
     })
   })
