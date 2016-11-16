@@ -904,6 +904,7 @@ router.post("/batch-download", function(req, res, next) {
     downloadAllReports(data.distObject)
     .then(function(success) {
       console.log('success?', success);
+      console.log('CWD:', process.cwd());
       tilde('~', function(userHome) {
 
         if (process.env.NODE_ENV === "production") {
@@ -996,8 +997,8 @@ router.post("/batch-download", function(req, res, next) {
             tilde('~', function(userHome) {
               console.log(userHome);
               console.log(process.env.NODE_ENV);
-              if (process.env.NODE_ENV === "development") {
-                destination = userHome + req.body.destination + "/" + lastName + ", " + firstName + suffix + ".pdf";
+              if (process.env.NODE_ENV === "production") {
+                destination = userHome + '/Output_Files/Assessments/Indigo_Assessments_Tmp/' + "/" + lastName + ", " + firstName + suffix + ".pdf";
               } else if (process.env.NODE_ENV === "development_test" || process.env.NODE_ENV === "production") {
                 destination = userHome + '/Documents/IndigoProject/Indigo_Utilities/Output_Files/Assessments/Indigo_Assessments_Tmp/' + lastName + ", " + firstName + suffix + ".pdf";
                 var file = fs.createWriteStream(destination);

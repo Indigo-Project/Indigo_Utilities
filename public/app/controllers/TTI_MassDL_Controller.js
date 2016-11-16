@@ -110,7 +110,7 @@ app.controller('TTI_MassDL_Controller', ['$scope', '$state', '$http', 'Main_Serv
               // if(confirm("download " + filteredReportList.length + " reports from '" + linkInfo.link.name + "' to " + data2.data + "?")) {
               if (confirm("download " + filteredReportList.length + " reports from '" + linkInfo.link.name + "' ?")) {
                 $scope.view.formStatus = "Download in progress...";
-                TTI_API.batchDownload($scope.form.login, $scope.form.password, $scope.form.accountID, $scope.form.linkID, $scope.form.directory, filteredReportList, reportTypesUserOutput)
+                TTI_API.batchDownload($scope.form.login, $scope.form.password, $scope.form.accountID, $scope.form.linkID, filteredReportList, reportTypesUserOutput)
                 .then(function(data) {
                   console.log(data);
                   $scope.view.formStatus = "Download";

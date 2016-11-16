@@ -55,12 +55,12 @@ app.factory('TTI_API', ['$state', '$http', 'FileSaver', 'Blob', function($state,
       })
     },
 
-    batchDownload: function(login, password, accountID, linkID, directory, reportList, reportTypes) {
+    batchDownload: function(login, password, accountID, linkID, reportList, reportTypes) {
       return new Promise(function(resolve, reject) {
         $http({
           method: "POST",
           url: "/api/batch-download",
-          data: { login: login, password: password, accountID: accountID, linkID: linkID, destination: directory, reportList: reportList, reportTypes: reportTypes }
+          data: { login: login, password: password, accountID: accountID, linkID: linkID, reportList: reportList, reportTypes: reportTypes }
         }).then(function(data1) {
           console.log('INSIDE');
           console.log(data1);
