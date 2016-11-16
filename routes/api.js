@@ -921,6 +921,8 @@ router.post("/batch-download", function(req, res, next) {
         var archive = archiver('zip');
 
         archive.on('error', function(err) {
+          console.log(err);
+          console.log(err.message);
           res.status(500).send({error: err.message});
         });
 
@@ -933,8 +935,11 @@ router.post("/batch-download", function(req, res, next) {
           })
         });
 
+        console.log('1');
         archive.directory(sendDir, 'Assessments');
+        console.log('2');
         archive.pipe(output);
+        console.log('3');
         archive.finalize();
       })
     })
