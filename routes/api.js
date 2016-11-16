@@ -994,6 +994,7 @@ router.post("/batch-download", function(req, res, next) {
             console.log("----------");
             console.log(showReportEndpoint);
             var destination;
+            var makeDir
             tilde('~', function(userHome) {
               console.log("cwd:", process.cwd());
               console.log(userHome);
@@ -1001,25 +1002,16 @@ router.post("/batch-download", function(req, res, next) {
 
               if (process.env.NODE_ENV === "production") {
                 destination = userHome + '/Output_Files/Assessments/Indigo_Assessments_Tmp/' + lastName + ", " + firstName + suffix + ".pdf";
+                makeDir = userHome + '/Output_Files/Assessments/Indigo_Assessments_Tmp/';
               } else if (process.env.NODE_ENV === "development_test") {
                 destination = userHome + '/Documents/IndigoProject/Indigo_Utilities/Output_Files/Assessments/Indigo_Assessments_Tmp/' + lastName + ", " + firstName + suffix + ".pdf";
+                makeDir = userHome + '/Documents/IndigoProject/Indigo_Utilities/Output_Files/Assessments/Indigo_Assessments_Tmp/';
               }
-              fs.mkdirp(destination, function(err) {
-                if (err) console.log(err);
 
-                console.log(destination);
-                fs.access('/app/Output_Files/', function(err) {
-                  console.log('access output files:,', err);
-                })
-                fs.access('/app/Output_Files/Assessments/', function(err) {
-                  console.log('access Indigo Util:,', err);
-                })
-                fs.access('/app/Output_Files/Assessments/Indigo_Assessments_Tmp/', function(err) {
-                  console.log('access Indigo Util:,', err);
-                })
-                console.log('before cws');
+              mkdirp(makeDir, function(err) {
+                if (err) console.log(err);
+                
                 var file = fs.createWriteStream(destination);
-                console.log('after cws');
                 var options = {
                   method: "GET",
                   url: showReportEndpoint,
