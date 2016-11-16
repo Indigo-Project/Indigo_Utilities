@@ -1000,9 +1000,19 @@ router.post("/batch-download", function(req, res, next) {
               console.log(process.env.NODE_ENV);
               if (process.env.NODE_ENV === "production") {
                 destination = userHome + '/Output_Files/Assessments/Indigo_Assessments_Tmp/' + lastName + ", " + firstName + suffix + ".pdf";
+                console.log(destination);
               } else if (process.env.NODE_ENV === "development_test") {
                 destination = userHome + '/Documents/IndigoProject/Indigo_Utilities/Output_Files/Assessments/Indigo_Assessments_Tmp/' + lastName + ", " + firstName + suffix + ".pdf";
+              }
+                fs.access('/app/Output_Files/', function(err) {
+                  console.log('access output files:,', err);
+                })
+                fs.access('/app/Indigo_Utilities/', function(err) {
+                  console.log('access output files:,', err);
+                })
+                console.log('before cws');
                 var file = fs.createWriteStream(destination);
+                console.log('after cws');
                 var options = {
                   method: "GET",
                   url: showReportEndpoint,
