@@ -731,6 +731,7 @@ router.post("/dl-to-client", function(req, res, next) {
 
     var download = fs.createReadStream(req.body.dataPath).pipe(res);
     download.on('finish', function() {
+      console.log('finished download');
       tilde('~', function(userHome) {
         if (process.env.NODE_ENV === "production") {
           var removeZip =  userHome + '/Output_Files/Assessments/Zips/assessments.zip'
@@ -903,8 +904,8 @@ router.post("/batch-download", function(req, res, next) {
     // console.log("DIST OBJECT:", data);
     downloadAllReports(data.distObject)
     .then(function(success) {
-      // console.log('success?', success);
-      // console.log('CWD:', process.cwd());
+      console.log('success?', success);
+      console.log('CWD:', process.cwd());
       tilde('~', function(userHome) {
 
         if (process.env.NODE_ENV === "production") {
