@@ -900,25 +900,27 @@ router.post("/batch-download", function(req, res, next) {
   // Execution Call
   removeDuplicates(reportList, reportTypes)
   .then(function(data) {
-    console.log("DIST OBJECT:", data);
+    // console.log("DIST OBJECT:", data);
     downloadAllReports(data.distObject)
     .then(function(success) {
-      console.log('success?', success);
-      console.log('CWD:', process.cwd());
+      // console.log('success?', success);
+      // console.log('CWD:', process.cwd());
       tilde('~', function(userHome) {
 
         if (process.env.NODE_ENV === "production") {
           var destDir = userHome + '/Output_Files/Assessments/Zips/';
           var sendDir = userHome + '/Output_Files/Assessments/Indigo_Assessments_Tmp/';
           var removeDir = userHome + '/Output_Files/Assessments/Indigo_Assessments_Tmp';
+          var makeDir = userHome + '/Output_Files/Assessments/Zips'
         } else if (process.env.NODE_ENV === "development_test") {
           var destDir = userHome + '/Documents/IndigoProject/Indigo_Utilities/Output_Files/Assessments/Zips/';
           var sendDir = userHome + '/Documents/IndigoProject/Indigo_Utilities/Output_Files/Assessments/Indigo_Assessments_Tmp/';
           var removeDir = userHome + '/Documents/IndigoProject/Indigo_Utilities/Output_Files/Assessments/Indigo_Assessments_Tmp';
+          var makeDir = userHome + '/Documents/IndigoProject/Indigo_Utilities/Output_Files/Assessments/Zips';
         }
 
         mkdirp(userHome + '/Output_Files/Assessments/Zips', function() {
-          
+
           var output = fs.createWriteStream(destDir + 'assessments.zip');
 
           // output.on('open', function() {
@@ -926,25 +928,18 @@ router.post("/batch-download", function(req, res, next) {
           var archive = archiver('zip');
 
           archive.on('error', function(err) {
-            console.log(err);
-            console.log(err.message);
             res.status(500).send({error: err.message});
           });
 
           archive.on('end', function() {
-            console.log('archive on end');
             fsE.remove(removeDir, function(error) {
-              console.log('fsE.remove:', removeDir);
               if (error) console.log(error);
               res.send({ message: success, dataPath: output.path, dlCount: dlCount, reportListLength: reportList.length, dupNumber: data.dupNumber });
             })
           });
 
-          console.log('1');
-          archive.directory(sendDir, 'Assessments');
-          console.log('2');
+          archive.directory(sendDir, 'Assessments_' + req.body.accountID + "-" + req.body.linkID);
           archive.pipe(output);
-          console.log('3');
           archive.finalize();
 
           // })
@@ -1026,19 +1021,7 @@ router.post("/batch-download", function(req, res, next) {
               mkdirp(makeDir, function(err) {
                 if (err) console.log(err);
 
-                console.log(destination);
-                fs.access('/app/Output_Files/', function(err) {
-                  console.log('access 1:,', err);
-                })
-                fs.access('/app/Output_Files/Assessments/', function(err) {
-                  console.log('access 2:,', err);
-                })
-                fs.access('/app/Output_Files/Assessments/Indigo_Assessments_Tmp/', function(err) {
-                  console.log('access 3:,', err);
-                })
-                console.log('before cws');
                 var file = fs.createWriteStream(destination);
-                console.log('after cws');
                 var options = {
                   method: "GET",
                   url: showReportEndpoint,
