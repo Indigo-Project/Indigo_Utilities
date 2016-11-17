@@ -1038,8 +1038,8 @@ router.post("/batch-download", function(req, res, next) {
       console.log('CSI:', currentSegmentIndex);
       console.log('NOS:', numOfSegments);
       if (currentSegmentIndex === numOfSegments ) {
-        console.log('dupNumber:', req.body.dupNumber);
         archiveReports(req.body.dupNumber, dlCount, "finished")
+        io.emit('preparingFiles')
       } else {
         downloadCurrentSegment(distReportArrC[currentSegmentIndex], currentSegmentIndex)
         .then(function(data) {

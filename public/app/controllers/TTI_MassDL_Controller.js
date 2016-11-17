@@ -39,6 +39,10 @@ app.controller('TTI_MassDL_Controller', ['$scope', '$state', '$http', 'Main_Serv
     $scope.view.statusMessage = $scope.view.dlCount + "/" + $scope.view.numberOfReportsToDownload + " Reports Downloaded...";
   })
 
+  socket.on('preparingFiles', function(data) {
+    $scope.view.statusMessage = "Zipping and Delivering Files...";
+  })
+
   $scope.form.login = "";
   $scope.form.password = "";
   $scope.form.accountID = "";
