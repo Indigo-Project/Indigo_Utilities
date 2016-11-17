@@ -706,6 +706,7 @@ router.post("/validate-tti-request", function(req, res, next) {
           res.send({ filteredReportList: filteredReportList, linkInfo: JSON.parse(linkInfo) });
         } else {
           if (linkInfo) {
+            // console.log(linkInfo);
             res.send({ reportList: reportList2, linkInfo: JSON.parse(linkInfo) });
           }
         }

@@ -72,12 +72,13 @@ app.controller('TTI_MassDL_Controller', ['$scope', '$state', '$http', 'Main_Serv
         $scope.data.linkStatusMeta = true;
         TTI_API.validateRequestData($scope.form.login, $scope.form.password, $scope.form.accountID, $scope.form.linkID)
         .then(function(data1) {
+          $scope.form.selectedReportTypes = [];
+          $scope.data.reportTypeOptions = [];
           console.log(data1);
-          if (data1.data.error) {
+          if (data1.data.error || !data1.data) {
             $scope.view.linkIdStatus = "unverified";
             $scope.$apply();
           } else {
-            $scope.data.reportTypeOptions = [];
             $scope.view.linkIdStatus = "verified";
             // console.log(data1.data.reportList.length);
             for (var i = 0; i < data1.data.reportList.length; i++) {
@@ -124,13 +125,13 @@ app.controller('TTI_MassDL_Controller', ['$scope', '$state', '$http', 'Main_Serv
     $scope.view.numberOfReportsToDownload = 0;
     $scope.view.formStatus = "Validating Request...";
     console.log($scope.data.reportTypeOptions);
-    var reportTypesUserOutput = $scope.form.selectedReportTypes;
-    if(!reportTypesUserOutput.length) {
+    console.log($scope.form.selectedReportTypes);
+    if(!$scope.form.selectedReportTypes.length) {
       alert('You need to select at least 1 report type to proceed');
       $scope.view.formStatus = "Download";
-      $scope.$apply();
+      // $scope.$apply();
     } else {
-      TTI_API.validateRequestData($scope.form.login, $scope.form.password, $scope.form.accountID, $scope.form.linkID, reportTypesUserOutput)
+      TTI_API.validateRequestData($scope.form.login, $scope.form.password, $scope.form.accountID, $scope.form.linkID, $scope.form.selectedReportTypes)
       .then(function(data1) {
         var filteredReportList = data1.data.filteredReportList;
         var linkInfo = data1.data.linkInfo;
@@ -152,14 +153,14 @@ app.controller('TTI_MassDL_Controller', ['$scope', '$state', '$http', 'Main_Serv
               if (confirm("download " + filteredReportList.length + " reports from '" + linkInfo.link.name + "' ?")) {
                 $scope.data.downloadStatus = "Processing";
                 $scope.view.formStatus = "Download in progress...";
-                TTI_API.batchDownload($scope.form.login, $scope.form.password, $scope.form.accountID, $scope.form.linkID, filteredReportList, reportTypesUserOutput)
+                TTI_API.batchDownload($scope.form.login, $scope.form.password, $scope.form.accountID, $scope.form.linkID, filteredReportList, $scope.form.selectedReportTypes)
                 .then(function(data) {
                   console.log(data);
                   $scope.view.formStatus = "Download";
                   $scope.view.successMessage = "Success! " + data.data.dlCount + "/" + data.data.reportListLength + " Reports Downloaded";
                   $scope.data.downloadStatus = "Complete";
                   if (data.data.dupNumber > 0) {
-                    $scope.view.dupNumber = "(" + data.data.dupNumber + " duplicate(s) removed)";
+                    $scope.view.dupNumber = "( " + data.data.dupNumber + " duplicate(s) removed )";
                   }
                   $scope.$apply();
                 }).catch(function(error) {
