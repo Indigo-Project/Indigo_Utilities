@@ -1,19 +1,42 @@
-app.controller('TTI_MassDL_Controller', ['$scope', '$state', '$http', 'Main_Service', 'TTI_API', function($scope, $state, $http, Main_Service, TTI_API) {
+app.controller('TTI_MassDL_Controller', ['$scope', '$state', '$http', 'Main_Service', 'TTI_API', 'socket', '$window', function($scope, $state, $http, Main_Service, TTI_API, socket, $window) {
 
-  $scope.view = {};
+  // socket.disconnect()
+  // .then(function() {
+  //   console.log('disconnected');
+  //   socket.connect('http://localhost:3000');
+  //   console.log('reconnected');
+  // })
+
+  // socket.connect('http://localhost:3000')
+
+
   $scope.data = {};
+  $scope.view = {};
   $scope.form = {};
 
   $scope.view.selectedFunction = "tti_massdl";
+
+  $scope.data.linkStatusMeta = false;
+  $scope.data.downloadStatus = "";
+  $scope.data.reportTypeOptions = [];
 
   $scope.view.linkIdStatus = "";
   $scope.view.formStatus = "Download";
   $scope.view.successMessage = "";
   $scope.view.dupNumber = "";
+  $scope.view.dlCount = 0;
+  $scope.view.numberOfReportsToDownload = 0;
+  $scope.view.statusMessage = $scope.view.dlCount + "/" + $scope.view.numberOfReportsToDownload + " Reports Downloaded...";
 
-  $scope.data.linkStatusMeta = false;
-  $scope.data.downloadStatus = "";
-  $scope.data.reportTypeOptions = [];
+  socket.on('reportNumber', function(data) {
+    $scope.view.numberOfReportsToDownload = data.number;
+    $scope.view.statusMessage = $scope.view.dlCount + "/" + $scope.view.numberOfReportsToDownload + " Reports Downloaded...";
+  })
+
+  socket.on('dlCount', function(data) {
+    $scope.view.dlCount = data.dlCount
+    $scope.view.statusMessage = $scope.view.dlCount + "/" + $scope.view.numberOfReportsToDownload + " Reports Downloaded...";
+  })
 
   $scope.form.login = "";
   $scope.form.password = "";
@@ -26,42 +49,59 @@ app.controller('TTI_MassDL_Controller', ['$scope', '$state', '$http', 'Main_Serv
     Main_Service.accessFunction($scope.view.selectedFunction);
   }
 
+  // detect refresh event
+  // $window.onbeforeunload = function() {
+  //
+  // };
+
+  $scope.$on('$stateChangeStart', function(event, next, current) {
+    if ($scope.data.downloadStatus === "Processing") {
+      if(!confirm("Are you sure you want to leave this page? ")) {
+        event.preventDefault();
+    }
+   }
+  });
+
+
   // Validate TTI Link
   $scope.data.validateLink = function() {
     $scope.data.downloadStatus = "";
-    if ($scope.form.linkID.length === 9) {
-      $scope.view.linkIdStatus = "verifying";
-      $scope.data.linkStatusMeta = true;
-      TTI_API.validateRequestData($scope.form.login, $scope.form.password, $scope.form.accountID, $scope.form.linkID)
-      .then(function(data1) {
-        // console.log(data1);
-        if (data1.data.error) {
-          $scope.view.linkIdStatus = "unverified";
-          $scope.$apply();
-        } else {
-          $scope.view.linkIdStatus = "verified";
-          // console.log(data1.data.reportList.length);
-          for (var i = 0; i < data1.data.reportList.length; i++) {
-            var currentReportType = data1.data.reportList[i][11]
-            var alreadyExists = false;
-            for (var j = 0; j < $scope.data.reportTypeOptions.length; j++) {
-              if(currentReportType === $scope.data.reportTypeOptions[j]) {
-                alreadyExists = true;
+    if ($scope.form.linkID && $scope.form.accountID && $scope.form.login.length && $scope.form.password.length) {
+      if ($scope.form.linkID.length === 9) {
+        $scope.view.linkIdStatus = "verifying";
+        $scope.data.linkStatusMeta = true;
+        TTI_API.validateRequestData($scope.form.login, $scope.form.password, $scope.form.accountID, $scope.form.linkID)
+        .then(function(data1) {
+          console.log(data1);
+          if (data1.data.error) {
+            $scope.view.linkIdStatus = "unverified";
+            $scope.$apply();
+          } else {
+            $scope.data.reportTypeOptions = [];
+            $scope.view.linkIdStatus = "verified";
+            // console.log(data1.data.reportList.length);
+            for (var i = 0; i < data1.data.reportList.length; i++) {
+              var currentReportType = data1.data.reportList[i][11]
+              var alreadyExists = false;
+              for (var j = 0; j < $scope.data.reportTypeOptions.length; j++) {
+                if(currentReportType === $scope.data.reportTypeOptions[j]) {
+                  alreadyExists = true;
+                }
+              }
+              if (!alreadyExists) {
+                $scope.data.reportTypeOptions.push(currentReportType);
               }
             }
-            if (!alreadyExists) {
-              $scope.data.reportTypeOptions.push(currentReportType);
-            }
+            console.log($scope.data.reportTypeOptions);
+            $scope.$apply();
           }
-          console.log($scope.data.reportTypeOptions);
-          $scope.$apply();
-        }
-      })
-    } else {
-      if ($scope.data.linkStatusMeta) {
-        $scope.view.linkIdStatus = "verifying"
+        })
       } else {
-        $scope.view.linkIdStatus = "";
+        if ($scope.data.linkStatusMeta) {
+          $scope.view.linkIdStatus = "incomplete"
+        } else {
+          $scope.view.linkIdStatus = "";
+        }
       }
     }
   }
@@ -80,7 +120,8 @@ app.controller('TTI_MassDL_Controller', ['$scope', '$state', '$http', 'Main_Serv
 
   // Submit Batch Download Form
   $scope.data.batchDownload = function() {
-    $scope.data.downloadStatus = "Processing";
+    $scope.view.dlCount = 0;
+    $scope.view.numberOfReportsToDownload = 0;
     $scope.view.formStatus = "Validating Request...";
     console.log($scope.data.reportTypeOptions);
     var reportTypesUserOutput = $scope.form.selectedReportTypes;
@@ -109,6 +150,7 @@ app.controller('TTI_MassDL_Controller', ['$scope', '$state', '$http', 'Main_Serv
               console.log('inside-----');
               // if(confirm("download " + filteredReportList.length + " reports from '" + linkInfo.link.name + "' to " + data2.data + "?")) {
               if (confirm("download " + filteredReportList.length + " reports from '" + linkInfo.link.name + "' ?")) {
+                $scope.data.downloadStatus = "Processing";
                 $scope.view.formStatus = "Download in progress...";
                 TTI_API.batchDownload($scope.form.login, $scope.form.password, $scope.form.accountID, $scope.form.linkID, filteredReportList, reportTypesUserOutput)
                 .then(function(data) {
@@ -121,8 +163,13 @@ app.controller('TTI_MassDL_Controller', ['$scope', '$state', '$http', 'Main_Serv
                   }
                   $scope.$apply();
                 }).catch(function(error) {
+                  $scope.data.downloadStatus = "";
+                  $scope.view.formStatus = "Download";
                   console.log(error);
                 })
+              } else {
+                $scope.view.formStatus = "Download";
+                $scope.$apply();
               }
             }
           }).catch(function(error) {

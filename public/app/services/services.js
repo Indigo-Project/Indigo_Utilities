@@ -1,4 +1,6 @@
+
 app.factory('Main_Service', ['$state', function($state) {
+
   return {
     accessFunction: function(selectedFunction) {
       if (selectedFunction === "pbi_pfmt") {
@@ -19,7 +21,9 @@ app.factory('Main_Service', ['$state', function($state) {
 }])
 
 app.factory('TTI_API', ['$state', '$http', 'FileSaver', 'Blob', function($state, $http, FileSaver, Blob) {
+
   return {
+
     validateLocalDir: function(dirPath) {
       return new Promise(function(resolve, reject) {
         $http({
@@ -49,13 +53,14 @@ app.factory('TTI_API', ['$state', '$http', 'FileSaver', 'Blob', function($state,
         }).catch(function(error) {
           console.log(error);
           if(error) {
-            reject(error);
+            resolve(error);
           }
         })
       })
     },
 
     batchDownload: function(login, password, accountID, linkID, reportList, reportTypes) {
+
       return new Promise(function(resolve, reject) {
         $http({
           method: "POST",
@@ -65,7 +70,6 @@ app.factory('TTI_API', ['$state', '$http', 'FileSaver', 'Blob', function($state,
           console.log('INSIDE');
           console.log(data1);
           if (data1.data.message === "success") {
-            console.log('before post to api/dl-to-client');
             $http({
               method: "POST",
               url: "/api/dl-to-client",
@@ -113,4 +117,40 @@ app.factory('TTI_API', ['$state', '$http', 'FileSaver', 'Blob', function($state,
       })
     }
   }
+}])
+
+app.factory('socket', ['$rootScope', '$state', function($rootScope, $state) {
+
+  var url = $state.href('default', {}, {absolute: true})
+  var socket = io.connect(url, { 'reconnection' : false });
+
+  return {
+    on: function (eventName, callback) {
+      function wrapper() {
+        var args = arguments;
+        $rootScope.$apply(function () {
+          callback.apply(socket, args);
+        });
+      }
+
+      socket.on(eventName, wrapper);
+
+      return function () {
+        socket.removeListener(eventName, wrapper);
+      };
+    },
+
+    emit: function (eventName, data, callback) {
+      socket.emit(eventName, data, function () {
+        var args = arguments;
+        $rootScope.$apply(function () {
+          if(callback) {
+            callback.apply(socket, args);
+          }
+        });
+      });
+    }
+  };
+
+
 }])

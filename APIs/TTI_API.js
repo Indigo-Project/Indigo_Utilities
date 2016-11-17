@@ -75,7 +75,7 @@ var APIs = {
       })
     })
   },
-
+  
   // Show Link API
   showLink: {
     generateEndpoint: function(accountID, linkID) {

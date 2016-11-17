@@ -1,3 +1,5 @@
+module.exports = function(io) {
+
 var express = require('express');
 var router = express.Router();
 var path = require('path');
@@ -19,8 +21,12 @@ var fsE = require('fs-extra');
 var TTI = require('../APIs/TTI_API');
 
 require('events').EventEmitter.prototype._maxListeners = 500;
-process.env.NODE_DEBUG = "net";
+// process.env.NODE_DEBUG = "net";
 require('should');
+
+io.on('connection', function(socket) {
+  console.log('Client Connected to Socket in /api Route');
+  console.log(socket.id);
 
 /** TTI - POWER BI FORMATTING ENDPOINT **/
 
@@ -753,6 +759,8 @@ router.post("/dl-to-client", function(req, res, next) {
 
 router.post("/batch-download", function(req, res, next) {
 
+  socket.emit('news', { hello: 'world' });
+
   // Remove all Duplicates Based on Date
   function removeDuplicates(reports, types) {
     return new Promise(function(resolve, reject) {
@@ -967,9 +975,17 @@ router.post("/batch-download", function(req, res, next) {
         temp.push(Number(reportObject[rOKeys[i]].length));
       }
       console.log(temp);
+
       var longestrOKeyIndex = temp.lastIndexOf(Math.max(...temp))
 
       console.log('longestrOKeyIndex:', longestrOKeyIndex);
+
+      var numberOfReportsToDownload = 0;
+      for (var i = 0; i < temp.length; i++) {
+        numberOfReportsToDownload += temp[i]
+      }
+      console.log('numberOfReportsToDownload', numberOfReportsToDownload);
+      io.emit('reportNumber', { number: numberOfReportsToDownload})
 
       bPromise.each(rOKeys, function(element, i, length) {
         console.log(i, rOKeys[i] + " -----------------");
@@ -992,6 +1008,7 @@ router.post("/batch-download", function(req, res, next) {
             file.on('finish', function() {
               file.close(console.log("finished downloading " + destination));
               dlCount ++;
+              io.emit('dlCount', { dlCount: dlCount});
               resolve(dlCount);
             }).on('error', function(error) {
               fs.unlink(destination);
@@ -1095,12 +1112,10 @@ router.post("/batch-download", function(req, res, next) {
         //
         // downloadReportsLoop()
 
-
         downloadReport(dlIndex)
 
       }).then(function(data) {
-        // console.log('SALSA:', data);
-        // resolve('success');
+        console.log(data);
       })
     })
   }
@@ -1402,4 +1417,13 @@ router.post("/batch-download", function(req, res, next) {
 //   }
 // });
 
-module.exports = router;
+
+  socket.on('disconnect', function() {
+    console.log('Client disconnected.');
+    console.log(socket.id);
+  })
+})
+
+return router;
+
+}

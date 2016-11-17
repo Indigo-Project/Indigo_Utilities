@@ -4,8 +4,10 @@
     <h5>Instructions</h5>
     <ol>
       <li>1. Populate each input field with the correct information, and click 'Download'.</li>
-      <li>2. Wait for download to finish.</li>
+      <li>2. Wait for download to finish. Once completed, your .zip file will be delivered.</li>
+      <li>3. The zip file contains one folder which contains all of the downloaded assessments.</li>
     </ol>
+    <p class="tti_massdl_advice">If in doubt, if obstacle is discovered within program, refresh the page and try again.<br>Altering the page state (refreshing or navigating away) during a download will void the download.</p>
   </section>
 
   <form class="mass-dl-form form-group" ng-submit="data.batchDownload()">
@@ -33,6 +35,7 @@
       <h5 ng-show="view.linkIdStatus === 'verifying'">Verifying Link...</h5>
       <h5 ng-show="view.linkIdStatus === 'verified'"><span class="glyphicon glyphicon-ok"></span> Link Verified</h5>
       <h5 ng-show="view.linkIdStatus === 'unverified'"><span class="glyphicon glyphicon-remove"></span> Link Not Verified</h5>
+      <h5 ng-show="view.linkIdStatus === 'incomplete'"> Incomplete Link ID ...</h5>
     </div>
     <div ng-show="view.linkIdStatus === 'verified'">
       <label>Select Report Types For Download (must select at least 1)</label>
@@ -51,8 +54,9 @@
     <input class="form-control long" type="text" ng-model="form.directory" placeholder="/Documents/Indigo/SchoolData/SchoolName/Assessments" value="/Documents/IndigoProject/TestDir" required> -->
     <div class="submit-cta">
       <input class="form-control submit" type="submit" ng-value="view.formStatus">
-      <h4 ng-show="data.downloadStatus = 'Complete'" class="success-message">{{view.successMessage}}</h4>
-      <h4 ng-show="data.downloadStatus = 'Complete'" class="dup-status">{{view.dupNumber}}</h4>
+      <h4 ng-show="data.downloadStatus === 'Complete'" class="success-message">{{view.successMessage}}</h4>
+      <h4 ng-show="data.downloadStatus === 'Processing'" class="success-message">{{view.statusMessage}}</h4>
+      <h4 ng-show="data.downloadStatus === 'Complete'" class="dup-status">{{view.dupNumber}}</h4>
     </div>
   </form>
 

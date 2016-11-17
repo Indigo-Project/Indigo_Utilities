@@ -5,11 +5,13 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
-process.setMaxListeners(0);
-var api = require('./routes/api');
+var socket_io = require('socket.io');
 
 var app = express();
+
+var io = socket_io();
+app.io = io;
+var api = require('./routes/api')(io);
 
 // app.set('views', path.join(__dirname, 'views'));
 // app.set('view engine', 'jade');
