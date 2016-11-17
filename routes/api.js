@@ -683,44 +683,71 @@ router.post("/validate-local-dir", function(req, res, next) {
 })
 
 router.post("/validate-tti-request", function(req, res, next) {
-  var listReportsEndpoint = TTI.APIs.listReports.generateEndpoint(req.body.accountID, req.body.linkID);
-  TTI.APIs.requestFormat("GET", listReportsEndpoint, req.body.login, req.body.password)
-  .then(function(reportList1) {
-    var showLinkEndpoint = TTI.APIs.showLink.generateEndpoint(req.body.accountID, req.body.linkID);
-    TTI.APIs.requestFormat("GET", showLinkEndpoint, req.body.login, req.body.password)
-    .then(function(linkInfo) {
-      var fixedData = [reportList1.slice(0,133), ",", reportList1.slice(133)].join('');
-      csv.parse(fixedData, function(error, reportList2) {
-        var reportTypes = req.body.reportTypes;
-        reportList2.shift();
-        if (reportTypes) {
+  console.log('INSIDE');
+  if (req.body.mode === "verify") {
+    var listReportsEndpoint = TTI.APIs.listReports.generateEndpoint(req.body.accountID, req.body.linkID);
+    TTI.APIs.requestFormat("GET", listReportsEndpoint, req.body.login, req.body.password)
+    .then(function(reportList1) {
+      var showLinkEndpoint = TTI.APIs.showLink.generateEndpoint(req.body.accountID, req.body.linkID);
+      TTI.APIs.requestFormat("GET", showLinkEndpoint, req.body.login, req.body.password)
+      .then(function(linkInfo) {
+        var fixedData = [reportList1.slice(0,133), ",", reportList1.slice(133)].join('');
+        csv.parse(fixedData, function(error, reportList2) {
+          reportList2.shift();
+          var reportTypes = [];
           var filteredReportList = [];
+
           for (var i = 0; i < reportList2.length; i++) {
             var match = false;
+            if (!reportTypes.length) {
+              reportTypes.push(reportList2[i][11]);
+            }
             for (var j = 0; j < reportTypes.length; j++) {
               if (reportList2[i][11] === reportTypes[j]) {
-                filteredReportList.push(reportList2[i])
+                match = true;
               }
             }
+            if (!match) {
+              reportTypes.push(reportList2[i][11]);
+            }
           }
-          res.send({ filteredReportList: filteredReportList, linkInfo: JSON.parse(linkInfo) });
-        } else {
-          if (linkInfo) {
-            // console.log(linkInfo);
-            res.send({ reportList: reportList2, linkInfo: JSON.parse(linkInfo) });
-          }
-        }
+          console.log(reportTypes);
+          console.log(reportList2);
+          console.log(linkInfo);
+          res.send({ reportList: reportList2, reportTypes: reportTypes, linkInfo: JSON.parse(linkInfo) });
+        })
+      }).catch(function(error) {
+        res.send({ error: error });
       })
     }).catch(function(error) {
-      console.log(error);
       res.send({ error: error });
     })
-  }).catch(function(error) {
-    res.send({ error: error });
-  })
-
+  } else if (req.body.mode === "filter"){
+    var reportList = req.body.currentLinkReportList;
+    console.log(reportList);
+    var reportTypeFilter = req.body.reportTypeFilter;
+    console.log(reportTypeFilter);
+    var filteredReportList = [];
+    for (var i = 0; i < reportList.length; i++) {
+      console.log(reportList[i]);
+      var match = false;
+      for (var j = 0; j < reportTypeFilter.length; j++) {
+        if (reportList[i][11] === reportTypeFilter[j]) {
+          match = true;
+        }
+      }
+      if (match) {
+        filteredReportList.push(reportList[i])
+      }
+    }
+    console.log('filteredReportList:', filteredReportList.length);
+    res.send({ filteredReportList: filteredReportList });
+  }
 })
 
+router.post("filter-reports-for-dl", function(req, res, next) {
+
+})
 
 router.post("/dl-to-client", function(req, res, next) {
   console.log('inside /dl-to-client');
@@ -760,8 +787,6 @@ router.post("/dl-to-client", function(req, res, next) {
 
 router.post("/batch-download", function(req, res, next) {
 
-  socket.emit('news', { hello: 'world' });
-
   // Remove all Duplicates Based on Date
   function removeDuplicates(reports, types) {
     return new Promise(function(resolve, reject) {
@@ -779,14 +804,15 @@ router.post("/batch-download", function(req, res, next) {
 
       // Fore each report type, create an array of all names (formatted) which we will run duplicate check on
       var dOKeys = Object.keys(distObject)
-      console.log(dOKeys);
+      // console.log(dOKeys);
       var dupNumber = 0;
       return new Promise(function(resolve, reject) {
 
 
         bPromise.each(dOKeys, function(element, i, length) {
-          console.log(i);
-          console.log("------- " + dOKeys[i] + " -------");
+          // console.log(i);
+          // console.log("dokeys[i] ------- " + dOKeys[i] + " -------");
+          // console.log('current segLength:', distObject[dOKeys[i]].length);
           var formattedNameArr = [];
           for (var j = 0; j < distObject[dOKeys[i]].length; j++) {
             formattedNameArr.push((distObject[dOKeys[i]][j][1] + distObject[dOKeys[i]][j][2]).toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").replace(/\s{2,}/g," "));
@@ -799,7 +825,7 @@ router.post("/batch-download", function(req, res, next) {
               for(var k = 0; k < arr.length; k++) {
                 if (arr[k] === val) indices.push(k);
               }
-              console.log('indices:', indices);
+              // console.log('indices:', indices);
               // if (indices.length > 1)
               resolve({name: val, indices: indices});
             })
@@ -823,10 +849,10 @@ router.post("/batch-download", function(req, res, next) {
           var matchObj = {};
           var matchArr = [];
 
-          console.log('FNA:', formattedNameArr);
+          // console.log('FNA:', formattedNameArr);
           dupCheckArr(formattedNameArr)
           .then(function() {
-            console.log('matchObj:', matchObj);
+            // console.log('matchObj:', matchObj);
             mOKeys = Object.keys(matchObj);
             var removeIndices = [];
             for (var m = 0; m < mOKeys.length; m++) {
@@ -841,7 +867,7 @@ router.post("/batch-download", function(req, res, next) {
 
               var keepIndex = "";
               if (dateObj.length > 1) {
-                console.log('dateObj:', dateObj);
+                // console.log('dateObj:', dateObj);
                 for (var o = 0; o < dateObj.length; o++) {
                   if ((dateObj[o] - dateObj[o+1] || 0) > 7776000000) {
                     keepIndex = matchObj[mOKeys[m]][o];
@@ -861,6 +887,7 @@ router.post("/batch-download", function(req, res, next) {
               }
             }
             dupNumber = removeIndices.length;
+            console.log('DUPNUMBER 1:', dupNumber);
 
             function sortDescending(a,b) {
               return b-a;
@@ -870,7 +897,7 @@ router.post("/batch-download", function(req, res, next) {
             // console.log('REMOVE2:', removeIndices);
             if (removeIndices.length) {
               for (var o = 0; o < removeIndices.length; o++) {
-                console.log("removing index " + Number(removeIndices[o]), distObject[dOKeys[i]][removeIndices[o]] + " ---------- ");
+                // console.log("removing index " + Number(removeIndices[o]), distObject[dOKeys[i]][removeIndices[o]] + " ---------- ");
                 distObject[dOKeys[i]].splice(Number(removeIndices[o]), 1);
                 if (o === removeIndices.length-1 && i === length-1) {
                   resolve();
@@ -893,233 +920,290 @@ router.post("/batch-download", function(req, res, next) {
         // console.log(distObject);
         // console.log(distObject["Indigo Assessment"].length);
         // console.log('final distObject Length:', distObject[0].length);
-        console.log('final distObject:', distObject);
-        resolve({ distObject: distObject, dupNumber: dupNumber });
+        // console.log('final distObject:', distObject);
+        resolve({ reportObject: distObject, dupNumber: dupNumber });
       }).catch(function(error) {
         console.log(error);
       })
     })
   }
 
+  // Declaration of Global Variables
   var reportList = req.body.reportList;
-  // console.log("REPORT LIST:", reportList);
   var reportTypes = req.body.reportTypes;
   var encodeString = base64.encode(req.body.login + ":" + req.body.password);
-  var dlCount = 0;
+  var dlCount = req.body.dlCount;
+  console.log('REQ.BODY.DLCOUNT:', req.body.dlCount);
 
 
-  // Execution Call
-  removeDuplicates(reportList, reportTypes)
-  .then(function(data) {
-    // console.log("DIST OBJECT:", data);
-    downloadAllReports(data.distObject)
-    .then(function(success) {
-      console.log('success?', success);
-      console.log('CWD:', process.cwd());
-      tilde('~', function(userHome) {
+  // ARCHIVE REPORTS FUNCTION
+  function archiveReports(dupNumber, dlCount, message) {
+    tilde('~', function(userHome) {
 
-        if (process.env.NODE_ENV === "production") {
-          var destDir = userHome + '/Output_Files/Assessments/Zips/';
-          var sendDir = userHome + '/Output_Files/Assessments/Indigo_Assessments_Tmp/';
-          var removeDir = userHome + '/Output_Files/Assessments/Indigo_Assessments_Tmp';
-          var makeDir = userHome + '/Output_Files/Assessments/Zips'
-        } else if (process.env.NODE_ENV === "development_test") {
-          var destDir = userHome + '/Documents/IndigoProject/Indigo_Utilities/Output_Files/Assessments/Zips/';
-          var sendDir = userHome + '/Documents/IndigoProject/Indigo_Utilities/Output_Files/Assessments/Indigo_Assessments_Tmp/';
-          var removeDir = userHome + '/Documents/IndigoProject/Indigo_Utilities/Output_Files/Assessments/Indigo_Assessments_Tmp';
-          var makeDir = userHome + '/Documents/IndigoProject/Indigo_Utilities/Output_Files/Assessments/Zips';
-        }
-
-        mkdirp(userHome + '/Output_Files/Assessments/Zips', function() {
-          console.log('ZIPS DIR MADE');
-          var output = fs.createWriteStream(destDir + 'assessments.zip');
-
-          // output.on('open', function() {
-            // console.log('open');
-          var archive = archiver('zip');
-
-          archive.on('error', function(err) {
-            console.log('ERROR:', error);
-            console.log('ERROR MESSAGE:', err.message);
-            res.status(500).send({error: err.message});
-          });
-
-          archive.on('end', function() {
-            console.log('WRITE STREAM FINISHED');
-            fsE.remove(removeDir, function(error) {
-              if (error) console.log(error);
-              else console.log(removeDir + " REMOVED");
-              res.send({ message: success, dataPath: output.path, dlCount: dlCount, reportListLength: reportList.length, dupNumber: data.dupNumber });
-            })
-          });
-
-          archive.directory(sendDir, 'Assessments_' + req.body.accountID + "-" + req.body.linkID);
-          archive.pipe(output);
-          archive.finalize();
-
-          // })
-        })
-      })
-    })
-  })
-
-  // Run all reports through download function
-  function downloadAllReports(reportObject) {
-
-    return new Promise(function(resolve, reject) {
-
-      var rOKeys = Object.keys(reportObject)
-
-      var temp = [];
-      for (var i = 0; i < rOKeys.length; i++) {
-        console.log(reportObject[rOKeys[i]].length);
-        temp.push(Number(reportObject[rOKeys[i]].length));
+      if (process.env.NODE_ENV === "production") {
+        var destDir = userHome + '/Output_Files/Assessments/Zips/';
+        var sendDir = userHome + '/Output_Files/Assessments/Indigo_Assessments_Tmp/';
+        var removeDir = userHome + '/Output_Files/Assessments/Indigo_Assessments_Tmp';
+        var makeDir = userHome + '/Output_Files/Assessments/Zips'
+      } else if (process.env.NODE_ENV === "development_test") {
+        var destDir = userHome + '/Documents/IndigoProject/Indigo_Utilities/Output_Files/Assessments/Zips/';
+        var sendDir = userHome + '/Documents/IndigoProject/Indigo_Utilities/Output_Files/Assessments/Indigo_Assessments_Tmp/';
+        var removeDir = userHome + '/Documents/IndigoProject/Indigo_Utilities/Output_Files/Assessments/Indigo_Assessments_Tmp';
+        var makeDir = userHome + '/Documents/IndigoProject/Indigo_Utilities/Output_Files/Assessments/Zips';
       }
-      console.log(temp);
 
-      var longestrOKeyIndex = temp.lastIndexOf(Math.max(...temp))
+      mkdirp(makeDir, function() {
+        console.log('ZIPS DIR MADE');
+        var output = fs.createWriteStream(destDir + 'assessments.zip');
 
-      console.log('longestrOKeyIndex:', longestrOKeyIndex);
+        var archive = archiver('zip');
 
-      var numberOfReportsToDownload = 0;
-      for (var i = 0; i < temp.length; i++) {
-        numberOfReportsToDownload += temp[i]
-      }
-      console.log('numberOfReportsToDownload', numberOfReportsToDownload);
-      io.emit('reportNumber', { number: numberOfReportsToDownload})
+        archive.on('error', function(err) {
+          console.log('ERROR:', error);
+          console.log('ERROR MESSAGE:', err.message);
+          res.status(500).send({error: err.message});
+        });
 
-      bPromise.each(rOKeys, function(element, i, length) {
-        console.log(i, rOKeys[i] + " -----------------");
-
-        var currentReportType = rOKeys[i];
-        var reportsOfCurrentType = reportObject[rOKeys[i]]
-        var suffix = TTI.assessmentInfoByName[rOKeys[i]].suffix;
-        var segmentLength = reportsOfCurrentType.length;
-        console.log('segLength:', segmentLength);
-        var rOKeysLength = rOKeys.length;
-        console.log('rOKeysLength:', rOKeysLength);
-
-        var dlIndex = 0;
-
-        // Download Stream Function
-        function download(requestOptions, destination) {
-          return new Promise(function(resolve, reject) {
-            var file = fs.createWriteStream(destination);
-            request(requestOptions).setMaxListeners(0).pipe(file);
-            file.on('finish', function() {
-              file.close(console.log("finished downloading " + destination));
-              dlCount ++;
-              io.emit('dlCount', { dlCount: dlCount});
-              resolve(dlCount);
-            }).on('error', function(error) {
-              fs.unlink(destination);
-              console.log("--- ERROR ---", error);
-            });
+        archive.on('end', function() {
+          console.log('WRITE STREAM FINISHED');
+          fsE.remove(removeDir, function(error) {
+            if (error) console.log(error);
+            else console.log(removeDir + " REMOVED");
+            res.send({ processStatus: message, dataPath: output.path, dlCount: dlCount, dupNumber: dupNumber });
           })
-        };
+        });
 
-        // Download config and initiation for one report of report type
-        function downloadReport(j) {
-          return new Promise(function(resolve, reject) {
-            var reportID = reportsOfCurrentType[j][0];
-            var showReportEndpoint = TTI.APIs.showReport.generateEndpoint(req.body.accountID, req.body.linkID, reportID);
-            var firstName = reportsOfCurrentType[j][1];
-            var lastName = reportsOfCurrentType[j][2];
-            console.log("----------");
-            console.log(showReportEndpoint);
-            var destination;
-            var makeDir
-            tilde('~', function(userHome) {
-              console.log("cwd:", process.cwd());
-              console.log(userHome);
-              console.log(process.env.NODE_ENV);
+        archive.directory(sendDir, 'Assessments_' + req.body.accountID + "-" + req.body.linkID);
+        archive.pipe(output);
+        archive.finalize();
 
-              if (process.env.NODE_ENV === "production") {
-                destination = userHome + '/Output_Files/Assessments/Indigo_Assessments_Tmp/' + lastName + ", " + firstName + suffix + ".pdf";
-                makeDir = userHome + '/Output_Files/Assessments/Indigo_Assessments_Tmp/';
-              } else if (process.env.NODE_ENV === "development_test") {
-                destination = userHome + '/Documents/IndigoProject/Indigo_Utilities/Output_Files/Assessments/Indigo_Assessments_Tmp/' + lastName + ", " + firstName + suffix + ".pdf";
-                makeDir = userHome + '/Documents/IndigoProject/Indigo_Utilities/Output_Files/Assessments/Indigo_Assessments_Tmp/';
-              }
-
-              mkdirp(makeDir, function(err) {
-                if (err) console.log(err);
-
-                var file = fs.createWriteStream(destination);
-                var options = {
-                  method: "GET",
-                  url: showReportEndpoint,
-                  headers: {
-                    'Authorization': 'Basic ' + encodeString
-                  },
-                  maxRedirects: 1000
-                }
-                download(options, destination)
-                .then(function(dlCount) {
-                  console.log('dlCount:', dlCount);
-                  console.log('dlIndex: ' + j, 'segLength: ' + segmentLength);
-                  console.log('i:', i);
-                  console.log('length:', rOKeysLength);
-                  if(j === segmentLength-1) {
-                    console.log('I-ITERATION:', i);
-                    if (i === longestrOKeyIndex) {
-                      console.log('all downloads complete for all ' + rOKeysLength + ' report types');
-                      resolve({message:'all downloads complete for all ' + rOKeysLength + ' report types', status: 'ac'});
-                    } else {
-                      console.log('all downloads complete for ' + currentReportType + ' report type');
-                      resolve({message:'all downloads complete for ' + currentReportType + ' report type', status: 'crt'});
-                    }
-                  }
-                  else {
-                    dlIndex++;
-                    if (segmentLength < 150) {
-                      downloadReport(dlIndex);
-                    } else {
-                      setTimeout(downloadReport(dlIndex), 0)
-                    }
-                  }
-                }).catch(function(error) {
-                  console.log(error);
-                })
-              })
-            })
-          }).then(function(data) {
-            console.log("DATADATA:", data);
-            if (data.status === "ac") {
-              resolve('success');
-            }
-          }).catch(function(error) {
-            // console.log('dlREPORT ERROR:', error);
-          })
-        }
-
-        // function downloadReportsLoop() {
-        //   return new Promise(function(resolve, reject) {
-        //     for (var p = 0; p < segmentLength; p++) {
-        //       if (segmentLength < 125) {
-        //         downloadReport(p)
-        //         if (p === segmentLength-1) {
-        //           // console.log('DONEDONE');
-        //         }
-        //       } else {
-        //         setTimeout(downloadReport(dlIndex), 0)
-        //         if (p === segmentLength-1) {
-        //           // console.log('DONEDONE');
-        //         }
-        //       }
-        //     }
-        //   })
-        // }
-        //
-        // downloadReportsLoop()
-
-        downloadReport(dlIndex)
-
-      }).then(function(data) {
-        console.log(data);
       })
     })
   }
+
+  // Execution Call
+  function executeDownload(processStatus, distReportArrC, currentSegmentIndex, dlCount) {
+
+    console.log('processStatus:', processStatus);
+    console.log('currentSegmentIndex:', currentSegmentIndex);
+    console.log('dlCount:', dlCount);
+
+    // Declare Function to Create Download Directory
+    function createDownloadDir() {
+      return new Promise(function(resolve, reject) {
+        var makeDir;
+        tilde('~', function(userHome) {
+          if (process.env.NODE_ENV === "production") {
+            makeDir = userHome + '/Output_Files/Assessments/Indigo_Assessments_Tmp/';
+          } else if (process.env.NODE_ENV === "development_test") {
+            makeDir = userHome + '/Documents/IndigoProject/Indigo_Utilities/Output_Files/Assessments/Indigo_Assessments_Tmp/';
+          }
+          mkdirp(makeDir, function(err) {
+            if (err) reject('makeDirp error:', err);
+            else resolve(makeDir + ' Directory Created')
+          })
+        })
+      })
+    }
+
+    var numOfSegments = req.body.numOfSegments || 0;
+
+    if (processStatus === "fresh") {
+
+      removeDuplicates(reportList, reportTypes)
+      .then(function(data1) {
+        console.log('DATA1:', data1);
+        initiateDLAR(data1.reportObject)
+        .then(function(data2) {
+          numOfSegments = data2.numOfSegments;
+          console.log('NUM OF SEGMENTS:', numOfSegments);
+          createDownloadDir()
+          .then(function(message) {
+            console.log(message);
+            downloadCurrentSegment(data2.distReportArr[currentSegmentIndex], currentSegmentIndex)
+            .then(function(data3) {
+              console.log('DATA3', data3);
+              res.send({ processStatus: "midCycle", prevSegmentIndex: data3.prevSegmentIndex, distReportArr: data2.distReportArr, dlCount: data3.dlCount, numOfSegments: numOfSegments, dupNumber: data1.dupNumber })
+            }).catch(function(error) {
+              console.log(error);
+            })
+          }).catch(function(error) {
+            console.log(error);
+          })
+        }).catch(function(error) {
+          console.log(error);
+        })
+      })
+    } else if (processStatus === "midCycle") {
+      console.log('CSI:', currentSegmentIndex);
+      console.log('NOS:', numOfSegments);
+      if (currentSegmentIndex === numOfSegments ) {
+        console.log('dupNumber:', req.body.dupNumber);
+        archiveReports(req.body.dupNumber, dlCount, "finished")
+      } else {
+        downloadCurrentSegment(distReportArrC[currentSegmentIndex], currentSegmentIndex)
+        .then(function(data) {
+          console.log('DATA', data);
+          console.log(numOfSegments);
+          res.send({ processStatus: "midCycle", prevSegmentIndex: data.prevSegmentIndex, distReportArr: distReportArrC, dlCount: data.dlCount, numOfSegments: numOfSegments, dupNumber: req.body.dupNumber  })
+        }).catch(function(error) {
+          console.log(error);
+        })
+
+      }
+    }
+  }
+
+  function initiateDLAR(reportObject) {
+
+    return new Promise(function(resolve, reject) {
+
+      var distReportArr = [];
+      var workingReportArr = [];
+
+      // Set up workingReportArr
+      var reportObjectLength = 0;
+      var rOKeys = Object.keys(reportObject)
+      for (var i = 0; i < rOKeys.length; i++) {
+        var reportsOfCurrentType = reportObject[rOKeys[i]]
+        for (var j = 0; j < reportsOfCurrentType.length; j++) {
+          reportObjectLength ++;
+          var reportID = reportsOfCurrentType[j][0];
+          var showReportEndpoint = TTI.APIs.showReport.generateEndpoint(req.body.accountID, req.body.linkID, reportID);
+          var reportInfo = reportsOfCurrentType[j]
+          workingReportArr.push([showReportEndpoint,reportInfo])
+        }
+      }
+
+      // Create Distribued Report Arr by Chunk
+      var chunk = 50;
+      var numOfSegments = 0;
+      for (var i = 0; i < workingReportArr.length; i += chunk) {
+        distReportArr.push(workingReportArr.slice(i, i + chunk));
+        numOfSegments ++;
+      }
+
+      // Derive Lengths for Resolve() Condition
+      distReportArrLength = 0;
+      for (var i = 0; i < distReportArr.length; i++) {
+        for (var j = 0; j < distReportArr[i].length; j++) {
+          distReportArrLength ++;
+        }
+      }
+
+      if (distReportArrLength === reportObjectLength) {
+        io.emit('reportNumber', { number: distReportArrLength});
+        resolve({ distReportArr: distReportArr, numOfSegments: numOfSegments});
+      } else {
+        reject('original reportObject and distReportObject lengths are not equal')
+      }
+
+    })
+  }
+
+  // Run all reports through download function
+  function downloadCurrentSegment(currSegmentArr, currSegmentIndex) {
+    console.log('inside downloadCurrentSegment');
+
+    var segDlCount = 0;
+
+    // Download Stream Function
+    function download(requestOptions, destination) {
+      return new Promise(function(resolve, reject) {
+        var file = fs.createWriteStream(destination);
+        request(requestOptions).pipe(file);
+        file.on('finish', function() {
+          file.close(console.log("finished downloading " + destination));
+          segDlCount ++;
+          dlCount ++;
+          io.emit('dlCount', { dlCount: dlCount});
+          resolve(dlCount);
+        }).on('error', function(error) {
+          fs.unlink(destination);
+          console.log("--- ERROR ---", error);
+        });
+      })
+    };
+
+    return new Promise(function(resolve, reject) {
+
+      var dlIndex = 0;
+
+      // Download Individual Report
+      function downloadReport(dlIndex) {
+
+        return new Promise(function(resolve, reject) {
+
+          var suffix = TTI.assessmentInfoByName[currSegmentArr[dlIndex][1][11]].suffix;
+          var firstName = currSegmentArr[dlIndex][1][1];
+          var lastName = currSegmentArr[dlIndex][1][2];
+
+          var destination;
+
+          tilde('~', function(userHome) {
+            if (process.env.NODE_ENV === "production") destination = userHome + '/Output_Files/Assessments/Indigo_Assessments_Tmp/' + lastName + ", " + firstName + suffix + ".pdf";
+            else if (process.env.NODE_ENV === "development_test") destination = userHome + '/Documents/IndigoProject/Indigo_Utilities/Output_Files/Assessments/Indigo_Assessments_Tmp/' + lastName + ", " + firstName + suffix + ".pdf";
+
+            var options = {
+              method: "GET",
+              url: currSegmentArr[dlIndex][0],
+              headers: {
+                'Authorization': 'Basic ' + encodeString
+              }
+            }
+
+            download(options, destination)
+            .then(function(dlCount) {
+              console.log('dlCount:', dlCount);
+              console.log('dlIndex: ', dlIndex);
+              console.log('currenSegmentArrLength', currSegmentArr.length);
+              resolve(segDlCount);
+              // if (dlIndex === currSegmentArr.length-1) {
+              //   console.log('all downloads complete for segment #' + currSegmentIndex);
+              //   resolve({message: 'all downloads complete for segment #' + currSegmentIndex, dlStatus: 'midCycle', cpStatus: 'complete'});
+              // } else {
+              //   dlIndex ++;
+              //   downloadReport(dlIndex);
+              // }
+            })
+          })
+        })
+
+      }
+      // downloadReport(dlIndex);
+
+      function downloadReportsLoop() {
+        return new Promise(function(resolve, reject) {
+          for (var i = 0; i < currSegmentArr.length; i++) {
+            downloadReport(i)
+            .then(function(segDlCount) {
+              if (segDlCount === currSegmentArr.length) {
+                console.log('SEGMENT DOWNLOAD COMPLETE, DL COUNT:', dlCount);
+                resolve(dlCount);
+              }
+            })
+          }
+        })
+      }
+
+      downloadReportsLoop()
+      .then(function() {
+        resolve({ prevSegmentIndex: currSegmentIndex, dlCount: dlCount});
+      })
+
+    })
+  }
+
+    // if (currSegmentIndex === numOfSegments-1) {
+    // } else {
+    // console.log('all downloads complete for all ' + numOfSegments + 'report types');
+    // resolve({message: 'all downloads complete for all ' + numOfSegments + 'report types', status: 'ac'});
+    // }
+
+
+  //EXECUTION CALL
+  executeDownload(req.body.processStatus, req.body.distReportArrC, req.body.currentSegmentIndex, dlCount);
+
 });
 
 
