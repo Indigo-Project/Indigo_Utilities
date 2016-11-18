@@ -39,7 +39,10 @@ button.format-data {
   width: 300px; }
 
 section.instructions {
+  width: 80vw;
   margin-bottom: 30px; }
+  section.instructions ol li {
+    font-size: 12px; }
 
 form.add-reports {
   display: flex; }
@@ -140,8 +143,11 @@ h4.dup-status {
   color: red;
   margin-left: 10px; }
 
-p.tti_massdl_advice {
+p.troubleshooting {
   font-size: 9px;
   font-style: italic; }
+
+span.warning {
+  color: red; }
 
 /*# sourceMappingURL=style.css.map */

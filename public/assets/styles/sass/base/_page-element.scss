@@ -52,7 +52,13 @@ button {
 }
 
 section.instructions {
+  width: 80vw;
   margin-bottom: 30px;
+  ol {
+    li {
+      font-size: 12px;
+    }
+  }
 }
 
 form.add-reports {
@@ -186,7 +192,11 @@ h4.dup-status {
   margin-left: 10px;
 }
 
-p.tti_massdl_advice {
+p.troubleshooting {
   font-size: 9px;
   font-style: italic;
+}
+
+span.warning {
+  color: red;
 }
