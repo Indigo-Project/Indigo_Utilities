@@ -70,3 +70,11 @@ app.directive('sumPage', function() {
     controller: 'Sum_Page_Controller'
   }
 })
+
+app.directive('sumStats', function() {
+  return {
+    restrict: 'E',
+    templateUrl: 'app/directives/partials/sum_stats.html',
+    controller: 'Sum_Stats_Controller'
+  }
+})

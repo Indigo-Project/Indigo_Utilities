@@ -1,4 +1,4 @@
-app.controller("Sum_Page_Controller", ['$scope', '$state', '$http', 'Main_Service', 'TTI_API', function($scope, $state, $http, Main_Service, TTI_API) {
+app.controller("Sum_Page_Controller", ['$scope', '$state', '$http', 'Main_Service', 'TTI_API', 'socket', function($scope, $state, $http, Main_Service, TTI_API, socket) {
 
   $scope.view = {};
   $scope.data = {};

@@ -13,6 +13,8 @@ var io = socket_io();
 app.io = io;
 var api = require('./routes/api')(io);
 
+console.log('TEST LOG');
+
 // app.set('views', path.join(__dirname, 'views'));
 // app.set('view engine', 'jade');
 
@@ -30,6 +32,7 @@ app.use("/blue_list", express.static(__dirname + "/public/index.html"));
 app.use("/ent_list", express.static(__dirname + "/public/index.html"));
 app.use("/tti_massdl", express.static(__dirname + "/public/index.html"));
 app.use("/sum_page", express.static(__dirname + "/public/index.html"));
+app.use("/sum_stats", express.static(__dirname + "/public/index.html"));
 
 app.use('/api', api);
 

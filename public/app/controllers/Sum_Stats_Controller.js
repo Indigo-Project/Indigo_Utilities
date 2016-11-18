@@ -1,10 +1,10 @@
-app.controller('Ent_List_Controller', ['$scope', '$state', '$http', 'Main_Service', 'FileSaver', 'Blob', 'socket', function($scope, $state, $http, Main_Service, FileSaver, Blob, socket) {
+app.controller('Sum_Stats_Controller', ['$scope', '$state', '$http', 'Main_Service', 'FileSaver', 'Blob', 'socket', function($scope, $state, $http, Main_Service, FileSaver, Blob, socket) {
 
   $scope.view = {};
   $scope.uploader = {};
   $scope.data = {};
 
-  $scope.view.selectedFunction = "ent_list";
+  $scope.view.selectedFunction = "sum_stats";
 
   // $scope.uploader.file = undefined;
   $scope.uploader.loadedFiles = [];
@@ -37,17 +37,19 @@ app.controller('Ent_List_Controller', ['$scope', '$state', '$http', 'Main_Servic
     // console.log($scope.uploader.loadedFiles);
   }
 
-  $scope.data.generateEntList = function(fileName) {
+  $scope.data.generateSumStats = function(fileName) {
     if ($scope.uploader.loadedFiles.length === 0) {
       alert("NO FILES HAVE BEEN LOADED FOR FORMATTING");
     } else if (fileName === undefined || fileName === "" ) {
       alert("PLEASE ENTER DESIRED NAME FOR DOWNLOAD FILE - CANNOT BE BLANK");
     } else {
       console.log('GENERATING');
+      console.log($scope.uploader.loadedFiles);
+      console.log(fileName);
       $http({
         method: 'POST',
-        url: '/api/ent-list',
-        data: { inputFiles:$scope.uploader.loadedFiles, outputFileName: fileName }
+        url: '/api/summary-stats',
+        data: { inputFiles: $scope.uploader.loadedFiles, outputFileName: fileName }
         // responseType: 'blob'
       })
       .success(function(data, status, headers, config) {

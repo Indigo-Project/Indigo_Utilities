@@ -1,4 +1,4 @@
-app.controller('Blue_List_Controller', ['$scope', '$state', '$http', 'Main_Service', 'FileSaver', 'Blob', function($scope, $state, $http, Main_Service, FileSaver, Blob) {
+app.controller('Blue_List_Controller', ['$scope', '$state', '$http', 'Main_Service', 'FileSaver', 'Blob', 'socket', function($scope, $state, $http, Main_Service, FileSaver, Blob, socket) {
 
   $scope.view = {};
   $scope.uploader = {};

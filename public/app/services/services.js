@@ -9,10 +9,12 @@ app.factory('Main_Service', ['$state', function($state) {
         $state.go("blue_list");
       } else if (selectedFunction === "ent_list") {
         $state.go("ent_list");
-      } else if (selectedFunction === "sum_page") {
-        $state.go("sum_page");
       } else if (selectedFunction === "tti_massdl") {
         $state.go("tti_massdl");
+      } else if (selectedFunction === "sum_page") {
+        $state.go("sum_page");
+      } else if (selectedFunction === "sum_stats") {
+        $state.go("sum_stats");
       } else if (selectedFunction === "default"){
         $state.go("default");
       }
@@ -107,9 +109,6 @@ app.factory('TTI_API', ['$state', '$http', 'FileSaver', 'Blob', function($state,
         postToServer("fresh", 0, null, 0, 0, 0, login, password, accountID, linkID, reportList, reportTypes)
 
       })
-
-
-
     },
 
     sumPageDownload: function(login, password, accountID, linkID, directory, reportList, reportTypes) {
