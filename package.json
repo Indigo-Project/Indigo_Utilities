@@ -22,8 +22,6 @@
     "filesaver.js": "^0.2.0",
     "fs": "0.0.1-security",
     "fs-extra": "^1.0.0",
-    "grunt": "^1.0.1",
-    "grunt-contrib-uglify": "^2.0.0",
     "hummus": "^1.0.64",
     "jade": "~1.11.0",
     "longjohn": "^0.2.11",
