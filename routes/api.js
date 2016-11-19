@@ -210,31 +210,35 @@ router.post('/upload-csv', function(req, res, next) {
       stringifyToCSV(allStudents_AllReports)
       .then(function(data) {
         console.log("11 ------ INSIDE STRINGIFYTOCSV .THEN");
-        fs.writeFile("formattedCSVFiles/" + req.body.outputFileName + ".csv", data, function(err) {
-          if (err) {
-            console.log(err);
-          } else {
-            console.log("12 ------ INSIDE WRITEFILE");
-            console.log(req.body.outputFileName + ".csv Created");
-            // res.sendFile(req.body.outputFileName + ".csv", {root: "../Indigo_Utilities/formattedCSVFiles/"}, function(err) {
-            //   if(err) {
-            //     console.log(err);
-            //   } else {
-            //     console.log("File Sent..?");
-            //   }
-            // });
+        tilde('~/', function(userHome) {
 
-            var filename = req.body.outputFileName + ".csv";
-            var filePath = "./formattedCSVFiles/" + filename;
-            var stat = fs.statSync(filePath);
-            var fileToSend = fs.readFileSync(filePath);
-            res.writeHead(200, {
-              'Content-Type': 'text/csv',
-              'Content-Length': stat.size,
-              'Content-Disposition': filename
-            })
-            res.end(fileToSend);
+          var destDir = "";
+          var environment = process.env.NODE_ENV;
+          if (environment === "production") {
+            destDir = userHome + 'Output_Files/formattedCSVFiles/';
+          } else if (environment === "development_test") {
+            destDir = userHome + 'Documents/IndigoProject/Indigo_Utilities/Output_Files/formattedCSVFiles/';
           }
+
+          fs.writeFile(destDir + req.body.outputFileName + ".csv", data, function(err) {
+            if (err) {
+              console.log(err);
+            } else {
+              console.log("12 ------ INSIDE WRITEFILE");
+              console.log(req.body.outputFileName + ".csv Created");
+
+              var filename = req.body.outputFileName + ".csv";
+              var filePath = "./Output_Files/formattedCSVFiles/" + filename;
+              var stat = fs.statSync(filePath);
+              var fileToSend = fs.readFileSync(filePath);
+              res.writeHead(200, {
+                'Content-Type': 'text/csv',
+                'Content-Length': stat.size,
+                'Content-Disposition': filename
+              })
+              res.end(fileToSend);
+            }
+          })
         })
       }).catch(function(err){
         console.log(err);

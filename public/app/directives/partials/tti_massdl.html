@@ -3,22 +3,38 @@
   <section class="instructions">
     <h5>Instructions</h5>
     <ol>
-      <li>1. Populate each input field with the correct information, and wait for link verification.</li>
-      <li>2. When link has been verified, select report types for download, click 'Download', and confirm. </li>
-      <li>2. Duplicates will be removed within each report type. The downloaded assessments will contain a suffix denoting the report type (refer to troubleshooting for reference), so that if the same student appears under two different report types being downloaded simultaneously, the file won't be overwritten.  </li>
-      <li>3. Wait for download to finish. The total number of reports (eg. the 100 in '50/100 Reports Downloaded...') reflects the total number after removal of duplicate reports.</li>
-      <li>4. Once completed, your files will be zipped and delivered (this may take a few seconds, refer to troubleshooting section below for estimates).</li>
-      <li>5. The zip file contains one folder which contains all of the downloaded assessments.</li>
+      <li><span class="li-item">Populate each input field with the correct information, and wait for link verification.</span></li>
+      <li><span class="li-item">When link has been verified, select report types for download, click 'Download', and confirm.</span></li>
+      <li><span class="li-item">Duplicates will be removed within each report type. The downloaded assessments will contain a suffix denoting the report type (refer to troubleshooting/reference section), so that if the same student appears under two different report types being downloaded simultaneously, the file won't be overwritten.</span></li>
+      <li><span class="li-item">Wait for download to finish. The total number of reports (eg. the 100 in '50/100 Reports Downloaded...') reflects the total number after removal of duplicate reports.</span></li>
+      <li><span class="li-item">Once completed, your files will be zipped and delivered (this may take a few seconds, refer to troubleshooting section below for estimates).</span></li>
+      <li><span class="li-item">The zip file contains one folder which contains all of the downloaded assessments.</span></li>
+      <li><span class="troubleshooting warning li-item">Please do not refresh or navigate from page while reports are downloading and/or being delivered - app has not yet been designed to handle this (Upon reinitiation of download, it will attempt to resume previous download).</span></li>
     </ol>
-    <h5>Troubleshooting/Reference</h5>
-    <p class="troubleshooting">
-      - link verification takes slightly longer for larger links (roughly 1 seconds per 100 reports). If verification is indefinitely stuck in 'verifying', refresh the page and try again.
-      <br>- 'Indigo Assessmet', 'Indigo Me', and 'Indigo Skills' are currently the supported report types. Others can be easily added upon request, if needed.
-      <br>- File Zipping and Delivering takes significantly longer for larger downloads. Expect roughly 1 minute per 500 reports.
-      <br>- if link verification remains 'unverified', make sure that login and password are correct.
-      <br>- If in doubt, if obstacle is discovered within program, refresh the page and try again.
-      <br>-<span class="troubleshooting warning"> Please do not refresh or navigate from page while reports are downloading and/or being delivered - app is not currently designed to handle this well. If for some reason this happens, and you are stuck, contact Paul.</span>
-    </p>
+    <div class="drop-down-headings">
+      <h5 ng-click="view.toggleTroubleshooting()" ng-class="{ black: view.troubleshootingHidden }">Troubleshooting/Reference</h5>
+      <h5 ng-click="view.toggleSumPageGen()" ng-class="{ black: view.sumPageGenHidden }">Summary Page Generation</h5>
+    </div>
+    <div ng-show="!view.troubleshootingHidden" class="troubleshooting drop-down-content">
+      <ul>
+        <li>Link verification takes slightly longer for larger links (roughly 1 seconds per 100 reports). If verification is indefinitely stuck in 'verifying', refresh the page and try again.</li>
+        <li>'Indigo Assessmet', 'Indigo Me', and 'Indigo Skills' are currently the supported report types. Others can be easily added upon request, if needed.</li>
+        <li>File Zipping and Delivering takes significantly longer for larger downloads. Expect roughly 1 minute per 500 reports.</li>
+        <li>If link verification remains 'unverified', make sure that login and password are correct.</li>
+        <li>in doubt, if obstacle is discovered within program, refresh the page and try again.</li>
+      </ul>
+    </div>
+    <div ng-show="!view.sumPageGenHidden" class="sum-page-gen drop-down-content">
+      <ol>
+        <li><span class="li-item">For the TTI link with which you would like to download the summary pages, at the bottom of the TTI 'link info' tab, click 'edit'.</span></li>
+        <li><span class="li-item">Under 'Custom' where default report type is displayed, select the report type which includes the summary page only. This is usually 'Summary Only'. If unsure, clarify with Sueann. Scroll to the bottom of the page and click 'Save'.</span></li>
+        <li><span class="li-item">Follow the above instructions, and wait for the zip file to be delivered.</span></li>
+        <li><span class="li-item">Once you have the files, go to https://smallpdf.com/ and login with account: apps@indigoproject.org, password: Liveyourgenius7</span></li>
+        <li><span class="li-item">Once logged in, find the 'Merge PDF' service. Pull up the file with the reports, make sure they are sorted alphabetically within their directory, then click merge.</span></li>
+        <li><span class="li-item">When merge is complete, find the 'Compress PDF' function (this usually shows up as an additional option in the sequence once merge is complete), and compress the merged PDF.</span></li>
+        <li><span class="li-item">When compression is complete, download the file and rename it accordingly.</li>
+      </ol>
+    </div>
   </section>
 
   <form class="mass-dl-form form-group" ng-submit="data.batchDownload()">

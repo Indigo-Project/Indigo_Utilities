@@ -52,10 +52,13 @@ button {
 }
 
 section.instructions {
-  width: 80vw;
+  width: 70vw;
   margin-bottom: 30px;
   ol {
+    list-style: decimal;
+    padding-left: 20px;
     li {
+      font-weight: bold;
       font-size: 12px;
     }
   }
@@ -199,4 +202,34 @@ p.troubleshooting {
 
 span.warning {
   color: red;
+}
+
+div.drop-down-headings {
+  display: flex;
+  h5 {
+    margin-right: 20px;
+    &:hover {
+      color: blue;
+      cursor: pointer;
+      cursor: hand;
+    }
+  }
+}
+
+div.drop-down-content {
+  ul {
+    list-style: circle;
+    padding-left: 20px;
+    li {
+      font-size: 12px;
+    }
+  }
+}
+
+span.li-item {
+  font-weight: normal;
+}
+
+h5.black {
+  color: rgb(26, 112, 181);
 }

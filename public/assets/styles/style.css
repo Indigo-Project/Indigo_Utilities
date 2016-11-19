@@ -39,10 +39,14 @@ button.format-data {
   width: 300px; }
 
 section.instructions {
-  width: 80vw;
+  width: 70vw;
   margin-bottom: 30px; }
-  section.instructions ol li {
-    font-size: 12px; }
+  section.instructions ol {
+    list-style: decimal;
+    padding-left: 20px; }
+    section.instructions ol li {
+      font-weight: bold;
+      font-size: 12px; }
 
 form.add-reports {
   display: flex; }
@@ -149,5 +153,26 @@ p.troubleshooting {
 
 span.warning {
   color: red; }
+
+div.drop-down-headings {
+  display: flex; }
+  div.drop-down-headings h5 {
+    margin-right: 20px; }
+    div.drop-down-headings h5:hover {
+      color: blue;
+      cursor: pointer;
+      cursor: hand; }
+
+div.drop-down-content ul {
+  list-style: circle;
+  padding-left: 20px; }
+  div.drop-down-content ul li {
+    font-size: 12px; }
+
+span.li-item {
+  font-weight: normal; }
+
+h5.black {
+  color: #1a70b5; }
 
 /*# sourceMappingURL=style.css.map */

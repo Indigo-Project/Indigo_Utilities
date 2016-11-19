@@ -21,6 +21,8 @@ app.controller('TTI_MassDL_Controller', ['$scope', '$state', '$http', 'Main_Serv
   $scope.data.reportTypeOptions = [];
   $scope.data.currentLinkReportList;
 
+  $scope.view.troubleshootingHidden = true;
+  $scope.view.sumPageGenHidden = true;
   $scope.view.linkIdStatus = "";
   $scope.view.formStatus = "Download";
   $scope.view.successMessage = "";
@@ -58,6 +60,16 @@ app.controller('TTI_MassDL_Controller', ['$scope', '$state', '$http', 'Main_Serv
   // $window.onbeforeunload = function() {
   //
   // };
+
+  $scope.view.toggleTroubleshooting = function() {
+    $scope.view.sumPageGenHidden = true;
+    $scope.view.troubleshootingHidden = !$scope.view.troubleshootingHidden
+  }
+
+  $scope.view.toggleSumPageGen = function() {
+    $scope.view.troubleshootingHidden = true;
+    $scope.view.sumPageGenHidden = !$scope.view.sumPageGenHidden;
+  }
 
   $scope.$on('$stateChangeStart', function(event, next, current) {
     if ($scope.data.downloadStatus === "Processing") {
