@@ -20,13 +20,12 @@ var fsE = require('fs-extra');
 
 var TTI = require('../APIs/TTI_API');
 
-// require('events').EventEmitter.prototype._maxListeners = 500;
-// process.env.NODE_DEBUG = "net";
 require('should');
 
 io.on('connection', function(socket) {
   console.log('Client Connected to Socket in /api Route');
   console.log(socket.id);
+
 
 /** TTI - POWER BI FORMATTING ENDPOINT **/
 
@@ -53,7 +52,6 @@ router.post('/upload-csv', function(req, res, next) {
         allStudents_AllReports_CH = output[0];
         allStudents_AllReports.push(allStudents_AllReports_CH);
         if (allStudents_AllReports.length) {
-          // console.log("allStudents_AllReports", allStudents_AllReports);
           resolve();
         } else {
           reject("addCHtoAS() ERROR");
@@ -77,7 +75,6 @@ router.post('/upload-csv', function(req, res, next) {
 
       for (var b = 0; b < output.length; b++) {
         parseVar.push(output[b]);
-        // console.log(output[b]);
         console.log("6 ------ BEGINNING OF PARSEFROMCSV");
       }
       console.log("PARSEVAR ----- PARSEVAR:", parseVar);
@@ -89,31 +86,15 @@ router.post('/upload-csv', function(req, res, next) {
 
       for (var j = 0; j < Trimetrix_CH.length; j++) {
         for (var k = 0; k < allStudents_AllReports_CH.length; k++) {
-          // console.log("AS -", k, allStudents_AllReports_CH[k]);
-          // console.log("IR -", j, Trimetrix_CH[j]);
           if(Trimetrix_CH[j] === allStudents_AllReports_CH[k]) {
-            // console.log("----------MATCH----------");
-            // console.log("AS -", k, allStudents_AllReports_CH[k]);
-            // console.log("IR -", j, Trimetrix_CH[j]);
 
             for (var l = beforeLength_AS, m = 0; l < afterLength_AS; l++, m++) {
               allStudents_AllReports[l][6] = filesToFormat[i].schoolYearTaken;
               allStudents_AllReports[l][7] = filesToFormat[i].class;
 
-              // console.log("----------------------");
-              // console.log('ALL STUDENTS --' + l, allStudents_AllReports[l]);
-              // console.log('PARSEVAR --' + m, parseVar[m]);
-              // console.log(allStudents_AllReports[l][k]);
-              // console.log(allStudents_AllReports[l][j]);
               allStudents_AllReports[l][k] = parseVar[m][j];
-              // console.log(allStudents_AllReports[l][k]);
-              // console.log(allStudents_AllReports[n][j]);
-              // console.log("----------");
 
               //Full Name formatting & insertion
-              // console.log(parseVar[m][0]);
-              // console.log(parseVar[m][1]);
-              // console.log(parseVar[m][2]);
               var firstNameProper = parseVar[m][0].charAt(0).toUpperCase() + parseVar[m][0].slice(1);
               var lastNameProper = parseVar[m][1].charAt(0).toUpperCase() + parseVar[m][1].slice(1);
               var fullName = lastNameProper + ", " + firstNameProper;
@@ -409,24 +390,19 @@ router.post('/summary-stats', function(req, res, next) {
   }
 
   function combineReports(filesToFormat) {
-    console.log('inside combineReports');
     return new Promise(function(resolve, reject) {
 
       var count = 0;
       var compilationFile = [];
 
       function loopReports(count) {
-        console.log('inside loopReports');
         if (count < filesToFormat.length) {
-          console.log('inside Loop');
           setColumnHeaders(filesToFormat[count])
           .then(function(data1) {
             if (data1.errReason) {
-              console.log(data1.errReason);
               res.writeHeader(406, {"Content-Type": "application/json"});
               res.end(JSON.stringify(data1));
             } else {
-              console.log('indexArr', data1.indexArr);
               compile(data1.data, data1.indexArr)
               .then(function(data2) {
                 for (var j = 0; j < data2.length; j++) {
@@ -467,7 +443,6 @@ router.post('/summary-stats', function(req, res, next) {
               if (err) {
                 console.log(err);
               } else {
-                console.log(req.body.outputFileName + ".csv Created");
                 var filename = req.body.outputFileName + ".csv";
                 var filePath = destDir + filename;
                 var stat = fs.statSync(filePath);
@@ -653,7 +628,6 @@ router.post('/ent-list', function(req, res, next) {
               if (err) {
                 console.log(err);
               } else {
-                console.log(req.body.outputFileName + ".csv Created");
                 var filename = req.body.outputFileName + ".csv";
                 var filePath = destDir + filename;
                 var stat = fs.statSync(filePath);
@@ -843,7 +817,6 @@ router.post('/blue-list', function(req, res, next) {
                 }
                 if (count === (filesToFormat.length - 1)) {
                   exportFile.unshift(['First', 'Last', 'Gender', 'HANDLING STRESS', 'SELF CONFIDENCE', 'SENSE OF SELF', 'SENSE OF BELONGING', 'RESILIENCY', 'SELF DIRECTION', 'SELF DIRECTION BIAS', 'EMPATHETIC OUTLOOK', 'PRACTICAL THINKING', 'SYSTEMS JUDGMENT'])
-                  console.log('resolve', exportFile);
                   resolve(exportFile)
                 } else {
                   count ++;
@@ -879,7 +852,6 @@ router.post('/blue-list', function(req, res, next) {
               if (err) {
                 console.log(err);
               } else {
-                console.log(req.body.outputFileName + ".csv Created");
                 var filename = req.body.outputFileName + ".csv";
                 var filePath = destDir + filename;
                 var stat = fs.statSync(filePath);
@@ -928,7 +900,6 @@ router.post("/validate-local-dir", function(req, res, next) {
 })
 
 router.post("/validate-tti-request", function(req, res, next) {
-  console.log('INSIDE');
   if (req.body.mode === "verify") {
     var listReportsEndpoint = TTI.APIs.listReports.generateEndpoint(req.body.accountID, req.body.linkID);
     TTI.APIs.requestFormat("GET", listReportsEndpoint, req.body.login, req.body.password)
@@ -956,9 +927,6 @@ router.post("/validate-tti-request", function(req, res, next) {
               reportTypes.push(reportList2[i][11]);
             }
           }
-          console.log(reportTypes);
-          console.log(reportList2);
-          console.log(linkInfo);
           res.send({ reportList: reportList2, reportTypes: reportTypes, linkInfo: JSON.parse(linkInfo) });
         })
       }).catch(function(error) {
@@ -969,12 +937,9 @@ router.post("/validate-tti-request", function(req, res, next) {
     })
   } else if (req.body.mode === "filter"){
     var reportList = req.body.currentLinkReportList;
-    console.log(reportList);
     var reportTypeFilter = req.body.reportTypeFilter;
-    console.log(reportTypeFilter);
     var filteredReportList = [];
     for (var i = 0; i < reportList.length; i++) {
-      console.log(reportList[i]);
       var match = false;
       for (var j = 0; j < reportTypeFilter.length; j++) {
         if (reportList[i][11] === reportTypeFilter[j]) {
@@ -985,7 +950,6 @@ router.post("/validate-tti-request", function(req, res, next) {
         filteredReportList.push(reportList[i])
       }
     }
-    console.log('filteredReportList:', filteredReportList.length);
     res.send({ filteredReportList: filteredReportList });
   }
 })
@@ -995,7 +959,6 @@ router.post("filter-reports-for-dl", function(req, res, next) {
 })
 
 router.post("/dl-to-client", function(req, res, next) {
-  console.log('inside /dl-to-client');
   if (req.body.dataPath) {
 
     var dateTmp = new Date();
@@ -1011,7 +974,6 @@ router.post("/dl-to-client", function(req, res, next) {
 
     var download = fs.createReadStream(req.body.dataPath).pipe(res);
     download.on('finish', function() {
-      console.log('finished download');
       tilde('~', function(userHome) {
         if (process.env.NODE_ENV === "production") {
           var removeZip =  userHome + '/Output_Files/Assessments/Zips/assessments.zip'
@@ -1049,15 +1011,11 @@ router.post("/batch-download", function(req, res, next) {
 
       // Fore each report type, create an array of all names (formatted) which we will run duplicate check on
       var dOKeys = Object.keys(distObject)
-      // console.log(dOKeys);
       var dupNumber = 0;
       return new Promise(function(resolve, reject) {
 
 
         bPromise.each(dOKeys, function(element, i, length) {
-          // console.log(i);
-          // console.log("dokeys[i] ------- " + dOKeys[i] + " -------");
-          // console.log('current segLength:', distObject[dOKeys[i]].length);
           var formattedNameArr = [];
           for (var j = 0; j < distObject[dOKeys[i]].length; j++) {
             formattedNameArr.push((distObject[dOKeys[i]][j][1] + distObject[dOKeys[i]][j][2]).toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").replace(/\s{2,}/g," "));
@@ -1070,8 +1028,6 @@ router.post("/batch-download", function(req, res, next) {
               for(var k = 0; k < arr.length; k++) {
                 if (arr[k] === val) indices.push(k);
               }
-              // console.log('indices:', indices);
-              // if (indices.length > 1)
               resolve({name: val, indices: indices});
             })
           }
@@ -1094,16 +1050,11 @@ router.post("/batch-download", function(req, res, next) {
           var matchObj = {};
           var matchArr = [];
 
-          // console.log('FNA:', formattedNameArr);
           dupCheckArr(formattedNameArr)
           .then(function() {
-            // console.log('matchObj:', matchObj);
             mOKeys = Object.keys(matchObj);
             var removeIndices = [];
             for (var m = 0; m < mOKeys.length; m++) {
-              // console.log("----------");
-              // console.log(mOKeys[m]);
-              // console.log(matchObj[mOKeys[m]]);
               var dateObj = []
               for (var n = 0; n < matchObj[mOKeys[m]].length; n++) {
                 var date = new Date((distObject[dOKeys[i]][matchObj[mOKeys[m]][n]][6]).split('-').join("/"));
@@ -1112,7 +1063,6 @@ router.post("/batch-download", function(req, res, next) {
 
               var keepIndex = "";
               if (dateObj.length > 1) {
-                // console.log('dateObj:', dateObj);
                 for (var o = 0; o < dateObj.length; o++) {
                   if ((dateObj[o] - dateObj[o+1] || 0) > 7776000000) {
                     keepIndex = matchObj[mOKeys[m]][o];
@@ -1121,28 +1071,20 @@ router.post("/batch-download", function(req, res, next) {
                     keepIndex = matchObj[mOKeys[m]][dateObj.length-1]
                   }
                 }
-                // console.log('Keep Index:', keepIndex);
                 for (var o = 0; o < dateObj.length; o++) {
-                  // console.log(matchObj[mOKeys[m]][o]);
                   if (matchObj[mOKeys[m]][o] !== keepIndex) {
                     removeIndices.push(matchObj[mOKeys[m]][o])
-                    // console.log('pushed');
                   }
                 }
               }
             }
             dupNumber = removeIndices.length;
-            console.log('DUPNUMBER 1:', dupNumber);
-
             function sortDescending(a,b) {
               return b-a;
             }
             removeIndices.sort(sortDescending);
-
-            // console.log('REMOVE2:', removeIndices);
             if (removeIndices.length) {
               for (var o = 0; o < removeIndices.length; o++) {
-                // console.log("removing index " + Number(removeIndices[o]), distObject[dOKeys[i]][removeIndices[o]] + " ---------- ");
                 distObject[dOKeys[i]].splice(Number(removeIndices[o]), 1);
                 if (o === removeIndices.length-1 && i === length-1) {
                   resolve();
@@ -1151,21 +1093,14 @@ router.post("/batch-download", function(req, res, next) {
             } else {
               resolve();
             }
-            // console.log(distObject[dOKeys[i]].length);
-            // console.log(distObject[dOKeys[i]]);
           }).catch(function(error) {
             console.log(error);
           })
         }).then(function() {
-          // console.log('final distObject:', distObject);
         }).catch(function(error) {
           console.log(error);
         })
       }).then(function() {
-        // console.log(distObject);
-        // console.log(distObject["Indigo Assessment"].length);
-        // console.log('final distObject Length:', distObject[0].length);
-        // console.log('final distObject:', distObject);
         resolve({ reportObject: distObject, dupNumber: dupNumber });
       }).catch(function(error) {
         console.log(error);
@@ -1178,13 +1113,10 @@ router.post("/batch-download", function(req, res, next) {
   var reportTypes = req.body.reportTypes;
   var encodeString = base64.encode(req.body.login + ":" + req.body.password);
   var dlCount = req.body.dlCount;
-  console.log('REQ.BODY.DLCOUNT:', req.body.dlCount);
-
 
   // ARCHIVE REPORTS FUNCTION
   function archiveReports(dupNumber, dlCount, message) {
     tilde('~', function(userHome) {
-
       if (process.env.NODE_ENV === "production") {
         var destDir = userHome + '/Output_Files/Assessments/Zips/';
         var sendDir = userHome + '/Output_Files/Assessments/Indigo_Assessments_Tmp/';
@@ -1198,19 +1130,15 @@ router.post("/batch-download", function(req, res, next) {
       }
 
       mkdirp(makeDir, function() {
-        console.log('ZIPS DIR MADE');
         var output = fs.createWriteStream(destDir + 'assessments.zip');
 
         var archive = archiver('zip');
 
         archive.on('error', function(err) {
-          console.log('ERROR:', error);
-          console.log('ERROR MESSAGE:', err.message);
           res.status(500).send({error: err.message});
         });
 
         archive.on('end', function() {
-          console.log('WRITE STREAM FINISHED');
           fsE.remove(removeDir, function(error) {
             if (error) console.log(error);
             else console.log(removeDir + " REMOVED");
@@ -1228,10 +1156,6 @@ router.post("/batch-download", function(req, res, next) {
 
   // Execution Call
   function executeDownload(processStatus, distReportArrC, currentSegmentIndex, dlCount) {
-
-    console.log('processStatus:', processStatus);
-    console.log('currentSegmentIndex:', currentSegmentIndex);
-    console.log('dlCount:', dlCount);
 
     // Declare Function to Create Download Directory
     function createDownloadDir() {
@@ -1257,17 +1181,13 @@ router.post("/batch-download", function(req, res, next) {
 
       removeDuplicates(reportList, reportTypes)
       .then(function(data1) {
-        console.log('DATA1:', data1);
         initiateDLAR(data1.reportObject)
         .then(function(data2) {
           numOfSegments = data2.numOfSegments;
-          console.log('NUM OF SEGMENTS:', numOfSegments);
           createDownloadDir()
           .then(function(message) {
-            console.log(message);
             downloadCurrentSegment(data2.distReportArr[currentSegmentIndex], currentSegmentIndex)
             .then(function(data3) {
-              console.log('DATA3', data3);
               res.send({ processStatus: "midCycle", prevSegmentIndex: data3.prevSegmentIndex, distReportArr: data2.distReportArr, dlCount: data3.dlCount, numOfSegments: numOfSegments, dupNumber: data1.dupNumber })
             }).catch(function(error) {
               console.log(error);
@@ -1280,16 +1200,12 @@ router.post("/batch-download", function(req, res, next) {
         })
       })
     } else if (processStatus === "midCycle") {
-      console.log('CSI:', currentSegmentIndex);
-      console.log('NOS:', numOfSegments);
       if (currentSegmentIndex === numOfSegments ) {
         archiveReports(req.body.dupNumber, dlCount, "finished")
         io.emit('preparingFiles')
       } else {
         downloadCurrentSegment(distReportArrC[currentSegmentIndex], currentSegmentIndex)
         .then(function(data) {
-          console.log('DATA', data);
-          console.log(numOfSegments);
           res.send({ processStatus: "midCycle", prevSegmentIndex: data.prevSegmentIndex, distReportArr: distReportArrC, dlCount: data.dlCount, numOfSegments: numOfSegments, dupNumber: req.body.dupNumber  })
         }).catch(function(error) {
           console.log(error);
@@ -1348,7 +1264,6 @@ router.post("/batch-download", function(req, res, next) {
 
   // Run all reports through download function
   function downloadCurrentSegment(currSegmentArr, currSegmentIndex) {
-    console.log('inside downloadCurrentSegment');
 
     var segDlCount = 0;
 
@@ -1380,8 +1295,10 @@ router.post("/batch-download", function(req, res, next) {
         return new Promise(function(resolve, reject) {
 
           var suffix = TTI.assessmentInfoByName[currSegmentArr[dlIndex][1][11]].suffix;
-          var firstName = currSegmentArr[dlIndex][1][1];
-          var lastName = currSegmentArr[dlIndex][1][2];
+          var firstNameW = currSegmentArr[dlIndex][1][1];
+          var lastNameW = currSegmentArr[dlIndex][1][2];
+          var firstName = firstNameW.charAt(0).toUpperCase() + firstNameW.substr(1).toLowerCase();
+          var lastName = lastNameW.charAt(0).toUpperCase() + lastNameW.substr(1).toLowerCase();
 
           var destination;
 
@@ -1399,23 +1316,11 @@ router.post("/batch-download", function(req, res, next) {
 
             download(options, destination)
             .then(function(dlCount) {
-              console.log('dlCount:', dlCount);
-              console.log('dlIndex: ', dlIndex);
-              console.log('currenSegmentArrLength', currSegmentArr.length);
               resolve(segDlCount);
-              // if (dlIndex === currSegmentArr.length-1) {
-              //   console.log('all downloads complete for segment #' + currSegmentIndex);
-              //   resolve({message: 'all downloads complete for segment #' + currSegmentIndex, dlStatus: 'midCycle', cpStatus: 'complete'});
-              // } else {
-              //   dlIndex ++;
-              //   downloadReport(dlIndex);
-              // }
             })
           })
         })
-
       }
-      // downloadReport(dlIndex);
 
       function downloadReportsLoop() {
         return new Promise(function(resolve, reject) {
@@ -1423,7 +1328,6 @@ router.post("/batch-download", function(req, res, next) {
             downloadReport(i)
             .then(function(segDlCount) {
               if (segDlCount === currSegmentArr.length) {
-                console.log('SEGMENT DOWNLOAD COMPLETE, DL COUNT:', dlCount);
                 resolve(dlCount);
               }
             })
