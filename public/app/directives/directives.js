@@ -6,6 +6,13 @@ app.directive('header', function() {
   }
 })
 
+app.directive('welcome', function() {
+  return {
+    restrict: 'E',
+    templateUrl: 'app/directives/partials/welcome.html',
+  }
+})
+
 app.directive('pbiPfmt', function() {
   return {
     restrict: 'E',
