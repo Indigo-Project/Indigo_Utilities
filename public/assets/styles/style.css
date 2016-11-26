@@ -1,13 +1,33 @@
-body {
-  padding: 0px 20px 0px 20px; }
+@import url("https://fonts.googleapis.com/css?family=Pacifico");
+@import url("https://fonts.googleapis.com/css?family=Leckerli+One");
+@import url("https://fonts.googleapis.com/css?family=Lobster");
+@import url("https://fonts.googleapis.com/css?family=Yellowtail");
+@import url("https://fonts.googleapis.com/css?family=Passion+One");
+@import url("https://fonts.googleapis.com/css?family=Quantico");
+@import url("https://fonts.googleapis.com/css?family=Allura");
+a.head-logo {
+  display: flex;
+  text-decoration: none; }
+  a.head-logo h1 {
+    margin: 0px;
+    display: inline-block;
+    color: white; }
+    a.head-logo h1.head-logo-1 {
+      font-family: 'Leckerli One', cursive;
+      margin-right: 17px;
+      font-size: 30px; }
+    a.head-logo h1.head-logo-2 {
+      font-family: 'Quantico', sans-serif;
+      font-size: 33px; }
 
-h1.head-logo {
-  color: #4f4498; }
+section.header {
+  padding: 20px;
+  background-color: #4f4498;
+  border-bottom: 3px solid #404040; }
 
 section.select-function {
   margin-top: 30px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid black; }
+  color: white; }
 
 h4.select-function {
   margin: 30px 0px 5px 0px;
@@ -17,7 +37,7 @@ select.form-control {
   width: 300px; }
 
 section.function-section {
-  margin-top: 20px; }
+  padding: 20px; }
 
 input.upload-csv {
   width: 300px;

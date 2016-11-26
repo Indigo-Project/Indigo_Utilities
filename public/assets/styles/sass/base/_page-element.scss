@@ -1,15 +1,36 @@
 body {
-  padding: 0px 20px 0px 20px;
+  // padding: 0px 20px 0px 20px;
 }
 
-h1.head-logo {
-  color: rgba(79, 68, 152, 1);
+a.head-logo {
+  display: flex;
+  text-decoration: none;
+  h1 {
+    margin: 0px;
+    display: inline-block;
+    color: white;
+    &.head-logo-1 {
+      // font-family: 'Pacifico', cursive;
+      font-family: 'Leckerli One', cursive;
+      margin-right: 17px;
+      font-size: 30px;
+    }
+    &.head-logo-2 {
+      font-family: 'Quantico', sans-serif;
+      font-size: 33px;
+    }
+  }
+}
+
+section.header {
+  padding: 20px;
+  background-color: rgba(79, 68, 152, 1);
+  border-bottom: 3px solid rgb(64, 64, 64);
 }
 
 section.select-function {
   margin-top: 30px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid black;
+  color: white;
 }
 
 h4.select-function {
@@ -22,7 +43,8 @@ select.form-control {
 }
 
 section.function-section {
-  margin-top: 20px;
+  // margin-top: 20px;
+  padding: 20px
 }
 
 input.upload-csv {
