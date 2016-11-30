@@ -431,7 +431,7 @@ router.post('/summary-stats', function(req, res, next) {
     .then(function(data2) {
       csv.stringify(data2, function(err, output) {
         if(output) {
-          tilde('~/', function(userHome) {
+          tilde('~', function(userHome) {
             var destDir = "";
             var environment = process.env.NODE_ENV;
             if (environment === "production") {
