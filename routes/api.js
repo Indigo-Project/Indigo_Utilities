@@ -643,20 +643,38 @@ router.post('/ent-list', function(req, res, next) {
             } else if (environment === "development_test") {
               destDir = userHome + 'Documents/IndigoProject/Indigo_Utilities/Output_Files/Entrepreneur_Lists/';
             }
-            fs.writeFile(destDir + req.body.outputFileName + ".csv", output, function(err) {
-              if (err) {
-                console.log(err);
-              } else {
-                var filename = req.body.outputFileName + ".csv";
-                var filePath = destDir + filename;
-                var stat = fs.statSync(filePath);
-                var fileToSend = fs.readFileSync(filePath);
-                res.writeHead(200, {
-                  'Content-Type': 'text/csv',
-                  'Content-Length': stat.size,
-                  'Content-Disposition': filename
+            fs.access(destDir, fs.F_OK, function(error) {
+              if (error) {
+                console.log("fs.access Error", error);
+                mkdirp(destDir, function(error) {
+                  if (error) {
+                    console.log("mkdirp error", error);
+                  } else {
+                    console.log("mkdirp success");
+                    fs.writeFile(destDir + req.body.outputFileName + ".csv", output, function(error) {
+                      if (error) {
+                        console.log("write file error", error);
+                      } else {
+                        var filename = req.body.outputFileName + ".csv";
+                        var filePath = destDir + filename;
+                        var stat = fs.statSync(filePath);
+                        var fileToSend = fs.readFileSync(filePath);
+                        res.writeHead(200, {
+                          'Content-Type': 'text/csv',
+                          'Content-Length': stat.size,
+                          'Content-Disposition': filename
+                        })
+                        res.end(fileToSend);
+                        fsE.remove(destDir, function(error) {
+                          if (error) console.log(error);
+                          else console.log('Entrepreneur_Lists removed');
+                        })
+                      }
+                    })
+                  }
                 })
-                res.end(fileToSend);
+              } else {
+                console.log('DIRECTORY EXISTS');
               }
             })
           })
@@ -824,7 +842,6 @@ router.post('/blue-list', function(req, res, next) {
         if (count < filesToFormat.length) {
           setColumnHeaders(filesToFormat[count])
           .then(function(data1) {
-            console.log(data1);
             if (data1.errReason) {
               res.writeHeader(406, {"Content-Type": "application/json"});
               res.end(JSON.stringify(data1));
@@ -867,20 +884,38 @@ router.post('/blue-list', function(req, res, next) {
             } else if (environment === "development_test") {
               destDir = userHome + 'Documents/IndigoProject/Indigo_Utilities/Output_Files/Blue_Lists/';
             }
-            fs.writeFile(destDir + req.body.outputFileName + ".csv", output, function(err) {
-              if (err) {
-                console.log(err);
-              } else {
-                var filename = req.body.outputFileName + ".csv";
-                var filePath = destDir + filename;
-                var stat = fs.statSync(filePath);
-                var fileToSend = fs.readFileSync(filePath);
-                res.writeHead(200, {
-                  'Content-Type': 'text/csv',
-                  'Content-Length': stat.size,
-                  'Content-Disposition': filename
+            fs.access(destDir, fs.F_OK, function(error) {
+              if (error) {
+                console.log("fs.access Error", error);
+                mkdirp(destDir, function(error) {
+                  if (error) {
+                    console.log("mkdirp error", error);
+                  } else {
+                    console.log("mkdirp success");
+                    fs.writeFile(destDir + req.body.outputFileName + ".csv", output, function(error) {
+                      if (error) {
+                        console.log("write file error", error);
+                      } else {
+                        var filename = req.body.outputFileName + ".csv";
+                        var filePath = destDir + filename;
+                        var stat = fs.statSync(filePath);
+                        var fileToSend = fs.readFileSync(filePath);
+                        res.writeHead(200, {
+                          'Content-Type': 'text/csv',
+                          'Content-Length': stat.size,
+                          'Content-Disposition': filename
+                        })
+                        res.end(fileToSend);
+                        fsE.remove(destDir, function(error) {
+                          if (error) console.log(error);
+                          else console.log('Blue_lists removed');
+                        })
+                      }
+                    })
+                  }
                 })
-                res.end(fileToSend);
+              } else {
+                console.log('DIRECTORY EXISTS');
               }
             })
           })
