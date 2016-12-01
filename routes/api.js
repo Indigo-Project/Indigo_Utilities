@@ -429,7 +429,7 @@ router.post('/summary-stats', function(req, res, next) {
   .then(function(data1) {
     generateStatistics(data1)
     .then(function(data2) {
-      csv.stringify(data2, function(err, output) {
+      csv.stringify(data2, function(error, output) {
         if(output) {
           tilde('~/', function(userHome) {
             console.log('IN SUMM TILDE');
@@ -437,9 +437,16 @@ router.post('/summary-stats', function(req, res, next) {
             var environment = process.env.NODE_ENV;
             if (environment === "production") {
               destDir = userHome + 'Output_Files/Summary_Statistics/';
-              fs.access(destDir, fs.F_OK, function(err) {
-                if (err) {
-                  console.log(err);
+              fs.access(destDir, fs.F_OK, function(error) {
+                if (error) {
+                  console.log("fs.access Error", error);
+                  mkdirp(destDir, function(error) {
+                    if (error) {
+                      console.log("mkdirp error", error);
+                    } else {
+                      console.log("mkdirp success");
+                    }
+                  })
                 } else {
                   console.log('DIRECTORY EXISTS');
                 }
@@ -447,9 +454,9 @@ router.post('/summary-stats', function(req, res, next) {
             } else if (environment === "development_test") {
               destDir = userHome + 'Documents/IndigoProject/Indigo_Utilities/Output_Files/Summary_Statistics/';
             }
-            fs.writeFile(destDir + req.body.outputFileName + ".csv", output, function(err) {
-              if (err) {
-                console.log(err);
+            fs.writeFile(destDir + req.body.outputFileName + ".csv", output, function(error) {
+              if (error) {
+                console.log(error);
               } else {
                 var filename = req.body.outputFileName + ".csv";
                 var filePath = destDir + filename;
