@@ -40,6 +40,11 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
       templateUrl: "templates/sum_stats.html",
       // controller: "TTI_MassDL_Controller"
     })
+    .state('dashboard_gen', {
+      url: '/dashboard_gen',
+      templateUrl: "templates/dashboard_gen.html",
+      // controller: "TTI_MassDL_Controller"
+    })
 
     $locationProvider.html5Mode(true);
 })

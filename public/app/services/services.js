@@ -15,6 +15,8 @@ app.factory('Main_Service', ['$state', function($state) {
         $state.go("sum_page");
       } else if (selectedFunction === "sum_stats") {
         $state.go("sum_stats");
+      } else if (selectedFunction === "dashboard_gen") {
+        $state.go("dashboard_gen");
       } else if (selectedFunction === "default"){
         $state.go("default");
       }
@@ -99,6 +101,9 @@ app.factory('TTI_API', ['$state', '$http', 'FileSaver', 'Blob', function($state,
             } else if (data2.data.processStatus === "midCycle") {
               console.log('run postToServer with New Data');
               postToServer(data2.data.processStatus, data2.data.prevSegmentIndex + 1, data2.data.distReportArr, data2.data.dlCount, data2.data.numOfSegments, data2.data.dupNumber, login, password, accountID, linkID, reportList, reportTypes);
+            } else if (data2.data.processStatus === "midZip") {
+              console.log('run resumeZip');
+              resumeZip()
             }
           }).catch(function(error) {
             console.log(error);
@@ -107,7 +112,6 @@ app.factory('TTI_API', ['$state', '$http', 'FileSaver', 'Blob', function($state,
         }
 
         postToServer("fresh", 0, null, 0, 0, 0, login, password, accountID, linkID, reportList, reportTypes)
-
       })
     },
 

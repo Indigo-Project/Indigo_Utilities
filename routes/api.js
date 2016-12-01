@@ -1184,6 +1184,12 @@ router.post("/batch-download", function(req, res, next) {
       }
 
       mkdirp(makeDir, function() {
+
+        var requestTimer = setTimeout(function() {
+          console.log('exit pipe to resume');
+          res.send('zipPaused') 
+        }, 25000);
+
         var output = fs.createWriteStream(destDir + 'assessments.zip');
 
         var archive = archiver('zip');
@@ -1193,6 +1199,7 @@ router.post("/batch-download", function(req, res, next) {
         });
 
         archive.on('end', function() {
+          clearTimeout(requestTimer);
           fsE.remove(removeDir, function(error) {
             if (error) console.log(error);
             else console.log(removeDir + " REMOVED");
@@ -1203,9 +1210,12 @@ router.post("/batch-download", function(req, res, next) {
         archive.directory(sendDir, 'Assessments_' + req.body.accountID + "-" + req.body.linkID);
         archive.pipe(output);
         archive.finalize();
-
       })
     })
+  }
+
+  function resumeArchive() {
+
   }
 
   // Execution Call

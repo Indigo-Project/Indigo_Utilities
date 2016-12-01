@@ -33,6 +33,7 @@ app.use("/ent_list", express.static(__dirname + "/public/index.html"));
 app.use("/tti_massdl", express.static(__dirname + "/public/index.html"));
 app.use("/sum_page", express.static(__dirname + "/public/index.html"));
 app.use("/sum_stats", express.static(__dirname + "/public/index.html"));
+app.use("/dashboard_gen", express.static(__dirname + "/public/index.html"));
 
 app.use('/api', api);
 

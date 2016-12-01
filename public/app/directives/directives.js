@@ -85,3 +85,11 @@ app.directive('sumStats', function() {
     controller: 'Sum_Stats_Controller'
   }
 })
+
+app.directive('dashboardGen', function() {
+  return {
+    restrict: 'E',
+    templateUrl: 'app/directives/partials/dashboard_gen.html',
+    controller: 'Dashboard_Gen_Controller'
+  }
+})
