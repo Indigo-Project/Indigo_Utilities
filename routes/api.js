@@ -432,10 +432,18 @@ router.post('/summary-stats', function(req, res, next) {
       csv.stringify(data2, function(err, output) {
         if(output) {
           tilde('~/', function(userHome) {
+            console.log('IN SUMM TILDE');
             var destDir = "";
             var environment = process.env.NODE_ENV;
             if (environment === "production") {
               destDir = userHome + 'Output_Files/Summary_Statistics/';
+              fs.access(destDir, fs.F_OK, function(err) {
+                if (err) {
+                  console.log(err);
+                } else {
+                  console.log('DIRECTORY EXISTS');
+                }
+              })
             } else if (environment === "development_test") {
               destDir = userHome + 'Documents/IndigoProject/Indigo_Utilities/Output_Files/Summary_Statistics/';
             }
