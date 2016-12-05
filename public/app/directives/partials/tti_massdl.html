@@ -20,19 +20,19 @@
         <li>Link verification takes slightly longer for larger links (roughly 1 seconds per 100 reports). If verification is indefinitely stuck in 'verifying', refresh the page and try again.</li>
         <li>'Indigo Assessmet', 'Indigo Me', and 'Indigo Skills' are currently the supported report types. Others can be easily added upon request, if needed.</li>
         <li>File Zipping and Delivering takes significantly longer for larger downloads. Expect roughly 1 minute per 500 reports.</li>
-        <li>If link verification remains 'unverified', make sure that login and password are correct.</li>
-        <li>in doubt, if obstacle is discovered within program, refresh the page and try again.</li>
+        <li>If link verification remains 'unverified', make sure that login and password are correct. Some links are associated with two accounts (the account directly associated with it, and the account which houses that one). Usually, both can be valid as the authentication username/password. If for some reason one doesn't seem to work, try the other.</li>
+        <li>If in doubt, if obstacle is discovered within program or something appears to be stuck, refresh the page and try again.</li>
       </ul>
     </div>
     <div ng-show="!view.sumPageGenHidden" class="sum-page-gen drop-down-content">
       <ol>
-        <li><span class="li-item">For the TTI link with which you would like to download the summary pages, at the bottom of the TTI 'link info' tab, click 'edit'.</span></li>
-        <li><span class="li-item">Under 'Custom' where default report type is displayed, select the report type which includes the summary page only.This is usually 'Summary Only'. If unsure, clarify with Sueann. Make sure you remember the current selected report type before making the alteration, because you will need to change it back. Scroll to the bottom of the page and click 'Save'.</span></li>
-        <li><span class="li-item">Follow the above instructions, and wait for the zip file to be delivered.</span></li>
-        <li><span class="li-item">Once you have the files, go to https://smallpdf.com/ and login with account: apps@indigoproject.org, password: Liveyourgenius7</span></li>
+        <li><span class="li-item">For the TTI link with which you would like to download the summary pages, at the bottom of the TTI 'link info' tab, click 'edit' to edit the link.</span></li>
+        <li><span class="li-item">Under 'Custom' where default report type is displayed, select the report type which includes the summary page only. This is usually called 'Summary Only' or something very similar. If unsure, clarify with Sueann. Make sure you remember the current selected report type before making the alteration, because you will need to change it back. Scroll to the bottom of the page and click 'Save'.</span></li>
+        <li><span class="li-item">Follow the above instructions for the TTI batch downloader, selected the appropriate report type for summary page downloads, and wait for the zip file to be delivered.</span></li>
+        <li><span class="li-item">Once you have the files unzipped, go to https://smallpdf.com/ and login with account: apps@indigoproject.org, password: Liveyourgenius7</span></li>
         <li><span class="li-item">Once logged in, find the 'Merge PDF' service. Pull up the file with the reports, make sure they are sorted alphabetically within their directory (which they already should be), then click merge.</span></li>
         <li><span class="li-item">When merge is complete, find the 'Compress PDF' function (this usually shows up as an additional option in the sequence once merge is complete), and compress the merged PDF.</span></li>
-        <li><span class="li-item">When compression is complete, download Dthe file and rename it accordingly.</li>
+        <li><span class="li-item">When compression is complete, download the file and rename it accordingly.</li>
         <li><span class="li-item">Lastly, and crucially, go back to the TTI link editing section, and change back to the report type that was previously set. Click Save, and you're done.</li>
       </ol>
     </div>
@@ -41,12 +41,12 @@
   <form class="mass-dl-form form-group" ng-submit="data.batchDownload()">
     <div class="mass-dl-row-1">
       <div>
-        <label for="" >Enter Authentication Account Name</label>
+        <label for="" >Enter Authentication Username</label>
         <p class="input-subtext">The username you used to log in to the TTI Account</p>
         <input class="form-control short" type="text" ng-model="form.login" ng-change="data.validateLink()" required autocomplete="on">
       </div>
       <div>
-        <label for="">Enter Authentication Account Password</label>
+        <label for="">Enter Authentication Password</label>
         <p class="input-subtext">The password you used to log in to the TTI Account</p>
         <input class="form-control short" type="text" ng-model="form.password" ng-change="data.validateLink()" required autocomplete="on">
       </div>
@@ -54,8 +54,8 @@
     </div>
     <div class="mass-dl-row-2">
       <div>
-        <label for="">Enter Download Account Name</label>
-        <p class="input-subtext">The associated Account ID. Within the link on TTI, click on <br> the Account Info tab and copy the text string from the 'login' field.</p>
+        <label for="">Enter Account ID</label>
+        <p class="input-subtext">The Account ID for the Account housing the link. Within TTI, click on <br> the Account Info tab and copy the text string from the 'login' field.</p>
         <input class="form-control short" type="text" ng-model="form.accountID" ng-change="data.validateLink()" required autocomplete="on">
       </div>
       <div class="ver-msg">
