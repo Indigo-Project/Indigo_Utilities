@@ -195,4 +195,40 @@ span.li-item {
 h5.black {
   color: #1a70b5; }
 
+section.dashboard {
+  margin: 5vh 5vw 5vh 0vw; }
+
+section.dashboard-frame {
+  height: 600px;
+  width: 1100px;
+  border: 1px solid black; }
+
+nav.dashboard-nav {
+  display: flex; }
+
+p.dashboard-nav {
+  margin-right: 15px;
+  border: 1px solid black;
+  padding: 2px 5px 2px 5px;
+  font-weight: bold; }
+  p.dashboard-nav:hover {
+    color: blue;
+    border: 1px solid blue;
+    cursor: pointer;
+    cursor: hand; }
+
+p.dash-frame-selected {
+  background-color: #accbff; }
+
+.chart div {
+  font: 10px sans-serif;
+  background-color: steelblue;
+  text-align: right;
+  padding: 3px;
+  margin: 1px;
+  color: white; }
+
+p.input-subtext {
+  font-size: 10px; }
+
 /*# sourceMappingURL=style.css.map */

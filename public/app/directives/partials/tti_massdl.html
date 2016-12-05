@@ -3,13 +3,13 @@
   <section class="instructions">
     <h5>Instructions</h5>
     <ol>
-      <li><span class="li-item">Populate each input field with the correct information, and wait for link verification.</span></li>
+      <li><span class="li-item">Populate each input field with the correct information, and wait for verification of the link. (will take longer for larger links)</span></li>
       <li><span class="li-item">When link has been verified, select report types for download, click 'Download', and confirm.</span></li>
       <li><span class="li-item">Duplicates will be removed within each report type. The downloaded assessments will contain a suffix denoting the report type (refer to troubleshooting/reference section), so that if the same student appears under two different report types being downloaded simultaneously, the file won't be overwritten.</span></li>
       <li><span class="li-item">Wait for download to finish. The total number of reports (eg. the 100 in '50/100 Reports Downloaded...') reflects the total number after removal of duplicate reports.</span></li>
       <li><span class="li-item">Once completed, your files will be zipped and delivered (this may take a few seconds, refer to troubleshooting section below for estimates).</span></li>
-      <li><span class="li-item">The zip file contains one folder which contains all of the downloaded assessments.</span></li>
-      <li><span class="troubleshooting warning li-item">Please do not refresh or navigate from page while reports are downloading and/or being delivered - app has not yet been designed to handle this (Upon reinitiation of download, it will attempt to resume previous download).</span></li>
+      <li><span class="li-item">The zip file unzips into one folder which contains all of the downloaded assessments.</span></li>
+      <li><span class="troubleshooting warning li-item">Please do not refresh or navigate from page while reports are downloading and/or being delivered - app has not yet been designed to handle this (Upon reinitiation of download, it may attempt to resume previous download).</span></li>
     </ol>
     <div class="drop-down-headings">
       <h5 ng-click="view.toggleTroubleshooting()" ng-class="{ black: view.troubleshootingHidden }">Troubleshooting/Reference</h5>
@@ -42,10 +42,12 @@
     <div class="mass-dl-row-1">
       <div>
         <label for="" >Enter Authentication Account Name</label>
+        <p class="input-subtext">The username you used to log in to the TTI Account</p>
         <input class="form-control short" type="text" ng-model="form.login" ng-change="data.validateLink()" required autocomplete="on">
       </div>
       <div>
         <label for="">Enter Authentication Account Password</label>
+        <p class="input-subtext">The password you used to log in to the TTI Account</p>
         <input class="form-control short" type="text" ng-model="form.password" ng-change="data.validateLink()" required autocomplete="on">
       </div>
       <!-- <h5>{{view.authStatus}}</h5> -->
@@ -53,10 +55,12 @@
     <div class="mass-dl-row-2">
       <div>
         <label for="">Enter Download Account Name</label>
+        <p class="input-subtext">The associated Account ID. Within the link on TTI, click on <br> the Account Info tab and copy the text string from the 'login' field.</p>
         <input class="form-control short" type="text" ng-model="form.accountID" ng-change="data.validateLink()" required autocomplete="on">
       </div>
       <div class="ver-msg">
         <label for="">Enter Link ID</label>
+        <p class="input-subtext">The associated 9 character Link ID. Within the link, <br>click on the Link Info tab and copy the text string from the 'login' field.</p>
         <input class="form-control short" type="text" ng-model="form.linkID" ng-change="data.validateLink()" required autocomplete="on">
         <!-- pattern=".{9}" title="all links should consist of 9 characters" -->
       </div>

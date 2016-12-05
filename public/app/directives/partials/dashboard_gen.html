@@ -1,3 +1,69 @@
 <section class="function-section dashboard_gen">
-  <h1>WELCOME TO DASHBOARD GENERATOR</h1>
+
+  <section class="instructions">
+    <h5>Instructions (Coming Soon)</h5>
+    <!-- <ol>
+      <li><span class="li-item">Export any 'Trimetrix' or 'Talent Insights' assessment data from TTI. This function only works with 'Trimetrix' and 'Talent Insights' assessments, and will not accept other assessment/instrument types.</span></li>
+      <li><span class="li-item">Click 'Choose File' to load .csv files one at a time, then 'Add Report'. Multiple .csv files can be processed at one time.</span></li>
+      <li><span class="li-item">Enter the output file name, and click 'Generate Entrepreneur List' to generate the entrepreneur list for the given population.</span></li>
+    </ol> -->
+  </section>
+
+  <form name="fileUploader" class="add-reports" ng-submit="uploader.addChosenReports()">
+    <input class="upload-csv form-control" id="tti-file-uploader" name="files"  type="file" accept=".csv" fileread="uploader.file"></input>
+    <button type="submit" class="add-reports form-control">Add Report (1 at a time)</button>
+  </form>
+
+  <div class="queued-reports">
+    <h5>Reports for Dashboard Generation:</h5>
+    <table class="table queued-reports">
+      <thead>
+        <th>File Name</th>
+        <!-- <th>Report Type</th>
+        <th>Role</th>
+        <th>School Year Taken</th>
+        <th>Class</th> -->
+      </thead>
+      <tr ng-repeat="file in uploader.loadedFiles">
+        <td>{{file.name}}</td>
+        <!-- <td>{{file.reportType}}</td>
+        <td>{{file.role}}</td>
+        <td>{{file.schoolYearTaken}}</td>
+        <td>{{file.class}}</td> -->
+      </tr>
+    </table>
+  </div>
+
+  <form class="download-form" ng-submit="data.generateDashboard()">
+    <button type="submit" class="format-data form-control">Generate Dashboard</button>
+  </form>
+
+  <section class="dashboard" ng-show="view.displayDashboard">
+    <nav class="dashboard-nav">
+      <p class="dashboard-nav studentData" ng-click="view.dashboardNav('studentData')">Student Data</p>
+      <p class="dashboard-nav studentDetails" ng-click="view.dashboardNav('studentDetails')">Student Details</p>
+      <p class="dashboard-nav charts" ng-click="view.dashboardNav('charts')">Charts</p>
+    </nav>
+    <section class="dashboard-frame">
+      <section class="studentData" ng-show="view.dashboardSection === 'studentData'">
+        <p>STUDENT DATA</p>
+        <div class="studentData"></div>
+      </section>
+      <section class="studentDetails" ng-show="view.dashboardSection === 'studentDetails'">
+        <p>STUDENT DETAILS</p>
+      </section>
+      <section class="charts" ng-show="view.dashboardSection === 'charts'">
+        <div class="chart">
+          <!-- <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div> -->
+        </div>
+      </section>
+
+    </section>
+
+  </section>
+
 </section>

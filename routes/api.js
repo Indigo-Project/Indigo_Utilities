@@ -1187,7 +1187,7 @@ router.post("/batch-download", function(req, res, next) {
 
         var requestTimer = setTimeout(function() {
           console.log('exit pipe to resume');
-          res.send('zipPaused') 
+          res.send('zipPaused')
         }, 25000);
 
         var output = fs.createWriteStream(destDir + 'assessments.zip');
@@ -1411,6 +1411,11 @@ router.post("/batch-download", function(req, res, next) {
   executeDownload(req.body.processStatus, req.body.distReportArrC, req.body.currentSegmentIndex, dlCount);
 
 });
+
+router.post('/dashboard-gen', function(req, res, next) {
+  console.log('DASHBOARD GEN');
+  console.log(req.body.inputFiles);
+})
 
 
   socket.on('disconnect', function() {
