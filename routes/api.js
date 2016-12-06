@@ -1413,8 +1413,112 @@ router.post("/batch-download", function(req, res, next) {
 });
 
 router.post('/dashboard-gen', function(req, res, next) {
-  console.log('DASHBOARD GEN');
-  console.log(req.body.inputFiles);
+  var input = req.body.inputFiles[0].data
+  var fnIndex, lnIndex, genderIndex, DomIndex, InfIndex, SteIndex, ComIndex, TheIndex, UtiIndex, AesIndex, SocIndex, IndIndex, TraIndex;
+
+  function setColumnHeaders(data) {
+    return new Promise(function(resolve, reject) {
+      var fnIndex = "", lnIndex = "", genderIndex = "", DomIndex = "", InfIndex = "", SteIndex = "", ComIndex = "", TheIndex = "", UtiIndex = "", AesIndex = "", SocIndex = "", IndIndex = "", TraIndex = "";
+
+      csvParse(data, function(err, output) {
+        var columnHeaders = output[0];
+        for (var j = 0; j < columnHeaders.length; j++) {
+          if (columnHeaders[j] === "FIRST NAME") {
+            fnIndex = j;
+          }
+          if (columnHeaders[j] === "LAST NAME") {
+            lnIndex = j;
+          }
+          if (columnHeaders[j] === "GENDER") {
+            genderIndex = j;
+          }
+          if (columnHeaders[j] === "D NATURAL (%)") {
+            DomIndex = j;
+          }
+          if (columnHeaders[j] === "I NATURAL (%)") {
+            InfIndex = j;
+          }
+          if (columnHeaders[j] === "S NATURAL (%)") {
+            SteIndex = j;
+          }
+          if (columnHeaders[j] === "C NATURAL (%)") {
+            ComIndex = j;
+          }
+          if (columnHeaders[j] === "TEN_THE") {
+            TheIndex = j;
+          }
+          if (columnHeaders[j] === "TEN_UTI") {
+            UtiIndex = j;
+          }
+          if (columnHeaders[j] === "TEN_AES") {
+            AesIndex = j;
+          }
+          if (columnHeaders[j] === "TEN_SOC") {
+            SocIndex = j;
+          }
+          if (columnHeaders[j] === "TEN_IND") {
+            IndIndex = j;
+          }
+          if (columnHeaders[j] === "TEN_TRA") {
+            TraIndex = j;
+          }
+        }
+        if (DomIndex === "" || InfIndex === "" || SteIndex === "" || ComIndex === "" || TheIndex === "" || UtiIndex === "" || AesIndex === "" || SocIndex === "" || IndIndex === "" || TraIndex === "") {
+          resolve({ errReason: "Client Error: Incorrect Report Type", internalMessage: "One or more indices is null", externalMessage: "One or more uploaded reports is the incorrect report type for current dashboard generation. Refresh and try again. List of acceptable Report Types:\n\n-Talent Insights\n-Trimetrix"})
+        } else {
+          var indexArr = [ fnIndex, lnIndex, genderIndex, DomIndex, InfIndex, SteIndex, ComIndex, TheIndex, UtiIndex, AesIndex, SocIndex, IndIndex, TraIndex ];
+          var body = { data: output, indexArr: indexArr };
+          resolve(body);
+        }
+      });
+    })
+  }
+
+  function compile(data, indexArr) {
+    return new Promise(function(resolve, reject) {
+
+      var returnArr = [];
+
+      for (var i = 1; i < data.length; i++) {
+
+        // GET INDIVIDUAL SCORES
+        var firstName = data[i][indexArr[0]];
+        var lastName = data[i][indexArr[1]];
+        var gender = data[i][indexArr[2]];
+        var DomScore = Number(data[i][indexArr[3]]);
+        var InfScore = Number(data[i][indexArr[4]]);
+        var SteScore = Number(data[i][indexArr[5]]);
+        var ComScore = Number(data[i][indexArr[6]]);
+        var TheScore = Number(data[i][indexArr[7]]);
+        var UtiScore = Number(data[i][indexArr[8]]);
+        var AesScore = Number(data[i][indexArr[9]]);
+        var SocScore = Number(data[i][indexArr[10]]);
+        var IndScore = Number(data[i][indexArr[11]]);
+        var TraScore = Number(data[i][indexArr[12]]);
+
+        returnArr.push([ firstName, lastName, gender, DomScore, InfScore, SteScore, ComScore, TheScore, UtiScore, AesScore, SocScore, IndScore, TraScore ]);
+
+      }
+      if (returnArr[0].length === 13) {
+        returnArr.unshift(['First', 'Last', 'Gender', 'Dominance', 'Influencing', 'Steadiness', 'Compliance', 'Theoretical', 'Utilitarian', 'Aesthetic', 'Social', 'Individualistic', 'Traditional'])
+        resolve(returnArr)
+      } else {
+        reject('returnArr subarray length innacurate');
+      }
+
+    })
+  }
+
+  setColumnHeaders(input)
+  .then(function(data1) {
+    console.log(1, data1);
+    compile(data1.data, data1.indexArr)
+    .then(function(data2) {
+      console.log(2, data2);
+      res.send({ data: data2 });
+    })
+  })
+
 })
 
 

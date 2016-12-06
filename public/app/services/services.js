@@ -137,6 +137,104 @@ app.factory('TTI_API', ['$state', '$http', 'FileSaver', 'Blob', function($state,
   }
 }])
 
+app.factory('Dashboard_Gen', ['$http', function($http) {
+
+  return {
+
+    studentData: function(loadedFiles) {
+
+      $http({
+        method: 'POST',
+        url: '/api/dashboard-gen',
+        data: { inputFiles: loadedFiles }
+      }).then(function(data) {
+        var dashData = data.data.data;
+        // console.log(dashData[0]);
+        var sortAscending = true;
+        var table = d3.select('div.student-data').append('table').attr('class', 'student-data');
+        var titles = d3.values(dashData[0]);
+        var headers = table.append('thead').attr('class', 'student-data')
+        .selectAll('th')
+        .data(titles).enter()
+        .append('th').attr('class', 'student-data')
+        .text(function (d) {
+          return d;
+        })
+        .on('click', function(d, i) {
+          headers.attr('class', 'student-data header');
+          if (sortAscending) {
+            console.log('Ascending');
+            rows.sort(function(a, b) { return a == null || b == null ? 0 : stringCompare(a[i], b[i], 'asc') });
+            sortAscending = false;
+            this.className = 'student-data header des';
+          }
+          else {
+            console.log('Descending');
+            rows.sort(function(a, b) { return a == null || b == null ? 0 : stringCompare(a[i], b[i], 'des') });
+            sortAscending = true;
+            this.className = 'student-data header asc';
+          }
+        })
+
+        function stringCompare(a, b, sort) {
+          var tsA = toString.call(a);
+          var tsB = toString.call(b);
+          if (tsA === "[object String]" && tsB === "[object String]") {
+            a = a.toLowerCase();
+            b = b.toLowerCase();
+          }
+          if (sort === "asc") return a > b ? 1 : a == b ? 0 : -1;
+          else if (sort === "des") return a < b ? 1 : a == b ? 0 : -1;
+        }
+
+        dashData.shift();
+        var rows = table.append('tbody').attr('class', 'student-data')
+        .selectAll('tr')
+        .data(dashData).enter()
+        .append('tr').attr('class', 'student-data');
+
+
+        return rows.selectAll('td')
+        .data(function (d,i) {
+          return titles.map(function (k, i) {
+            return { 'value': d[i], 'name': i};
+          })
+        }).enter()
+        .append('td').attr('class', 'student-data')
+        .attr('data-th', function (d) {
+          return d.name;
+        })
+        .text(function (d) {
+          return d.value;
+        });
+
+      }).catch(function(error) {
+        console.log(error);
+      })
+
+    },
+
+    // studentDataTableSort: function(thIndex) {
+    //   var table = d3.select('div.student-data');
+    //   var headers = table.selectAll('th');
+    //   var rows = table.selectAll('tr');
+    //   var sortAscending = true;
+    //
+    //   // if (sortAscending) {
+    //   //   rows.sort(function(a, b) { return b[d] < a[d]; });
+    //   //   sortAscending = false;
+    //   //   this.className = 'student-data header asc';
+    //   // } else {
+    //   //   rows.sort(function(a, b) { return b[d] > a[d]; });
+    //   //   sortAscending = true;
+    //   //   this.className = 'student-data header des';
+    //   // }
+    //
+    // }
+  }
+
+}])
+
 app.factory('socket', ['$rootScope', '$state', function($rootScope, $state) {
 
   var url = $state.href('default', {}, {absolute: true})

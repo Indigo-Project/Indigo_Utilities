@@ -201,7 +201,8 @@ section.dashboard {
 section.dashboard-frame {
   height: 600px;
   width: 1100px;
-  border: 1px solid black; }
+  border: 1px solid black;
+  padding: 10px; }
 
 nav.dashboard-nav {
   display: flex; }
@@ -219,6 +220,36 @@ p.dashboard-nav {
 
 p.dash-frame-selected {
   background-color: #accbff; }
+
+div.student-data {
+  height: 500px;
+  width: fit-content;
+  overflow-y: scroll;
+  border: 1px solid black; }
+
+table.student-data {
+  width: fit-content;
+  border-collapse: collapse; }
+
+th.student-data {
+  background: #333;
+  color: white;
+  font-weight: bold;
+  cursor: s-resize;
+  background-repeat: no-repeat;
+  background-position: 3% center; }
+
+td.student-data, th.student-data {
+  padding: 6px;
+  border: 1px solid #ccc;
+  text-align: left;
+  font-size: 10px; }
+
+th.des:after {
+  content: "\21E9"; }
+
+th.asc:after {
+  content: "\21E7"; }
 
 .chart div {
   font: 10px sans-serif;
