@@ -7,8 +7,8 @@
       <li><span class="li-item">When link has been verified, select report types for download, click 'Download', and confirm.</span></li>
       <li><span class="li-item">Duplicates will be removed within each report type. The downloaded assessments will contain a suffix denoting the report type (refer to troubleshooting/reference section), so that if the same student appears under two different report types being downloaded simultaneously, the file won't be overwritten.</span></li>
       <li><span class="li-item">Wait for download to finish. The total number of reports (eg. the 100 in '50/100 Reports Downloaded...') reflects the total number after removal of duplicate reports.</span></li>
-      <li><span class="li-item">Once completed, your files will be zipped and delivered (this may take a few seconds, refer to troubleshooting section below for estimates).</span></li>
-      <li><span class="li-item">The zip file unzips into one folder which contains all of the downloaded assessments.</span></li>
+      <li><span class="li-item">Once completed, your files will be zipped and delivered (this may take a few seconds, refer to troubleshooting section below for time estimates).</span></li>
+      <li><span class="li-item">The .zip file unzips into one folder which contains all of the downloaded assessments. If your operating system doesn't have a built in function for handling zipped files, refer to the troubleshooting/reference section for guidance.</span></li>
       <li><span class="troubleshooting warning li-item">Please do not refresh or navigate from page while reports are downloading and/or being delivered - app has not yet been designed to handle this (Upon reinitiation of download, it may attempt to resume previous download).</span></li>
     </ol>
     <div class="drop-down-headings">
@@ -69,7 +69,7 @@
       <h5 ng-show="view.linkIdStatus === 'unverified'"><span class="glyphicon glyphicon-remove"></span> Link Not Verified</h5>
       <h5 ng-show="view.linkIdStatus === 'incomplete'"> Incomplete Link ID ...</h5>
     </div>
-    <div ng-show="view.linkIdStatus === 'verified'">
+    <div class="report-type-outer-container"ng-show="view.linkIdStatus === 'verified'">
       <label>Select Report Types For Download (must select at least 1)</label>
       <div class="report-type container">
         <label class="checkbox" ng-repeat="reportType in data.reportTypeOptions">

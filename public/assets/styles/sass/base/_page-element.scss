@@ -185,6 +185,7 @@ div.report-type {
   display: flex;
   flex-direction: column;
   margin-bottom: 20px;
+  margin-left: 30px;
 }
 
 label.checkbox {
@@ -253,83 +254,6 @@ span.li-item {
 
 h5.black {
   color: rgb(26, 112, 181);
-}
-
-section.dashboard {
-  margin: 5vh 5vw 5vh 0vw;
-}
-
-section.dashboard-frame {
-  height: 600px;
-  width: 1100px;
-  border: 1px solid black;
-  padding: 10px;
-}
-
-nav.dashboard-nav {
-  display: flex;
-}
-
-p.dashboard-nav {
-  margin-right: 15px;
-  border: 1px solid black;
-  padding: 2px 5px 2px 5px;
-  font-weight: bold;
-  &:hover {
-    color: blue;
-    border: 1px solid blue;
-    cursor: pointer;
-    cursor: hand;
-  }
-}
-
-p.dash-frame-selected {
-  background-color: rgb(172, 203, 255);
-}
-
-div.student-data {
-  height: 500px;
-  width: fit-content;
-  overflow-y: scroll;
-  border: 1px solid black;
-}
-
-table.student-data {
-	width: fit-content;
-	border-collapse: collapse;
-}
-
-th.student-data {
-	background: #333;
-	color: white;
-	font-weight: bold;
-	cursor: s-resize;
-	background-repeat: no-repeat;
-      background-position: 3% center;
-}
-
-td.student-data, th.student-data {
-	padding: 6px;
-	border: 1px solid #ccc;
-	text-align: left;
-  font-size: 10px;
-}
-
-th.des:after {
-  content: "\21E9";
-}
-
-th.asc:after {
-  content: "\21E7";
-}
-
-.chart div {
-  font: 10px sans-serif;
-  background-color: steelblue;
-  text-align: right;
-  padding: 3px;
-  margin: 1px;
-  color: white;
 }
 
 p.input-subtext {

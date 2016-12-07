@@ -143,7 +143,8 @@ div.mass-dl-row-2 {
 div.report-type {
   display: flex;
   flex-direction: column;
-  margin-bottom: 20px; }
+  margin-bottom: 20px;
+  margin-left: 30px; }
 
 label.checkbox {
   font-weight: normal;
@@ -194,6 +195,9 @@ span.li-item {
 
 h5.black {
   color: #1a70b5; }
+
+p.input-subtext {
+  font-size: 10px; }
 
 section.dashboard {
   margin: 5vh 5vw 5vh 0vw; }
@@ -258,8 +262,5 @@ th.asc:after {
   padding: 3px;
   margin: 1px;
   color: white; }
-
-p.input-subtext {
-  font-size: 10px; }
 
 /*# sourceMappingURL=style.css.map */
