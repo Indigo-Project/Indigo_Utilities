@@ -75,7 +75,7 @@ var APIs = {
       })
     })
   },
-  
+
   // Show Link API
   showLink: {
     generateEndpoint: function(accountID, linkID) {
@@ -95,8 +95,37 @@ var APIs = {
 
 }
 
+exportTypeIdentifier = {
+  "Trimetrix HD Talent (Legacy)": {
+    length: 161,
+    category: 'assessment'
+  },
+  "Talent Insights": {
+    length: 67,
+    category: 'assessment'
+  },
+  "Hartman Value Profile": {
+    length: 141,
+    category: 'instrument'
+  },
+  "TTI DNA Personal Soft Skills Indicator": {
+    length: 50,
+    category: 'instrument'
+  },
+  "Motivation Insights": {
+    length: 45,
+    category: 'instrument'
+  },
+  "Style Insights": {
+    length: 49,
+    category: 'instrument'
+  }
+
+}
+
 module.exports = {
   assessmentInfoByCode,
   assessmentInfoByName,
-  APIs
+  APIs,
+  exportTypeIdentifier
 }

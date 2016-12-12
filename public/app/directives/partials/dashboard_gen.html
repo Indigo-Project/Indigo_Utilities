@@ -9,32 +9,68 @@
     </ol> -->
   </section>
 
-  <form name="fileUploader" class="add-reports" ng-submit="uploader.addChosenReports()">
-    <input class="upload-csv form-control" id="tti-file-uploader" name="files"  type="file" accept=".csv" fileread="uploader.file"></input>
-    <button type="submit" class="add-reports form-control">Add Report (1 at a time)</button>
+  <div class="option-select-1">
+    <h5>1. Select Method for Report Uploading</h5>
+    <div class="option-select-2">
+      <button class="csv-upload option form-control" ng-click="view.displayOption('csv-upload')" ng-class="{'option-selected': view.uploadOptionStatus === 'csv-upload'}">Upload .csv Export</button>
+      <button class="tti-import option form-control" ng-click="view.displayOption('tti-import')" ng-class="{'option-selected': view.uploadOptionStatus === 'tti-import'}">Import from TTI</button>
+    </div>
+  </div>
+
+
+  <form name="fileUploader" class="add-reports-dg" ng-show="view.uploadOptionStatus === 'csv-upload'" ng-submit="uploader.addChosenReports('csv upload')">
+    <h5>2. Load Reports</h5>
+    <div class="report-metadata">
+      <div class="select-report-type">
+        <h6>Select Role</h6>
+        <select class="form-control role" ng-model="uploader.role">
+          <option value=""> -- select role -- </option>
+          <option value="Students">Students</option>
+          <option value="Staff">Staff</option>
+        </select>
+      </div>
+      <div ng-show="uploader.role === 'Students'" class="year-taken">
+        <h6>Enter School Year Taken (format: 2016-2017)</h6>
+        <input type="text" class="form-control year-taken" pattern=".{9}" ng-model="uploader.schoolYearTaken">
+      </div>
+      <div ng-show="uploader.role === 'Students'">
+        <h6>Enter Class (format: 2020)</h6>
+        <input type="text" class="form-control student-class" pattern=".{4}" ng-model="uploader.class">
+      </div>
+    </div>
+    <div class="upload-action">
+      <input class="upload-csv form-control" id="tti-file-uploader" name="files"  type="file" accept=".csv" fileread="uploader.file"></input>
+      <button type="submit" class="add-reports form-control">Add Report (1 at a time)</button>
+    </div>
+  </form>
+
+  <form name="fileUploader" class="add-reports" ng-show="view.uploadOptionStatus === 'tti-import'" ng-submit="uploader.addChosenReports('tti import')">
+    <h3>coming soon...</h3>
   </form>
 
   <div class="queued-reports">
-    <h5>Reports for Dashboard Generation:</h5>
+    <h5>Current Report Set for Dashboard Generation:</h5>
     <table class="table queued-reports">
       <thead>
         <th>File Name</th>
-        <!-- <th>Report Type</th>
         <th>Role</th>
         <th>School Year Taken</th>
-        <th>Class</th> -->
+        <th>Class</th>
       </thead>
       <tr ng-repeat="file in uploader.loadedFiles">
         <td>{{file.name}}</td>
-        <!-- <td>{{file.reportType}}</td>
         <td>{{file.role}}</td>
         <td>{{file.schoolYearTaken}}</td>
-        <td>{{file.class}}</td> -->
+        <td>{{file.class}}</td>
       </tr>
     </table>
   </div>
 
   <form class="download-form" ng-submit="data.generateDashboard()">
+    <div>
+      <!-- <label for="schoolName">Enter School Name</label> -->
+      <input type="text" name="schoolName" class="enter-school-name form-control" ng-model="data.schoolName" placeholder="Enter School Name (i.e. 'Prospect Ridge Academy')"></button>
+    </div>
     <button type="submit" class="format-data form-control">Generate Dashboard</button>
   </form>
 
@@ -44,10 +80,97 @@
       <p class="dashboard-nav studentDetails" ng-click="view.dashboardNav('studentDetails')">Student Details</p>
       <p class="dashboard-nav charts" ng-click="view.dashboardNav('charts')">Charts</p>
     </nav>
+
     <section class="dashboard-frame">
       <section class="studentData" ng-show="view.dashboardSection === 'studentData'">
-        <p>STUDENT DATA</p>
-        <div class="student-data"></div>
+        <section class="sd-row1">
+          <h1 style="margin: 0;"><strong>{{data.schoolName}}</strong> <em>Indigo Dashboard</em></h1 >
+        </section>
+        <section class="sd-row2">
+          <section class="sd-column1">
+            <section class="student-filter-outer">
+              <section class="student-filter-inner">
+                <h4 style="margin: 0 0 5px 0;">Students</h4>
+                <form ng-model="view.studentFilter">
+                  <input style="margin: 0;" type="text">
+                  <div class="student-filter checkbox">
+                    <label ng-repeat="student in data.studentData"><input type="checkbox" value="{{student[0]}}">{{student[0]}}</label>
+                  </div>
+                </form>
+              </section>
+            </section>
+            <section class="class-filter-outer">
+              <section class="class-filter-inner">
+                <h4 style="margin: 0 0 5px 0;">Class</h4>
+                <form ng-model="view.classFilter">
+                  <div class="class-filter checkbox">
+                    <label ng-repeat="class in data.studentClasses"><input type="checkbox" value="{{class}}">{{class}}</label>
+                  </div>
+                </form>
+              </section>
+            </section>
+            <section class="gender-filter">
+              <section class="gender-filter-outer">
+                <section class="gender-filter-inner">
+                  <h4 style="margin: 0 0 5px 0;">Gender</h4>
+                  <form ng-model="view.genderFilter">
+                    <div class="gender-filter checkbox">
+                      <label><input type="checkbox" value="M">Male</label>
+                      <label><input type="checkbox" value="F">Female</label>
+                    </div>
+                  </form>
+                </section>
+              </section>
+
+            </section>
+          </section>
+          <section class="sd-column2">
+            <section class="sd-column2-row1">
+              <div class="student-data-table"></div>
+            </section>
+            <section class="sd-column2-row2">
+              <section class="student-count">
+                <div class="student-count">
+                  <h1>{{data.studentData.length}}</h1>
+                  <h3>Students</h3>
+                </div>
+              </section>
+              <section class="adult-avgs">
+                <div class="adult-avgs">
+                  <h5>Corporate Adult Averages</h5>
+                  <table class="adult-avgs">
+                    <thead>
+                      <th>Dominance</th>
+                      <th>Influencing</th>
+                      <th>Steadiness</th>
+                      <th>Compliance</th>
+                      <th>Theoretical</th>
+                      <th>Utilitarian</th>
+                      <th>Aesthetic</th>
+                      <th>Social</th>
+                      <th>Individualistic</th>
+                      <th>Traditional</th>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>43.0</td>
+                        <td>58.7</td>
+                        <td>60.7</td>
+                        <td>50.5</td>
+                        <td>6.0</td>
+                        <td>5.3</td>
+                        <td>4.3</td>
+                        <td>4.2</td>
+                        <td>5.5</td>
+                        <td>4.7</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+            </section>
+          </section>
+        </section>
       </section>
       <section class="studentDetails" ng-show="view.dashboardSection === 'studentDetails'">
         <p>STUDENT DETAILS</p>

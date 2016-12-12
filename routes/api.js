@@ -745,7 +745,7 @@ router.post('/blue-list', function(req, res, next) {
           if (columnHeaders[j] === "SELF DIRECTION BIAS") {
             dirbIndex = j;
           }
-          if (columnHeaders[j] === "EMPATHETIC OUTLOOK") {
+          if (columnHeaders[j] === "UNDERSTANDING OTHERS" || columnHeaders[j] === "EMPATHETIC OUTLOOK") {
             eoIndex = j;
           }
           if (columnHeaders[j] === "PRACTICAL THINKING") {
@@ -796,15 +796,17 @@ router.post('/blue-list', function(req, res, next) {
 
         var studentOutput = [ data[i][indexArr[0]], data[i][indexArr[1]], data[i][indexArr[2]], data[i][indexArr[3]], data[i][indexArr[4]], data[i][indexArr[5]], data[i][indexArr[6]], data[i][indexArr[7]], data[i][indexArr[8]], dirbScore, data[i][indexArr[10]], data[i][indexArr[11]], data[i][indexArr[12]] ];
 
+
         var ct0 = 0;   // counter for how many of the first 4 variables are below a set threshold; to be used for at-risk flagging
-        if ((stressScore < 2) && (belongScore < 5 && belongScore >= 3.5) && (resilScore < 5)) {   // FIRST TEST, if flagged, grab student and cascade thru if-then
+        if ((stressScore < 2) && (belongScore < 5) && (resilScore < 5)) {   // FIRST TEST, if flagged, grab student and cascade thru if-then
+
             blueListArr.push(studentOutput);
         } else {
           if (stressScore < 3) { ct0++; }
           if (confScore < 3.5) { ct0++; }
+          if (dirScore < 3) { ct0++; }
           if (selfScore < 3.5) { ct0++; }
           if (belongScore < 3.5) { ct0++; }
-
           if ((ct0 >= 2) && (resilScore < 5)) {   // SECOND TEST
              blueListArr.push(studentOutput);
           } else {
@@ -817,6 +819,7 @@ router.post('/blue-list', function(req, res, next) {
             if ((confScore < 2) || (dirScore < 2) || (selfScore < 2) || (belongScore < 2)) {
                ct2++;
             }
+
             if ( (stressScore < 4) && ((ct1 >=2) || (ct2>=1)) && (resilScore < 5)) {   // THIRD TEST
                blueListArr.push(studentOutput);
             }
@@ -1413,8 +1416,130 @@ router.post("/batch-download", function(req, res, next) {
 });
 
 router.post('/dashboard-gen', function(req, res, next) {
-  var input = req.body.inputFiles[0].data
-  var fnIndex, lnIndex, genderIndex, DomIndex, InfIndex, SteIndex, ComIndex, TheIndex, UtiIndex, AesIndex, SocIndex, IndIndex, TraIndex;
+
+  // Convert data from all source types to unified & useable form
+  function convertToUseable(report) {
+    return new Promise(function(resolve, reject) {
+      var returnObj = report;
+      if (report.uploadType === "csv upload") {
+        csv.parse(report.data, function(error, output) {
+          console.log('ASSESSMENT/INSTRUMENT LENGTH', returnObj.name + " --- " + output[0].length);
+          returnObj.data = output;
+          resolve(returnObj);
+        })
+      } else if (report.uploadType === "tti import") {
+
+      }
+    })
+  }
+
+  // Remove all Duplicates Based on Date
+  function removeDuplicates(report) {
+    var reportData = report.data;
+    var reportRole = report.role;
+
+    return new Promise(function(resolve, reject) {
+
+      // For each report type, create an array of all names (formatted) which we will run duplicate check on
+      var dupNumber = 0;
+
+      var formattedNameArr = [];
+      for (var i = 1; i < reportData.length; i++) {
+        formattedNameArr.push((reportData[i][0] + reportData[i][1]).toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").replace(/\s{2,}/g," "));
+      }
+
+        // Create an array with all the indices of a value in another array
+        function getElementIndices(arr, val) {
+          return new Promise(function(resolve, reject) {
+            var indices = [];
+            for(var k = 0; k < arr.length; k++) {
+              if (arr[k] === val) indices.push(k);
+            }
+            resolve({name: val, indices: indices});
+          })
+        }
+
+        // Create matchObj Object
+        function dupCheckArr(arr) {
+          return new Promise(function(resolve, reject) {
+            for (var l = 0; l < arr.length; l++) {
+              getElementIndices(arr, arr[l])
+              .then(function(data) {
+                matchObj[data.name] = data.indices;
+                if (l === arr.length) resolve()
+              }).catch(function(error) {
+                console.log(error);
+              })
+            }
+          })
+        }
+
+        var matchObj = {};
+        var matchArr = [];
+
+        dupCheckArr(formattedNameArr)
+        .then(function() {
+          // console.log('matchObj', matchObj);
+          mOKeys = Object.keys(matchObj);
+          var removeIndices = [];
+          for (var m = 0; m < mOKeys.length; m++) {
+
+            // FOR TTI UPLOADS, dateObj will = [oldest <--> newest]
+            var dateObj = [];
+
+            for (var n = 0; n < matchObj[mOKeys[m]].length; n++) {
+              var date = new Date((reportData[matchObj[mOKeys[m]][n]][5]).split('-').join("/"));
+              dateObj.push(date)
+            }
+
+            var keepIndex = "";
+            var dateObjCount = 0;
+            if (dateObj.length > 1) {
+              if (reportRole === "Students") {
+                for (var o = dateObj.length-1; o > 0; o--) {
+                  if ((dateObj[o] - dateObj[o-1] || 0) > 7776000000) {
+                    keepIndex = matchObj[mOKeys[m]][o];
+                    break;
+                  } else {
+                    keepIndex = matchObj[mOKeys[m]][o-1];
+                  }
+                }
+              } else if (reportRole === "Staff") {
+                  keepIndex = matchObj[mOKeys[m]][dateObj.length-1];
+              }
+
+              for (var o = 0; o < dateObj.length; o++) {
+                if (matchObj[mOKeys[m]][o] !== keepIndex) {
+                  removeIndices.push(matchObj[mOKeys[m]][o])
+                }
+              }
+            }
+          }
+          dupNumber = removeIndices.length;
+          // console.log('dupNumber:', dupNumber);
+          function sortDescending(a,b) {
+            return b-a;
+          }
+          removeIndices.sort(sortDescending);
+          // console.log('report length before:', reportData.length);
+          if (removeIndices.length) {
+            for (var o = 0; o < removeIndices.length; o++) {
+              reportData.splice(Number(removeIndices[o]), 1);
+              if (o === removeIndices.length-1) {
+                report.data = reportData;
+                resolve({dupNumber: dupNumber, report: report});
+              }
+            }
+          } else {
+            report.data = reportData;
+            resolve({dupNumber: dupNumber, report: report});
+          }
+          // console.log("report length after", reportData.length);
+        }).catch(function(error) {
+          console.log(error);
+        })
+    })
+  }
 
   function setColumnHeaders(data) {
     return new Promise(function(resolve, reject) {
@@ -1509,18 +1634,368 @@ router.post('/dashboard-gen', function(req, res, next) {
     })
   }
 
-  setColumnHeaders(input)
-  .then(function(data1) {
-    console.log(1, data1);
-    compile(data1.data, data1.indexArr)
-    .then(function(data2) {
-      console.log(2, data2);
-      res.send({ data: data2 });
+  // STEP 1 of raw input preparation:
+    // 1. converts all data objects to useable javascript objects with unified format, regardless of source
+    // 2. removes duplicates from all individual reports
+    // 3. reorganizes all data by class/school year or staff groupings
+
+  function prepareRawObject1(input0) {
+    return new Promise(function(resolve, reject) {
+
+      return new Promise(function(resolve, reject) {
+
+        var count = 0;
+        var staffCount =0;
+        var useableObject1 = {}
+        console.log('input0', input0);
+        bPromise.each(input0, function(element, i, length) {
+          console.log(length);
+          convertToUseable(input0[i])
+          .then(function(parsedReport) {
+            removeDuplicates(parsedReport)
+            .then(function(data) {
+              console.log('data', data);
+
+              count ++;
+              console.log('count', count);
+              var currentReport = data.report;
+              console.log(1);
+              if (currentReport.role === "Staff") {
+                var key = "Staff";
+              } else if (currentReport.role === "Students"){
+                var key = currentReport.class + "/" + currentReport.schoolYearTaken;
+              }
+              console.log(2);
+              if (useableObject1[key]) {
+                console.log(3.2);
+                useableObject1[key].typeArr.push(currentReport.uploadType);
+                useableObject1[key].nameArr.push(currentReport.name);
+                useableObject1[key].role = currentReport.role;
+                useableObject1[key].data.push(currentReport.data);
+                console.log('3.2.A');
+              } else {
+                console.log(3.1);
+                // Create fresh data set for group object
+                useableObject1[key] = {};
+                useableObject1[key].typeArr = [];
+                useableObject1[key].nameArr = [];
+                useableObject1[key].data = [];
+
+                // Populate group object with current report data
+                useableObject1[key].typeArr.push(currentReport.uploadType);
+                useableObject1[key].nameArr.push(currentReport.name);
+                useableObject1[key].role = currentReport.role;
+                useableObject1[key].data.push(currentReport.data);
+                console.log('3.1.A');
+              }
+
+              console.log(count, length);
+              if (count === length) resolve(useableObject1);
+            })
+          })
+        })
+      }).then(function(data) {
+        console.log('----- prepareRawObject1 Complete -----' );
+        resolve(data);
+      })
     })
-  })
+  }
+
+  // STEP 2 of raw input preparation
+    // 1. Create uploadTypes array with assessment/instrument type for each data upload
+    // 2. Create assessment/instrument priority index for setting column headers & data compilation
+    // 3. Define compiled data column headers
+    // 4. populate compiled data field with available data
+
+  function prepareRawObject2(input1) {
+    // console.log('inside pRO2');
+    var input1Keys = Object.keys(input1);
+    return new Promise(function(resolve, reject) {
+
+      // 1
+      for (var i = 0; i < input1Keys.length; i++) {
+        var currentGrouping = input1[input1Keys[i]];
+        // console.log('currentGrouping - ' + input1Keys[i] + "- i" + ":",currentGrouping);
+        var reportDataArray = currentGrouping.data;
+        currentGrouping.uploadTypes = [];
+        for (var j = 0; j < reportDataArray.length; j++) {
+          var reportLengthID = reportDataArray[j][0].length
+          var exportTypes = Object.keys(TTI.exportTypeIdentifier)
+          for (var k = 0; k < exportTypes.length; k++) {
+            if (TTI.exportTypeIdentifier[exportTypes[k]].length === reportLengthID) {
+              currentGrouping.uploadTypes.push(exportTypes[k])
+            }
+          }
+        }
+      }
+
+      //2
+      for (var groupKey in input1) {
+        var group = input1[groupKey];
+        group.uploadTypePriorityIndex = [];
+        // For the first found Trimetrix Report, throw it into the first priority position and break out of loop.
+        for (var i = 0; i < group.uploadTypes.length; i++) {
+          if (group.uploadTypes[i] === "Trimetrix HD Talent (Legacy)") {
+            group.uploadTypePriorityIndex.push(i);
+            break;
+          }
+        };
+        // If there is a Trimetrix Report (only way length doesn't = 0), look for Talent Insights and if found, make first priority.
+        if (!group.uploadTypePriorityIndex.length) {
+          for (var i = 0; i < group.uploadTypes.length; i++) {
+            if (group.uploadTypes[i] === "Talent Insights") {
+              group.uploadTypePriorityIndex.push(i);
+              break;
+            }
+          };
+          if(group.uploadTypePriorityIndex.length === 1) {
+            for (var i = 0; i < group.uploadTypes.length; i++) {
+              if (group.uploadTypes[i] === "TTI DNA Personal Soft Skills Indicator") {
+                group.uploadTypePriorityIndex.push(i);
+                break;
+              }
+            };
+            for (var i = 0; i < group.uploadTypes.length; i++) {
+              if (group.uploadTypes[i] === "Hartman Value Profile") {
+                group.uploadTypePriorityIndex.push(i);
+                break;
+              }
+            };
+          } else {
+            console.log(groupKey + " group not included. No Trimetrix or Talent Insights found.")
+          }
+        }
+      }
+
+      //3
+      var studentUMD = ['FULL NAME', 'FIRST NAME', 'LAST NAME', 'GENDER', 'CLASS', 'SCHOOL YEAR', 'REPORT DATE', 'EMAIL', 'COMPANY', 'POSITION', 'LINK', 'PASSWORD' ];
+      var staffUMD = ['FULL NAME', 'FIRST NAME', 'LAST NAME', 'GENDER', 'REPORT DATE', 'EMAIL', 'COMPANY', 'POSITION', 'LINK', 'PASSWORD' ];
+
+      for (var groupKey in input1) {
+      // console.log("---------- NEW GROUP: " + groupKey + " ----------");
+        var group = input1[groupKey];
+        var groupRole = group.role;
+        var groupDataArr = group.data;
+        var groupPriorityIndex = group.uploadTypePriorityIndex;
+        var compiledDataCH;
+
+        if (groupRole === "Staff") {
+          compiledDataCH = staffUMD;
+        } else {
+          compiledDataCH = studentUMD;
+        }
+        // console.log('compiled Data CH:', compiledDataCH);
+
+        for (var i = 0; i < groupDataArr.length; i++) {
+          // console.log("---------- DATA SET " + i + " ----------");
+          var currentDataSetCH = groupDataArr[groupPriorityIndex[i]][0]
+          // console.log(i, currentDataSetCH);
+          var matchCount = 0
+          for (var j = 0; j < currentDataSetCH.length; j++) {
+            var currentColumnHeader = currentDataSetCH[j].toUpperCase();
+            // console.log("----- currentColumnHeader " + j + ' -----');
+            // console.log('assessing addition of:', currentColumnHeader);
+            var match = false;
+            // console.log(compiledDataCH);
+            for (var k = 0; k < compiledDataCH.length; k++) {
+              // console.log('compiledDataCH[k] === ' + compiledDataCH[k]);
+              // console.log('MATCH COMPARISON:  ' + 'UMD: ' + compiledDataCH[k] + ", new: " + currentColumnHeader);
+              if (currentColumnHeader === compiledDataCH[k]) {
+                match = true;
+                matchCount ++;
+                break;
+              }
+            }
+            if (!match) {
+              compiledDataCH.push(currentColumnHeader);
+              // console.log('added ' + currentColumnHeader + ' to ' +  groupRole);
+            }
+          }
+          // console.log('matchCount ----------', matchCount);
+        }
+      }
+      console.log('studentData CH:', studentUMD);
+      console.log('staffData CH:', staffUMD);
+      input1.compiledData = { studentData: [studentUMD], staffData: [staffUMD] };
+      console.log('input1 cD after step 2.3', input1.compiledData);
+
+
+      // 4
+
+      console.log('4.1');
+      for (var groupKey in input1) {
+        function titleCase(str) {
+          return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+        }
+        if (groupKey === 'compiledData') {
+          console.log('compiledData groupKey not included');
+        } else {
+
+          var group = input1[groupKey];
+          var groupRole = group.role;
+          var groupDataArr = group.data;
+          var groupPriorityIndex = group.uploadTypePriorityIndex;
+          var compiledData;
+          var sClass;
+          var sSchoolYear;
+
+          console.log('input1 + groupKey in step 4', input1, groupKey);
+          console.log('currGroup', group);
+
+          if (groupRole === "Staff") {
+            compiledData = input1.compiledData.staffData;
+          } else if (groupRole === "Students") {
+            compiledData = input1.compiledData.studentData;
+            sClass = groupKey.substring(0,4);
+            sSchoolYear = groupKey.substring(5);
+          }
+
+          var prioritySet = groupDataArr[groupPriorityIndex[0]];
+
+          // Set UMD anchors for studentData/staffData using prioritySet
+          for (var j = 1; j < prioritySet.length; j++) {
+            var umdSET = [];
+            for (var k = 0; k < 9; k++) {
+              umdSET.push(prioritySet[j][k])
+            }
+            if (groupRole === "Staff") {
+              compiledData.push([
+                titleCase(umdSET[1]) + ", " + titleCase(umdSET[0]),
+                titleCase(umdSET[0]),
+                titleCase(umdSET[1]),
+                titleCase(umdSET[6]),
+                titleCase(umdSET[5]),
+                titleCase(umdSET[2]),
+                titleCase(umdSET[3]),
+                titleCase(umdSET[4]),
+                titleCase(umdSET[7]),
+                titleCase(umdSET[8]),
+              ])
+            } else if (groupRole === "Students") {
+              compiledData.push([
+                titleCase(umdSET[1]) + ", " + titleCase(umdSET[0]),
+                titleCase(umdSET[0]),
+                titleCase(umdSET[1]),
+                titleCase(umdSET[6]),
+                sClass,
+                sSchoolYear,
+                titleCase(umdSET[5]),
+                titleCase(umdSET[2]),
+                titleCase(umdSET[3]),
+                titleCase(umdSET[4]),
+                titleCase(umdSET[7]),
+                titleCase(umdSET[8]),
+              ])
+            }
+          }
+        }
+      }
+
+      var studentData = input1.compiledData.studentData;
+      var staffData = input1.compiledData.staffData;
+      // console.log('current input1 cD', input1.compiledData);
+
+      console.log('4.2');
+      for (var groupKey in input1) {
+        if (groupKey === 'compiledData') {
+          console.log('compiledData groupKey not included');
+        } else {
+          console.log('inside');
+          var group = input1[groupKey];
+          var groupRole = group.role;
+          var groupDataArr = group.data;
+          var groupPriorityIndex = group.uploadTypePriorityIndex;
+          if (groupRole === "Staff") {
+            var compiledData = input1.compiledData.staffData;
+            var dataStart = 10;
+          } else if (groupRole === "Students") {
+            var compiledData = input1.compiledData.studentData;
+            var dataStart = 12;
+          }
+          var chRef = compiledData[0];
+          // console.log('chRef', chRef);
+          for (var i = 1; i < compiledData.length; i++) {
+            // console.log(compiledData[i]);
+            var currCdRow = compiledData[i]
+            var anchorNameString = (currCdRow[1] + currCdRow[2]).toLowerCase()
+            // console.log(nameString);
+            for (var j = 0; j < groupPriorityIndex.length; j++) {
+              var currentGroup = groupDataArr[groupPriorityIndex[j]];
+              for (var k = 1; k < currentGroup.length; k++) {
+                // console.log('currGroup ' + k, currentGroup[k]);
+                var nameString = (currentGroup[k][0] + currentGroup[k][1]).toLowerCase();
+                console.log(anchorNameString, nameString);
+                if (anchorNameString === nameString) {
+                  console.log("-----------------");
+                  console.log(currCdRow, currentGroup[k]);
+                  var dataChRef = currentGroup[0]
+                  for (var m = 0; m < dataChRef.length; m++) {
+                    console.log("----------");
+                    for (var l = dataStart; l < chRef.length; l++) {
+                      if (dataChRef[m].toUpperCase() === chRef[l].toUpperCase()) {
+                        console.log('CH REF MATCH', dataChRef[m], chRef[l]);
+                        console.log(m, l);
+                        console.log(i, k);
+                        if (!currCdRow[l]) {
+                          console.log('no ' + chRef[l] + ', populate with ' + currentGroup[0][m], currentGroup[k][m] || "''" );
+                          currCdRow[l] = currentGroup[k][m] || "";
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      for (var i = 0; i < studentData.length; i++) {
+        console.log(studentData[i]);
+      };
+      resolve(input1)
+    })
+  }
+
+  var dataObject = { students: [], staff: [] }
+  var input = req.body.inputFiles;
+
+  function finalExecution(input0) {
+
+    prepareRawObject1(input0)
+    .then(function(input1) {
+      console.log('INPUT1:', input1);
+      prepareRawObject2(input1)
+      .then(function(input2) {
+        console.log('INPUT2:', input2);
+        console.log('Input 2 sD CH', input2.compiledData.studentData[0]);
+        res.send(input2)
+      })
+    }).catch(function(error) {
+      console.log(error);
+    });
+
+    // compileByClass(input)
+
+    // bPromise.each(input, function(element, i, length) {
+    //   console.log(i);
+    //   var currentReport = convertToUseable(input[i])
+    //
+    //   setColumnHeaders(currentReport.data)
+    //   .then(function(data1) {
+        // console.log(1, data1);
+        // compile(data1.data, data1.indexArr)
+        // .then(function(data2) {
+        //   // console.log(2, data2);
+        //   res.send({ data: data2 });
+        // })
+    //   })
+    // })
+
+  }
+
+  finalExecution(input);
 
 })
-
 
   socket.on('disconnect', function() {
     console.log('Client disconnected.');

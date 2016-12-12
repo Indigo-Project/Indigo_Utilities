@@ -199,12 +199,73 @@ h5.black {
 p.input-subtext {
   font-size: 10px; }
 
+section.instructions {
+  border-bottom: 1px solid black; }
+
+div.option-select-1 {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px; }
+
+div.option-select-2 {
+  display: flex; }
+  div.option-select-2 button {
+    width: 200px;
+    margin-right: 20px;
+    background-color: #f1f1f1;
+    color: black;
+    border: 1px solid black;
+    box-shadow: -1px 1px 1px 0px black; }
+  div.option-select-2 .option-selected {
+    background-color: #195aff;
+    color: white;
+    outline: none;
+    border: 1px solid black;
+    box-shadow: -1px 1px 1px 0px black; }
+
+div.report-metadata {
+  display: flex;
+  margin-bottom: 20px; }
+  div.report-metadata div {
+    display: flex;
+    flex-direction: column;
+    margin-right: 25px; }
+
+select.role {
+  width: 150px; }
+
+input.year-taken {
+  width: 250px; }
+
+input.student-class {
+  width: 100px; }
+
+div.upload-action {
+  display: flex; }
+  div.upload-action input {
+    margin-right: 25px; }
+
+form.add-reports-dg {
+  display: flex;
+  flex-direction: column; }
+
+form.download-form div {
+  display: flex;
+  flex-direction: column; }
+form.download-form input {
+  width: 400px; }
+
+table.queued-reports {
+  width: 600px; }
+
 section.dashboard {
   margin: 5vh 5vw 5vh 0vw; }
 
 section.dashboard-frame {
-  height: 600px;
-  width: 1100px;
+  display: flex;
+  flex-direction: column;
+  height: 750px;
+  width: 100%;
   border: 1px solid black;
   padding: 10px; }
 
@@ -225,35 +286,178 @@ p.dashboard-nav {
 p.dash-frame-selected {
   background-color: #accbff; }
 
-div.student-data {
-  height: 500px;
+section.studentData {
+  display: flex;
+  flex-direction: column; }
+  section.studentData section.sd-row1 {
+    height: 75px; }
+    section.studentData section.sd-row1 h3 {
+      margin: 0px; }
+  section.studentData section.sd-row2 {
+    display: flex; }
+    section.studentData section.sd-row2 section.sd-column1 {
+      display: flex;
+      flex-direction: column;
+      width: 17%;
+      height: 655px; }
+    section.studentData section.sd-row2 section.sd-column2 {
+      display: flex;
+      flex-direction: column;
+      width: 87%;
+      height: 655px; }
+      section.studentData section.sd-row2 section.sd-column2 section.sd-column2-row1 {
+        display: flex;
+        justify-content: flex-start;
+        width: 100%; }
+      section.studentData section.sd-row2 section.sd-column2 section.sd-column2-row2 {
+        display: flex;
+        width: 100%;
+        height: 133px; }
+
+div.student-data-table {
+  height: fit-content;
   width: fit-content;
-  overflow-y: scroll;
+  margin: 0px;
   border: 1px solid black; }
 
 table.student-data {
-  width: fit-content;
+  width: 1050px;
+  table-layout: fixed;
+  border-collapse: collapse;
+  border-bottom: 1px solid #ccc; }
+  table.student-data td:nth-child(1), table.student-data th:nth-child(1) {
+    width: 150px; }
+  table.student-data td:nth-child(2), table.student-data th:nth-child(2) {
+    width: 50px; }
+  table.student-data td:nth-child(3), table.student-data th:nth-child(3) {
+    width: 50px; }
+  table.student-data td:nth-child(4), table.student-data th:nth-child(4) {
+    width: 80px; }
+  table.student-data td:nth-child(5), table.student-data th:nth-child(5) {
+    width: 80px; }
+  table.student-data td:nth-child(6), table.student-data th:nth-child(6) {
+    width: 80px; }
+  table.student-data td:nth-child(7), table.student-data th:nth-child(7) {
+    width: 80px; }
+  table.student-data td:nth-child(8), table.student-data th:nth-child(8) {
+    width: 80px; }
+  table.student-data td:nth-child(9), table.student-data th:nth-child(9) {
+    width: 80px; }
+  table.student-data td:nth-child(10), table.student-data th:nth-child(10) {
+    width: 80px; }
+  table.student-data td:nth-child(11), table.student-data th:nth-child(11) {
+    width: 80px; }
+  table.student-data td:nth-child(12), table.student-data th:nth-child(12) {
+    width: 80px; }
+  table.student-data th:nth-child(13) {
+    width: 100px; }
+  table.student-data td:nth-child(13) {
+    width: 85px; }
+  table.student-data thead tr {
+    display: block;
+    position: relative; }
+  table.student-data tbody {
+    display: block;
+    overflow: auto;
+    width: 1071px;
+    height: 500px; }
+
+section.student-filter-outer {
+  width: 100%;
+  height: 215px; }
+
+section.student-filter-inner {
+  width: 80%;
+  border: 1px solid #949494;
+  padding: 5px; }
+
+div.student-filter {
+  width: 100%;
+  height: 140px;
+  overflow: auto; }
+
+section.class-filter-outer {
+  width: 100%;
+  height: 100px; }
+
+section.class-filter-inner {
+  width: 80%;
+  margin-top: 40px;
+  border: 1px solid #c6c6c6;
+  padding: 5px; }
+
+div.class-filter {
+  width: 100%;
+  height: 70px;
+  height: auto; }
+
+section.gender-filter-outer {
+  width: 100%;
+  height: 305px; }
+
+section.gender-filter-inner {
+  width: 80%;
+  margin-top: 40px;
+  border: 1px solid #c6c6c6;
+  padding: 5px; }
+
+div.gender-filter {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 70px;
+  height: auto; }
+
+section.gender-filter {
+  width: 100%;
+  height: 305px; }
+
+section.student-count {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 25%;
+  height: 132.38px;
+  margin-left: 50px; }
+
+div.student-count h1 {
+  text-align: center;
+  margin: 0; }
+div.student-count h3 {
+  text-align: center;
+  color: #c6c6c6;
+  margin: 0; }
+
+section.adult-avgs {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 75%;
+  height: 132.38px; }
+
+table.adult-avgs {
   border-collapse: collapse; }
+  table.adult-avgs td, table.adult-avgs th {
+    padding: 3px 7px 3px 6px;
+    text-align: left; }
+  table.adult-avgs th {
+    background-color: #78d4dd;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    border-left: 0.5px solid #d2d2d2;
+    border-right: 0.5px solid #d2d2d2; }
 
 th.student-data {
   background: #333;
   color: white;
   font-weight: bold;
-  cursor: s-resize;
-  background-repeat: no-repeat;
-  background-position: 3% center; }
+  cursor: s-resize; }
 
 td.student-data, th.student-data {
-  padding: 6px;
+  padding: 4px;
   border: 1px solid #ccc;
   text-align: left;
-  font-size: 10px; }
-
-th.des:after {
-  content: "\21E9"; }
-
-th.asc:after {
-  content: "\21E7"; }
+  font-size: 9px; }
 
 .chart div {
   font: 10px sans-serif;

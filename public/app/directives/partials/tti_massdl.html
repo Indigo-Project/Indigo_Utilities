@@ -69,7 +69,7 @@
       <h5 ng-show="view.linkIdStatus === 'unverified'"><span class="glyphicon glyphicon-remove"></span> Link Not Verified</h5>
       <h5 ng-show="view.linkIdStatus === 'incomplete'"> Incomplete Link ID ...</h5>
     </div>
-    <div class="report-type-outer-container"ng-show="view.linkIdStatus === 'verified'">
+    <div class="report-type-outer-container" ng-show="view.linkIdStatus === 'verified'">
       <label>Select Report Types For Download (must select at least 1)</label>
       <div class="report-type container">
         <label class="checkbox" ng-repeat="reportType in data.reportTypeOptions">
