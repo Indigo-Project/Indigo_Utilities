@@ -94,7 +94,7 @@
                 <form ng-model="view.studentFilter">
                   <input style="margin: 0;" type="text">
                   <div class="student-filter checkbox">
-                    <label ng-repeat="student in data.studentData"><input type="checkbox" value="{{student[0]}}" ng-checked="data.studentFilter.indexOf(student[0]) > -1" ng-click="view.toggleStudentSelection(student[0])">{{student[0]}}</label>
+                    <!-- <label ng-repeat="student in data.studentData"><input type="checkbox" value="{{student[0]}}" ng-checked="data.studentFilter.indexOf(student[0]) > -1" ng-click="view.toggleStudentSelection(student[0])">{{student[0]}}</label> -->
                   </div>
                 </form>
               </section>
@@ -104,7 +104,7 @@
                 <h4 style="margin: 0 0 5px 0;">Class</h4>
                 <form ng-model="view.classFilter">
                   <div class="class-filter checkbox">
-                    <label ng-repeat="class in data.studentClasses"><input type="checkbox" value="{{class}}" ng-checked="data.classFilter.indexOf(class) > -1" ng-click="view.toggleClassSelection(class)">{{class}}</label>
+                    <!-- <label ng-repeat="class in data.studentClasses"><input type="checkbox" value="{{class}}" ng-checked="data.classFilter.indexOf(class) > -1" ng-click="view.toggleClassSelection(class)">{{class}}</label> -->
                   </div>
                 </form>
               </section>
@@ -115,8 +115,8 @@
                   <h4 style="margin: 0 0 5px 0;">Gender</h4>
                   <form ng-model="view.genderFilter">
                     <div class="gender-filter checkbox">
-                      <label><input type="checkbox" value="M" ng-checked="data.genderFilter.indexOf('M') > -1" ng-click="view.toggleGenderSelection('M')">Male</label>
-                      <label><input type="checkbox" value="F" ng-checked="data.genderFilter.indexOf('F') > -1" ng-click="view.toggleGenderSelection('F')">Female</label>
+                      <!-- <label><input type="checkbox" value="M" ng-checked="data.genderFilter.indexOf('M') > -1" ng-click="view.toggleGenderSelection('M')">Male</label>
+                      <label><input type="checkbox" value="F" ng-checked="data.genderFilter.indexOf('F') > -1" ng-click="view.toggleGenderSelection('F')">Female</label> -->
                     </div>
                   </form>
                 </section>

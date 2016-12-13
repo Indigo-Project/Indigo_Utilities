@@ -204,7 +204,15 @@ section.student-filter-inner {
 div.student-filter {
   width: 100%;
   height: 140px;
-  overflow: auto;
+  overflow-y: scroll;
+  overflow-x: auto;
+  label {
+    margin: 0 0 0 10px;
+    p {
+      display: inline;
+      margin: 0;
+    }
+  }
 }
 
 section.class-filter-outer {
@@ -225,6 +233,13 @@ div.class-filter {
   width: 100%;
   height: 70px;
   height: auto;
+  label {
+    margin: 0 0 0 10px;
+    p {
+      display: inline;
+      margin: 0;
+    }
+  }
 }
 
 section.gender-filter-outer {
@@ -246,6 +261,13 @@ div.gender-filter {
   width: 100%;
   height: 70px;
   height: auto;
+  label {
+    margin: 0 0 0 10px;
+    p {
+      display: inline;
+      margin: 0;
+    }
+  }
 }
 
 section.gender-filter {
