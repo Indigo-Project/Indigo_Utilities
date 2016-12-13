@@ -6,15 +6,18 @@ app.controller('Dashboard_Gen_Controller', ['$scope', '$state', '$http', 'Main_S
 
   $scope.data.schoolName = "";
   $scope.data.dataObject = "";
+  $scope.data.studentFilter = [];
+  $scope.data.classFilter = [];
+  $scope.data.genderFilter = [];
 
   $scope.view.selectedFunction = "dashboard_gen";
   $scope.view.uploadOptionStatus = "no selection"
   $scope.view.displayDashboard = false;
   $scope.view.dashboardSection = "studentData";
 
-  $scope.view.studentFilter = "";
-  $scope.view.classFilter = "";
-  $scope.view.genderFilter = "";
+  $scope.view.studentFilter = [];
+  $scope.view.classFilter = [];
+  $scope.view.genderFilter = [];
 
   // dynamically change options based on selected function
   $scope.view.accessFunction = function () {
@@ -30,8 +33,38 @@ app.controller('Dashboard_Gen_Controller', ['$scope', '$state', '$http', 'Main_S
     }
   }
 
-  $scope.view.applyStudentFilter = function() {
+  $scope.view.applyFilters = function() {
+    Dashboard_Gen.applyFilters($scope.view.studentFilter, $scope.view.classFilter, $scope.view.genderFilter);
+  }
 
+  $scope.view.toggleStudentSelection = function(studentName) {
+    var i = $scope.data.studentFilter.indexOf(studentName)
+    if (i > -1) {
+      $scope.data.studentFilter.splice(i, 1);
+    } else {
+      $scope.data.studentFilter.push(studentName);
+    }
+    console.log($scope.data.studentFilter);
+  }
+
+  $scope.view.toggleClassSelection = function(className) {
+    var i = $scope.data.classFilter.indexOf(className)
+    if (i > -1) {
+      $scope.data.classFilter.splice(i, 1);
+    } else {
+      $scope.data.classFilter.push(className);
+    }
+    console.log($scope.data.classFilter);
+  }
+
+  $scope.view.toggleGenderSelection = function(gender) {
+    var i = $scope.data.genderFilter.indexOf(gender)
+    if (i > -1) {
+      $scope.data.genderFilter.splice(i, 1);
+    } else {
+      $scope.data.genderFilter.push(gender);
+    }
+    console.log($scope.data.genderFilter);
   }
 
   // $scope.uploader.file = undefined;
@@ -98,15 +131,16 @@ app.controller('Dashboard_Gen_Controller', ['$scope', '$state', '$http', 'Main_S
         $scope.data.studentData = data.data.compiledData.studentData;
         var dataObjKeys = Object.keys(data.data);
         $scope.data.studentClasses = [];
+
+        // generate class array
         for (var i = 0; i < dataObjKeys.length; i++) {
-          console.log(dataObjKeys[i]);
           if (dataObjKeys[i] === "Staff" || dataObjKeys[i] === "compiledData") {
             console.log('not a student group');
           } else {
             $scope.data.studentClasses.push(dataObjKeys[i].substring(0,4))
           }
         }
-        console.log($scope.data.studentClasses);
+
         $scope.view.displayDashboard = true;
         Dashboard_Gen.createDashboard(data)
         $scope.$apply();

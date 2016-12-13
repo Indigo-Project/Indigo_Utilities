@@ -1423,7 +1423,7 @@ router.post('/dashboard-gen', function(req, res, next) {
       var returnObj = report;
       if (report.uploadType === "csv upload") {
         csv.parse(report.data, function(error, output) {
-          console.log('ASSESSMENT/INSTRUMENT LENGTH', returnObj.name + " --- " + output[0].length);
+          // console.log('ASSESSMENT/INSTRUMENT LENGTH', returnObj.name + " --- " + output[0].length);
           returnObj.data = output;
           resolve(returnObj);
         })
@@ -1647,34 +1647,28 @@ router.post('/dashboard-gen', function(req, res, next) {
         var count = 0;
         var staffCount =0;
         var useableObject1 = {}
-        console.log('input0', input0);
+        // console.log('input0', input0);
         bPromise.each(input0, function(element, i, length) {
-          console.log(length);
           convertToUseable(input0[i])
           .then(function(parsedReport) {
             removeDuplicates(parsedReport)
             .then(function(data) {
-              console.log('data', data);
+              // console.log('data', data);
 
               count ++;
-              console.log('count', count);
+              // console.log('count', count);
               var currentReport = data.report;
-              console.log(1);
               if (currentReport.role === "Staff") {
                 var key = "Staff";
               } else if (currentReport.role === "Students"){
                 var key = currentReport.class + "/" + currentReport.schoolYearTaken;
               }
-              console.log(2);
               if (useableObject1[key]) {
-                console.log(3.2);
                 useableObject1[key].typeArr.push(currentReport.uploadType);
                 useableObject1[key].nameArr.push(currentReport.name);
                 useableObject1[key].role = currentReport.role;
                 useableObject1[key].data.push(currentReport.data);
-                console.log('3.2.A');
               } else {
-                console.log(3.1);
                 // Create fresh data set for group object
                 useableObject1[key] = {};
                 useableObject1[key].typeArr = [];
@@ -1686,10 +1680,10 @@ router.post('/dashboard-gen', function(req, res, next) {
                 useableObject1[key].nameArr.push(currentReport.name);
                 useableObject1[key].role = currentReport.role;
                 useableObject1[key].data.push(currentReport.data);
-                console.log('3.1.A');
+                // console.log('3.1.A');
               }
 
-              console.log(count, length);
+              // console.log(count, length);
               if (count === length) resolve(useableObject1);
             })
           })
@@ -1814,10 +1808,10 @@ router.post('/dashboard-gen', function(req, res, next) {
           // console.log('matchCount ----------', matchCount);
         }
       }
-      console.log('studentData CH:', studentUMD);
-      console.log('staffData CH:', staffUMD);
+      // console.log('studentData CH:', studentUMD);
+      // console.log('staffData CH:', staffUMD);
       input1.compiledData = { studentData: [studentUMD], staffData: [staffUMD] };
-      console.log('input1 cD after step 2.3', input1.compiledData);
+      // console.log('input1 cD after step 2.3', input1.compiledData);
 
 
       // 4
@@ -1839,8 +1833,8 @@ router.post('/dashboard-gen', function(req, res, next) {
           var sClass;
           var sSchoolYear;
 
-          console.log('input1 + groupKey in step 4', input1, groupKey);
-          console.log('currGroup', group);
+          // console.log('input1 + groupKey in step 4', input1, groupKey);
+          // console.log('currGroup', group);
 
           if (groupRole === "Staff") {
             compiledData = input1.compiledData.staffData;
@@ -1900,7 +1894,6 @@ router.post('/dashboard-gen', function(req, res, next) {
         if (groupKey === 'compiledData') {
           console.log('compiledData groupKey not included');
         } else {
-          console.log('inside');
           var group = input1[groupKey];
           var groupRole = group.role;
           var groupDataArr = group.data;
@@ -1924,20 +1917,20 @@ router.post('/dashboard-gen', function(req, res, next) {
               for (var k = 1; k < currentGroup.length; k++) {
                 // console.log('currGroup ' + k, currentGroup[k]);
                 var nameString = (currentGroup[k][0] + currentGroup[k][1]).toLowerCase();
-                console.log(anchorNameString, nameString);
+                // console.log(anchorNameString, nameString);
                 if (anchorNameString === nameString) {
-                  console.log("-----------------");
-                  console.log(currCdRow, currentGroup[k]);
+                  // console.log("-----------------");
+                  // console.log(currCdRow, currentGroup[k]);
                   var dataChRef = currentGroup[0]
                   for (var m = 0; m < dataChRef.length; m++) {
-                    console.log("----------");
+                    // console.log("----------");
                     for (var l = dataStart; l < chRef.length; l++) {
                       if (dataChRef[m].toUpperCase() === chRef[l].toUpperCase()) {
-                        console.log('CH REF MATCH', dataChRef[m], chRef[l]);
-                        console.log(m, l);
-                        console.log(i, k);
+                        // console.log('CH REF MATCH', dataChRef[m], chRef[l]);
+                        // console.log(m, l);
+                        // console.log(i, k);
                         if (!currCdRow[l]) {
-                          console.log('no ' + chRef[l] + ', populate with ' + currentGroup[0][m], currentGroup[k][m] || "''" );
+                          // console.log('no ' + chRef[l] + ', populate with ' + currentGroup[0][m], currentGroup[k][m] || "''" );
                           currCdRow[l] = currentGroup[k][m] || "";
                         }
                       }
@@ -1949,9 +1942,17 @@ router.post('/dashboard-gen', function(req, res, next) {
           }
         }
       }
+      console.log(studentData.length);
+      // console.log(studentData[0]);
       for (var i = 0; i < studentData.length; i++) {
-        console.log(studentData[i]);
-      };
+        console.log('studentData ' + i, studentData[i]);
+      }
+      input1.compiledData.columnHeaders = [input1.compiledData.studentData[0], input1.compiledData.staffData[0]];
+      studentData.shift();
+      staffData.shift();
+      studentData.sort(function(a, b) {
+        return a[0] < b[0] ? -1 : a[0] === b[0] ? 0 : 1;
+      })
       resolve(input1)
     })
   }
@@ -1963,33 +1964,16 @@ router.post('/dashboard-gen', function(req, res, next) {
 
     prepareRawObject1(input0)
     .then(function(input1) {
-      console.log('INPUT1:', input1);
+      // console.log('INPUT1:', input1);
       prepareRawObject2(input1)
       .then(function(input2) {
         console.log('INPUT2:', input2);
-        console.log('Input 2 sD CH', input2.compiledData.studentData[0]);
+        // console.log('Input 2 sD CH', input2.compiledData.studentData[0]);
         res.send(input2)
       })
     }).catch(function(error) {
       console.log(error);
     });
-
-    // compileByClass(input)
-
-    // bPromise.each(input, function(element, i, length) {
-    //   console.log(i);
-    //   var currentReport = convertToUseable(input[i])
-    //
-    //   setColumnHeaders(currentReport.data)
-    //   .then(function(data1) {
-        // console.log(1, data1);
-        // compile(data1.data, data1.indexArr)
-        // .then(function(data2) {
-        //   // console.log(2, data2);
-        //   res.send({ data: data2 });
-        // })
-    //   })
-    // })
 
   }
 

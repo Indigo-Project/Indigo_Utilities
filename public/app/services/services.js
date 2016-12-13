@@ -157,10 +157,10 @@ app.factory('Dashboard_Gen', ['$http', function($http) {
 
     createDashboard: function(data) {
 
-      // console.log(data.data);
+      console.log(data.data);
       var dashData = data.data.compiledData.studentData;
-      var sdCHs = dashData[0]
-      // console.log(sdCHs);
+      var sdCHs = data.data.compiledData.columnHeaders[0];
+      console.log(sdCHs);
       var dashValCHs = ["FULL NAME", "GENDER", "CLASS", "D NATURAL (%)", "I NATURAL (%)", "S NATURAL (%)", "C NATURAL (%)", "TEN_THE", "TEN_UTI", "TEN_AES", "TEN_SOC", "TEN_IND", "TEN_TRA"];
       var dashboardCHs = ["Students", "Gender", "Class", "Dominance", "Influencing", "Steadiness", "Compliance", "Theoretical", "Utilitarian", "Aesthetic", "Social", "Individualistic", "Traditional"];
       var dashValsIndex = [];
@@ -216,13 +216,15 @@ app.factory('Dashboard_Gen', ['$http', function($http) {
         else if (sort === "des") return a < b ? 1 : a == b ? 0 : -1;
       }
 
-      dashData.shift();
-
       var rows = table.append('tbody').attr('class', 'student-data')
       .selectAll('tr')
       .data(dashData).enter()
       .append('tr').attr('class', 'student-data');
 
+      var studentFilter1 = d3.select('div.student-filter')
+      var studentFilter2 = d3.select('div.student-filter').selectAll('input');
+      console.log(studentFilter1);
+      console.log(studentFilter2);
 
       return rows.selectAll('td')
       .data(function (d,i) {
@@ -239,6 +241,10 @@ app.factory('Dashboard_Gen', ['$http', function($http) {
       .text(function (d) {
         return d.value;
       });
+
+    },
+
+    applyFilters: function(studentFilter, classFilter, genderFilter) {
 
     }
   }

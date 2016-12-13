@@ -141,7 +141,7 @@ section.studentData {
       }
       section.sd-column2-row2 {
         display: flex;
-        width: 100%;
+        width: 98%;
         height: 133px;
         // background-color: yellow;
       }
@@ -220,6 +220,8 @@ section.class-filter-inner {
 }
 
 div.class-filter {
+  display: flex;
+  flex-direction: column;
   width: 100%;
   height: 70px;
   height: auto;
@@ -255,7 +257,7 @@ section.student-count {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  width: 25%;
+  width: 23%;
   height: 132.38px;
   margin-left: 50px;
 }
@@ -276,13 +278,9 @@ section.adult-avgs {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  width: 75%;
+  width: 77%;
   height: 132.38px;
   // background-color: brown;
-}
-
-div.adult-avgs {
-
 }
 
 table.adult-avgs {
@@ -307,6 +305,10 @@ th.student-data {
 	cursor: s-resize;
 	// background-repeat: no-repeat;
   // background-position: 3% center;
+}
+
+tr.student-data:hover td {
+  font-weight: bold;
 }
 
 td.student-data, th.student-data {
