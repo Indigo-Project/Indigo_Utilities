@@ -214,6 +214,7 @@ app.factory('Dashboard_Gen', ['$http', function($http) {
         }
       })
 
+      // sort function
       function stringCompare(a, b, sort, i) {
         // console.log(i);
         if (i > 3) {
@@ -230,14 +231,15 @@ app.factory('Dashboard_Gen', ['$http', function($http) {
         else if (sort === "des") return a < b ? 1 : a == b ? 0 : -1;
       }
 
-      // filter update function
+      // apply updated filter selectios
       function update(action, filter, value) {
-        console.log(filter);
+
         if (filter === "student") action === "add" ? studentSelections.push(value) : studentSelections.splice(studentSelections.indexOf(value), 1);
         if (filter === "class") action === "add" ? classSelections.push(value) : classSelections.splice(classSelections.indexOf(value), 1);
         if (filter === "gender") action === "add" ? genderSelections.push(value) : genderSelections.splice(genderSelections.indexOf(value), 1);
 
-        console.log(filteredData);
+        var classFiltersApplied = [];
+        var genderFiltersApplied = [];
 
         // update data object with students filter
         if (studentSelections.length) {
@@ -274,7 +276,7 @@ app.factory('Dashboard_Gen', ['$http', function($http) {
           }
         } else {
           if (genderSelections.length) {
-            var filteredData = filteredData.filter(function(d,i) { 
+            var filteredData = filteredData.filter(function(d,i) {
               var gender;
               if (d[3] === 'M') {
                 gender = 'Male';
@@ -287,67 +289,139 @@ app.factory('Dashboard_Gen', ['$http', function($http) {
             var filteredData = dashData;
           }
         }
-        console.log(filteredData);
-
+        // console.log(filteredData);
+        console.log(classSelections);
+        console.log(genderSelections);
+        var secFiltersApplied = [classSelections, genderSelections];
+        setFilters(dashData, secFiltersApplied)
         setRowData(filteredData);
-
       }
 
-      function createFilters() {
+      // setup filters
+      function setFilters(data, secFiltersApplied) {
 
-        // studentFilter
-        var studentFilter = d3.select('div.student-filter')
-        var studentFilterLabels = studentFilter.selectAll('label').data(dashData).enter().append('label');
-        studentFilterLabels.append('input').attr('type', 'checkbox')
-        studentFilterLabels.append('p')
-        .text(function(d) {
-          return d[0];
-        })
-        var studentFilterInputs = studentFilter.selectAll('label > input')
-        studentFilterInputs.on("change", function(data,i,arr) {
-          var value = data[0];
-          var action = this.checked ? "add" : "remove";
-          update(action, "student", value)
-        })
+        if (secFiltersApplied) {
+          if (secFiltersApplied[0].length) {
+            console.log('class filter applied');
+            data = data.filter(function(e, i, a) {
+              return secFiltersApplied[0].indexOf(e[4]) !== -1;
+            })
+          }
+          if (secFiltersApplied[1].length) {
+            console.log('gender filter applied');
+            data = data.filter(function(e, i, a) {
+              var gTransform = e[3] === 'M' ? 'Male' : 'Female';
+              return secFiltersApplied[1].indexOf(gTransform) !== -1;
+            })
+          }
+          console.log(data);
 
-        // classFilter
-        var classFilter = d3.select('div.class-filter')
-        var classFilterLabels = classFilter.selectAll('label').data(studentClasses).enter().append('label');
-        classFilterLabels.append('input').attr('type', 'checkbox');
-        classFilterLabels.append('p')
-        .text(function(d) {
-          return d;
-        })
-        var classFilterInputs = classFilter.selectAll('label > input')
-        classFilterInputs.on("change", function(data,i,arr) {
-          var value = data;
-          var action = this.checked ? "add" : "remove";
-          update(action, "class", value)
-        })
+          var studentFilter = d3.select('div.student-filter')
+          var studentFilterLabels = studentFilter.selectAll('label').data(data, function(d) { return d })
+          var studentFilterLabelsInner = studentFilterLabels.enter().append('label');
+          studentFilterLabelsInner.append('input').attr('type', 'checkbox')
+          studentFilterLabelsInner.append('p')
+          .text(function(d) {
+            return d[0];
+          })
+          studentFilterLabels.exit().remove();
+          var studentFilterInputs = studentFilter.selectAll('label > input')
+          studentFilterInputs.on("change", function(data,i,arr) {
+            var value = data[0];
+            var action = this.checked ? "add" : "remove";
+            update(action, "student", value)
+          })
+          studentFilterLabels.exit().remove();
 
-        // genderFilter
-        var genderFilter = d3.select('div.gender-filter')
-        var genderFilterLabels = genderFilter.selectAll('label').data(['Male', 'Female']).enter().append('label');
-        genderFilterLabels.append('input').attr('type', 'checkbox');
-        genderFilterLabels.append('p')
-        .text(function(d) {
-          return d;
-        })
-        var genderFilterInputs = genderFilter.selectAll('label > input')
-        genderFilterInputs.on("change", function(data,i,arr) {
-          var value = data;
-          var action = this.checked ? "add" : "remove";
-          update(action, "gender", value)
-        })
+        } else {
+
+          // studentFilter
+          var studentFilter = d3.select('div.student-filter')
+          var studentFilterLabels = studentFilter.selectAll('label').data(data, function(d) { return d })
+          var studentFilterLabelsInner = studentFilterLabels.enter().append('label');
+          studentFilterLabelsInner.append('input').attr('type', 'checkbox')
+          studentFilterLabelsInner.append('p')
+          .text(function(d) {
+            return d[0];
+          })
+          studentFilterLabels.exit().remove();
+          var studentFilterInputs = studentFilter.selectAll('label > input')
+          studentFilterInputs.on("change", function(data,i,arr) {
+            var value = data[0];
+            var action = this.checked ? "add" : "remove";
+            update(action, "student", value)
+          })
+
+          // classFilter
+          var classFilter = d3.select('div.class-filter')
+          var classFilterLabels = classFilter.selectAll('label').data(studentClasses).enter().append('label');
+          classFilterLabels.append('input').attr('type', 'checkbox');
+          classFilterLabels.append('p')
+          .text(function(d) {
+            return d;
+          }).exit().remove();
+          var classFilterInputs = classFilter.selectAll('label > input')
+          classFilterInputs.on("change", function(data,i,arr) {
+            var value = data;
+            var action = this.checked ? "add" : "remove";
+            update(action, "class", value)
+          })
+
+          // genderFilter
+          var genderFilter = d3.select('div.gender-filter')
+          var genderFilterLabels = genderFilter.selectAll('label').data(['Male', 'Female']).enter().append('label');
+          genderFilterLabels.append('input').attr('type', 'checkbox');
+          genderFilterLabels.append('p')
+          .text(function(d) {
+            return d;
+          }).exit().remove();
+          var genderFilterInputs = genderFilter.selectAll('label > input')
+          genderFilterInputs.on("change", function(data,i,arr) {
+            var value = data;
+            var action = this.checked ? "add" : "remove";
+            update(action, "gender", value)
+          })
+
+        }
       }
 
+      // table body object reference
       var tableBody = table.append('tbody').attr('class', 'student-data');
-      // var rows = tableBody.selectAll('tr').data(dashData);
-      // .enter().append('tr').attr('class', 'student-data');
 
-      // populate rows with data, based on organization of student data
+      // search bar Functionality
+      d3.select('input.search-bar')
+        .on("keyup", function() {
+          var searchedData = dashData;
+          var text = this.value.trim();
+          console.log('keyup', text);
+
+          var searchResults = searchedData.map(function(e) {
+            console.log(e);
+            var regex = new RegExp(text + ".*", "i");
+            if (regex.test(e[0])) {
+              return regex.exec(e[0])[0]
+            }
+          })
+
+          searchResults = searchResults.filter(function(e) {
+            return e !== undefined;
+          })
+
+          searchedData = searchResults.map(function(r) {
+            return dashData.filter(function(e) {
+              return e[0].indexOf(r) !== -1
+            })
+          })
+
+          searchedData = [].concat.apply([], searchedData)
+
+          setFilters(searchedData, [[],[]]);
+
+        })
+
+      // populate rows with data, based on student data object index references
       function setRowData(rowData) {
-        console.log('setting row data', rowData);
+        // console.log('setting row data', rowData);
         var rowObj = tableBody.selectAll('tr').data(rowData, function(d) { return d });
 
         rowObj.enter().append('tr').attr('class', 'student-data')
@@ -372,7 +446,7 @@ app.factory('Dashboard_Gen', ['$http', function($http) {
 
       }
 
-      createFilters();
+      setFilters(dashData);
       setRowData(dashData);
 
     },
