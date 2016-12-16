@@ -123,9 +123,65 @@ exportTypeIdentifier = {
 
 }
 
+dashboardSchoolNames = {
+  "indigo-school": {
+    name: "Indigo Test",
+    optionDisplay: "Indigo Test (Sample)"
+  },
+  "lewiston-porter": {
+    name: "Lewiston Porter",
+    optionDisplay: "Lewiston Porter"
+  },
+  "manchester-hs": {
+    name: "Manchester High School",
+    optionDisplay: "Manchester HS"
+  },
+  "mntblo_bell-gardens": {
+    name: "Bell Gardens",
+    optionDisplay: "Montebello - Bell Gardens HS"
+  },
+  "mntblo_comm-ds": {
+    name: "Community Day School",
+    optionDisplay: "Montebello - Community DS"
+  },
+  "mntblo_mntblo-hs": {
+    name: "Montebello High School",
+    optionDisplay: "Montebello - Montebello HS"
+  },
+  "mntblo_schurr-hs": {
+    name: "Schurr High School",
+    optionDisplay: "Montebello - Schurr HS"
+  },
+  "mntblo_vail-hs": {
+    name: "Vail High School",
+    optionDisplay: "Montebello - Vail HS"
+  },
+  "new-vista": {
+    name: "New Vista",
+    optionDisplay: "New Vista HS"
+  },
+  "peak-to-peak": {
+    name: "Peak to Peak",
+    optionDisplay: "Peak to Peak"
+  },
+  "prospect-ridge": {
+    name: "Prospect Ridge",
+    optionDisplay: "Prospect Ridge HS"
+  },
+  "two-roads": {
+    name: "Two Roads",
+    optionDisplay: "Two Roads HS"
+  },
+  "vssa": {
+    name: "Vail Ski & Snowboard Academy",
+    optionDisplay: "Vail Ski & Snowboard Academy"
+  }
+}
+
 module.exports = {
   assessmentInfoByCode,
   assessmentInfoByName,
   APIs,
-  exportTypeIdentifier
+  exportTypeIdentifier,
+  dashboardSchoolNames
 }

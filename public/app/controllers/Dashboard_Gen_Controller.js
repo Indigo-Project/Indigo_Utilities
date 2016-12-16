@@ -1,5 +1,10 @@
 app.controller('Dashboard_Gen_Controller', ['$scope', '$state', '$http', 'Main_Service', 'TTI_API', 'socket', '$window', 'Dashboard_Gen', function($scope, $state, $http, Main_Service, TTI_API, socket, $window, Dashboard_Gen) {
 
+  console.log(document.documentElement.clientWidth);
+  console.log(document.documentElement.clientHeight);
+  console.log(window.innerWidth);
+  console.log(window.innerHeight);
+
   $scope.data = {};
   $scope.uploader = {};
   $scope.view = {};
@@ -14,6 +19,17 @@ app.controller('Dashboard_Gen_Controller', ['$scope', '$state', '$http', 'Main_S
   $scope.view.uploadOptionStatus = "no selection"
   $scope.view.displayDashboard = false;
   $scope.view.dashboardSection = "studentData";
+
+  Dashboard_Gen.getSchoolNameOptions()
+  .then(function(data) {
+    $scope.view.dashboardNameOptions = data.data;
+    var schoolNames = Object.keys($scope.view.dashboardNameOptions);
+    for (var i = 0; i < schoolNames.length; i++) {
+      $scope.view.dashboardNameOptions[schoolNames[i]].code = schoolNames[i]
+    }
+    console.log($scope.view.dashboardNameOptions);
+    $scope.$apply();
+  });
 
   $scope.view.studentFilter = [];
   $scope.view.classFilter = [];
@@ -113,38 +129,42 @@ app.controller('Dashboard_Gen_Controller', ['$scope', '$state', '$http', 'Main_S
       $scope.uploader.class = undefined;
       $('input[type=file]').val(null)
     }
-    console.log($scope.uploader.loadedFiles);
+    // console.log($scope.uploader.loadedFiles);
   }
 
   $scope.data.generateDashboard = function() {
     if ($scope.uploader.loadedFiles.length === 0) {
       alert("NO FILES HAVE BEEN LOADED FOR FORMATTING");
     } else if (!$scope.data.schoolName) {
-      alert("PLEASE ENTER THE SCHOOL NAME");
+      alert("PLEASE SELECT SCHOOL");
     } else {
-      confirm("Please confirm that the school name is spelled correctly and as intended. Upon submission for dashboard generation, this name will become the unique identifier for this school, which will be used in the future when creating new dashboards for the same school, and will also appear within the dashboard. refer to FAQ for a more detailed explanation of how this works.")
-      console.log('GENERATING');
-      Dashboard_Gen.getDataObject($scope.uploader.loadedFiles, $scope.data.schoolName)
-      .then(function(data) {
-        $scope.data.dataObject = data;
-        console.log($scope.data.dataObject);
-        $scope.data.studentData = data.data.compiledData.studentData;
-        var dataObjKeys = Object.keys(data.data);
-        $scope.data.studentClasses = [];
+      if(confirm("Please confirm that the school name correct. Upon submission for dashboard generation, this name will become a unique identifier for the dashboard, associated within the same grouping as future versions of dashboards for the same school. refer to FAQ for a more detailed explanation of how this works.")) {
+        console.log('GENERATING');
+        Dashboard_Gen.getDataObject($scope.uploader.loadedFiles)
+        .then(function(data) {
+          $scope.data.dataObject = data;
+          // console.log($scope.data.dataObject);
+          $scope.data.studentData = data.data.compiledData.studentData;
+          var dataObjKeys = Object.keys(data.data);
+          $scope.data.studentClasses = [];
 
-        // generate class array
-        for (var i = 0; i < dataObjKeys.length; i++) {
-          if (dataObjKeys[i] === "Staff" || dataObjKeys[i] === "compiledData") {
-            console.log('not a student group');
-          } else {
-            $scope.data.studentClasses.push(dataObjKeys[i].substring(0,4))
+          // generate class array
+          for (var i = 0; i < dataObjKeys.length; i++) {
+            if (dataObjKeys[i] === "Staff" || dataObjKeys[i] === "compiledData") {
+              console.log('not a student group');
+            } else {
+              $scope.data.studentClasses.push(dataObjKeys[i].substring(0,4))
+            }
           }
-        }
 
-        $scope.view.displayDashboard = true;
-        Dashboard_Gen.createDashboard(data)
-        $scope.$apply();
-      })
+          $scope.view.displayDashboard = true;
+          Dashboard_Gen.createDashboard(data)
+          $('span.sd-title-name').html($scope.data.schoolName + " ");
+          $scope.$apply();
+        })
+      } else {
+        console.log('Generation Aborted');
+      }
     }
   }
 

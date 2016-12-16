@@ -251,9 +251,13 @@ form.add-reports-dg {
 
 form.download-form div {
   display: flex;
-  flex-direction: column; }
+  flex-direction: column;
+  margin-right: 20px; }
 form.download-form input {
   width: 400px; }
+form.download-form button {
+  font-weight: bold;
+  font-size: 14px; }
 
 table.queued-reports {
   width: 600px; }
@@ -361,6 +365,13 @@ table.student-data {
     overflow: auto;
     width: 1071px;
     height: 500px; }
+    table.student-data tbody td {
+      border-bottom: 1px solid #828282;
+      border-right: 1px solid #828282; }
+      table.student-data tbody td:nth-child(3) {
+        border-right: 1px solid black; }
+      table.student-data tbody td:nth-child(7) {
+        border-right: 1px solid black; }
 
 section.student-filter-outer {
   width: 100%;
@@ -459,11 +470,13 @@ table.adult-avgs {
     padding: 3px 7px 3px 6px;
     text-align: left; }
   table.adult-avgs th {
-    background-color: #78d4dd;
+    background-color: #8afff4;
     border-top: 1px solid black;
     border-bottom: 1px solid black;
-    border-left: 0.5px solid #d2d2d2;
-    border-right: 0.5px solid #d2d2d2; }
+    border-left: 0.5px solid #828282;
+    border-right: 0.5px solid #828282; }
+  table.adult-avgs td {
+    border-left: 0.5px solid #e7e7e7; }
 
 th.student-data {
   background: #333;

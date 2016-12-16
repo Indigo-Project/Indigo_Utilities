@@ -1415,6 +1415,11 @@ router.post("/batch-download", function(req, res, next) {
 
 });
 
+router.get('/dashboard-names', function(req, res, next) {
+  console.log(TTI.dashboardSchoolNames);
+  res.send(TTI.dashboardSchoolNames)
+})
+
 router.post('/dashboard-gen', function(req, res, next) {
 
   // Convert data from all source types to unified & useable form

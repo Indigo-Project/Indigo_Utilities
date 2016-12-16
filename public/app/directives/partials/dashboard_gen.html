@@ -68,8 +68,11 @@
 
   <form class="download-form" ng-submit="data.generateDashboard()">
     <div>
-      <!-- <label for="schoolName">Enter School Name</label> -->
-      <input type="text" name="schoolName" class="enter-school-name form-control" ng-model="data.schoolName" placeholder="Enter School Name (i.e. 'Prospect Ridge Academy')"></button>
+      <select class="form-control" name="schoolName" ng-model="data.schoolName">
+        <option value=""> -- Select School -- </option>
+        <option ng-repeat="school in view.dashboardNameOptions" value="{{school.name}}">{{school.optionDisplay}}</option>
+      </select>
+      <!-- <input type="text" name="schoolName" class="enter-school-name form-control" ng-model="data.schoolName" placeholder="Enter School Name (i.e. 'Prospect Ridge Academy')"></button> -->
     </div>
     <button type="submit" class="format-data form-control">Generate Dashboard</button>
   </form>
@@ -84,7 +87,7 @@
     <section class="dashboard-frame">
       <section class="studentData" ng-show="view.dashboardSection === 'studentData'">
         <section class="sd-row1">
-          <h1 style="margin: 0;"><strong>{{data.schoolName}}</strong> <em>Indigo Dashboard</em></h1 >
+          <h1 class="sd-title" style="margin: 0;"><span class="sd-title-name"></span><span class="sd-title-static">Indigo Dashboard</span></h1>
         </section>
         <section class="sd-row2">
           <section class="sd-column1">
