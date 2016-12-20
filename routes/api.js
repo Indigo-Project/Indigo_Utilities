@@ -17,6 +17,7 @@ var zlib = require('zlib');
 var gzip = zlib.createGzip();
 var archiver = require('archiver');
 var fsE = require('fs-extra');
+var mongo = require('../Database/mongo-db');
 
 var TTI = require('../APIs/TTI_API');
 
@@ -1416,7 +1417,6 @@ router.post("/batch-download", function(req, res, next) {
 });
 
 router.get('/dashboard-names', function(req, res, next) {
-  console.log(TTI.dashboardSchoolNames);
   res.send(TTI.dashboardSchoolNames)
 })
 
@@ -1958,7 +1958,27 @@ router.post('/dashboard-gen', function(req, res, next) {
       studentData.sort(function(a, b) {
         return a[0] < b[0] ? -1 : a[0] === b[0] ? 0 : 1;
       })
+      var newDateObj = new Date();
+      var dateCreated = (newDateObj.getMonth() + 1) + "/" + newDateObj.getDate() + "/" + newDateObj.getFullYear() + " - " + newDateObj.getHours() + ":" + newDateObj.getMinutes() + ":" + newDateObj.getSeconds();
+      console.log(dateCreated);
+      input1.metaData = { version: "", dateCreated: dateCreated, dateCreatedMS: newDateObj }
       resolve(input1)
+    })
+  }
+
+  function updateDatabase(input2, schoolCode) {
+    return new Promise(function(resolve, reject) {
+      mongo.mongoDBConnect(mongo.indigoDashboardsURI)
+      .then(function(data) {
+        mongo.addDashboard(data.db, input2, req.body.schoolCode)
+        .then(function(documentId) {
+          mongo.getDocumentById(data.db, schoolCode, documentId)
+          .then(function(dashObj) {
+            resolve(dashObj)
+            mongo.mongoDBDisconnect(data.db);
+          })
+        })
+      })
     })
   }
 
@@ -1969,13 +1989,18 @@ router.post('/dashboard-gen', function(req, res, next) {
 
     prepareRawObject1(input0)
     .then(function(input1) {
-      // console.log('INPUT1:', input1);
       prepareRawObject2(input1)
       .then(function(input2) {
-        console.log('INPUT2:', input2);
-        // console.log('Input 2 sD CH', input2.compiledData.studentData[0]);
-        res.send(input2)
-      })
+        updateDatabase(input2, req.body.schoolCode)
+        .then(function(input3) {
+          console.log('INPUT 3', input3);
+          res.send(input3)
+        }).catch(function(error) {
+          console.log(error);
+        });
+      }).catch(function(error) {
+        console.log(error);
+      });
     }).catch(function(error) {
       console.log(error);
     });
@@ -1984,6 +2009,69 @@ router.post('/dashboard-gen', function(req, res, next) {
 
   finalExecution(input);
 
+})
+
+router.get('/dashboard-collections', function(req, res, next) {
+
+  // Create
+  function getAllCollectionVersions(db, collectionNames) {
+    return new Promise(function(resolve, reject) {
+      var collectionReturn = {};
+      bPromise.each(collectionNames, function(element, index, length) {
+        console.log(index, element);
+        mongo.getDashboardVersions(db, element)
+        .then(function(versions) {
+          console.log(element, versions);
+          collectionReturn[element] = versions;
+          if (Object.keys(collectionReturn).length === length) {
+            resolve(collectionReturn);
+          }
+        }).catch(function(err) {
+          reject(err);
+        })
+      })
+    })
+  }
+
+  mongo.mongoDBConnect(mongo.indigoDashboardsURI)
+  .then(function(data) {
+    mongo.getDashboardCollections(data.db)
+    .then(function(collections) {
+
+      var collectionNames = [];
+
+      // Create filtered array of school collection names for reference
+      for (var key in collections) {
+        var collection = collections[key];
+        if (collection.s.name !== "system.indexes" && collection.s.name !== "objectlabs-system" && collection.s.name !== "objectlabs-system.admin.collections") {
+          collectionNames.push(collection.s.name);
+        }
+      }
+
+      // Create collection obj with all collections and associated metadata object tied to each
+      getAllCollectionVersions(data.db, collectionNames)
+      .then(function(collectionObj) {
+        res.send(collectionObj)
+        mongo.mongoDBDisconnect(data.db);
+      })
+
+    }).catch(function(error) {
+      console.log(error);
+    })
+  })
+
+})
+
+router.post('/dashboard-data', function(req, res, next) {
+
+  mongo.mongoDBConnect(mongo.indigoDashboardsURI)
+  .then(function(data) {
+    mongo.getDashboardData(data.db, req.body.schoolCode, req.body.version)
+    .then(function(dashData) {
+      console.log('dashData', dashData);
+      res.send(dashData);
+    })
+  })
 })
 
   socket.on('disconnect', function() {

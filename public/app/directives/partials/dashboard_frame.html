@@ -1,0 +1,93 @@
+<section class="dashboard-frame">
+  <section class="studentData" ng-show="view.dashboardSection === 'studentData'">
+    <section class="sd-row1">
+      <h1 class="sd-title" style="margin: 0;"><span class="sd-title-name"></span><span class="sd-title-static">Indigo Dashboard</span></h1>
+    </section>
+    <section class="sd-row2">
+      <section class="sd-column1">
+        <section class="student-filter-outer">
+          <section class="student-filter-inner">
+            <h4 style="margin: 0 0 5px 0;">Students</h4>
+            <form ng-model="view.studentFilter">
+              <input class="student-filter search-bar" style="margin: 0;" type="text">
+              <div class="student-filter checkbox">
+                <!-- <label ng-repeat="student in data.studentData"><input type="checkbox" value="{{student[0]}}" ng-checked="data.studentFilter.indexOf(student[0]) > -1" ng-click="view.toggleStudentSelection(student[0])">{{student[0]}}</label> -->
+              </div>
+            </form>
+          </section>
+        </section>
+        <section class="class-filter-outer">
+          <section class="class-filter-inner">
+            <h4 style="margin: 0 0 5px 0;">Class</h4>
+            <form ng-model="view.classFilter">
+              <div class="class-filter checkbox">
+                <!-- <label ng-repeat="class in data.studentClasses"><input type="checkbox" value="{{class}}" ng-checked="data.classFilter.indexOf(class) > -1" ng-click="view.toggleClassSelection(class)">{{class}}</label> -->
+              </div>
+            </form>
+          </section>
+        </section>
+        <section class="gender-filter">
+          <section class="gender-filter-outer">
+            <section class="gender-filter-inner">
+              <h4 style="margin: 0 0 5px 0;">Gender</h4>
+              <form ng-model="view.genderFilter">
+                <div class="gender-filter checkbox">
+                  <!-- <label><input type="checkbox" value="M" ng-checked="data.genderFilter.indexOf('M') > -1" ng-click="view.toggleGenderSelection('M')">Male</label>
+                  <label><input type="checkbox" value="F" ng-checked="data.genderFilter.indexOf('F') > -1" ng-click="view.toggleGenderSelection('F')">Female</label> -->
+                </div>
+              </form>
+            </section>
+          </section>
+
+        </section>
+      </section>
+      <section class="sd-column2">
+        <section class="sd-column2-row1">
+          <div class="student-data-table"></div>
+        </section>
+        <section class="sd-column2-row2">
+          <section class="student-count">
+            <div class="student-count">
+              <h1>{{data.studentNumber}}</h1>
+              <h3>Students</h3>
+            </div>
+          </section>
+          <section class="adult-avgs">
+            <div class="adult-avgs">
+              <h5>Corporate Adult Averages</h5>
+              <table class="adult-avgs">
+                <thead>
+                  <th>Dominance</th>
+                  <th>Influencing</th>
+                  <th>Steadiness</th>
+                  <th>Compliance</th>
+                  <th>Theoretical</th>
+                  <th>Utilitarian</th>
+                  <th>Aesthetic</th>
+                  <th>Social</th>
+                  <th>Individualistic</th>
+                  <th>Traditional</th>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>43.0</td>
+                    <td>58.7</td>
+                    <td>60.7</td>
+                    <td>50.5</td>
+                    <td>6.0</td>
+                    <td>5.3</td>
+                    <td>4.3</td>
+                    <td>4.2</td>
+                    <td>5.5</td>
+                    <td>4.7</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+      </section>
+    </section>
+  </section>
+
+  </section>

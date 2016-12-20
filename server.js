@@ -13,8 +13,6 @@ var io = socket_io();
 app.io = io;
 var api = require('./routes/api')(io);
 
-console.log('TEST LOG');
-
 // app.set('views', path.join(__dirname, 'views'));
 // app.set('view engine', 'jade');
 
@@ -34,6 +32,8 @@ app.use("/tti_massdl", express.static(__dirname + "/public/index.html"));
 app.use("/sum_page", express.static(__dirname + "/public/index.html"));
 app.use("/sum_stats", express.static(__dirname + "/public/index.html"));
 app.use("/dashboard_gen", express.static(__dirname + "/public/index.html"));
+app.use("/dashboard_manager", express.static(__dirname + "/public/index.html"));
+app.use("/dashboards/:collection/:id", express.static(__dirname + "/public/index.html"));
 
 app.use('/api', api);
 

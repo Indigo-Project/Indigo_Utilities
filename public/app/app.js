@@ -1,6 +1,9 @@
-var app = angular.module('Indigo_Utilities',['ui.router', 'ngFileSaver'])
+var app = angular.module('Indigo_Utilities',['ui.router', 'ngFileSaver', 'LocalStorageModule'])
 
-app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
+app.config(function($stateProvider, $urlRouterProvider, $locationProvider, localStorageServiceProvider) {
+
+  localStorageServiceProvider
+  .setPrefix('indigo-utility')
 
   $urlRouterProvider.otherwise("/");
 
@@ -44,6 +47,16 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
       url: '/dashboard_gen',
       templateUrl: "templates/dashboard_gen.html",
       // controller: "TTI_MassDL_Controller"
+    })
+    .state('dashboard_manager', {
+      url: '/dashboard_manager',
+      templateUrl: "templates/dashboard_manager.html",
+      // controller: "TTI_MassDL_Controller"
+    })
+    .state('dashboard_fullscreen', {
+      url: '/dashboards/:collection/:id',
+      templateUrl: "templates/dashboard_fullscreen.html",
+      controller: "Dashboard_Controller"
     })
 
     $locationProvider.html5Mode(true);

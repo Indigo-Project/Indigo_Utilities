@@ -82,14 +82,17 @@ table.queued-reports {
 
 section.dashboard {
   margin: 5vh 5vw 5vh 0vw;
+  width: 100%;
 }
 
 section.dashboard-frame {
   display: flex;
   flex-direction: column;
-  height: 750px;
   width: 100%;
-  border: 1px solid black;
+  height: 750px;
+  // overflow: hidden;
+  // resize: both;
+  // border: 1px solid black;
   padding: 10px;
 }
 
@@ -108,6 +111,15 @@ p.dashboard-nav {
     cursor: pointer;
     cursor: hand;
   }
+}
+
+button.format-data {
+  margin-right: 20px;
+}
+
+button.view-iframe {
+  width: 200px;
+  margin-bottom: 15px;
 }
 
 p.dash-frame-selected {
@@ -373,4 +385,24 @@ th.asc:after {
   padding: 3px;
   margin: 1px;
   color: white;
+}
+
+section.dash-selection {
+  display: flex;
+  border-bottom: 1px solid black;
+  padding-bottom: 20px;
+  select {
+    margin-right: 20px;
+  }
+}
+
+button.full-screen-dash {
+  width: 200px;
+}
+
+iframe.dashM-iframe {
+  margin-top: 20px;
+  overflow: hidden;
+  resize: both;
+  border: 1px solid black;
 }

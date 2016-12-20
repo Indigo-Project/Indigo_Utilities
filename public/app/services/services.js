@@ -17,6 +17,8 @@ app.factory('Main_Service', ['$state', function($state) {
         $state.go("sum_stats");
       } else if (selectedFunction === "dashboard_gen") {
         $state.go("dashboard_gen");
+      } else if (selectedFunction === "dashboard_manager"){
+        $state.go("dashboard_manager");
       } else if (selectedFunction === "default"){
         $state.go("default");
       }
@@ -137,9 +139,13 @@ app.factory('TTI_API', ['$state', '$http', 'FileSaver', 'Blob', function($state,
   }
 }])
 
-app.factory('Dashboard_Gen', ['$http', function($http) {
+app.factory('DashboardService', ['$http', function($http) {
 
   return {
+
+    iframeHtml: {
+      template: "empty"
+    },
 
     getSchoolNameOptions: function() {
       return new Promise(function(resolve, reject) {
@@ -154,12 +160,12 @@ app.factory('Dashboard_Gen', ['$http', function($http) {
       })
     },
 
-    getDataObject: function(loadedFiles, schoolName) {
+    getDataObject: function(loadedFiles, schoolCode) {
       return new Promise(function(resolve, reject) {
         $http({
           method: 'POST',
           url: '/api/dashboard-gen',
-          data: { inputFiles: loadedFiles }
+          data: { inputFiles: loadedFiles, schoolCode: schoolCode }
         }).then(function(data) {
           if (data) resolve(data)
         }).catch(function(error) {
@@ -175,13 +181,13 @@ app.factory('Dashboard_Gen', ['$http', function($http) {
       var classSelections = [];
       var genderSelections = [];
 
-      var dashData = data.data.compiledData.studentData;
-      var sdCHs = data.data.compiledData.columnHeaders[0];
-      var dataKeys = Object.keys(data.data)
+      var dashData = data.compiledData.studentData;
+      var sdCHs = data.compiledData.columnHeaders[0];
+      var dataKeys = Object.keys(data)
       var studentClasses = [];
 
       for (var i = 0; i < dataKeys.length; i++) {
-        if (dataKeys[i] !== "Staff" && dataKeys[i] !== "compiledData" ) {
+        if (dataKeys[i] !== "Staff" && dataKeys[i] !== "compiledData" && dataKeys[i] !== "metaData" && dataKeys[i] !== "_id") {
           studentClasses.push(dataKeys[i].substring(0,4))
         }
       }
@@ -611,6 +617,36 @@ app.factory('Dashboard_Gen', ['$http', function($http) {
       setRowData(dashData, true);
 
     },
+
+    getStoredSchools: function() {
+      return new Promise(function(resolve, reject) {
+        $http({
+          method: 'GET',
+          url: '/api/dashboard-collections'
+        }).then(function(collections) {
+          console.log(collections);
+          resolve(collections)
+        }).catch(function(error) {
+          reject(error);
+        })
+      })
+    },
+
+    getStoredDashboardData: function(schoolCode, version) {
+      return new Promise(function(resolve, reject) {
+        console.log(schoolCode, version);
+        $http({
+          method: 'POST',
+          url: '/api/dashboard-data',
+          data: { schoolCode: schoolCode, version: version }
+        }).then(function(data) {
+          resolve(data.data);
+        }).catch(function(err) {
+          console.log(err);
+        })
+      })
+    },
+
   }
 
 }])
