@@ -11,7 +11,6 @@ app.controller('Dashboard_Controller', ['$scope', '$state', '$http', 'Main_Servi
     var dashboardFrameElement = $('section.dashboard-frame');
 
     $scope.view.baseDimensions = Responsive_WD_Service.calculateBaseDimensions(dashboardFrameElement);
-    console.log($scope.view.baseDimensions);
 
     // Dashboard frame width and height changed to viewport width and height
     var dashboardWidth = $scope.view.baseDimensions.viewportWidth; dashboardFrameElement.width(dashboardWidth);
@@ -39,17 +38,17 @@ app.controller('Dashboard_Controller', ['$scope', '$state', '$http', 'Main_Servi
     var studentData_Row2_Column2_Row2 = $('section.sd-column2-row2');
 
     studentData_Row1.height(studentDataHeightExp * .102733);
-    console.log("Row 1", studentDataHeightExp * .102733, studentData_Row1.height());
+    // console.log("Row 1", studentDataHeightExp * .102733, studentData_Row1.height());
     studentData_Row2.height(studentDataHeightExp * .897267);
-    console.log("Row 2", studentDataHeightExp * .897267, studentData_Row2.height());
+    // console.log("Row 2", studentDataHeightExp * .897267, studentData_Row2.height());
     studentData_Row2_Column1.height(studentDataHeightExp * .897267)
-    console.log("Row 2 C1", studentDataHeightExp * .897267, studentData_Row2_Column1.height());
+    // console.log("Row 2 C1", studentDataHeightExp * .897267, studentData_Row2_Column1.height());
     studentData_Row2_Column2.height(studentDataHeightExp * .897267)
-    console.log("Row 2 C2", studentDataHeightExp * .897267, studentData_Row2_Column2.height());
+    // console.log("Row 2 C2", studentDataHeightExp * .897267, studentData_Row2_Column2.height());
     studentData_Row2_Column2_Row1.height((studentDataHeightExp * .897267) * .79695)
-    console.log("Row 2 C2 R1", (studentDataHeightExp * .897267) * .79695, studentData_Row2_Column2_Row1.height());
+    // console.log("Row 2 C2 R1", (studentDataHeightExp * .897267) * .79695, studentData_Row2_Column2_Row1.height());
     studentData_Row2_Column2_Row2.height((studentDataHeightExp * .897267) * .20305)
-    console.log("Row 2 C2 R2", (studentDataHeightExp * .897267) * .20305, studentData_Row2_Column2_Row2.height());
+    // console.log("Row 2 C2 R2", (studentDataHeightExp * .897267) * .20305, studentData_Row2_Column2_Row2.height());
 
     // Grid Components Variable Definition
     var studentFilterFrame = $('section.student-filter-frame');
@@ -79,22 +78,25 @@ app.controller('Dashboard_Controller', ['$scope', '$state', '$http', 'Main_Servi
     genderFilterInner.height(genderFilterOuter.height() - 20);
     classFilterFrame.height(studentData_Row2_Column1.height() * .4328851);
 
-    // var studentData_Table_Container = $('div.student-data-table');
+    // Row 2 - Column 2 - Row 2 Variable Definition
     var studentData_studentCount = $('section.student-count');
     var studentData_adultAvgs = $('section.adult-avgs');
 
     studentData_studentCount.height(studentData_Row2_Column2_Row2.height());
     studentData_adultAvgs.height(studentData_Row2_Column2_Row2.height());
 
-    // Dashboard Components Variable Definition
+    // Dashboard Table Components Variable Definition
+    var studentData_Table_Container = $('div.student-data-table');
     var studentData_Table = $('table.student-data');
     var studentData_tHead = $('table.student-data > thead');
-    var sD_tHead_minusBorders = studentData_tHead.width() - 26;
-    console.log(sD_tHead_minusBorders);
     var studentData_tBody = $('table.student-data > tbody');
 
-    studentData_tBody.height((studentData_Row2_Column2_Row1.height() - studentData_tHead.height()) * .9);
+    studentData_Table_Container.width(studentData_Row2_Column2.width());
+    studentData_Table.width(studentData_Table_Container.width());
+    studentData_tHead.width(studentData_Table.width())
+    var sD_tHead_minusBorders = studentData_tHead.width() - 26;
     studentData_tBody.width(studentData_Table.width());
+    studentData_tBody.height((studentData_Row2_Column2_Row1.height() - studentData_tHead.height()) * .9);
     console.log('table width', studentData_Table.width());
     console.log('thead width', studentData_tHead.width());
     console.log('tbody width', studentData_tBody.width());
@@ -163,6 +165,7 @@ app.controller('Dashboard_Controller', ['$scope', '$state', '$http', 'Main_Servi
     tBodyColumns.individualistic.innerWidth(tHead.individualistic.innerWidth());
     tBodyColumns.traditional.innerWidth(tHead.traditional.innerWidth());
 
+    $scope.$apply();
   }
 
   // Alter selected function based on route (multiple directives tied to controller)
@@ -300,14 +303,24 @@ app.controller('Dashboard_Controller', ['$scope', '$state', '$http', 'Main_Servi
     window.open('/dashboards/' + collection + '/' + id, '_blank');
   }
 
+
+  $scope.view.doneResizing = function() {
+    $state.reload();
+  }
+
   // If state is dashboard_fullscreen on load, load dashboard into view
   if ($state.current.name === "dashboard_fullscreen") {
+
     $scope.view.showFSDashboard = false;
     $scope.view.loadFSDashboard();
-    responsiveAdaptation();
+    window.requestAnimationFrame(responsiveAdaptation);
+    var resizeTimeout;
     $(window).on("resize orientationChange", function() {
+      clearTimeout(resizeTimeout);
+      // 100ms after most recent resize, refresh the $state
+      resizeTimeout = setTimeout($scope.view.doneResizing(), 100);
+      window.requestAnimationFrame(responsiveAdaptation);
 
-      responsiveAdaptation();
     })
   }
 

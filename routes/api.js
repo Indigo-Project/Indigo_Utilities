@@ -1925,7 +1925,6 @@ router.post('/dashboard-gen', function(req, res, next) {
 })
 
 router.get('/dashboard-collections', function(req, res, next) {
-  console.log('INSIDE API/DASHBOARD-COLLECTIONS');
   function getAllCollectionVersions(db, collectionNames) {
     return new Promise(function(resolve, reject) {
       var collectionReturn = {};
@@ -1945,10 +1944,8 @@ router.get('/dashboard-collections', function(req, res, next) {
     })
   }
 
-  console.log('mongo.indigoDashboardsURI', mongo.indigoDashboardsURI);
   mongo.mongoDBConnect(mongo.indigoDashboardsURI)
   .then(function(data) {
-    console.log('CONNECTED TO DATABASE');
     mongo.getDashboardCollections(data.db)
     .then(function(collections) {
       console.log('COLLECTIONS RETURNED', collections);

@@ -162,18 +162,20 @@ section.dashboard-studentData {
 }
 
 div.student-data-table {
-  width: fit-content;
+  width: 100%;
   height: fit-content;
   margin: 0px;
   border: 1px solid black;
 }
 
 table.student-data {
-	width: 100%;
   table-layout: fixed;
 	border-collapse: collapse;
   border-bottom: 1px solid #ccc;
   thead {
+    th {
+      overflow: hidden;  
+    }
     tr {
       display: block;
       position: relative;
