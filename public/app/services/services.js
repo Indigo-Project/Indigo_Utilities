@@ -645,7 +645,6 @@ app.factory('DashboardService', ['$http', function($http) {
           method: 'GET',
           url: '/api/dashboard-collections'
         }).then(function(collections) {
-          // console.log(collections);
           resolve(collections)
         }).catch(function(error) {
           reject(error);

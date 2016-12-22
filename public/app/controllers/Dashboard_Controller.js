@@ -171,6 +171,7 @@ app.controller('Dashboard_Controller', ['$scope', '$state', '$http', 'Main_Servi
   } else if ($state.current.name === "dashboard_manager") {
     $scope.view.selectedFunction = "dashboard_manager";
   }
+
   // dynamically change options based on selected function
   $scope.view.accessFunction = function () {
     Main_Service.accessFunction($scope.view.selectedFunction);
@@ -184,8 +185,6 @@ app.controller('Dashboard_Controller', ['$scope', '$state', '$http', 'Main_Servi
     for (var i = 0; i < schoolNames.length; i++) {
       $scope.view.dashboardNameOptions[schoolNames[i]].code = schoolNames[i]
     }
-
-    // console.log($scope.view.dashboardNameOptions);
 
     DashboardService.getStoredSchools()
     .then(function(collections) {
@@ -227,6 +226,7 @@ app.controller('Dashboard_Controller', ['$scope', '$state', '$http', 'Main_Servi
     });
   });
 
+  // $scope variable declaration
   $scope.data.schoolName = "";
   $scope.data.schoolCode = "";
   $scope.data.dataObject = "";
@@ -243,15 +243,13 @@ app.controller('Dashboard_Controller', ['$scope', '$state', '$http', 'Main_Servi
   $scope.view.dashboardGeneratedSchool = "";
   $scope.view.dashboardDateCreated = "";
 
-
   $scope.uploader.loadedFiles = [];
 
   //Dashboard Manager variables
   $scope.view.dashMschoolCode = "";
   $scope.view.dashMschoolVersion = "";
 
-
-  // On Dashboard Manager school selection, configure available versions for school
+  // On Dashboard Manager school selection, configure available versions for selected school
   $scope.view.updateVersionOptions = function() {
     if ($scope.view.dashMschoolCode) {
       var returnVersions = {};
@@ -284,6 +282,7 @@ app.controller('Dashboard_Controller', ['$scope', '$state', '$http', 'Main_Servi
     }
   };
 
+  // load dashboard within full screen view
   $scope.view.loadFSDashboard = function() {
     var dashboardData = localStorageService.get('currentDashboardData');
     $scope.data.studentNumber = dashboardData.compiledData.studentData.length;
