@@ -1546,104 +1546,10 @@ router.post('/dashboard-gen', function(req, res, next) {
     })
   }
 
-  function setColumnHeaders(data) {
-    return new Promise(function(resolve, reject) {
-      var fnIndex = "", lnIndex = "", genderIndex = "", DomIndex = "", InfIndex = "", SteIndex = "", ComIndex = "", TheIndex = "", UtiIndex = "", AesIndex = "", SocIndex = "", IndIndex = "", TraIndex = "";
-
-      csvParse(data, function(err, output) {
-        var columnHeaders = output[0];
-        for (var j = 0; j < columnHeaders.length; j++) {
-          if (columnHeaders[j] === "FIRST NAME") {
-            fnIndex = j;
-          }
-          if (columnHeaders[j] === "LAST NAME") {
-            lnIndex = j;
-          }
-          if (columnHeaders[j] === "GENDER") {
-            genderIndex = j;
-          }
-          if (columnHeaders[j] === "D NATURAL (%)") {
-            DomIndex = j;
-          }
-          if (columnHeaders[j] === "I NATURAL (%)") {
-            InfIndex = j;
-          }
-          if (columnHeaders[j] === "S NATURAL (%)") {
-            SteIndex = j;
-          }
-          if (columnHeaders[j] === "C NATURAL (%)") {
-            ComIndex = j;
-          }
-          if (columnHeaders[j] === "TEN_THE") {
-            TheIndex = j;
-          }
-          if (columnHeaders[j] === "TEN_UTI") {
-            UtiIndex = j;
-          }
-          if (columnHeaders[j] === "TEN_AES") {
-            AesIndex = j;
-          }
-          if (columnHeaders[j] === "TEN_SOC") {
-            SocIndex = j;
-          }
-          if (columnHeaders[j] === "TEN_IND") {
-            IndIndex = j;
-          }
-          if (columnHeaders[j] === "TEN_TRA") {
-            TraIndex = j;
-          }
-        }
-        if (DomIndex === "" || InfIndex === "" || SteIndex === "" || ComIndex === "" || TheIndex === "" || UtiIndex === "" || AesIndex === "" || SocIndex === "" || IndIndex === "" || TraIndex === "") {
-          resolve({ errReason: "Client Error: Incorrect Report Type", internalMessage: "One or more indices is null", externalMessage: "One or more uploaded reports is the incorrect report type for current dashboard generation. Refresh and try again. List of acceptable Report Types:\n\n-Talent Insights\n-Trimetrix"})
-        } else {
-          var indexArr = [ fnIndex, lnIndex, genderIndex, DomIndex, InfIndex, SteIndex, ComIndex, TheIndex, UtiIndex, AesIndex, SocIndex, IndIndex, TraIndex ];
-          var body = { data: output, indexArr: indexArr };
-          resolve(body);
-        }
-      });
-    })
-  }
-
-  function compile(data, indexArr) {
-    return new Promise(function(resolve, reject) {
-
-      var returnArr = [];
-
-      for (var i = 1; i < data.length; i++) {
-
-        // GET INDIVIDUAL SCORES
-        var firstName = data[i][indexArr[0]];
-        var lastName = data[i][indexArr[1]];
-        var gender = data[i][indexArr[2]];
-        var DomScore = Number(data[i][indexArr[3]]);
-        var InfScore = Number(data[i][indexArr[4]]);
-        var SteScore = Number(data[i][indexArr[5]]);
-        var ComScore = Number(data[i][indexArr[6]]);
-        var TheScore = Number(data[i][indexArr[7]]);
-        var UtiScore = Number(data[i][indexArr[8]]);
-        var AesScore = Number(data[i][indexArr[9]]);
-        var SocScore = Number(data[i][indexArr[10]]);
-        var IndScore = Number(data[i][indexArr[11]]);
-        var TraScore = Number(data[i][indexArr[12]]);
-
-        returnArr.push([ firstName, lastName, gender, DomScore, InfScore, SteScore, ComScore, TheScore, UtiScore, AesScore, SocScore, IndScore, TraScore ]);
-
-      }
-      if (returnArr[0].length === 13) {
-        returnArr.unshift(['First', 'Last', 'Gender', 'Dominance', 'Influencing', 'Steadiness', 'Compliance', 'Theoretical', 'Utilitarian', 'Aesthetic', 'Social', 'Individualistic', 'Traditional'])
-        resolve(returnArr)
-      } else {
-        reject('returnArr subarray length innacurate');
-      }
-
-    })
-  }
-
   // STEP 1 of raw input preparation:
     // 1. converts all data objects to useable javascript objects with unified format, regardless of source
     // 2. removes duplicates from all individual reports
     // 3. reorganizes all data by class/school year or staff groupings
-
   function prepareRawObject1(input0) {
     return new Promise(function(resolve, reject) {
 
@@ -1705,7 +1611,6 @@ router.post('/dashboard-gen', function(req, res, next) {
     // 2. Create assessment/instrument priority index for setting column headers & data compilation
     // 3. Define compiled data column headers
     // 4. populate compiled data field with available data
-
   function prepareRawObject2(input1) {
     // console.log('inside pRO2');
     var input1Keys = Object.keys(input1);
@@ -1960,8 +1865,16 @@ router.post('/dashboard-gen', function(req, res, next) {
       })
       var newDateObj = new Date();
       var dateCreated = (newDateObj.getMonth() + 1) + "/" + newDateObj.getDate() + "/" + newDateObj.getFullYear() + " - " + newDateObj.getHours() + ":" + newDateObj.getMinutes() + ":" + newDateObj.getSeconds();
-      console.log(dateCreated);
-      input1.metaData = { version: "", dateCreated: dateCreated, dateCreatedMS: newDateObj }
+      input1.metaData = {
+        version: "",
+        schoolInfo: {
+          code: req.body.schoolCode,
+          name: TTI.dashboardSchoolNames[req.body.schoolCode].name,
+          optionDisplay: TTI.dashboardSchoolNames[req.body.schoolCode].optionDisplay
+        },
+        dateCreated: dateCreated,
+        dateCreatedMS: newDateObj
+      };
       resolve(input1)
     })
   }
@@ -2013,7 +1926,6 @@ router.post('/dashboard-gen', function(req, res, next) {
 
 router.get('/dashboard-collections', function(req, res, next) {
 
-  // Create
   function getAllCollectionVersions(db, collectionNames) {
     return new Promise(function(resolve, reject) {
       var collectionReturn = {};

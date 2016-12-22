@@ -72,22 +72,11 @@
         <option value=""> -- Select School -- </option>
         <option ng-repeat="school in view.dashboardNameOptions" value="{{school.name}}">{{school.optionDisplay}}</option>
       </select>
-      <!-- <input type="text" name="schoolName" class="enter-school-name form-control" ng-model="data.schoolName" placeholder="Enter School Name (i.e. 'Prospect Ridge Academy')"></button> -->
     </div>
     <button type="submit" class="format-data form-control">Generate Dashboard</button>
-    <div ng-show="view.dashboardCreationStatus === 'success'">SUCCESS!</div>
+    <div class="dash-gen-success" ng-show="view.dashboardCreationStatus === 'success'">
+      <h4 class="dash-success-message">Success! "{{view.dashboardGeneratedVersion}}" created for "{{view.dashboardGeneratedSchool}}"</h4>
+    </div>
   </form>
-
-  <!-- <section class="dashboard" ng-show="view.displayDashboard">
-    <nav class="dashboard-nav">
-      <button class="form-control view-iframe" ng-click="view.generateIframe()">View as iFrame</button>
-      <p class="dashboard-nav studentData" ng-click="view.dashboardNav('studentData')">Student Data</p>
-      <p class="dashboard-nav studentDetails" ng-click="view.dashboardNav('studentDetails')">Student Details</p>
-      <p class="dashboard-nav charts" ng-click="view.dashboardNav('charts')">Charts</p>
-    </nav>
-
-    <dashboard-frame></dashboard-frame>
-
-  </section> -->
 
 </section>

@@ -1,16 +1,182 @@
-app.controller('Dashboard_Controller', ['$scope', '$state', '$http', 'Main_Service', 'TTI_API', 'socket', '$window', 'DashboardService', 'localStorageService', function($scope, $state, $http, Main_Service, TTI_API, socket, $window, DashboardService, localStorageService) {
+app.controller('Dashboard_Controller', ['$scope', '$state', '$http', 'Main_Service', 'TTI_API', 'socket', '$window', 'DashboardService', 'localStorageService', 'Responsive_WD_Service', function($scope, $state, $http, Main_Service, TTI_API, socket, $window, DashboardService, localStorageService, Responsive_WD_Service) {
 
-  // responsive calcs
-  console.log('document width:', document.documentElement.clientWidth);
-  console.log('document height:', document.documentElement.clientHeight);
-  console.log('window width:', window.innerWidth);
-  console.log('window height:', window.innerHeight);
-
+  // $scope object instantiation
   $scope.data = {};
   $scope.uploader = {};
   $scope.view = {};
 
-  // School name options dropdown and dashboard manager options setup
+  // responsive 'reaction' event
+  function responsiveAdaptation() {
+    // Responsive initialization of dimensions
+    var dashboardFrameElement = $('section.dashboard-frame');
+
+    $scope.view.baseDimensions = Responsive_WD_Service.calculateBaseDimensions(dashboardFrameElement);
+    console.log($scope.view.baseDimensions);
+
+    // Dashboard frame width and height changed to viewport width and height
+    var dashboardWidth = $scope.view.baseDimensions.viewportWidth; dashboardFrameElement.width(dashboardWidth);
+    var dashboardHeight = $scope.view.baseDimensions.viewportHeight; dashboardFrameElement.height(dashboardHeight);
+
+    // Set Padding and Dimensions of studentData Dashboard Section (inner-frame)
+    var dashboardFramePadding = { top: (.020747 * dashboardHeight) + "px", right: (.017361 * dashboardWidth) + "px", bottom: (.020747 * dashboardHeight) + "px", left: (.017361 * dashboardWidth) + "px"}
+    dashboardFrameElement.css("padding", dashboardFramePadding.top + " " + dashboardFramePadding.right + " " + dashboardFramePadding.bottom + " " + dashboardFramePadding.left + " ");
+    var studentDataWidthExp = dashboardWidth - (.017361 * dashboardWidth * 2)
+    var studentDataHeightExp = dashboardHeight - ((.020747 * dashboardHeight) * 2)
+
+    var studentDataElement = $('section.dashboard-studentData');
+    studentDataElement.width(studentDataWidthExp);
+    studentDataElement.height(studentDataHeightExp);
+
+    //Calculate Width/Height Ratio
+    var widthToHeightRatio = dashboardWidth/dashboardHeight;
+
+    // Grid structure
+    var studentData_Row1 = $('section.sd-row1');
+    var studentData_Row2 = $('section.sd-row2');
+    var studentData_Row2_Column1 = $('section.sd-column1');
+    var studentData_Row2_Column2 = $('section.sd-column2');
+    var studentData_Row2_Column2_Row1 = $('section.sd-column2-row1');
+    var studentData_Row2_Column2_Row2 = $('section.sd-column2-row2');
+
+    studentData_Row1.height(studentDataHeightExp * .102733);
+    console.log("Row 1", studentDataHeightExp * .102733, studentData_Row1.height());
+    studentData_Row2.height(studentDataHeightExp * .897267);
+    console.log("Row 2", studentDataHeightExp * .897267, studentData_Row2.height());
+    studentData_Row2_Column1.height(studentDataHeightExp * .897267)
+    console.log("Row 2 C1", studentDataHeightExp * .897267, studentData_Row2_Column1.height());
+    studentData_Row2_Column2.height(studentDataHeightExp * .897267)
+    console.log("Row 2 C2", studentDataHeightExp * .897267, studentData_Row2_Column2.height());
+    studentData_Row2_Column2_Row1.height((studentDataHeightExp * .897267) * .79695)
+    console.log("Row 2 C2 R1", (studentDataHeightExp * .897267) * .79695, studentData_Row2_Column2_Row1.height());
+    studentData_Row2_Column2_Row2.height((studentDataHeightExp * .897267) * .20305)
+    console.log("Row 2 C2 R2", (studentDataHeightExp * .897267) * .20305, studentData_Row2_Column2_Row2.height());
+
+    // Grid Components Variable Definition
+    var studentFilterFrame = $('section.student-filter-frame');
+    var studentFilterOuter = $('section.student-filter-outer');
+    var studentFilterInner = $('section.student-filter-inner');
+    var studentFilter = $('div.student-filter');
+    var studentSearchBar = $('input.search-bar');
+    var classFilterFrame = $('section.class-filter-frame');
+    var classFilterOuter = $('section.class-filter-outer');
+    var classFilterInner = $('section.class-filter-inner');
+    var classFilter = $('div.class-filter');
+    var genderFilterFrame = $('section.gender-filter-frame');
+    var genderFilterOuter = $('section.gender-filter-outer');
+    var genderFilterInner = $('section.gender-filter-inner');
+    var genderFilter = $('div.gender-filter');
+
+    studentFilterFrame.height(studentData_Row2_Column1.height() * .35);
+    studentFilterFrame.css("margin-bottom", (studentData_Row2_Column1.height() * .05) + "px");
+    studentFilterOuter.outerHeight(studentFilterFrame.height());
+    studentFilterInner.height(studentFilterOuter.height() - 20);
+    studentFilter.height(studentFilterInner.height() * .65736004);
+    // studentSearchBar.width(studentFilterInner.width());
+
+    genderFilterFrame.height(studentData_Row2_Column1.height() * .15058088);
+    genderFilterFrame.css("margin-bottom", (studentData_Row2_Column1.height() * .05) + "px");
+    genderFilterOuter.outerHeight(genderFilterFrame.height());
+    genderFilterInner.height(genderFilterOuter.height() - 20);
+    classFilterFrame.height(studentData_Row2_Column1.height() * .4328851);
+
+    // var studentData_Table_Container = $('div.student-data-table');
+    var studentData_studentCount = $('section.student-count');
+    var studentData_adultAvgs = $('section.adult-avgs');
+
+    studentData_studentCount.height(studentData_Row2_Column2_Row2.height());
+    studentData_adultAvgs.height(studentData_Row2_Column2_Row2.height());
+
+    // Dashboard Components Variable Definition
+    var studentData_Table = $('table.student-data');
+    var studentData_tHead = $('table.student-data > thead');
+    var sD_tHead_minusBorders = studentData_tHead.width() - 26;
+    console.log(sD_tHead_minusBorders);
+    var studentData_tBody = $('table.student-data > tbody');
+
+    studentData_tBody.height((studentData_Row2_Column2_Row1.height() - studentData_tHead.height()) * .9);
+    studentData_tBody.width(studentData_Table.width());
+    console.log('table width', studentData_Table.width());
+    console.log('thead width', studentData_tHead.width());
+    console.log('tbody width', studentData_tBody.width());
+
+    // tHead Column Headers Variable Definition
+    var tHead = {
+      students: $('thead.student-data th:nth-of-type(1)'),
+      students2: $('thead.student-data th:nth-child(1)'),
+      gender: $('thead.student-data th:nth-of-type(2)'),
+      class: $('thead.student-data th:nth-of-type(3)'),
+      dominance: $('thead.student-data th:nth-of-type(4)'),
+      influencing: $('thead.student-data th:nth-of-type(5)'),
+      steadiness: $('thead.student-data th:nth-of-type(6)'),
+      compliance: $('thead.student-data th:nth-of-type(7)'),
+      theoretical: $('thead.student-data th:nth-of-type(8)'),
+      utilitarian: $('thead.student-data th:nth-of-type(9)'),
+      aesthetic: $('thead.student-data th:nth-of-type(10)'),
+      social: $('thead.student-data th:nth-of-type(11)'),
+      individualistic: $('thead.student-data th:nth-of-type(12)'),
+      traditional: $('thead.student-data th:nth-of-type(13)')
+    }
+
+    tHead.students.innerWidth(sD_tHead_minusBorders * 0.14059753954306);
+    tHead.gender.innerWidth(sD_tHead_minusBorders * 0.03866432337434);
+    tHead.class.innerWidth(sD_tHead_minusBorders * 0.03866432337434);
+    tHead.dominance.innerWidth(sD_tHead_minusBorders * 0.07820738137083);
+    tHead.influencing.innerWidth(sD_tHead_minusBorders * 0.07820738137083);
+    tHead.steadiness.innerWidth(sD_tHead_minusBorders * 0.07820738137083);
+    tHead.compliance.innerWidth(sD_tHead_minusBorders * 0.07820738137083);
+    tHead.theoretical.innerWidth(sD_tHead_minusBorders * 0.07820738137083);
+    tHead.utilitarian.innerWidth(sD_tHead_minusBorders * 0.07820738137083);
+    tHead.aesthetic.innerWidth(sD_tHead_minusBorders * 0.07820738137083);
+    tHead.social.innerWidth(sD_tHead_minusBorders * 0.07820738137083);
+    tHead.individualistic.innerWidth(sD_tHead_minusBorders * 0.07820738137083);
+    tHead.traditional.innerWidth(sD_tHead_minusBorders * 0.07820738137083);
+
+    // tBody Columns Variable Definition
+    var tBodyColumns = {
+      students: $('tbody.student-data td:nth-child(1)'),
+      gender: $('tbody.student-data td:nth-child(2)'),
+      class: $('tbody.student-data td:nth-child(3)'),
+      dominance: $('tbody.student-data td:nth-child(4)'),
+      influencing: $('tbody.student-data td:nth-child(5)'),
+      steadiness: $('tbody.student-data td:nth-child(6)'),
+      compliance: $('tbody.student-data td:nth-child(7)'),
+      theoretical: $('tbody.student-data td:nth-child(8)'),
+      utilitarian: $('tbody.student-data td:nth-child(9)'),
+      aesthetic: $('tbody.student-data td:nth-child(10)'),
+      social: $('tbody.student-data td:nth-child(11)'),
+      individualistic: $('tbody.student-data td:nth-child(12)'),
+      traditional: $('tbody.student-data td:nth-child(13)')
+    }
+
+    // tHead and tBody column width alignment
+    tBodyColumns.students.innerWidth(tHead.students.innerWidth());
+    tBodyColumns.gender.innerWidth(tHead.gender.innerWidth());
+    tBodyColumns.class.innerWidth(tHead.class.innerWidth());
+    tBodyColumns.dominance.innerWidth(tHead.dominance.innerWidth());
+    tBodyColumns.influencing.innerWidth(tHead.influencing.innerWidth());
+    tBodyColumns.steadiness.innerWidth(tHead.steadiness.innerWidth());
+    tBodyColumns.compliance.innerWidth(tHead.compliance.innerWidth());
+    tBodyColumns.theoretical.innerWidth(tHead.theoretical.innerWidth());
+    tBodyColumns.utilitarian.innerWidth(tHead.utilitarian.innerWidth());
+    tBodyColumns.aesthetic.innerWidth(tHead.aesthetic.innerWidth());
+    tBodyColumns.social.innerWidth(tHead.social.innerWidth());
+    tBodyColumns.individualistic.innerWidth(tHead.individualistic.innerWidth());
+    tBodyColumns.traditional.innerWidth(tHead.traditional.innerWidth());
+
+  }
+
+  // Alter selected function based on route (multiple directives tied to controller)
+  if ($state.current.name === "dashboard_gen") {
+    $scope.view.selectedFunction = "dashboard_gen";
+  } else if ($state.current.name === "dashboard_manager") {
+    $scope.view.selectedFunction = "dashboard_manager";
+  }
+  // dynamically change options based on selected function
+  $scope.view.accessFunction = function () {
+    Main_Service.accessFunction($scope.view.selectedFunction);
+  }
+
+  // School name options dropdown and dashboard manager options initialization
   DashboardService.getSchoolNameOptions()
   .then(function(data) {
     $scope.view.dashboardNameOptions = data.data;
@@ -19,30 +185,30 @@ app.controller('Dashboard_Controller', ['$scope', '$state', '$http', 'Main_Servi
       $scope.view.dashboardNameOptions[schoolNames[i]].code = schoolNames[i]
     }
 
-    console.log($scope.view.dashboardNameOptions);
+    // console.log($scope.view.dashboardNameOptions);
 
     DashboardService.getStoredSchools()
     .then(function(collections) {
       var collectionNames = Object.keys(collections.data);
-      console.log(collectionNames);
+      // console.log(collectionNames);
       $scope.data.dbCollections = {};
       for (var i = 0; i < collectionNames.length; i++) {
         for (var j = 0; j < schoolNames.length; j++) {
           if (collectionNames[i] === schoolNames[j]) {
-            console.log(collectionNames[i], schoolNames[j]);
+            // console.log(collectionNames[i], schoolNames[j]);
             $scope.data.dbCollections[collectionNames[i]] = collections.data[collectionNames[i]];
             $scope.data.dbCollections[collectionNames[i]].nameOptions = $scope.view.dashboardNameOptions[collectionNames[i]];
           }
         }
       }
-      console.log($scope.data.dbCollections);
+      // console.log($scope.data.dbCollections);
 
       var dbCollections = Object.keys($scope.data.dbCollections);
       $scope.data.availableCollections = {};
       for (var i = 0; i < dbCollections.length; i++) {
         $scope.data.availableCollections[dbCollections[i]] = $scope.data.dbCollections[dbCollections[i]].nameOptions;
       }
-      console.log($scope.data.availableCollections);
+      // console.log($scope.data.availableCollections);
 
       $scope.data.availableVersions = {};
       for (var i = 0; i < dbCollections.length; i++) {
@@ -55,7 +221,7 @@ app.controller('Dashboard_Controller', ['$scope', '$state', '$http', 'Main_Servi
           }
         }
       }
-      console.log($scope.data.availableVersions);
+      // console.log($scope.data.availableVersions);
 
       $scope.$apply();
     });
@@ -68,19 +234,22 @@ app.controller('Dashboard_Controller', ['$scope', '$state', '$http', 'Main_Servi
   $scope.data.classFilter = [];
   $scope.data.genderFilter = [];
 
-  if ($state.current.name === "dashboard_gen") {
-    $scope.view.selectedFunction = "dashboard_gen";
-  } else if ($state.current.name === "dashboard_manager") {
-      $scope.view.selectedFunction = "dashboard_manager";
-  }
   $scope.view.uploadOptionStatus = "no selection"
   $scope.view.dashboardCreationStatus = "";
-  $scope.view.displayDashboard = false;
-  $scope.view.dashboardSection = "studentData";
+  $scope.view.studentFilter = [];
+  $scope.view.classFilter = [];
+  $scope.view.genderFilter = [];
+  $scope.view.dashboardGeneratedVersion = "";
+  $scope.view.dashboardGeneratedSchool = "";
+  $scope.view.dashboardDateCreated = "";
 
-  //Dashboard Manager
+
+  $scope.uploader.loadedFiles = [];
+
+  //Dashboard Manager variables
   $scope.view.dashMschoolCode = "";
   $scope.view.dashMschoolVersion = "";
+
 
   // On Dashboard Manager school selection, configure available versions for school
   $scope.view.updateVersionOptions = function() {
@@ -97,17 +266,15 @@ app.controller('Dashboard_Controller', ['$scope', '$state', '$http', 'Main_Servi
   $scope.view.loadVersion = function() {
     $scope.view.showMDashboard = false;
     if ($scope.view.dashMschoolVersion) {
-      console.log($scope.view.dashMschoolCode, $scope.view.dashMschoolVersion);
+      // console.log($scope.view.dashMschoolCode, $scope.view.dashMschoolVersion);
       DashboardService.getStoredDashboardData($scope.view.dashMschoolCode, $scope.view.dashMschoolVersion)
       .then(function(data) {
         $scope.data.currentDashboardDataObject = data
         localStorageService.set('currentDashboardData', data);
         DashboardService.createDashboard($scope.data.currentDashboardDataObject, $scope.view.dashMschoolCode);
         $scope.view.iframeSrc = '/dashboards/' + $scope.view.dashMschoolCode + "/" + $scope.data.currentDashboardDataObject._id;
-        $scope.view.iframeDimensions = []
-        console.log($scope.view.iframeSrc);
+        $scope.view.iframeDimensions = [];
         $scope.view.showMDashboard = true;
-        $('span.sd-title-name').html($scope.view.dashMschoolCode + " ");
         $scope.$apply();
       }).catch(function(error) {
         console.log(error);
@@ -119,14 +286,15 @@ app.controller('Dashboard_Controller', ['$scope', '$state', '$http', 'Main_Servi
 
   $scope.view.loadFSDashboard = function() {
     var dashboardData = localStorageService.get('currentDashboardData');
-    console.log(dashboardData);
     $scope.data.studentNumber = dashboardData.compiledData.studentData.length;
     DashboardService.createDashboard(dashboardData);
+    $scope.view.dashDisplayschoolName = dashboardData.metaData.schoolInfo.optionDisplay;
+    $('span.sd-title-name').html($scope.view.dashDisplayschoolName + " ");
     $scope.view.showFSDashboard = true;
   }
 
   // Open new tab with full screen dashboard
-  $scope.view.FullScreenDashboard = function() {
+  $scope.view.openFSDashboard = function() {
     $scope.data.studentNumber = $scope.data.currentDashboardDataObject.compiledData.studentData.length;
     var collection = $scope.view.dashMschoolCode;
     var id = $scope.data.currentDashboardDataObject._id;
@@ -134,40 +302,16 @@ app.controller('Dashboard_Controller', ['$scope', '$state', '$http', 'Main_Servi
   }
 
   // If state is dashboard_fullscreen on load, load dashboard into view
-  console.log($state.current.name);
   if ($state.current.name === "dashboard_fullscreen") {
-    console.log('INSIDE');
     $scope.view.showFSDashboard = false;
     $scope.view.loadFSDashboard();
-    // $scope.$apply();
+    responsiveAdaptation();
+    $(window).on("resize orientationChange", function() {
+
+      responsiveAdaptation();
+    })
   }
 
-  // iFrame generation testing
-  // $scope.view.dashboardFrame = $('section.dashboard-frame').html();
-  $scope.view.generateIframe = function() {
-    console.log('generating iframe...');
-
-    console.log('iframe template before', DashboardService.iframeHtml.template);
-    DashboardService.iframeHtml.template = $('section.dashboard-frame').html();
-    // console.log('iframe template after', DashboardService.iframeHtml.template);
-    // var iframe = document.createElement("iframe");
-    // iframe.setAttribute("srcdoc", DashboardService.iframeHtml.template);
-    // iframe.style.width = "1440px";
-    // iframe.style.height = "723px";
-    // var iframePartial = angular.element('dashboard-iframe');
-    // console.log(iframePartial);
-    // iframePartial.append(iframe);
-    window.open('/dashboard_iframe');
-  }
-
-  $scope.view.studentFilter = [];
-  $scope.view.classFilter = [];
-  $scope.view.genderFilter = [];
-
-  // dynamically change options based on selected function
-  $scope.view.accessFunction = function () {
-    Main_Service.accessFunction($scope.view.selectedFunction);
-  }
 
   $scope.view.displayOption = function(status) {
     $scope.view.uploadOptionStatus = status;
@@ -212,35 +356,24 @@ app.controller('Dashboard_Controller', ['$scope', '$state', '$http', 'Main_Servi
     console.log($scope.data.genderFilter);
   }
 
-  // $scope.uploader.file = undefined;
-  $scope.uploader.loadedFiles = [];
-
   $scope.uploader.addChosenReports = function(uploadType) {
-    console.log('adding chosen report');
     if ($scope.uploader.role === undefined) {
       alert("PLEASE SELECT ROLE")
     }
     else if ($scope.uploader.role === 'Students' && ($scope.uploader.schoolYearTaken === undefined || $scope.uploader.class === undefined)) {
-      console.log(0);
       if ($scope.uploader.schoolYearTaken === undefined && $scope.uploader.class === undefined) {
-        console.log(1);
         alert("PLEASE ENTER SCHOOL YEAR TAKEN AND CLASS")
       }
       else if ($scope.uploader.schoolYearTaken === undefined) {
-        console.log(2);
-        console.log("PLEASE ENTER SCHOOL YEAR TAKEN");
         alert("PLEASE ENTER SCHOOL YEAR TAKEN")
       }
       else if ($scope.uploader.class === undefined) {
-        console.log(3);
-        console.log("PLEASE ENTER CLASS");
         alert("PLEASE ENTER CLASS")
       }
     }
     else if ($scope.uploader.file === undefined)  {
       alert("NO FILE UPLOADED");
     } else {
-      console.log('EXECUTING');
       $scope.uploader.loadedFiles.push(
         {uploadType: uploadType,
         name: $('input[type=file]').val().substring(12),
@@ -258,7 +391,6 @@ app.controller('Dashboard_Controller', ['$scope', '$state', '$http', 'Main_Servi
       $scope.uploader.class = undefined;
       $('input[type=file]').val(null)
     }
-    // console.log($scope.uploader.loadedFiles);
   }
 
   $scope.data.generateDashboard = function() {
@@ -268,7 +400,7 @@ app.controller('Dashboard_Controller', ['$scope', '$state', '$http', 'Main_Servi
       alert("PLEASE SELECT SCHOOL");
     } else {
       if(confirm("Please confirm that the school name is correct. Upon submission for dashboard generation, this name will become a unique identifier for the dashboard, associated within the same grouping as future versions of dashboards for the same school. refer to FAQ for a more detailed explanation of how this works.")) {
-        console.log('GENERATING');
+        $scope.view.dashboardCreationStatus = "Generating Dashboard...";
 
         var dashboardNameOptions = $scope.view.dashboardNameOptions;
         for (var code in dashboardNameOptions) {
@@ -278,23 +410,26 @@ app.controller('Dashboard_Controller', ['$scope', '$state', '$http', 'Main_Servi
         }
         DashboardService.getDataObject($scope.uploader.loadedFiles, $scope.data.schoolCode)
         .then(function(data) {
-          var dataObjKeys = Object.keys(data.data);
-          console.log(data.data);
-          $scope.data.studentNumber = data.data.compiledData.studentData.length;
+          var data = data.data;
+          var dataObjKeys = Object.keys(data);
+          $scope.data.studentNumber = data.compiledData.studentData.length;
           $scope.data.studentClasses = [];
 
           // generate class array
           for (var i = 0; i < dataObjKeys.length; i++) {
             if (dataObjKeys[i] === "Staff" || dataObjKeys[i] === "compiledData" || dataObjKeys[i] === "metaData" || dataObjKeys[i] === "_id") {
-              console.log('not a student group, do not add to class options');
+              console.log('not a student group - not added to class options');
             } else {
               $scope.data.studentClasses.push(dataObjKeys[i].substring(0,4))
             }
           }
 
-          DashboardService.createDashboard(data.data)
+          DashboardService.createDashboard(data)
           $('span.sd-title-name').html($scope.data.schoolName + " ");
           $scope.view.dashboardCreationStatus = "success";
+          $scope.view.dashboardGeneratedVersion = data.metaData.version;
+          $scope.view.dashboardGeneratedSchool = data.metaData.schoolInfo.optionDisplay;
+          $scope.view.dashboardDateCreated = data.metaData.dateCreated;
           $scope.$apply();
         })
       } else {
@@ -302,29 +437,6 @@ app.controller('Dashboard_Controller', ['$scope', '$state', '$http', 'Main_Servi
       }
     }
   }
-
-  // $scope.view.dashboardNav = function(dashboardSection) {
-  //   $scope.view.dashboardSection = dashboardSection;
-  //   $('.dashboard-nav').removeClass('dash-frame-selected');
-  //   $('.dashboard-nav.' + dashboardSection).addClass('dash-frame-selected');
-  // }
-
-
-  // CHART TEST
-
-  // var data = [11, 20, 27, 13, 22];
-  //
-  // var x = d3.scaleLinear()
-  //   .domain([0, d3.max(data)])
-  //   .range([0, 220]);
-  //
-  // d3.select("div.chart")
-  //   .selectAll("div")
-  //     .data(data)
-  //   .enter().append("div")
-  //     .style("width", function(d) { return x(d) + "px"; })
-  //     .text(function(d) { return d; })
-
 
 
 }])

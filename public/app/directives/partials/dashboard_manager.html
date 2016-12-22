@@ -12,13 +12,10 @@
       <option ng-repeat="(version, versionData) in view.currentVersions" value="{{version}}">{{version}}</option>
     </select>
 
-    <button class="form-control full-screen-dash" ng-hide="!view.dashMschoolVersion" ng-click="view.FullScreenDashboard()">View in Full Screen</button>
+    <button class="form-control full-screen-dash" ng-hide="!view.dashMschoolVersion" ng-click="view.openFSDashboard()">View in Full Screen</button>
 
   </section>
 
-  <!-- <section ng-show="view.showMDashboard" class="dashboard-iframe"> -->
-    <!-- <dashboard-frame></dashboard-frame> -->
   <iframe ng-show="view.showMDashboard" class="dashM-iframe" src="{{view.iframeSrc}}" width="100%" height="750px" frameborder="0"></iframe>
-  <!-- </section> -->
 
 </section>
