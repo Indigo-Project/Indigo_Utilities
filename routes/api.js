@@ -1945,6 +1945,7 @@ router.get('/dashboard-collections', function(req, res, next) {
     })
   }
 
+  console.log('mongo.indigoDashboardsURI', mongo.indigoDashboardsURI);
   mongo.mongoDBConnect(mongo.indigoDashboardsURI)
   .then(function(data) {
     console.log('CONNECTED TO DATABASE');

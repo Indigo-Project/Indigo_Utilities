@@ -14,9 +14,10 @@ var database = {
   // Establish connection to Mongo Database
   mongoDBConnect: function(url) {
     return new Promise(function(resolve,reject) {
+      console.log('url', url);
+      console.log('url.URI', url.URI);
       MongoClient.connect(url.URI, function(err, db) {
         if(assert.equal(null, err) === undefined) {
-          // console.log(db);
           resolve({
             message: "Connected successfully to " + db.databaseName + " mLabs MongoDB server",
             db: db
