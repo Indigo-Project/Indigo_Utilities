@@ -32,5 +32,3 @@ npm-debug.log
 .env
 node_modules
 bower_components
-Database
-APIs
