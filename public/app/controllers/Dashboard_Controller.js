@@ -6,9 +6,10 @@ app.controller('Dashboard_Controller', ['$scope', '$state', '$http', 'Main_Servi
   $scope.view = {};
 
   // responsive 'reaction' event
-  function responsiveAdaptation() {
+  function responsiveAdaptationFS() {
     // Responsive initialization of dimensions
     var dashboardFrameElement = $('section.dashboard-frame');
+    console.log(dashboardFrameElement.width(), dashboardFrameElement.height());
 
     $scope.view.baseDimensions = Responsive_WD_Service.calculateBaseDimensions(dashboardFrameElement);
 
@@ -168,6 +169,24 @@ app.controller('Dashboard_Controller', ['$scope', '$state', '$http', 'Main_Servi
     $scope.$apply();
   }
 
+  function responsiveAdaptationDM() {
+
+    // var dashboardFrameElement = $('section.dashboard-frame');
+    var dashboardIframe = $('iframe.dashM-iframe');
+    $scope.view.baseDimensionsDM = Responsive_WD_Service.calculateBaseDimensions(dashboardIframe);
+
+    var iframeWidth = $scope.view.baseDimensionsDM.viewportWidth - 40
+    // var dFERatio = dashboardFrameElement.height() / dashboardFrameElement.width()
+    // console.log(dashboardFrameElement.width(), dashboardFrameElement.height(), dFERatio);
+
+    var dFERatio = 723/1440;
+    dashboardIframe.width(iframeWidth);
+    dashboardIframe.height(dashboardIframe.width() * dFERatio);
+    // console.log(dFERatio);
+    // dashboardIFrame.width()
+    // dashboardIframe.height(dashboardIframe.width() * dFERatio);
+  }
+
   // Alter selected function based on route (multiple directives tied to controller)
   if ($state.current.name === "dashboard_gen") {
     $scope.view.selectedFunction = "dashboard_gen";
@@ -276,6 +295,7 @@ app.controller('Dashboard_Controller', ['$scope', '$state', '$http', 'Main_Servi
         $scope.view.iframeSrc = '/dashboards/' + $scope.view.dashMschoolCode + "/" + $scope.data.currentDashboardDataObject._id;
         $scope.view.iframeDimensions = [];
         $scope.view.showMDashboard = true;
+        responsiveAdaptationDM();
         $scope.$apply();
       }).catch(function(error) {
         console.log(error);
@@ -310,19 +330,22 @@ app.controller('Dashboard_Controller', ['$scope', '$state', '$http', 'Main_Servi
 
   // If state is dashboard_fullscreen on load, load dashboard into view
   if ($state.current.name === "dashboard_fullscreen") {
-
     $scope.view.showFSDashboard = false;
     $scope.view.loadFSDashboard();
-    window.requestAnimationFrame(responsiveAdaptation);
+    window.requestAnimationFrame(responsiveAdaptationFS);
     var resizeTimeout;
     $(window).on("resize orientationChange", function() {
       clearTimeout(resizeTimeout);
       // 100ms after most recent resize, refresh the $state
       resizeTimeout = setTimeout($scope.view.doneResizing(), 100);
-      window.requestAnimationFrame(responsiveAdaptation);
+      window.requestAnimationFrame(responsiveAdaptationFS);
 
     })
   }
+
+  // if ($state.current.name === "dashboard_manager") {
+  //   window.requestAnimationFrame(responsiveAdaptationDM)
+  // }
 
 
   $scope.view.displayOption = function(status) {
