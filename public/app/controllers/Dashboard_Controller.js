@@ -1,4 +1,4 @@
-app.controller('Dashboard_Controller', ['$scope', '$state', '$http', 'Main_Service', 'TTI_API', 'socket', '$window', 'DashboardService', 'localStorageService', 'Responsive_WD_Service', function($scope, $state, $http, Main_Service, TTI_API, socket, $window, DashboardService, localStorageService, Responsive_WD_Service) {
+app.controller('Dashboard_Controller', ['$compile', '$scope', '$location', '$state', '$stateParams', '$http', 'Main_Service', 'TTI_API', 'socket', '$window', 'DashboardService', 'localStorageService', 'Responsive_WD_Service', function($compile, $scope, $location, $state, $stateParams, $http, Main_Service, TTI_API, socket, $window, DashboardService, localStorageService, Responsive_WD_Service) {
 
   // $scope object instantiation
   $scope.data = {};
@@ -9,7 +9,7 @@ app.controller('Dashboard_Controller', ['$scope', '$state', '$http', 'Main_Servi
   function responsiveAdaptationFS() {
     // Responsive initialization of dimensions
     var dashboardFrameElement = $('section.dashboard-frame');
-    console.log(dashboardFrameElement.width(), dashboardFrameElement.height());
+    // console.log(dashboardFrameElement.width(), dashboardFrameElement.height());
 
     $scope.view.baseDimensions = Responsive_WD_Service.calculateBaseDimensions(dashboardFrameElement);
 
@@ -98,14 +98,14 @@ app.controller('Dashboard_Controller', ['$scope', '$state', '$http', 'Main_Servi
     var sD_tHead_minusBorders = studentData_tHead.width() - 26;
     studentData_tBody.width(studentData_Table.width());
     studentData_tBody.height((studentData_Row2_Column2_Row1.height() - studentData_tHead.height()) * .9);
-    console.log('table width', studentData_Table.width());
-    console.log('thead width', studentData_tHead.width());
-    console.log('tbody width', studentData_tBody.width());
+    // console.log('table width', studentData_Table.width());
+    // console.log('thead width', studentData_tHead.width());
+    // console.log('tbody width', studentData_tBody.width());
 
     // tHead Column Headers Variable Definition
     var tHead = {
       students: $('thead.student-data th:nth-of-type(1)'),
-      students2: $('thead.student-data th:nth-child(1)'),
+      // students2: $('thead.student-data th:nth-child(1)'),
       gender: $('thead.student-data th:nth-of-type(2)'),
       class: $('thead.student-data th:nth-of-type(3)'),
       dominance: $('thead.student-data th:nth-of-type(4)'),
@@ -185,6 +185,57 @@ app.controller('Dashboard_Controller', ['$scope', '$state', '$http', 'Main_Servi
     // console.log(dFERatio);
     // dashboardIFrame.width()
     // dashboardIframe.height(dashboardIframe.width() * dFERatio);
+  }
+
+  $scope.view.openStudentDetails = function(event) {
+
+    function getStudentDataObjectFromRouteParams () {
+      return new Promise(function(resolve, reject) {
+
+        var studentNameCondensed = event.currentTarget.innerText.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()\s]/g,"").toLowerCase();
+        var rowIndex = event.currentTarget.parentNode.attributes['row-index'].value;
+        var studentPath = studentNameCondensed + rowIndex;
+        var schoolCollection = $location.path().split("/")[2];
+        var versionId = $location.path().split("/")[3];
+        console.log(schoolCollection, versionId);
+        $state.go('dashboard_student_detail', { collection: schoolCollection, id: versionId, studentpath: studentPath})
+        var dashDataStudents = localStorageService.get("currentDashboardData").compiledData.studentData;
+        var studentIndex;
+        for (var i = 0; i < dashDataStudents.length; i++) {
+          var pathCode = dashDataStudents[i][0].replace(/[.,\/#!$%\^&\*;:{}=\-_`~()\s]/g,"").toLowerCase() + i;
+          if (studentPath === pathCode) studentIndex = i;
+        }
+        var studentData = dashDataStudents[studentIndex];
+        localStorageService.set("currentStudentData", studentData);
+        if (studentData) {
+          resolve(studentData)
+        } else {
+          reject('no student data');
+        }
+      })
+    }
+
+    getStudentDataObjectFromRouteParams()
+    .then(function(studentData) {
+      // console.log(studentData);
+      // console.log(localStorageService.get("sdRefresh"));
+      // if (localStorageService.get("sdRefresh")) localStorageService.remove("sdRefresh");
+      // console.log(localStorageService.get("sdRefresh"));
+    }).catch(function(error) {
+      console.log(error);
+    })
+
+  }
+
+  $scope.view.closeStudentDetails = function(event) {
+    if (event.target.attributes.class.value === 'dashboard-studentdetails') {
+      var returnPath = $location.path()
+      var returnPathArr = returnPath.split('/')
+      // returnPathArr.splice(-1, 1);
+      // returnPath = returnPathArr.join('/');
+      // console.log(returnPath);
+      $state.go('dashboard_fullscreen', { collection: returnPathArr[1], id: returnPathArr[2] })
+    }
   }
 
   // Alter selected function based on route (multiple directives tied to controller)
@@ -307,12 +358,20 @@ app.controller('Dashboard_Controller', ['$scope', '$state', '$http', 'Main_Servi
 
   // load dashboard within full screen view
   $scope.view.loadFSDashboard = function() {
-    var dashboardData = localStorageService.get('currentDashboardData');
-    $scope.data.studentNumber = dashboardData.compiledData.studentData.length;
-    DashboardService.createDashboard(dashboardData);
-    $scope.view.dashDisplayschoolName = dashboardData.metaData.schoolInfo.optionDisplay;
-    $('span.sd-title-name').html($scope.view.dashDisplayschoolName + " ");
-    $scope.view.showFSDashboard = true;
+    return new Promise(function(resolve, reject) {
+      var dashboardData = localStorageService.get('currentDashboardData');
+      $scope.data.studentNumber = dashboardData.compiledData.studentData.length;
+      DashboardService.createDashboard(dashboardData);
+      $scope.view.dashDisplayschoolName = dashboardData.metaData.schoolInfo.optionDisplay;
+      $('span.sd-title-name').html($scope.view.dashDisplayschoolName + " ");
+
+      // compile ng-click html attribute applied from D3, binding to $scope
+      var studentNameCells = $('table.student-data tbody td:nth-of-type(1)');
+      $compile(studentNameCells)($scope);
+
+      $scope.view.showFSDashboard = true;
+      resolve();
+    })
   }
 
   // Open new tab with full screen dashboard
@@ -323,30 +382,37 @@ app.controller('Dashboard_Controller', ['$scope', '$state', '$http', 'Main_Servi
     window.open('/dashboards/' + collection + '/' + id, '_blank');
   }
 
-
   $scope.view.doneResizing = function() {
     $state.reload();
   }
 
   // If state is dashboard_fullscreen on load, load dashboard into view
-  if ($state.current.name === "dashboard_fullscreen") {
+  console.log($state.current.name);
+  if ($state.current.name === "dashboard_fullscreen" || $state.current.name === "dashboard_student_detail") {
     $scope.view.showFSDashboard = false;
-    $scope.view.loadFSDashboard();
-    window.requestAnimationFrame(responsiveAdaptationFS);
-    var resizeTimeout;
-    $(window).on("resize orientationChange", function() {
-      clearTimeout(resizeTimeout);
-      // 100ms after most recent resize, refresh the $state
-      resizeTimeout = setTimeout($scope.view.doneResizing(), 100);
+    $scope.view.loadFSDashboard()
+    .then(function() {
       window.requestAnimationFrame(responsiveAdaptationFS);
+      var resizeTimeout;
+      $(window).on("resize orientationChange", function() {
+        clearTimeout(resizeTimeout);
+        // 100ms after most recent resize, refresh the $state
+        resizeTimeout = setTimeout($scope.view.doneResizing(), 100);
+        window.requestAnimationFrame(responsiveAdaptationFS);
+      })
+      if ($state.current.name === "dashboard_student_detail") {
+        console.log('triggering resize...');
+        $(document).width($(document).width() - 1);
+        $(document).width($(document).width() + 1);
+      }
 
-    })
+    });
+    console.log(localStorageService.get("sdRefresh"));
   }
 
   // if ($state.current.name === "dashboard_manager") {
   //   window.requestAnimationFrame(responsiveAdaptationDM)
   // }
-
 
   $scope.view.displayOption = function(status) {
     $scope.view.uploadOptionStatus = status;

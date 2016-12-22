@@ -117,3 +117,19 @@ app.directive('dashboardFullscreen', function() {
     controller: 'Dashboard_Controller'
   }
 })
+
+app.directive('dashboardStudentdetails', function() {
+  return {
+    restrict: 'E',
+    templateUrl: 'app/directives/partials/dashboard_studentdetails.html',
+    controller: 'Dashboard_Controller'
+  }
+})
+
+app.directive('popupBackground', function() {
+  return {
+    restrict: 'E',
+    templateUrl: 'app/directives/partials/popup_background.html',
+    controller: 'Dashboard_Controller'
+  }
+})

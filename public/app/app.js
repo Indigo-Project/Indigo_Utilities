@@ -58,6 +58,11 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider, local
       templateUrl: "templates/dashboard_fullscreen.html",
       controller: "Dashboard_Controller"
     })
+    .state('dashboard_student_detail', {
+      url: '/dashboards/:collection/:id/:studentpath',
+      templateUrl: "templates/dashboard_studentdetail.html",
+      controller: "Dashboard_Controller",
+    })
 
     $locationProvider.html5Mode(true);
 })

@@ -183,10 +183,20 @@ table.student-data {
   }
   tbody {
     display: block;
-    overflow: auto;
+    overflow: overlay;
+    &::-webkit-scrollbar * {
+      background: transparent;
+    }
+    // &::-webkit-scrollbar-track-piece:end {
+    //     background: transparent url('images/backgrounds/scrollbar.png') repeat-y !important;
+    // }
     td {
       border-bottom: 1px solid rgb(130, 130, 130);
       border-right: 1px solid rgb(130, 130, 130);
+      &:nth-child(1):hover {
+        cursor: pointer;
+        cursor: hand;
+      }
       &:nth-child(3) {
         border-right: 1px solid black;
       }

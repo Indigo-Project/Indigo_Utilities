@@ -545,7 +545,9 @@ app.factory('DashboardService', ['$http', function($http) {
           })
 
           var rowObj = tableBody.selectAll('tr').data(rowData, function(d) { return d }).enter().append('tr').attr('class', 'student-data')
-
+          rowObj.attr('row-index', function(d, i) {
+            return i;
+          })
           rowObj.selectAll('td').data(function (d,i) {
             // console.log('d, i', d, i);
             return dashValsIndex.map(function (k, i) {
@@ -554,12 +556,14 @@ app.factory('DashboardService', ['$http', function($http) {
             })
           }).enter()
           .append('td').attr('class', 'student-data')
-          .attr('data-th', function (d) {
+          .attr('column-th', function (d, i, a) {
             return d.name;
           })
+          .attr('ng-click', 'view.openStudentDetails($event)')
           .text(function (d, i, a) {
             return d.value;
-          }).style("background-color", function(d, i) {
+          })
+          .style("background-color", function(d, i) {
             var discOpacityCalc = (((Number(d.value) * 80) / 100) + 20) / 100;
             var motivOpacityCalc = (((Number(d.value) * 8) / 10) + 2) / 10;
             // console.log(Number(d.value), newValue);
@@ -638,6 +642,10 @@ app.factory('DashboardService', ['$http', function($http) {
       setRowData(dashData, true);
 
     },
+
+    // destroyDashboard: function() {
+    //   // $('')
+    // }
 
     getStoredSchools: function() {
       return new Promise(function(resolve, reject) {

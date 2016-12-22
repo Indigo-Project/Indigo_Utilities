@@ -34,6 +34,7 @@ app.use("/sum_stats", express.static(__dirname + "/public/index.html"));
 app.use("/dashboard_gen", express.static(__dirname + "/public/index.html"));
 app.use("/dashboard_manager", express.static(__dirname + "/public/index.html"));
 app.use("/dashboards/:collection/:id", express.static(__dirname + "/public/index.html"));
+app.use("/dashboards/:collection/:id/:studentpath", express.static(__dirname + "/public/index.html"));
 
 app.use('/api', api);
 
