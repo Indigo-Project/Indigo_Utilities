@@ -234,7 +234,8 @@ app.controller('Dashboard_Controller', ['$compile', '$scope', '$location', '$sta
       // returnPathArr.splice(-1, 1);
       // returnPath = returnPathArr.join('/');
       // console.log(returnPath);
-      $state.go('dashboard_fullscreen', { collection: returnPathArr[1], id: returnPathArr[2] })
+      console.log(returnPathArr);
+      $state.go('dashboard_fullscreen', { collection: returnPathArr[2], id: returnPathArr[3] })
     }
   }
 
