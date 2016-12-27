@@ -90,7 +90,7 @@ app.directive('dashboardGen', function() {
   return {
     restrict: 'E',
     templateUrl: 'app/directives/partials/dashboard_gen.html',
-    controller: 'Dashboard_Controller'
+    controller: 'Dashboard_Gen_Controller'
   }
 })
 
@@ -98,7 +98,7 @@ app.directive('dashboardManager', function() {
   return {
     restrict: 'E',
     templateUrl: 'app/directives/partials/dashboard_manager.html',
-    controller: 'Dashboard_Controller'
+    controller: 'Dashboard_Manager_Controller'
   }
 })
 
@@ -106,7 +106,7 @@ app.directive('dashboardFrame', function() {
   return {
     restrict: 'E',
     templateUrl: 'app/directives/partials/dashboard_frame.html',
-    controller: 'Dashboard_Controller'
+    controller: 'Dashboard_View_Controller'
   }
 })
 
@@ -114,7 +114,7 @@ app.directive('dashboardFullscreen', function() {
   return {
     restrict: 'E',
     templateUrl: 'app/directives/partials/dashboard_fullscreen.html',
-    controller: 'Dashboard_Controller'
+    controller: 'Dashboard_View_Controller'
   }
 })
 
@@ -122,7 +122,7 @@ app.directive('dashboardStudentdetails', function() {
   return {
     restrict: 'E',
     templateUrl: 'app/directives/partials/dashboard_studentdetails.html',
-    controller: 'Dashboard_Controller'
+    controller: 'Dashboard_View_Controller'
   }
 })
 
