@@ -5,6 +5,18 @@ app.controller('Dashboard_Controller', ['$compile', '$scope', '$location', '$sta
   $scope.uploader = {};
   $scope.view = {};
 
+  // Alter selected function based on route (multiple directives tied to controller)
+  if ($state.current.name === "dashboard_gen") {
+    $scope.view.selectedFunction = "dashboard_gen";
+  } else if ($state.current.name === "dashboard_manager") {
+    $scope.view.selectedFunction = "dashboard_manager";
+  }
+
+  // dynamically change options based on selected function
+  $scope.view.accessFunction = function () {
+    Main_Service.accessFunction($scope.view.selectedFunction);
+  }
+
   // responsive 'reaction' event
   function responsiveAdaptationFS() {
     // Responsive initialization of dimensions
@@ -187,118 +199,56 @@ app.controller('Dashboard_Controller', ['$compile', '$scope', '$location', '$sta
     // dashboardIframe.height(dashboardIframe.width() * dFERatio);
   }
 
-  $scope.view.openStudentDetails = function(event) {
-
-    function getStudentDataObjectFromRouteParams () {
-      return new Promise(function(resolve, reject) {
-
-        var studentNameCondensed = event.currentTarget.innerText.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()\s]/g,"").toLowerCase();
-        var rowIndex = event.currentTarget.parentNode.attributes['row-index'].value;
-        var studentPath = studentNameCondensed + rowIndex;
-        var schoolCollection = $location.path().split("/")[2];
-        var versionId = $location.path().split("/")[3];
-        console.log(schoolCollection, versionId);
-        $state.go('dashboard_student_detail', { collection: schoolCollection, id: versionId, studentpath: studentPath})
-        var dashDataStudents = localStorageService.get("currentDashboardData").compiledData.studentData;
-        var studentIndex;
-        for (var i = 0; i < dashDataStudents.length; i++) {
-          var pathCode = dashDataStudents[i][0].replace(/[.,\/#!$%\^&\*;:{}=\-_`~()\s]/g,"").toLowerCase() + i;
-          if (studentPath === pathCode) studentIndex = i;
-        }
-        var studentData = dashDataStudents[studentIndex];
-        localStorageService.set("currentStudentData", studentData);
-        if (studentData) {
-          resolve(studentData)
-        } else {
-          reject('no student data');
-        }
-      })
-    }
-
-    getStudentDataObjectFromRouteParams()
-    .then(function(studentData) {
-      // console.log(studentData);
-      // console.log(localStorageService.get("sdRefresh"));
-      // if (localStorageService.get("sdRefresh")) localStorageService.remove("sdRefresh");
-      // console.log(localStorageService.get("sdRefresh"));
-    }).catch(function(error) {
-      console.log(error);
-    })
-
-  }
-
-  $scope.view.closeStudentDetails = function(event) {
-    if (event.target.attributes.class.value === 'dashboard-studentdetails') {
-      var returnPath = $location.path()
-      var returnPathArr = returnPath.split('/')
-      // returnPathArr.splice(-1, 1);
-      // returnPath = returnPathArr.join('/');
-      // console.log(returnPath);
-      console.log(returnPathArr);
-      $state.go('dashboard_fullscreen', { collection: returnPathArr[2], id: returnPathArr[3] })
-    }
-  }
-
-  // Alter selected function based on route (multiple directives tied to controller)
-  if ($state.current.name === "dashboard_gen") {
-    $scope.view.selectedFunction = "dashboard_gen";
-  } else if ($state.current.name === "dashboard_manager") {
-    $scope.view.selectedFunction = "dashboard_manager";
-  }
-
-  // dynamically change options based on selected function
-  $scope.view.accessFunction = function () {
-    Main_Service.accessFunction($scope.view.selectedFunction);
-  }
-
   // School name options dropdown and dashboard manager options initialization
-  DashboardService.getSchoolNameOptions()
-  .then(function(data) {
-    $scope.view.dashboardNameOptions = data.data;
-    var schoolNames = Object.keys($scope.view.dashboardNameOptions);
-    for (var i = 0; i < schoolNames.length; i++) {
-      $scope.view.dashboardNameOptions[schoolNames[i]].code = schoolNames[i]
-    }
+  if ($state.current.name === "dashboard_manager") {
+    DashboardService.getSchoolNameOptions()
+    .then(function(data) {
+      $scope.view.dashboardNameOptions = data.data;
+      var schoolNames = Object.keys($scope.view.dashboardNameOptions);
+      for (var i = 0; i < schoolNames.length; i++) {
+        $scope.view.dashboardNameOptions[schoolNames[i]].code = schoolNames[i]
+      }
 
-    DashboardService.getStoredSchools()
-    .then(function(collections) {
-      var collectionNames = Object.keys(collections.data);
-      // console.log(collectionNames);
-      $scope.data.dbCollections = {};
-      for (var i = 0; i < collectionNames.length; i++) {
-        for (var j = 0; j < schoolNames.length; j++) {
-          if (collectionNames[i] === schoolNames[j]) {
-            // console.log(collectionNames[i], schoolNames[j]);
-            $scope.data.dbCollections[collectionNames[i]] = collections.data[collectionNames[i]];
-            $scope.data.dbCollections[collectionNames[i]].nameOptions = $scope.view.dashboardNameOptions[collectionNames[i]];
+      DashboardService.getStoredSchools()
+      .then(function(collections) {
+        var collectionNames = Object.keys(collections.data);
+        // console.log(collectionNames);
+        $scope.data.dbCollections = {};
+        for (var i = 0; i < collectionNames.length; i++) {
+          for (var j = 0; j < schoolNames.length; j++) {
+            if (collectionNames[i] === schoolNames[j]) {
+              // console.log(collectionNames[i], schoolNames[j]);
+              $scope.data.dbCollections[collectionNames[i]] = collections.data[collectionNames[i]];
+              $scope.data.dbCollections[collectionNames[i]].nameOptions = $scope.view.dashboardNameOptions[collectionNames[i]];
+            }
           }
         }
-      }
-      // console.log($scope.data.dbCollections);
+        // console.log($scope.data.dbCollections);
 
-      var dbCollections = Object.keys($scope.data.dbCollections);
-      $scope.data.availableCollections = {};
-      for (var i = 0; i < dbCollections.length; i++) {
-        $scope.data.availableCollections[dbCollections[i]] = $scope.data.dbCollections[dbCollections[i]].nameOptions;
-      }
-      // console.log($scope.data.availableCollections);
+        var dbCollections = Object.keys($scope.data.dbCollections);
+        $scope.data.availableCollections = {};
+        for (var i = 0; i < dbCollections.length; i++) {
+          $scope.data.availableCollections[dbCollections[i]] = $scope.data.dbCollections[dbCollections[i]].nameOptions;
+        }
+        // console.log($scope.data.availableCollections);
 
-      $scope.data.availableVersions = {};
-      for (var i = 0; i < dbCollections.length; i++) {
-        var currentCollection = $scope.data.dbCollections[dbCollections[i]];
-        var collectionVKeys = Object.keys(currentCollection)
-        $scope.data.availableVersions[dbCollections[i]] = {};
-        for (var j = 0; j < collectionVKeys.length; j++) {
-          if (collectionVKeys[j] !== "nameOptions") {
-            $scope.data.availableVersions[dbCollections[i]][collectionVKeys[j]] = currentCollection[collectionVKeys[j]];
+        $scope.data.availableVersions = {};
+        for (var i = 0; i < dbCollections.length; i++) {
+          var currentCollection = $scope.data.dbCollections[dbCollections[i]];
+          var collectionVKeys = Object.keys(currentCollection)
+          $scope.data.availableVersions[dbCollections[i]] = {};
+          for (var j = 0; j < collectionVKeys.length; j++) {
+            if (collectionVKeys[j] !== "nameOptions") {
+              $scope.data.availableVersions[dbCollections[i]][collectionVKeys[j]] = currentCollection[collectionVKeys[j]];
+            }
           }
         }
-      }
-      // console.log($scope.data.availableVersions);
+        // console.log($scope.data.availableVersions);
 
-      $scope.$apply();
+        $scope.$apply();
+      });
     });
-  });
+  }
 
   // $scope variable declaration
   $scope.data.schoolName = "";
@@ -334,18 +284,18 @@ app.controller('Dashboard_Controller', ['$compile', '$scope', '$location', '$sta
     }
   };
 
-  // load current dashboard version data object into $scope variable and local storage, then create dashboard
+  // load current dashboard version data object into $scope variable and local storage from dashboard manager, then create dashboard
   $scope.view.loadVersion = function() {
     $scope.view.showMDashboard = false;
     if ($scope.view.dashMschoolVersion) {
       // console.log($scope.view.dashMschoolCode, $scope.view.dashMschoolVersion);
       DashboardService.getStoredDashboardData($scope.view.dashMschoolCode, $scope.view.dashMschoolVersion)
       .then(function(data) {
+        console.log('got data', data);
         $scope.data.currentDashboardDataObject = data
         localStorageService.set('currentDashboardData', data);
         DashboardService.createDashboard($scope.data.currentDashboardDataObject, $scope.view.dashMschoolCode);
         $scope.view.iframeSrc = '/dashboards/' + $scope.view.dashMschoolCode + "/" + $scope.data.currentDashboardDataObject._id;
-        $scope.view.iframeDimensions = [];
         $scope.view.showMDashboard = true;
         responsiveAdaptationDM();
         $scope.$apply();
@@ -356,6 +306,25 @@ app.controller('Dashboard_Controller', ['$compile', '$scope', '$location', '$sta
       console.log('NO VERSION SELECTED');
     }
   };
+
+  // if no dash-data set has been specified from manager, load based on full screen params
+  $scope.data.loadVersionFS = function() {
+    return new Promise(function(resolve, reject) {
+      DashboardService.getStoredDashboardData($stateParams.collection, null, $stateParams.id)
+      .then(function(data) {
+        console.log(data);
+        $scope.data.currentDashboardDataObject = data
+        localStorageService.set('currentDashboardData', data, $scope.view.dashMschoolCode);
+        DashboardService.createDashboard($scope.data.currentDashboardDataObject, $scope.view.dashMschoolCode);
+        // $scope.view.iframeSrc = '/dashboards/' + $scope.view.dashMschoolCode + "/" + $scope.data.currentDashboardDataObject._id;
+        // $scope.view.showMDashboard = true;
+        responsiveAdaptationDM();
+        $scope.$apply();
+      }).catch(function(error) {
+        console.log(error);
+      })
+    })
+  }
 
   // load dashboard within full screen view
   $scope.view.loadFSDashboard = function() {
@@ -388,32 +357,87 @@ app.controller('Dashboard_Controller', ['$compile', '$scope', '$location', '$sta
   }
 
   // If state is dashboard_fullscreen on load, load dashboard into view
-  console.log($state.current.name);
   if ($state.current.name === "dashboard_fullscreen" || $state.current.name === "dashboard_student_detail") {
-    $scope.view.showFSDashboard = false;
-    $scope.view.loadFSDashboard()
-    .then(function() {
-      window.requestAnimationFrame(responsiveAdaptationFS);
-      var resizeTimeout;
-      $(window).on("resize orientationChange", function() {
-        clearTimeout(resizeTimeout);
-        // 100ms after most recent resize, refresh the $state
-        resizeTimeout = setTimeout($scope.view.doneResizing(), 100);
+    // if no object in local storage, or localstorage object's id is not same as in url parameter, get correct student data object
+    if (!localStorageService.get('currentDashboardData') || localStorageService.get('currentDashboardData')._id !== $stateParams.id ) {
+      console.log('LOAD CORRECT VERSION...');
+      $scope.data.loadVersionFS();
+      // $state.reload();
+    } else {
+      $scope.view.showFSDashboard = false;
+      $scope.view.loadFSDashboard()
+      .then(function() {
         window.requestAnimationFrame(responsiveAdaptationFS);
-      })
-      if ($state.current.name === "dashboard_student_detail") {
-        console.log('triggering resize...');
-        $(document).width($(document).width() - 1);
-        $(document).width($(document).width() + 1);
-      }
-
-    });
-    console.log(localStorageService.get("sdRefresh"));
+        var resizeTimeout;
+        $(window).on("resize orientationChange", function() {
+          clearTimeout(resizeTimeout);
+          // 100ms after most recent resize, refresh the $state
+          resizeTimeout = setTimeout($scope.view.doneResizing(), 100);
+          window.requestAnimationFrame(responsiveAdaptationFS);
+        })
+        // if ($state.current.name === "dashboard_student_detail") {
+        //   $(document).width($(document).width() - 1);
+        //   $(document).width($(document).width() + 1);
+        // }
+      });
+    }
   }
 
-  // if ($state.current.name === "dashboard_manager") {
-  //   window.requestAnimationFrame(responsiveAdaptationDM)
-  // }
+
+  $scope.view.openStudentDetails = function(event) {
+
+    function getStudentDataObjectFromRouteParams () {
+      return new Promise(function(resolve, reject) {
+
+        var studentNameCondensed = event.currentTarget.innerText.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()\s]/g,"").toLowerCase();
+        var rowIndex = event.currentTarget.parentNode.attributes['row-index'].value;
+        var studentPath = studentNameCondensed + rowIndex;
+        var schoolCollection = $location.path().split("/")[2];
+        var versionId = $location.path().split("/")[3];
+        $state.go('dashboard_student_detail', { collection: schoolCollection, id: versionId, studentpath: studentPath});
+
+        var dashDataStudents = localStorageService.get("currentDashboardData").compiledData.studentData;
+        var columnHeaders = localStorageService.get("currentDashboardData").compiledData.columnHeaders[0];
+        var studentIndex;
+        for (var i = 0; i < dashDataStudents.length; i++) {
+          var pathCode = dashDataStudents[i][0].replace(/[.,\/#!$%\^&\*;:{}=\-_`~()\s]/g,"").toLowerCase() + i;
+          if (studentPath === pathCode) studentIndex = i;
+        }
+        var studentData = dashDataStudents[studentIndex];
+        localStorageService.set("currentStudentData", studentData);
+        if (studentData) {
+          resolve({ stateInfo: [schoolCollection, versionId, studentPath], columnHeaders: columnHeaders, studentData: studentData })
+        } else {
+          reject('no student data');
+        }
+      })
+    }
+
+    getStudentDataObjectFromRouteParams()
+    .then(function(data) {
+      DashboardService.loadStudentDetails(data.columnHeaders, data.studentData)
+      .then(function() {
+        $state.go('dashboard_student_detail', { collection: data.stateInfo[0], id: data.stateInfo[1], studentpath: data.stateInfo[2]});
+        responsiveAdaptationDM();
+        $scope.$apply();
+        // $state.reload();
+        console.log('done');
+      }).catch(function(error) {
+        console.log(error);
+      })
+    }).catch(function(error) {
+      console.log(error);
+    })
+  }
+
+  $scope.view.closeStudentDetails = function(event) {
+    console.log('closing...');
+    if (event.target.attributes.class.value.split(' ')[0] === 'dashboard-studentdetails') {
+      var returnPath = $location.path()
+      var returnPathArr = returnPath.split('/')
+      $state.go('dashboard_fullscreen', { collection: returnPathArr[2], id: returnPathArr[3] })
+    }
+  }
 
   $scope.view.displayOption = function(status) {
     $scope.view.uploadOptionStatus = status;
@@ -525,7 +549,6 @@ app.controller('Dashboard_Controller', ['$compile', '$scope', '$location', '$sta
               $scope.data.studentClasses.push(dataObjKeys[i].substring(0,4))
             }
           }
-
           DashboardService.createDashboard(data)
           $('span.sd-title-name').html($scope.data.schoolName + " ");
           $scope.view.dashboardCreationStatus = "success";

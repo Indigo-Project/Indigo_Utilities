@@ -506,6 +506,7 @@ section.student-window {
   background-color: white;
   width: 90vw;
   height: 90vh;
-  border: 1px solid #4F4498; }
+  border: 1px solid #4F4498;
+  padding: 10px 15px 15px 10px; }
 
 /*# sourceMappingURL=style.css.map */

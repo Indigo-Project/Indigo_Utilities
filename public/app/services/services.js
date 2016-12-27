@@ -641,11 +641,40 @@ app.factory('DashboardService', ['$http', function($http) {
       setFilters(dashData, [[],[],[]]);
       setRowData(dashData, true);
 
+      // var studentName = d3.select('h3.sde-name');
+      // studentName.text(sDDMap.get('FULL NAME'));
+      // var studentDems1 = d3.select('div.sde-dems1');
+      // console.log(studentName, studentDems1);
+      // var fullName = 'test';
+      // studentDems1.selectAll('p').data(fullName, function(d) { return d;}).enter().append('p')
+      // .text(function(d) { console.log(d); return d; }).exit();
+
     },
 
-    // destroyDashboard: function() {
-    //   // $('')
-    // }
+    loadStudentDetails: function(columnHeaders, studentData) {
+      return new Promise(function(resolve, reject) {
+
+        var studentDetailsData = {};
+        for (var i = 0; i < columnHeaders.length; i++) {
+          studentDetailsData[columnHeaders[i]] = studentData[i];
+        }
+
+        var sDDEntries = d3.entries(studentDetailsData)
+        var sDDMap = d3.map(studentDetailsData, function(d) { return d; })
+        console.log(sDDEntries, sDDMap);
+
+        var studentName = d3.select('h3.sde-name');
+        studentName.text(sDDMap.get('FULL NAME'));
+        var studentDems1 = d3.select('div.sde-dems1');
+        console.log(studentName, studentDems1);
+        var fullName = [sDDMap.get('FULL NAME')];
+        resolve(studentDems1.selectAll('p').data(fullName, function(d) { return d;}).enter().append('p')
+        .text(function(d) { console.log(d); return d; }).exit());
+
+        // resolve();
+        // Use D3 to append data to appropriate fields in student detail popup
+      })
+    },
 
     getStoredSchools: function() {
       return new Promise(function(resolve, reject) {
@@ -660,13 +689,13 @@ app.factory('DashboardService', ['$http', function($http) {
       })
     },
 
-    getStoredDashboardData: function(schoolCode, version) {
+    getStoredDashboardData: function(schoolCode, version, id) {
       return new Promise(function(resolve, reject) {
-        console.log(schoolCode, version);
+        console.log(schoolCode, version, id);
         $http({
           method: 'POST',
           url: '/api/dashboard-data',
-          data: { schoolCode: schoolCode, version: version }
+          data: { schoolCode: schoolCode, version: version, id: id }
         }).then(function(data) {
           resolve(data.data);
         }).catch(function(err) {
@@ -674,9 +703,7 @@ app.factory('DashboardService', ['$http', function($http) {
         })
       })
     },
-
   }
-
 }])
 
 app.factory('socket', ['$rootScope', '$state', function($rootScope, $state) {

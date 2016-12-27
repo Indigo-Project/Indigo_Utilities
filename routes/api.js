@@ -1929,10 +1929,10 @@ router.get('/dashboard-collections', function(req, res, next) {
     return new Promise(function(resolve, reject) {
       var collectionReturn = {};
       bPromise.each(collectionNames, function(element, index, length) {
-        console.log(index, element);
+        // console.log(index, element);
         mongo.getDashboardVersions(db, element)
         .then(function(versions) {
-          console.log(element, versions);
+          // console.log(element, versions);
           collectionReturn[element] = versions;
           if (Object.keys(collectionReturn).length === length) {
             resolve(collectionReturn);
@@ -1948,7 +1948,7 @@ router.get('/dashboard-collections', function(req, res, next) {
   .then(function(data) {
     mongo.getDashboardCollections(data.db)
     .then(function(collections) {
-      console.log('COLLECTIONS RETURNED', collections);
+      // console.log('COLLECTIONS RETURNED', collections);
       var collectionNames = [];
 
       // Create filtered array of school collection names for reference
@@ -1976,10 +1976,13 @@ router.get('/dashboard-collections', function(req, res, next) {
 })
 
 router.post('/dashboard-data', function(req, res, next) {
-
   mongo.mongoDBConnect(mongo.indigoDashboardsURI)
   .then(function(data) {
-    mongo.getDashboardData(data.db, req.body.schoolCode, req.body.version)
+    // console.log(data);
+    var dataId = req.body.version ? req.body.version : req.body.id;
+    var IdOption = req.body.version ? "version" : "id";
+    console.log('CCC', req.body.schoolCode, IdOption, dataId);
+    mongo.getDashboardData(data.db, req.body.schoolCode, dataId, IdOption)
     .then(function(dashData) {
       console.log('dashData', dashData);
       res.send(dashData);

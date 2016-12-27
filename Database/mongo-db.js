@@ -14,8 +14,6 @@ var database = {
   // Establish connection to Mongo Database
   mongoDBConnect: function(url) {
     return new Promise(function(resolve,reject) {
-      console.log('url', url);
-      console.log('url.URI', url.URI);
       MongoClient.connect(url.URI, function(err, db) {
         if(assert.equal(null, err) === undefined) {
           resolve({
@@ -176,21 +174,37 @@ var database = {
     })
   },
 
-  // Get dashboard data with school code and version
-  getDashboardData: function(db, schoolCode, version) {
+  // Get dashboard data with school code and collectionIdentifier
+  getDashboardData: function(db, schoolCode, dataId, idOption) {
+    console.log('179', schoolCode, dataId, idOption);
     return new Promise(function(resolve, reject) {
       db.collection(schoolCode, function(err, collection) {
         collection.find().toArray(function(err, docs) {
+          console.log('docs', docs);
           var id;
-          for (var i = 0; i < docs.length; i++) {
-            if(docs[i].metaData.version === version) {
-              id = docs[i]._id;
+          if (idOption === "version") {
+            for (var i = 0; i < docs.length; i++) {
+              if(docs[i].metaData.version === dataId) {
+                id = docs[i]._id;
+                console.log('id =', id);
+              }
+            }
+          } else if (idOption === "id") {
+            for (var i = 0; i < docs.length; i++) {
+              console.log(docs[i]._id.toString(), dataId);
+              if(docs[i]._id.toString() === dataId) {
+                console.log('MATCH');
+                id = docs[i]._id;
+              }
             }
           }
+          console.log('ID', id, toString.call(id), id.length);
+          // console.log('docs', docs);
           collection.findOne({_id: id}, function(err, doc) {
             if (err) {
               reject(err);
             } else {
+              // console.log('doc', doc);
               resolve(doc);
             }
           })
