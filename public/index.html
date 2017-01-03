@@ -4,12 +4,16 @@
     <meta charset="UTF-8">
     <title>Indigo Business Utilities</title>
     <base href="/">
+
     <!-- FAVICON-->
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon.ico">
-    <!-- STYLESHEETS & CDNS/BOWER PACKAGES-->
+
+    <!-- STYLESHEETS -->
     <link rel="stylesheet" href="assets/styles/reset.css">
     <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="assets/styles/style.css">
+
+    <!-- & CDNs/BOWER PACKAGES-->
     <script src="lib/jquery/dist/jquery.min.js"></script>
     <script src="lib/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="lib/angular/angular.min.js"></script>
@@ -17,14 +21,23 @@
     <script src="lib/angular-file-saver/dist/angular-file-saver.bundle.min.js"></script>
     <script src="lib/angular-file-upload/dist/angular-file-upload.min.js"></script>
     <script src="lib/angular-local-storage/dist/angular-local-storage.min.js"></script>
-    <!-- <script src="lib/d3/d3.min.js"></script> -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.4.0/d3.min.js"></script>
-    <!-- <script src="lib/socket.io/socket.io.js"></script> -->
+    <script src="lib/d3/d3.min.js"></script>
+    <!-- <script src="lib/socket.io/lib/socket.js"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.5.1/socket.io.min.js"></script>
 
     <!-- ANGULAR COMPONENTS -->
+
+    <!-- Application -->
     <script src="app/app.js"></script>
-    <script src="app/services/services.js"></script>
+
+    <!-- Services -->
+    <script src="app/services/Main_Service.js"></script>
+    <script src="app/services/Dashboard_Service.js"></script>
+    <script src="app/services/RWD_Service.js"></script>
+    <script src="app/services/Socket_Service.js"></script>
+    <script src="app/services/TTI_API_Service.js"></script>
+
+    <!-- Controllers -->
     <script src="app/controllers/Main_Controller.js"></script>
     <script src="app/controllers/Pbi_Pfmt_Controller.js"></script>
     <script src="app/controllers/Blue_List_Controller.js"></script>
@@ -35,7 +48,8 @@
     <script src="app/controllers/Dashboard/Dashboard_View_Controller.js"></script>
     <script src="app/controllers/Dashboard/Dashboard_Gen_Controller.js"></script>
     <script src="app/controllers/Dashboard/Dashboard_Manager_Controller.js"></script>
-    <!-- <script src="app/controllers/Dashboard_Controller.js"></script> -->
+
+    <!-- Directives -->
     <script src="app/directives/directives.js"></script>
 </head>
 <body>
