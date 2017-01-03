@@ -1169,28 +1169,122 @@ app.factory('DashboardService', ['$http', function($http) {
 
             var returnArr = [];
             var conversionObj = {
-              "GENDER": function(value) {
-                return value === "M" ? "Male" : "Female";
-              }
+              "ATTEND": {
+                label: function(label) {
+                  return "Enjoy Attending School";
+                }
+              },
+              "C NATURAL (%)": {
+                label: function(label) {
+                  return "Compliance";
+                }
+              },
+              "D NATURAL (%)": {
+                label: function(label) {
+                  return "Dominance";
+                }
+              },
+              "GENDER": {
+                value: function(value) {
+                  return value === "M" ? "Male" : "Female";
+                }
+              },
+              "GPA": {
+                label: function(label) {
+                  return "GPA";
+                }
+              },
+              "I NATURAL (%)": {
+                label: function(label) {
+                  return "Influencing";
+                }
+              },
+              "MAJOR": {
+                label: function(label) {
+                  return "Major(s)";
+                }
+              },
+              "OTHERSTRESS": {
+                label: function(label) {
+                  return "Other Stressors";
+                }
+              },
+              "PARENTCOLLEGE": {
+                label: function(label) {
+                  return "First Generation";
+                }
+              },
+              "PAYING JOB": {
+                label: function(label) {
+                  return "Has Paying Job";
+                }
+              },
+              "PREPARING": {
+                label: function(label) {
+                  return "Feel School is Preparing for Life";
+                }
+              },
+              "S NATURAL (%)": {
+                label: function(label) {
+                  return "Steadiness";
+                }
+              },
+              "SCHOOL YEAR": {
+                label: function(label) {
+                  return "School Year Taken";
+                }
+              },
+              "TEN_AES": {
+                label: function(label) {
+                  return "Aesthetic";
+                }
+              },
+              "TEN_IND": {
+                label: function(label) {
+                  return "Individualistic";
+                }
+              },
+              "TEN_SOC": {
+                label: function(label) {
+                  return "Social";
+                }
+              },
+              "TEN_THE": {
+                label: function(label) {
+                  return "Theoretical";
+                }
+              },
+              "TEN_TRA": {
+                label: function(label) {
+                  return "Traditional";
+                }
+              },
+              "TEN_UTI": {
+                label: function(label) {
+                  return "Utilitarian";
+                }
+              },
             };
             var conversionObjKeys = Object.keys(conversionObj);
 
             for (var i = 0; i < arguments.length; i++) {
               var pushVal;
-              var converted = false;
               for (var j = 0; j < conversionObjKeys.length; j++) {
+                var label;
+                var value;
                 if (arguments[i] === conversionObjKeys[j]) {
-                  pushVal = [sDDataObject[arguments[i]].label, conversionObj[conversionObjKeys[j]](sDDataObject[arguments[i]].value)];
-                  converted = true;
+                  label = conversionObj[conversionObjKeys[j]].label ? conversionObj[conversionObjKeys[j]].label(sDDataObject[arguments[i]].label) : sDDataObject[arguments[i]].label;
+                  value = conversionObj[conversionObjKeys[j]].value ? conversionObj[conversionObjKeys[j]].value(sDDataObject[arguments[i]].value) : sDDataObject[arguments[i]].value;
+                  pushVal = [label, value];
+                  break;
+                } else {
+                  label = sDDataObject[arguments[i]].label;
+                  value = sDDataObject[arguments[i]].value;
+                  pushVal = [label, value];
                 }
-              }
-              if (!converted) {
-                // console.log(arguments[i], sDDataObject[arguments[i]]);
-                pushVal = [sDDataObject[arguments[i]].label, sDDataObject[arguments[i]].value]
               }
               returnArr.push(pushVal);
             }
-
             return returnArr;
           }
 
