@@ -261,7 +261,7 @@ app.factory('DashboardService', ['$http', function($http) {
           }
         })
 
-        rowObj.exit();
+        rowObj.exit().remove();
 
       }
 
@@ -1142,25 +1142,202 @@ app.factory('DashboardService', ['$http', function($http) {
 
           // createDashboard(studentData)
 
-          // student details setup
-          var studentDetailsData = {};
+          // student details data object setup
+          var sDDataObject = {};
           for (var i = 0; i < columnHeaders.length; i++) {
-            studentDetailsData[columnHeaders[i]] = studentData[i];
+            sDDataObject[columnHeaders[i]] = { index: "", value: "" };
+            sDDataObject[columnHeaders[i]].index = i;
+            sDDataObject[columnHeaders[i]].value = !studentData[i] || studentData[i] === "Please Select" || studentData[i] === "-" ? "---" : studentData[i];
+            sDDataObject[columnHeaders[i]].key = columnHeaders[i];
+            sDDataObject[columnHeaders[i]].label = columnHeaders[i].replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+          }
+          console.log(sDDataObject);
+
+          var adultAverages = {
+            "DISC": [43.0, 58.7, 60.7, 50.5],
+            "MOTIVATORS": [6.0, 5.3, 4.3, 4.2, 5.5, 4.7],
+            "SKILLS": []
           }
 
-          var sDDEntries = d3.entries(studentDetailsData)
-          var sDDMap = d3.map(studentDetailsData, function(d) { return d; })
-          console.log(sDDEntries, sDDMap);
-
+          // row 1 - header name
           var studentName = d3.select('h3.sde-name');
-          studentName.text(sDDMap.get('FULL NAME'));
+          studentName.text(sDDataObject['FULL NAME'].value)
+          .attr("class", "sde-name");
 
+          function setSdSectionData() {
+
+            var returnArr = [];
+            var conversionObj = {
+              "GENDER": function(value) {
+                return value = "M" ? "Male" : "Female";
+              }
+            };
+            var conversionObjKeys = Object.keys(conversionObj);
+
+            for (var i = 0; i < arguments.length; i++) {
+              var pushVal;
+              var converted = false;
+              for (var j = 0; j < conversionObjKeys.length; j++) {
+                if (arguments[i] === conversionObjKeys[j]) {
+                  pushVal = [sDDataObject[arguments[i]].label, conversionObj[conversionObjKeys[j]](sDDataObject[arguments[i]].value)];
+                  converted = true;
+                }
+              }
+              if (!converted) {
+                // console.log(arguments[i], sDDataObject[arguments[i]]);
+                pushVal = [sDDataObject[arguments[i]].label, sDDataObject[arguments[i]].value]
+              }
+              returnArr.push(pushVal);
+            }
+
+            return returnArr;
+          }
+
+          // ROW 1
+          // header demographics
           var studentDems1 = d3.select('div.sde-dems1');
-          var dems1 = [sDDMap.get('GENDER') === 'M' ? 'Male' : 'Female', sDDMap.get('SCHOOL YEAR'), sDDMap.get('YEAR BORN'), sDDMap.get('CLASS'), sDDMap.get('ETHNICITY'), sDDMap.get('SCHOOL YEAR')];
-          studentDems1.selectAll('p').data(dems1, function(d) { return d;}).enter().append('p')
-          .text(function(d) { return d; }).exit();
+          var dems1 = setSdSectionData("GENDER", "YEAR BORN", "CLASS", "ETHNICITY", "SCHOOL YEAR")
+          var studentDems1Spans = studentDems1.selectAll('span').data(dems1, function(d) { console.log(d); return d; }).enter().append('span')
+          .attr("class", "sd-span sde-dems1");
+          studentDems1Spans.append('p').text(function(d) { return d[1]; })
+          .attr("class", "sd-val sde-dems1")
+          studentDems1Spans.append('label').text(function(d) { return d[0]; })
+          .attr("class", "sd-label sde-dems1");
 
-          
+          // ROW 2
+          // dems 2.0
+          var studentDems2_0 = d3.select('div.sde-dems2-0');
+          var dems2_0 = setSdSectionData("ENGLISH GRADES", "MATH GRADES", "SCIENCE GRADES");
+          var studentDems2_0Spans = studentDems2_0.selectAll('span').data(dems2_0, function(d) { return d; }).enter().append('span')
+          .attr("class", "sd-span sde-dems2-0");
+          studentDems2_0Spans.append('p').text(function(d) { return d[1]; })
+          .attr("class", "sd-val sde-dems2-0")
+          studentDems2_0Spans.append('label').text(function(d) { return d[0]; })
+          .attr("class", "sd-label sde-dems2-0");
+
+          // dems 2.1
+          var studentDems2_1 = d3.select('div.sde-dems2-1');
+          var dems2_1 = setSdSectionData("GPA", "PARENTCOLLEGE", "PAYING JOB");
+          var studentDems2_1Spans = studentDems2_1.selectAll('span').data(dems2_1, function(d) { return d; }).enter().append('span')
+          .attr("class", "sd-span sde-dems2-1");
+          studentDems2_1Spans.append('p').text(function(d) { return d[1]; })
+          .attr("class", "sd-val sde-dems2-1")
+          studentDems2_1Spans.append('label').text(function(d) { return d[0]; })
+          .attr("class", "sd-label sde-dems2-1");
+
+          // dems 2.2
+          var studentDems2_2 = d3.select('div.sde-dems2-2');
+          var dems2_2 = setSdSectionData("MAJOR", "JOBS ENJOYED", "JOBS NOT REWARDING");
+          var studentDems2_2Spans = studentDems2_2.selectAll('span').data(dems2_2, function(d) { return d; }).enter().append('span')
+          .attr("class", "sd-span sde-dems2-2");
+          studentDems2_2Spans.append('p').text(function(d) { return d[1]; })
+          .attr("class", "sd-val sde-dems2-2")
+          studentDems2_2Spans.append('label').text(function(d) { return d[0]; })
+          .attr("class", "sd-label sde-dems2-2");
+
+
+          // ROW 3
+          // disc
+          var studentDiscVals = d3.select('div.sde-disc');
+          var discVals = setSdSectionData("D NATURAL (%)", "I NATURAL (%)", "S NATURAL (%)", "C NATURAL (%)");
+          var discCalcVals = setSdSectionData("D ADAPTED (%)", "I ADAPTED (%)", "S ADAPTED (%)", "C ADAPTED (%)");
+          var studentDiscValsSpans = studentDiscVals.selectAll('span').data(discVals, function(d) { return d; }).enter().append('span')
+          .attr("class", "sd-span sde-disc");
+          studentDiscValsSpans.append('p').text(function(d) { return d[1]; })
+          .attr("class", "sd-val sde-disc")
+          studentDiscValsSpans.append('label').text(function(d) { return d[0]; })
+          .attr("class", "sd-label sde-disc");
+
+          // motivators
+          var studentMotivatorVals = d3.select('div.sde-motivators');
+          var motivatorVals = setSdSectionData("TEN_THE", "TEN_UTI", "TEN_AES", "TEN_SOC", "TEN_IND", "TEN_TRA");
+          var motivatorAvgs = adultAverages.MOTIVATORS
+          var studentMotivatorValsSpans = studentMotivatorVals.selectAll('span').data(motivatorVals, function(d) { return d; }).enter().append('span')
+          .attr("class", "sd-span sde-motivators");
+          studentMotivatorValsSpans.append('p').text(function(d) { return d[1]; })
+          .attr("class", "sd-val sde-motivators")
+          studentMotivatorValsSpans.append('label').text(function(d) { return d[0]; })
+          .attr("class", "sd-label sde-motivators");
+
+          // skills
+          var studentSkillsVals = d3.select('div.sde-skills');
+          var skillsVals = setSdSectionData("CONCEPTUAL THINKING", "CONFLICT MANAGEMENT", "CONTINUOUS LEARNING", "CUSTOMER FOCUS", "DECISION MAKING", "DIPLOMACY & TACT", "EMPATHY", "EMPLOYEE DEVELOPMENT/COACHING", "FLEXIBILITY", "FUTURISTIC THINKING", "GOAL ACHIEVEMENT", "INTERPERSONAL SKILLS", "LEADERSHIP", "NEGOTIATION", "PERSONAL ACCOUNTABILITY", "PERSUASION", "PLANNING & ORGANIZING", "PRESENTING", "PROBLEM SOLVING ABILITY", "RESILIENCY", "SELF-MANAGEMENT", "TEAMWORK", "UNDERSTANDING & EVALUATING OTHERS", "WRITTEN COMMUNICATION");
+          var skillsAvgs = adultAverages.SKILLS;
+          var studentSkillsValsSpans = studentSkillsVals.selectAll('span').data(skillsVals, function(d) { return d; }).enter().append('span')
+          .attr("class", "sd-span sde-skills");
+          studentSkillsValsSpans.append('p').text(function(d) { return d[1]; })
+          .attr("class", "sd-val sde-skills")
+          studentSkillsValsSpans.append('label').text(function(d) { return d[0]; })
+          .attr("class", "sd-label sde-skills");
+
+          // ROW 4
+          // se 1.0
+          var studentSe1_0 = d3.select('div.sde-se-0');
+          var se1_0 = setSdSectionData("UNDERSTANDING OTHERS", "PRACTICAL THINKING", "SYSTEMS JUDGMENT");
+          var se1_0Biases = setSdSectionData("UNDERSTANDING OTHERS BIAS", "PRACTICAL THINKING BIAS", "SYSTEMS JUDGMENT BIAS");
+          var studentSe1_0Spans = studentSe1_0.selectAll('span').data(se1_0, function(d) { return d; }).enter().append('span')
+          .attr("class", "sd-span sde-se-0");
+          studentSe1_0Spans.append('p').text(function(d) { return d[1]; })
+          .attr("class", "sd-val sde-se-0")
+          studentSe1_0Spans.append('label').text(function(d) { return d[0]; })
+          .attr("class", "sd-label sde-se-0");
+
+          // se 1.1
+          var studentSe1_1 = d3.select('div.sde-se-1');
+          var se1_1 = setSdSectionData("SENSE OF SELF", "ROLE AWARENESS", "SELF DIRECTION");
+          var se1_1Biases = setSdSectionData("SENSE OF SELF BIAS", "ROLE AWARENESS BIAS", "SELF DIRECTION BIAS");
+          var studentSe1_1Spans = studentSe1_1.selectAll('span').data(se1_1, function(d) { return d; }).enter().append('span')
+          .attr("class", "sd-span sde-se-1");
+          studentSe1_1Spans.append('p').text(function(d) { return d[1]; })
+          .attr("class", "sd-val sde-se-1")
+          studentSe1_1Spans.append('label').text(function(d) { return d[0]; })
+          .attr("class", "sd-label sde-se-1");
+
+          // row 4 - sed 1.0
+          var studentSed1_0 = d3.select('div.sde-sed-0');
+          var sed1_0 = setSdSectionData("ATTEND", "PREPARING");
+          console.log(sed1_0);
+          var studentSed1_0Spans = studentSed1_0.selectAll('span').data(sed1_0, function(d) { return d; }).enter().append('span')
+          .attr("class", "sd-span sde-sed-0");
+          studentSed1_0Spans.append('p').text(function(d) { return d[1]; })
+          .attr("class", "sd-val sde-sed-0")
+          studentSed1_0Spans.append('label').text(function(d) { return d[0]; })
+          .attr("class", "sd-label sde-sed-0");
+
+          // row 4 - sed 1.1
+          var studentSed1_1 = d3.select('div.sde-sed-1');
+          var sed1_1Calc = setSdSectionData("TOO MANY TESTS", "TOO MUCH HOMEWORK", "MANAGING MY TIME", "SOCIAL LIFE/FRIENDS", "TOO MANY RULES", "BEING COMPARED TO OTHERS", "BULLYING/ MEAN PEERS", "GETTING GOOD GRADES", "APPLYING FOR COLLEGE");
+          var sed1_1Calc2 = sed1_1Calc.filter(function(e,i) { return e; })
+          var sed1_1Calc3 = "";
+          for (var i = 0; i < sed1_1Calc2.length; i++) {
+            if (sed1_1Calc2[i][1] !== "---") {
+              if (i === sed1_1Calc2.length - 1) {
+                sed1_1Calc3 += sed1_1Calc2[i][0];
+              } else {
+                sed1_1Calc3 += sed1_1Calc2[i][0] + ", "
+              }
+            }
+          }
+          if (sed1_1Calc3 === "") sed1_1Calc3 = "---";
+
+          var sed1_1 = [['School Stressors', sed1_1Calc3]];
+          console.log(sed1_1);
+          var studentSed1_1Spans = studentSed1_1.selectAll('span').data(sed1_1, function(d) { return d; }).enter().append('span')
+          .attr("class", "sd-span sde-sed-1");
+          studentSed1_1Spans.append('p').text(function(d) { console.log(d); return d[1]; })
+          .attr("class", "sd-val sde-sed-1")
+          studentSed1_1Spans.append('label').text(function(d) { console.log(d); return d[0]; })
+          .attr("class", "sd-label sde-sed-1");
+
+          // row 4 - sed 1.2
+          var studentSed1_2 = d3.select('div.sde-sed-2');
+          var sed1_2 = setSdSectionData("OTHERSTRESS");
+          var studentSed1_2Spans = studentSed1_2.selectAll('span').data(sed1_2, function(d) { return d; }).enter().append('span')
+          .attr("class", "sd-span sde-sed-2");
+          studentSed1_2Spans.append('p').text(function(d) { return d[1]; })
+          .attr("class", "sd-val sde-sed-2")
+          studentSed1_2Spans.append('label').text(function(d) { return d[0]; })
+          .attr("class", "sd-label sde-sed-2");
 
           resolve();
           // Use D3 to append data to appropriate fields in student detail popup

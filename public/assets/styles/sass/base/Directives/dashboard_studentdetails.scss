@@ -11,6 +11,8 @@ section.dashboard-studentdetails {
 }
 
 section.student-window {
+  display: flex;
+  flex-direction: column;
   background-color: white;
   width: 90vw;
   height: 90vh;
@@ -18,10 +20,100 @@ section.student-window {
   padding: 10px 15px 15px 10px;
 }
 
-section.sde-row1 {
-
+span.sd-span {
+  margin: 0;
 }
 
-section.sde-row2 {
+p.sd-val {
+  font-size: 14px;
+  margin: 0;
+}
 
+label.sd-label {
+  color: rgb(199, 199, 199);
+  font-size: 10px;
+  font-weight: normal;
+  margin: 0;
+}
+
+
+// ROW 1
+section.sde-row1 {
+  display: flex;
+  flex-direction: column;
+}
+
+div.sde-header {
+    display: flex;
+    h3.sde-name {
+      margin: 0;
+    }
+    div.sde-dems1 {
+      height: fit-content;
+      display: flex;
+      margin: 0;
+    }
+  }
+
+// ROW 2
+section.sde-row2 {
+  display: flex;
+  div.sde-dems2 {
+    height: fit-content;
+    display: flex;
+  }
+}
+
+// ROW 3
+section.sde-row3 {
+  display: flex;
+  div.sde-disc {
+    height: fit-content;
+    display: flex;
+    flex-flow: row wrap;
+    width: 25%;
+  }
+  div.sde-motivators {
+    height: fit-content;
+    display: flex;
+    flex-flow: row wrap;
+    width: 25%;
+  }
+  div.sde-skills {
+    height: fit-content;
+    display: flex;
+    flex-flow: row wrap;
+    width: 50%;
+  }
+}
+
+// ROW 4
+section.sde-row4 {
+  display: flex;
+}
+
+div.sde-se {
+  display: flex;
+  div.sde-se-0 {
+    display: flex;
+    flex-direction: column;
+  }
+  div.sde-se-1 {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+div.sde-sed {
+  display: flex;
+  div.sde-sed-0 {
+    display: flex;
+    flex-direction: column;
+  }
+  div.sde-sed-1 {
+    display: flex;
+  }
+  div.sde-sed-2 {
+    display: flex;
+  }
 }

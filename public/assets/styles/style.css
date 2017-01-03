@@ -503,10 +503,84 @@ section.dashboard-studentdetails {
   background-color: rgba(0, 0, 0, 0.65); }
 
 section.student-window {
+  display: flex;
+  flex-direction: column;
   background-color: white;
   width: 90vw;
   height: 90vh;
   border: 1px solid #4F4498;
   padding: 10px 15px 15px 10px; }
+
+span.sd-span {
+  margin: 0; }
+
+p.sd-val {
+  font-size: 14px;
+  margin: 0; }
+
+label.sd-label {
+  color: #c7c7c7;
+  font-size: 10px;
+  font-weight: normal;
+  margin: 0; }
+
+section.sde-row1 {
+  display: flex;
+  flex-direction: column; }
+
+div.sde-header {
+  display: flex; }
+  div.sde-header h3.sde-name {
+    margin: 0; }
+  div.sde-header div.sde-dems1 {
+    height: fit-content;
+    display: flex;
+    margin: 0; }
+
+section.sde-row2 {
+  display: flex; }
+  section.sde-row2 div.sde-dems2 {
+    height: fit-content;
+    display: flex; }
+
+section.sde-row3 {
+  display: flex; }
+  section.sde-row3 div.sde-disc {
+    height: fit-content;
+    display: flex;
+    flex-flow: row wrap;
+    width: 25%; }
+  section.sde-row3 div.sde-motivators {
+    height: fit-content;
+    display: flex;
+    flex-flow: row wrap;
+    width: 25%; }
+  section.sde-row3 div.sde-skills {
+    height: fit-content;
+    display: flex;
+    flex-flow: row wrap;
+    width: 50%; }
+
+section.sde-row4 {
+  display: flex; }
+
+div.sde-se {
+  display: flex; }
+  div.sde-se div.sde-se-0 {
+    display: flex;
+    flex-direction: column; }
+  div.sde-se div.sde-se-1 {
+    display: flex;
+    flex-direction: column; }
+
+div.sde-sed {
+  display: flex; }
+  div.sde-sed div.sde-sed-0 {
+    display: flex;
+    flex-direction: column; }
+  div.sde-sed div.sde-sed-1 {
+    display: flex; }
+  div.sde-sed div.sde-sed-2 {
+    display: flex; }
 
 /*# sourceMappingURL=style.css.map */
