@@ -967,6 +967,7 @@ app.factory('DashboardService', ['$http', function($http) {
                 // console.log(filteredData);
                 var filteredData = filteredData.filter(function(d,i) {
                   var gender;
+                  console.log(d[3]);
                   if (d[3] === 'M') {
                     gender = 'Male';
                   } else if (d[3] === 'F') {
@@ -1169,7 +1170,7 @@ app.factory('DashboardService', ['$http', function($http) {
             var returnArr = [];
             var conversionObj = {
               "GENDER": function(value) {
-                return value = "M" ? "Male" : "Female";
+                return value === "M" ? "Male" : "Female";
               }
             };
             var conversionObjKeys = Object.keys(conversionObj);
