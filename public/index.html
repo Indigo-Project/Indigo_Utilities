@@ -25,33 +25,68 @@
     <!-- <script src="lib/socket.io/lib/socket.js"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.5.1/socket.io.min.js"></script>
 
-    <!-- ANGULAR COMPONENTS -->
+    <!-- ***** ANGULAR COMPONENTS  ***** -->
+    <!-- ******************************* -->
 
-    <!-- Application -->
-    <script src="app/app.js"></script>
+    <!-- ***** APPLICATION ***** -->
+    <script src="app/app.module.js"></script>
+    <script src="app/app.config.js"></script>
+    <script src="app/app.routes.js"></script>
 
-    <!-- Services -->
-    <script src="app/services/Main_Service.js"></script>
-    <script src="app/services/Dashboard_Service.js"></script>
-    <script src="app/services/RWD_Service.js"></script>
-    <script src="app/services/Socket_Service.js"></script>
-    <script src="app/services/TTI_API_Service.js"></script>
+    <!-- ***** UNIVERSAL COMPONENTS ***** -->
+    <script src="app/universal/services/RWD.service.js"></script>
+    <script src="app/universal/services/siteNavigation.service.js"></script>
+    <script src="app/universal/services/socket.service.js"></script>
+    <script src="app/universal/services/TTI_API.service.js"></script>
+    <script src="app/universal/directives/fileread.directive.js"></script>
+    <script src="app/universal/directives/header.directive.js"></script>
+    <script src="app/universal/Main.controller.js"></script>
 
-    <!-- Controllers -->
-    <script src="app/controllers/Main_Controller.js"></script>
-    <script src="app/controllers/Pbi_Pfmt_Controller.js"></script>
-    <script src="app/controllers/Blue_List_Controller.js"></script>
-    <script src="app/controllers/Ent_List_Controller.js"></script>
-    <script src="app/controllers/TTI_MassDL_Controller.js"></script>
-    <script src="app/controllers/Sum_Page_Controller.js"></script>
-    <script src="app/controllers/Sum_Stats_Controller.js"></script>
-    <script src="app/controllers/Dashboard/Dashboard_View_Controller.js"></script>
-    <script src="app/controllers/Dashboard/Dashboard_Gen_Controller.js"></script>
-    <script src="app/controllers/Dashboard/Dashboard_Manager_Controller.js"></script>
 
-    <!-- Directives -->
-    <script src="app/directives/page_directives.js"></script>
-    <script src="app/directives/d3_directives.js"></script>
+    <!-- ***** FUNCTION SPECIFIC COMPONENTS ***** -->
+
+    <!-- HOME -->
+    <script src="app/components/home/directives/home.directive.js"></script>
+    <script src="app/components/home/home.controller.js"></script>
+
+    <!-- DASHBOARD -->
+    <script src="app/components/dashboard/dashboard.service.js"></script>
+    <script src="app/components/dashboard/controllers/dashboard.controller.js"></script>
+    <script src="app/components/dashboard/controllers/dashboardGenerator.controller.js"></script>
+    <script src="app/components/dashboard/controllers/dashboardManager.controller.js"></script>
+    <script src="app/components/dashboard/controllers/dashboardView.controller.js"></script>
+    <script src="app/components/dashboard/directives/dashboardFrame.directive.js"></script>
+    <script src="app/components/dashboard/directives/dashboardFullScreen.directive.js"></script>
+    <script src="app/components/dashboard/directives/dashboardGenerator.directive.js"></script>
+    <script src="app/components/dashboard/directives/dashboardManager.directive.js"></script>
+    <script src="app/components/dashboard/directives/dashboardStudentDetails.directive.js"></script>
+    <script src="app/components/dashboard/directives/popupBackground.directive.js"></script>
+
+    <!-- TTI MASS DOWNLOADER -->
+    <script src="app/components/ttiMassDownloader/ttiMassDownloader.controller.js"></script>
+    <script src="app/components/ttiMassDownloader/directives/ttiMassDownloader.directive.js"></script>
+
+    <!-- SUMMARY PAGE GENERATOR -->
+    <script src="app/components/sumPageGenerator/sumPageGenerator.controller.js"></script>
+    <script src="app/components/sumPageGenerator/directives/sumPageGenerator.directive.js"></script>
+
+    <!-- BLUE LIST GENERATOR  -->
+    <script src="app/components/blueListGenerator/blueListGenerator.controller.js"></script>
+    <script src="app/components/blueListGenerator/directives/blueListGenerator.directive.js"></script>
+
+    <!-- ENTREPRENEUR LIST GENERATOR -->
+    <script src="app/components/entListGenerator/entListGenerator.controller.js"></script>
+    <script src="app/components/entListGenerator/directives/entListGenerator.directive.js"></script>
+
+    <!-- SUMMARY STATS GENERATOR -->
+    <script src="app/components/sumStatsGenerator/sumStatsGenerator.controller.js"></script>
+    <script src="app/components/sumStatsGenerator/directives/sumStatsGenerator.directive.js"></script>
+
+    <!-- POWER BI PREFORMATTER -->
+    <script src="app/components/pbiPreformat/pbiPreformat.controller.js"></script>
+    <script src="app/components/pbiPreformat/directives/pbiPreformat.directive.js"></script>
+
+
 </head>
 <body>
 
