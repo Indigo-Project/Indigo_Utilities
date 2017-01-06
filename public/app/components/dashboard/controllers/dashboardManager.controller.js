@@ -11,20 +11,16 @@ app.controller('DashboardManager', ['$compile', '$scope', '$location', '$state',
 
   function responsiveAdaptationDM() {
 
-    // var dashboardFrameElement = $('section.dashboard-frame');
     var dashboardIframe = $('iframe.dashM-iframe');
     $scope.view.baseDimensionsDM = RWD.calculateBaseDimensions(dashboardIframe);
 
     var iframeWidth = $scope.view.baseDimensionsDM.viewportWidth - 40
-    // var dFERatio = dashboardFrameElement.height() / dashboardFrameElement.width()
+    // var dFERatio = dashboardFrameElement.height() / dashboardFrameElement.width();
     // console.log(dashboardFrameElement.width(), dashboardFrameElement.height(), dFERatio);
 
     var dFERatio = 723/1440;
     dashboardIframe.width(iframeWidth);
     dashboardIframe.height(dashboardIframe.width() * dFERatio);
-    // console.log(dFERatio);
-    // dashboardIFrame.width()
-    // dashboardIframe.height(dashboardIframe.width() * dFERatio);
   }
 
   // school names init
@@ -75,24 +71,6 @@ app.controller('DashboardManager', ['$compile', '$scope', '$location', '$state',
       $scope.$apply();
     });
   });
-
-  function responsiveAdaptationDM() {
-
-    // var dashboardFrameElement = $('section.dashboard-frame');
-    var dashboardIframe = $('iframe.dashM-iframe');
-    $scope.view.baseDimensionsDM = RWD.calculateBaseDimensions(dashboardIframe);
-
-    var iframeWidth = $scope.view.baseDimensionsDM.viewportWidth - 40
-    // var dFERatio = dashboardFrameElement.height() / dashboardFrameElement.width()
-    // console.log(dashboardFrameElement.width(), dashboardFrameElement.height(), dFERatio);
-
-    var dFERatio = 723/1440;
-    dashboardIframe.width(iframeWidth);
-    dashboardIframe.height(dashboardIframe.width() * dFERatio);
-    // console.log(dFERatio);
-    // dashboardIFrame.width()
-    // dashboardIframe.height(dashboardIframe.width() * dFERatio);
-  }
 
   // dynamically change options based on selected function
   $scope.view.accessFunction = function () {

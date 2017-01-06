@@ -5,6 +5,7 @@
 @import url("https://fonts.googleapis.com/css?family=Passion+One");
 @import url("https://fonts.googleapis.com/css?family=Quantico");
 @import url("https://fonts.googleapis.com/css?family=Allura");
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,600");
 a.head-logo {
   display: flex;
   text-decoration: none; }
@@ -508,79 +509,166 @@ section.student-window {
   background-color: white;
   width: 90vw;
   height: 90vh;
-  border: 1px solid #4F4498;
-  padding: 10px 15px 15px 10px; }
+  border: 1px solid #4F4498; }
 
 span.sd-span {
-  margin: 0; }
+  display: flex;
+  flex-direction: column;
+  font-size: 0;
+  height: fit-content;
+  margin: 0;
+  padding: 0; }
 
 p.sd-val {
-  font-size: 14px;
-  margin: 0; }
+  font-family: 'Open Sans', sans-serif;
+  font-size: 1.6rem;
+  margin: 0;
+  padding: 0; }
 
 label.sd-label {
   color: #c7c7c7;
-  font-size: 10px;
-  font-weight: normal;
-  margin: 0; }
+  font-size: 1rem;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 300;
+  margin: 0;
+  padding: 0; }
 
 section.sde-row1 {
   display: flex;
-  flex-direction: column; }
+  flex-direction: column;
+  border-bottom: 1px solid #e6e6e6;
+  padding-bottom: 5px; }
+
+div.sde-spacer {
+  display: flex;
+  width: 100%; }
 
 div.sde-header {
-  display: flex; }
+  display: flex;
+  justify-content: space-between;
+  width: 100%; }
   div.sde-header h3.sde-name {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 2.28571428571429em;
+    font-weight: 600;
+    display: flex;
+    align-items: flex-end;
+    width: 30%;
     margin: 0; }
   div.sde-header div.sde-dems1 {
-    height: fit-content;
     display: flex;
-    margin: 0; }
+    margin: 0;
+    width: 50%;
+    justify-content: space-between;
+    align-items: flex-end; }
+    div.sde-header div.sde-dems1 span.sd-span {
+      justify-content: flex-end; }
+    div.sde-header div.sde-dems1 p.sd-val {
+      font-size: 1rem; }
+    div.sde-header div.sde-dems1 label.sd-label {
+      font-size: 1rem; }
 
 section.sde-row2 {
-  display: flex; }
+  display: flex;
+  padding: 15px 0px 15px 0px;
+  border-bottom: 1px solid #e6e6e6; }
   section.sde-row2 div.sde-dems2 {
-    height: fit-content;
-    display: flex; }
+    display: flex;
+    justify-content: space-between;
+    width: 30%; }
 
 section.sde-row3 {
-  display: flex; }
-  section.sde-row3 div.sde-disc {
-    height: fit-content;
+  display: flex;
+  width: 100%;
+  padding: 15px 0px 15px 0px;
+  border-bottom: 1px solid #e6e6e6; }
+
+div.sde-disc {
+  display: flex;
+  flex-direction: column;
+  width: 25%;
+  padding-right: 15px; }
+  div.sde-disc div.sde-disc-header {
+    margin-bottom: 15px; }
+  div.sde-disc div.sde-disc-content {
+    display: flex;
+    flex-direction: column;
+    align-items: space-between;
+    padding-left: 10px; }
+    div.sde-disc div.sde-disc-content span.sd-span {
+      flex-basis: 100%; }
+
+div.sde-motivators {
+  display: flex;
+  flex-direction: column;
+  width: 22%;
+  padding: 0px 15px 0px 15px;
+  border-right: 1px solid #e6e6e6;
+  border-left: 1px solid #e6e6e6; }
+  div.sde-motivators div.sde-motivators-header {
+    margin-bottom: 15px; }
+  div.sde-motivators div.sde-motivators-content {
     display: flex;
     flex-flow: row wrap;
-    width: 25%; }
-  section.sde-row3 div.sde-motivators {
-    height: fit-content;
+    padding-left: 10px; }
+    div.sde-motivators div.sde-motivators-content span.sd-span {
+      flex-basis: 50%; }
+
+div.sde-skills {
+  display: flex;
+  flex-direction: column;
+  width: 53%;
+  padding-left: 15px; }
+  div.sde-skills div.sde-skills-header {
+    margin-bottom: 15px; }
+  div.sde-skills div.sde-skills-content {
     display: flex;
     flex-flow: row wrap;
-    width: 25%; }
-  section.sde-row3 div.sde-skills {
-    height: fit-content;
-    display: flex;
-    flex-flow: row wrap;
-    width: 50%; }
+    padding-left: 10px; }
+    div.sde-skills div.sde-skills-content span.sd-span {
+      flex-basis: 20%;
+      margin-right: 7px;
+      max-width: 118.484px; }
+      div.sde-skills div.sde-skills-content span.sd-span label.sd-label {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: inline-block; }
+
+h4.sde-row3-title {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 300;
+  color: #959595;
+  margin: 0; }
 
 section.sde-row4 {
-  display: flex; }
+  display: flex;
+  padding: 15px 0px 0px 0px; }
 
 div.sde-se {
-  display: flex; }
+  display: flex;
+  width: 20%; }
   div.sde-se div.sde-se-0 {
     display: flex;
-    flex-direction: column; }
+    flex-direction: column;
+    width: 50%; }
   div.sde-se div.sde-se-1 {
     display: flex;
-    flex-direction: column; }
+    flex-direction: column;
+    width: 50%; }
 
 div.sde-sed {
-  display: flex; }
+  display: flex;
+  width: 80%; }
   div.sde-sed div.sde-sed-0 {
     display: flex;
-    flex-direction: column; }
+    flex-direction: column;
+    width: 25%; }
   div.sde-sed div.sde-sed-1 {
-    display: flex; }
+    display: flex;
+    width: 37.5%; }
   div.sde-sed div.sde-sed-2 {
-    display: flex; }
+    display: flex;
+    width: 37.5%; }
 
 /*# sourceMappingURL=style.css.map */

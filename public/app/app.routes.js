@@ -39,9 +39,9 @@ app.config(function($stateProvider, $urlRouterProvider) {
       url: '/dashboard_manager',
       templateUrl: "views/dashboard_manager.html",
     })
-    .state('dashboard_fullscreen', {
+    .state('dashboard', {
       url: '/dashboards/:collection/:id',
-      templateUrl: "views/dashboard_fullscreen.html",
+      templateUrl: "views/dashboard.html",
     })
     .state('dashboard_student_detail', {
       url: '/dashboards/:collection/:id/:studentpath',

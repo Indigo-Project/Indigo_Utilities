@@ -13,27 +13,37 @@ section.dashboard-studentdetails {
 section.student-window {
   display: flex;
   flex-direction: column;
+  // justify-content: space-between;
   background-color: white;
   width: 90vw;
   height: 90vh;
   border: 1px solid #4F4498;
-  padding: 10px 15px 15px 10px;
+  // padding: 20px 30px 20px 30px;
 }
 
 span.sd-span {
+  display: flex;
+  flex-direction: column;
+  font-size: 0;
+  height: fit-content;
   margin: 0;
+  padding: 0;
 }
 
 p.sd-val {
-  font-size: 14px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 1.6rem;
   margin: 0;
+  padding: 0;
 }
 
 label.sd-label {
   color: rgb(199, 199, 199);
-  font-size: 10px;
-  font-weight: normal;
+  font-size: 1rem;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 300;
   margin: 0;
+  padding: 0;
 }
 
 
@@ -41,79 +51,175 @@ label.sd-label {
 section.sde-row1 {
   display: flex;
   flex-direction: column;
+  border-bottom: 1px solid rgb(230, 230, 230);
+  padding-bottom: 5px;
+}
+
+div.sde-spacer {
+  display: flex;
+  width: 100%;
 }
 
 div.sde-header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  h3.sde-name {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 2.28571428571429em;
+    font-weight: 600;
     display: flex;
-    h3.sde-name {
-      margin: 0;
+    align-items: flex-end;
+    width: 30%;
+    margin: 0;
+  }
+  div.sde-dems1 {
+    display: flex;
+    margin: 0;
+    width: 50%;
+    justify-content: space-between;
+    align-items: flex-end;
+    span.sd-span {
+      justify-content: flex-end;
     }
-    div.sde-dems1 {
-      height: fit-content;
-      display: flex;
-      margin: 0;
+    p.sd-val {
+      font-size: 1rem;
+    }
+    label.sd-label {
+      font-size: 1rem;
     }
   }
+}
 
 // ROW 2
 section.sde-row2 {
   display: flex;
+  padding: 15px 0px 15px 0px;
+  border-bottom: 1px solid rgb(230, 230, 230);
   div.sde-dems2 {
-    height: fit-content;
     display: flex;
+    justify-content: space-between;
+    width: 30%;
   }
 }
 
 // ROW 3
 section.sde-row3 {
   display: flex;
-  div.sde-disc {
-    height: fit-content;
+  width: 100%;
+  padding: 15px 0px 15px 0px;
+  border-bottom: 1px solid rgb(230, 230, 230);
+}
+
+div.sde-disc {
+  display: flex;
+  flex-direction: column;
+  width: 25%;
+  padding-right: 15px;
+  div.sde-disc-header {
+    margin-bottom: 15px;
+  }
+  div.sde-disc-content {
+    display: flex;
+    flex-direction: column;
+    align-items: space-between;
+    padding-left: 10px;
+    span.sd-span {
+      flex-basis: 100%;
+    }
+  }
+}
+
+div.sde-motivators {
+  display: flex;
+  flex-direction: column;
+  width: 22%;
+  padding: 0px 15px 0px 15px;
+  border-right: 1px solid rgb(230, 230, 230);
+  border-left: 1px solid rgb(230, 230, 230);
+  div.sde-motivators-header {
+    margin-bottom: 15px;
+  }
+  div.sde-motivators-content {
     display: flex;
     flex-flow: row wrap;
-    width: 25%;
+    padding-left: 10px;
+    span.sd-span {
+      flex-basis: 50%;
+    }
   }
-  div.sde-motivators {
-    height: fit-content;
+}
+
+div.sde-skills {
+  display: flex;
+  flex-direction: column;
+  width: 53%;
+  padding-left: 15px;
+  div.sde-skills-header {
+    margin-bottom: 15px;
+  }
+  div.sde-skills-content {
     display: flex;
     flex-flow: row wrap;
-    width: 25%;
+    padding-left: 10px;
+    // height: 216.109px;
+    span.sd-span {
+      flex-basis: 20%;
+      margin-right: 7px;
+      max-width: 118.484px;
+      label.sd-label {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: inline-block;
+        // width: 135.306px;
+      }
+    }
   }
-  div.sde-skills {
-    height: fit-content;
-    display: flex;
-    flex-flow: row wrap;
-    width: 50%;
-  }
+}
+
+h4.sde-row3-title {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 300;
+  color: rgb(149, 149, 149);
+  margin: 0;
 }
 
 // ROW 4
 section.sde-row4 {
   display: flex;
+  padding: 15px 0px 0px 0px;
 }
 
 div.sde-se {
   display: flex;
+  width: 20%;
   div.sde-se-0 {
     display: flex;
     flex-direction: column;
+    width: 50%;
   }
   div.sde-se-1 {
     display: flex;
     flex-direction: column;
+    width: 50%;
   }
 }
 
 div.sde-sed {
   display: flex;
+  width: 80%;
   div.sde-sed-0 {
     display: flex;
     flex-direction: column;
+    width: 25%;
   }
   div.sde-sed-1 {
     display: flex;
+    width: 37.5%;
   }
   div.sde-sed-2 {
     display: flex;
+    width: 37.5%;
   }
 }
