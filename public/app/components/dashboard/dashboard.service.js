@@ -716,7 +716,9 @@ app.factory('DashboardService', ['$http', function($http) {
           var studentDiscVals = d3.select('div.sde-disc-content');
           var discVals = setSdSectionData("DISC", "D NATURAL (%)", "I NATURAL (%)", "S NATURAL (%)", "C NATURAL (%)");
           var discCalcVals = setSdSectionData("D ADAPTED (%)", "I ADAPTED (%)", "S ADAPTED (%)", "C ADAPTED (%)");
-          var studentDiscValsSpans = studentDiscVals.selectAll('span').data(discVals, function(d) { return d; }).enter().append('span')
+          var studentDiscValsDivs = studentDiscVals.selectAll('div').data(discVals, function(d) { return d; }).enter().append('div')
+          .attr("class", "disc-val-container");
+          var studentDiscValsSpans = studentDiscValsDivs.append('span')
           .attr("class", "sd-span sde-disc");
           var studentDiscSpansVals = studentDiscValsSpans.append('div').attr("class", "sd-content-p");
           studentDiscSpansVals.append('p').text(function(d) { return d[1]; })
@@ -725,6 +727,16 @@ app.factory('DashboardService', ['$http', function($http) {
           .attr("class", "sd-sub sde-disc");
           studentDiscValsSpans.append('label').text(function(d) { return d[0]; })
           .attr("class", "sd-label sde-disc");
+
+          var studentDiscValsCharts = studentDiscValsDivs.append('figure').attr('class', "disc-chart");
+          var naturalBar = studentDiscValsCharts.append('div').attr("class", "disc-bar-1");
+          var naturalBarColors = ["rgb(255, 0, 0)", "rgb(250, 255, 0)", "rgb(12, 255, 0)", "rgb(0, 25, 250)"]
+          naturalBar.style("width", function(d) { return d[1] + "%" })
+          naturalBar.style("background-color", function(d, i) { return naturalBarColors[i] })
+          var adaptedBar = studentDiscValsCharts.append('div').attr("class", "disc-bar-2");
+          adaptedBar.style("width", function(d) { return d[2] + "%" })
+          adaptedBar.style("background-color", "rgb(233, 233, 233)")
+
 
           // motivators
           var studentMotivatorVals = d3.select('div.sde-motivators-content');

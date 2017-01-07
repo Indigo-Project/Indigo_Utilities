@@ -662,8 +662,24 @@ div.sde-disc {
     justify-content: space-between;
     height: 182.203125px;
     padding-left: 10px; }
-    div.sde-disc div.sde-disc-content span.sd-span p.sd-val {
-      font-size: 2rem; }
+    div.sde-disc div.sde-disc-content div.disc-val-container {
+      display: flex;
+      justify-content: space-between;
+      width: 100%; }
+      div.sde-disc div.sde-disc-content div.disc-val-container span.sd-span p.sd-val {
+        font-size: 2rem; }
+      div.sde-disc div.sde-disc-content div.disc-val-container figure.disc-chart {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        width: 70%;
+        height: 31px;
+        padding-right: 5%; }
+        div.sde-disc div.sde-disc-content div.disc-val-container figure.disc-chart div.disc-bar-1 {
+          height: 15px;
+          background-color: blue; }
+        div.sde-disc div.sde-disc-content div.disc-val-container figure.disc-chart div.disc-bar-2 {
+          height: 15px; }
 
 div.sde-motivators {
   display: flex;
