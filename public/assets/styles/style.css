@@ -514,24 +514,54 @@ section.student-window {
 span.sd-span {
   display: flex;
   flex-direction: column;
-  font-size: 0;
+  width: fit-content;
   height: fit-content;
+  font-size: 0;
   margin: 0;
   padding: 0; }
+
+div.sd-content-p {
+  width: fit-content;
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: 0.5rem; }
 
 p.sd-val {
+  width: fit-content;
+  height: fit-content;
   font-family: 'Open Sans', sans-serif;
   font-size: 1.6rem;
+  line-height: 1.6rem;
   margin: 0;
   padding: 0; }
 
-label.sd-label {
-  color: #c7c7c7;
+p.sd-sub {
+  width: fit-content;
+  height: fit-content;
+  font-family: 'Open Sans', sans-serif;
   font-size: 1rem;
+  line-height: 1rem;
+  font-weight: 300;
+  color: #dedede;
+  margin: 0;
+  padding-left: 5px; }
+
+label.sd-label {
+  width: fit-content;
+  color: #b8b7b7;
+  font-size: 1rem;
+  line-height: 1rem;
   font-family: 'Open Sans', sans-serif;
   font-weight: 300;
   margin: 0;
   padding: 0; }
+
+figcaption.sde-row3-title-caption {
+  color: #858282;
+  font-size: 0.9rem;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 300;
+  padding-left: 8px; }
 
 section.sde-row1 {
   display: flex;
@@ -553,82 +583,132 @@ div.sde-header {
     font-weight: 600;
     display: flex;
     align-items: flex-end;
-    width: 30%;
+    width: 35%;
     margin: 0; }
   div.sde-header div.sde-dems1 {
     display: flex;
     margin: 0;
-    width: 50%;
+    width: 45%;
     justify-content: space-between;
-    align-items: flex-end; }
+    align-items: flex-end;
+    padding: 0 15px 0 15px;
+    border-right: 1px solid #e6e6e6; }
     div.sde-header div.sde-dems1 span.sd-span {
       justify-content: flex-end; }
-    div.sde-header div.sde-dems1 p.sd-val {
-      font-size: 1rem; }
-    div.sde-header div.sde-dems1 label.sd-label {
-      font-size: 1rem; }
+      div.sde-header div.sde-dems1 span.sd-span p.sd-val {
+        font-size: 1rem; }
+      div.sde-header div.sde-dems1 span.sd-span label.sd-label {
+        font-size: 1rem; }
+  div.sde-header div.sde-flags {
+    width: 20%; }
 
 section.sde-row2 {
   display: flex;
-  padding: 15px 0px 15px 0px;
+  padding: 10px 0px 12.5px 0px;
   border-bottom: 1px solid #e6e6e6; }
   section.sde-row2 div.sde-dems2 {
     display: flex;
-    justify-content: space-between;
-    width: 30%; }
+    flex-direction: column;
+    width: 50%;
+    padding-right: 15px;
+    border-right: 1px solid #e6e6e6; }
+    section.sde-row2 div.sde-dems2 div.sde-dems2-header {
+      margin-bottom: 10px; }
+    section.sde-row2 div.sde-dems2 div.sde-dems2-content {
+      display: flex;
+      justify-content: space-between;
+      height: 114.890625px;
+      padding-left: 10px; }
+      section.sde-row2 div.sde-dems2 div.sde-dems2-content div.sde-dems2-0 {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 25%; }
+      section.sde-row2 div.sde-dems2 div.sde-dems2-content div.sde-dems2-1 {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 25%; }
+      section.sde-row2 div.sde-dems2 div.sde-dems2-content div.sde-dems2-2 {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 50%; }
+
+h4.sde-row2-title {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 300;
+  font-size: 1.6rem;
+  color: #959595;
+  margin: 0; }
 
 section.sde-row3 {
   display: flex;
   width: 100%;
-  padding: 15px 0px 15px 0px;
+  padding: 10px 0px 12.5px 0px;
   border-bottom: 1px solid #e6e6e6; }
 
 div.sde-disc {
   display: flex;
   flex-direction: column;
-  width: 25%;
+  width: 26%;
   padding-right: 15px; }
   div.sde-disc div.sde-disc-header {
+    display: flex;
     margin-bottom: 15px; }
   div.sde-disc div.sde-disc-content {
     display: flex;
     flex-direction: column;
-    align-items: space-between;
+    justify-content: space-between;
+    height: 182.203125px;
     padding-left: 10px; }
-    div.sde-disc div.sde-disc-content span.sd-span {
-      flex-basis: 100%; }
+    div.sde-disc div.sde-disc-content span.sd-span p.sd-val {
+      font-size: 2rem; }
 
 div.sde-motivators {
   display: flex;
   flex-direction: column;
-  width: 22%;
+  width: 18%;
   padding: 0px 15px 0px 15px;
   border-right: 1px solid #e6e6e6;
   border-left: 1px solid #e6e6e6; }
   div.sde-motivators div.sde-motivators-header {
+    display: flex;
     margin-bottom: 15px; }
   div.sde-motivators div.sde-motivators-content {
     display: flex;
-    flex-flow: row wrap;
+    flex-flow: column wrap;
+    height: 170px;
     padding-left: 10px; }
     div.sde-motivators div.sde-motivators-content span.sd-span {
-      flex-basis: 50%; }
+      flex-basis: 33.33333%; }
+      div.sde-motivators div.sde-motivators-content span.sd-span:nth-of-type(2), div.sde-motivators div.sde-motivators-content span.sd-span:nth-of-type(5) {
+        justify-content: center; }
+      div.sde-motivators div.sde-motivators-content span.sd-span:nth-of-type(3n) {
+        justify-content: flex-end; }
+      div.sde-motivators div.sde-motivators-content span.sd-span:nth-of-type(4), div.sde-motivators div.sde-motivators-content span.sd-span:nth-of-type(5), div.sde-motivators div.sde-motivators-content span.sd-span:nth-of-type(6) {
+        padding-left: 25%; }
+      div.sde-motivators div.sde-motivators-content span.sd-span p.sd-val {
+        color: #d4af37;
+        font-size: 2rem; }
 
 div.sde-skills {
   display: flex;
   flex-direction: column;
-  width: 53%;
+  width: 56%;
   padding-left: 15px; }
   div.sde-skills div.sde-skills-header {
+    display: flex;
     margin-bottom: 15px; }
   div.sde-skills div.sde-skills-content {
+    height: 182.203125px;
     display: flex;
     flex-flow: row wrap;
     padding-left: 10px; }
     div.sde-skills div.sde-skills-content span.sd-span {
       flex-basis: 20%;
-      margin-right: 7px;
-      max-width: 118.484px; }
+      margin-right: 14px;
+      max-width: 119.2px; }
       div.sde-skills div.sde-skills-content span.sd-span label.sd-label {
         white-space: nowrap;
         overflow: hidden;
@@ -643,32 +723,64 @@ h4.sde-row3-title {
 
 section.sde-row4 {
   display: flex;
-  padding: 15px 0px 0px 0px; }
+  padding: 10px 0px 0px 0px; }
 
 div.sde-se {
   display: flex;
-  width: 20%; }
-  div.sde-se div.sde-se-0 {
+  flex-direction: column;
+  width: 20%;
+  border-right: 1px solid #e6e6e6;
+  padding-right: 15px; }
+  div.sde-se div.sde-se-header {
     display: flex;
-    flex-direction: column;
-    width: 50%; }
-  div.sde-se div.sde-se-1 {
+    margin-bottom: 10px; }
+  div.sde-se div.sde-se-content {
     display: flex;
-    flex-direction: column;
-    width: 50%; }
+    height: 114.265625px;
+    padding-left: 10px; }
+    div.sde-se div.sde-se-content div.sde-se-0 {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 50%; }
+    div.sde-se div.sde-se-content div.sde-se-1 {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 50%; }
+      div.sde-se div.sde-se-content div.sde-se-1 span.sd-span {
+        padding-left: 25%; }
 
 div.sde-sed {
   display: flex;
-  width: 80%; }
-  div.sde-sed div.sde-sed-0 {
+  flex-direction: column;
+  width: 80%;
+  padding-left: 15px; }
+  div.sde-sed div.sde-sed-header {
     display: flex;
-    flex-direction: column;
-    width: 25%; }
-  div.sde-sed div.sde-sed-1 {
+    margin-bottom: 10px; }
+  div.sde-sed div.sde-sed-content {
     display: flex;
-    width: 37.5%; }
-  div.sde-sed div.sde-sed-2 {
-    display: flex;
-    width: 37.5%; }
+    height: 114.265625px;
+    padding-left: 10px; }
+    div.sde-sed div.sde-sed-content div.sde-sed-0 {
+      display: flex;
+      flex-direction: column;
+      width: 25%; }
+      div.sde-sed div.sde-sed-content div.sde-sed-0 span.sd-span {
+        flex-basis: 50%; }
+    div.sde-sed div.sde-sed-content div.sde-sed-1 {
+      display: flex;
+      width: 37.5%; }
+    div.sde-sed div.sde-sed-content div.sde-sed-2 {
+      display: flex;
+      width: 37.5%; }
+
+h4.sde-row4-title {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 300;
+  font-size: 1.6rem;
+  color: #959595;
+  margin: 0; }
 
 /*# sourceMappingURL=style.css.map */
