@@ -26,10 +26,10 @@ app.controller('DashboardManager', ['$compile', '$scope', '$location', '$state',
   // school names init
   DashboardService.getSchoolNameOptions()
   .then(function(data) {
-    $scope.view.dashboardNameOptions = data.data;
-    var schoolNames = Object.keys($scope.view.dashboardNameOptions);
-    for (var i = 0; i < schoolNames.length; i++) {
-      $scope.view.dashboardNameOptions[schoolNames[i]].code = schoolNames[i]
+    $scope.view.schoolNameOptions = data.data;
+    var schoolKeys = Object.keys($scope.view.schoolNameOptions);
+    for (var i = 0; i < schoolKeys.length; i++) {
+      $scope.view.schoolNameOptions[schoolKeys[i]].code = schoolKeys[i]
     }
 
     DashboardService.getStoredSchools()
@@ -38,11 +38,11 @@ app.controller('DashboardManager', ['$compile', '$scope', '$location', '$state',
       // console.log(collectionNames);
       $scope.data.dbCollections = {};
       for (var i = 0; i < collectionNames.length; i++) {
-        for (var j = 0; j < schoolNames.length; j++) {
-          if (collectionNames[i] === schoolNames[j]) {
-            // console.log(collectionNames[i], schoolNames[j]);
+        for (var j = 0; j < schoolKeys.length; j++) {
+          if (collectionNames[i] === schoolKeys[j]) {
+            // console.log(collectionNames[i], schoolKeys[j]);
             $scope.data.dbCollections[collectionNames[i]] = collections.data[collectionNames[i]];
-            $scope.data.dbCollections[collectionNames[i]].nameOptions = $scope.view.dashboardNameOptions[collectionNames[i]];
+            $scope.data.dbCollections[collectionNames[i]].nameOptions = $scope.view.schoolNameOptions[collectionNames[i]];
           }
         }
       }

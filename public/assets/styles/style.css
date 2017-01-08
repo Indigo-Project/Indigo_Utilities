@@ -676,10 +676,10 @@ div.sde-disc {
         height: 31px;
         padding-right: 5%; }
         div.sde-disc div.sde-disc-content div.disc-val-container figure.disc-chart div.disc-bar-1 {
-          height: 15px;
+          height: 12px;
           background-color: blue; }
         div.sde-disc div.sde-disc-content div.disc-val-container figure.disc-chart div.disc-bar-2 {
-          height: 15px; }
+          height: 12px; }
 
 div.sde-motivators {
   display: flex;

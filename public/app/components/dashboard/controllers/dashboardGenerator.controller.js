@@ -14,9 +14,23 @@ app.controller('DashboardGenerator', ['$compile', '$scope', '$location', '$state
   $scope.view.dashboardGeneratedVersion = "";
   $scope.view.dashboardGeneratedSchool = "";
   $scope.view.dashboardDateCreated = "";
+  $scope.view.schoolNameOptions = [];
 
   $scope.uploader.loadedFiles = [];
 
+  // load school name options for 'Select School' dropdown
+  $scope.view.loadSchoolNameOptions = function() {
+    DashboardService.getSchoolNameOptions()
+    .then(function(schools) {
+      var schoolKeys = Object.keys(schools.data);
+      for (var i = 0; i < schoolKeys.length; i++) {
+        var schoolObj = { code: schoolKeys[i], optionDisplay: schools.data[schoolKeys[i]].optionDisplay}
+        $scope.view.schoolNameOptions.push(schoolObj);
+      }
+      console.log($scope.view.schoolNameOptions);
+      $scope.$apply();
+    })
+  }
 
   // dynamically change options based on selected function
   $scope.view.accessFunction = function () {
@@ -72,18 +86,19 @@ app.controller('DashboardGenerator', ['$compile', '$scope', '$location', '$state
   $scope.data.generateDashboard = function() {
     if ($scope.uploader.loadedFiles.length === 0) {
       alert("NO FILES HAVE BEEN LOADED FOR FORMATTING");
-    } else if (!$scope.data.schoolName) {
+    } else if (!$scope.data.schoolCode) {
       alert("PLEASE SELECT SCHOOL");
     } else {
       if(confirm("Please confirm that the school name is correct. Upon submission for dashboard generation, this name will become a unique identifier for the dashboard, associated within the same grouping as future versions of dashboards for the same school. refer to FAQ for a more detailed explanation of how this works.")) {
         $scope.view.dashboardCreationStatus = "Generating Dashboard...";
 
-        var dashboardNameOptions = $scope.view.dashboardNameOptions;
-        for (var code in dashboardNameOptions) {
-          if (dashboardNameOptions[code].name === $scope.data.schoolName) {
-            $scope.data.schoolCode = code;
+        for (var schoolKey in $scope.view.dashboardNameOptions) {
+          if ($scope.view.dashboardNameOptions[schoolKey].code === $scope.data.schoolCode) {
+            $scope.data.schoolName = $scope.view.dashboardNameOptions[schoolKey].name;
           }
         }
+        // $scope.data.schoolName = $scope.view.dashboardNameOptions[$scope.data.schoolCode].name;
+
         DashboardService.getDataObject($scope.uploader.loadedFiles, $scope.data.schoolCode)
         .then(function(data) {
           var data = data.data;
