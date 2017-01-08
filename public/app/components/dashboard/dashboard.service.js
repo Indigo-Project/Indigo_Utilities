@@ -681,34 +681,34 @@ app.factory('DashboardService', ['$http', function($http) {
           var studentDems2_0 = d3.select('div.sde-dems2-0');
           var dems2_0 = setSdSectionData(null, "ENGLISH GRADES", "MATH GRADES", "SCIENCE GRADES");
           var studentDems2_0Spans = studentDems2_0.selectAll('span').data(dems2_0, function(d) { return d; }).enter().append('span')
-          .attr("class", "sd-span sde-dems2-0");
+          .attr("class", "sd-span sde-dems2");
           var studentDems2_0SpansVals = studentDems2_0Spans.append('div').attr("class", "sd-content-p");
           studentDems2_0SpansVals.append('p').text(function(d) { return d[1]; })
-          .attr("class", "sd-val sde-dems2-0")
+          .attr("class", "sd-val sde-dems2")
           studentDems2_0Spans.append('label').text(function(d) { return d[0]; })
-          .attr("class", "sd-label sde-dems2-0");
+          .attr("class", "sd-label sde-dems2");
 
           // dems 2.1
           var studentDems2_1 = d3.select('div.sde-dems2-1');
           var dems2_1 = setSdSectionData(null, "GPA", "PARENTCOLLEGE", "PAYING JOB");
           var studentDems2_1Spans = studentDems2_1.selectAll('span').data(dems2_1, function(d) { return d; }).enter().append('span')
-          .attr("class", "sd-span sde-dems2-1");
+          .attr("class", "sd-span sde-dems2");
           var studentDems2_1SpansVals = studentDems2_1Spans.append('div').attr("class", "sd-content-p");
           studentDems2_1SpansVals.append('p').text(function(d) { return d[1]; })
-          .attr("class", "sd-val sde-dems2-1")
+          .attr("class", "sd-val sde-dems2")
           studentDems2_1Spans.append('label').text(function(d) { return d[0]; })
-          .attr("class", "sd-label sde-dems2-1");
+          .attr("class", "sd-label sde-dems2");
 
           // dems 2.2
           var studentDems2_2 = d3.select('div.sde-dems2-2');
           var dems2_2 = setSdSectionData(null, "MAJOR", "JOBS ENJOYED", "JOBS NOT REWARDING");
           var studentDems2_2Spans = studentDems2_2.selectAll('span').data(dems2_2, function(d) { return d; }).enter().append('span')
-          .attr("class", "sd-span sde-dems2-2");
+          .attr("class", "sd-span sde-dems2");
           var studentDems2_2SpansVals = studentDems2_2Spans.append('div').attr("class", "sd-content-p");
           studentDems2_2SpansVals.append('p').text(function(d) { return d[1]; })
-          .attr("class", "sd-val sde-dems2-2")
+          .attr("class", "sd-val sde-dems2")
           studentDems2_2Spans.append('label').text(function(d) { return d[0]; })
-          .attr("class", "sd-label sde-dems2-2");
+          .attr("class", "sd-label sde-dems2");
 
 
           // ROW 3

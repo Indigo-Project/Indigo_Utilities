@@ -34,7 +34,7 @@ div.sd-content-p {
   width: fit-content;
   display: flex;
   align-items: flex-end;
-  padding-bottom: 0.5rem;
+  // padding-bottom: 0.5rem;
 }
 
 p.sd-val {
@@ -54,7 +54,7 @@ p.sd-sub {
   font-size: 1rem;
   line-height: 1rem;
   font-weight: 300;
-  color: rgb(222, 222, 222);
+  color: rgb(180, 180, 180);
   margin: 0;
   padding-left: 5px;
 }
@@ -98,7 +98,7 @@ div.sde-header {
   width: 100%;
   h3.sde-name {
     font-family: 'Open Sans', sans-serif;
-    font-size: 2.28571428571429em;
+    // font-size: 2.28571428571429em;
     font-weight: 600;
     display: flex;
     align-items: flex-end;
@@ -111,15 +111,15 @@ div.sde-header {
     width: 45%;
     justify-content: space-between;
     align-items: flex-end;
-    padding: 0 15px 0 15px;
+    // padding: 0 15px 0 15px;
     border-right: 1px solid rgb(230, 230, 230);
     span.sd-span {
       justify-content: flex-end;
       p.sd-val {
-        font-size: 1rem;
+        // font-size: 1rem;
       }
       label.sd-label {
-        font-size: 1rem;
+        // font-size: 1rem;
       }
     }
   }
@@ -131,22 +131,22 @@ div.sde-header {
 // ROW 2
 section.sde-row2 {
   display: flex;
-  padding: 10px 0px 12.5px 0px;
+  // padding: 10px 0px 12.5px 0px;
   border-bottom: 1px solid rgb(230, 230, 230);
   div.sde-dems2 {
     display: flex;
     flex-direction: column;
     width: 50%;
-    padding-right: 15px;
+    // padding-right: 15px;
     border-right: 1px solid rgb(230, 230, 230);
     div.sde-dems2-header {
-      margin-bottom: 10px;
+      // margin-bottom: 10px;
     }
     div.sde-dems2-content {
       display: flex;
       justify-content: space-between;
-      height: 114.890625px;
-      padding-left: 10px;
+      // height: 114.890625px;
+      // padding-left: 10px;
       div.sde-dems2-0 {
         display: flex;
         flex-direction: column;
@@ -172,7 +172,7 @@ section.sde-row2 {
 h4.sde-row2-title {
   font-family: 'Open Sans', sans-serif;
   font-weight: 300;
-  font-size: 1.6rem;
+  // font-size: 1.6rem;
   color: rgb(149, 149, 149);
   margin: 0;
 }
@@ -284,6 +284,9 @@ div.sde-skills {
       flex-basis: 20%;
       margin-right: 14px;
       max-width: 119.2px;
+      p.sd-val {
+        line-height: 1.28rem;
+      }
       label.sd-label {
         white-space: nowrap;
         overflow: hidden;
@@ -322,6 +325,9 @@ div.sde-se {
     display: flex;
     height: 114.265625px;
     padding-left: 10px;
+    p.sd-val {
+      line-height: 1.28rem;
+    }
     div.sde-se-0 {
       display: flex;
       flex-direction: column;

@@ -43,16 +43,17 @@ app.controller('DashboardStudentDetails', ['$compile', '$scope', '$location', '$
         row1Header: 34.97918200352931/608.6875 * studentWindowInnerHeight
       },
       sectionPadding: {
-        left: 15/608.6875 * studentWindowInnerHeight,
+        leftS: 10/608.6875 * studentWindowInnerHeight,
+        leftL: 15/608.6875 * studentWindowInnerHeight,
         right: 15/608.6875 * studentWindowInnerHeight
       },
       sectionTitles: {
-        row1Font: 16/608.6875 * studentWindowInnerHeight,
-        row2Font: 18/608.6875 * studentWindowInnerHeight,
-        row3Font: 16/608.6875 * studentWindowInnerHeight,
-        row1Margin: 10/608.6875 * studentWindowInnerHeight,
-        row2Margin: 15/608.6875 * studentWindowInnerHeight,
-        row3Margin: 10/608.6875 * studentWindowInnerHeight
+        row2Font: 16/608.6875 * studentWindowInnerHeight,
+        row3Font: 18/608.6875 * studentWindowInnerHeight,
+        row4Font: 16/608.6875 * studentWindowInnerHeight,
+        row2Margin: 10/608.6875 * studentWindowInnerHeight,
+        row3Margin: 15/608.6875 * studentWindowInnerHeight,
+        row4Margin: 10/608.6875 * studentWindowInnerHeight
       },
       sectionFigCaption: {
         paddingLeft: 8/608.6875 * studentWindowInnerHeight,
@@ -70,12 +71,16 @@ app.controller('DashboardStudentDetails', ['$compile', '$scope', '$location', '$
         left: 10/608.6875 * studentWindowInnerHeight
       },
       valueSizing: {
-        marginBottom: 5/608.6875 * studentWindowInnerHeight,
+        paddingBottom: 5/608.6875 * studentWindowInnerHeight,
         subPaddingLeft: 5/608.6875 * studentWindowInnerHeight,
         nameFont: 32/608.6875 * studentWindowInnerHeight,
         smallFont: 10/608.6875 * studentWindowInnerHeight,
+        smallFontLh: (10/608.6875) * studentWindowInnerHeight,
+        smallFontMarginBottom: 5/608.6875 * studentWindowInnerHeight,
         mediumFont: 16/608.6875 * studentWindowInnerHeight,
-        LargeFont: 20/608.6875 * studentWindowInnerHeight
+        mediumFontLh: (16/608.6875  * 4/5) * studentWindowInnerHeight,
+        LargeFont: 20/608.6875 * studentWindowInnerHeight,
+        LargeFontLh: (20/608.6875  * 4/5) * studentWindowInnerHeight
       },
       labelSizing: {
         font: 10/608.6875 * studentWindowInnerHeight
@@ -86,21 +91,36 @@ app.controller('DashboardStudentDetails', ['$compile', '$scope', '$location', '$
       }
     };
 
+    // Universal Elements
+    var pSub = $('p.sd-sub');
+    var valContent = $('div.sd-content-p');
+    var setUniversalDimensions = function () {
+      pSub.css('padding-left', responsiveCalcs.valueSizing.subPaddingLeft + 'px');
+      pSub.css('margin-bottom', responsiveCalcs.valueSizing.marginBottom + 'px');
+      valContent.css('padding-bottom', responsiveCalcs.valueSizing.paddingBottom + "px");
+    }
+    setUniversalDimensions();
+
     // Row 1 Elements
     var row1 = $('section.sde-row1');
     var row1Spacer = $('div.sde-spacer');
     var row1Header = $('div.sde-header');
     var row1Name = $('h3.sde-name');
+    var row1Dems1 = $('div.sde-dems1');
     var row1Dem1Values = $('p.sde-dems1');
     var row1Dem1Labels = $('label.sde-dems1');
+    var row1Flags = $('div.sde-flags');
 
     var setRow1Dimensions = function() {
       row1Spacer.height(responsiveCalcs.sectionHeights.row1Spacer);
       row1Header.height(responsiveCalcs.sectionHeights.row1Header);
       row1.css('padding-bottom', responsiveCalcs.rowTopBottomPadding.row1[1] + 'px;');
-      row1Name.css('font-size', responsiveCalcs.valueSizing.nameFont);
-      row1Dem1Values.css('font-size', responsiveCalcs.valueSizing.smallFont);
-      row1Dem1Labels.css('font-size', responsiveCalcs.labelSizing.font);
+      row1Name.css('font-size', responsiveCalcs.valueSizing.nameFont + 'px');
+      row1Dems1.css('padding', '0 ' + responsiveCalcs.sectionPadding.right + 'px 0 ' + responsiveCalcs.sectionPadding.leftL + 'px');
+      row1Dem1Values.css('font-size', responsiveCalcs.valueSizing.smallFont + 'px');
+      row1Dem1Values.css('line-height', responsiveCalcs.valueSizing.smallFontLh + 'px');
+      row1Dem1Values.css('margin-bottom', responsiveCalcs.valueSizing.smallFontMarginBottom + 'px');
+      row1Dem1Labels.css('font-size', responsiveCalcs.labelSizing.font + 'px');
     }
     setRow1Dimensions();
 
@@ -113,9 +133,23 @@ app.controller('DashboardStudentDetails', ['$compile', '$scope', '$location', '$
     var row2dems2_1 = $('div.sde-dems2-1');
     var row2dems2_2 = $('div.sde-dems2-2');
     var row2Flags  = $('div.sde-flags');
+    var row2Dems2HeaderDiv = $('div.sde-dems2-header');
+    var row2Dems2TitleFont = $('h4.sde-row2-title');
+    var row2Dems2Values = $('p.sde-dems2');
+    var row2Dems2Labels = $('label.sde-dems2');
+
     function setRow2HeightByElements() {
       // row2.height(studentWindowInnerHeight * 0.24);
-
+      row2.css('padding', responsiveCalcs.rowTopBottomPadding.row2[0] + 'px 0 ' + responsiveCalcs.rowTopBottomPadding.row2[1] + 'px 0');
+      sdeDems2.css('padding-right', responsiveCalcs.sectionPadding.right + 'px');
+      sdeDems2Content.height(responsiveCalcs.contentHeight.row2Dems2);
+      sdeDems2Content.css('padding-left', responsiveCalcs.sectionPadding.leftS + 'px');
+      row2Dems2HeaderDiv.css('margin-bottom', responsiveCalcs.sectionTitles.row2Margin + 'px');
+      row2Dems2TitleFont.css('font-size', responsiveCalcs.sectionTitles.row2Font + 'px');
+      row2Dems2Values.css('font-size', responsiveCalcs.valueSizing.smallFont + 'px');
+      row2Dems2Values.css('line-height', (responsiveCalcs.valueSizing.smallFontLh) + 'px');
+      // row2Dems2Values.css('margin-bottom', responsiveCalcs.valueSizing.marginBottom + 'px');
+      row2Dems2Labels.css('font-size', responsiveCalcs.labelSizing.font + 'px');
     }
     setRow2HeightByElements();
     // console.log(row2.outerHeight(), row2.outerHeight() - 51.5, sdeDems2Content.outerHeight());
@@ -151,8 +185,8 @@ app.controller('DashboardStudentDetails', ['$compile', '$scope', '$location', '$
     }
     setRow4HeightByElements();
 
-    console.log(row4.outerHeight(), row4.outerHeight() - 10 - 10 - $('div.sde-se-header').outerHeight(), $('div.sde-se-content').outerHeight());
-    console.log(row1.outerHeight()/studentWindowInnerHeight, row2.outerHeight()/studentWindowInnerHeight, row3.outerHeight()/studentWindowInnerHeight, row4.outerHeight()/studentWindowInnerHeight, row1.outerHeight()/studentWindowInnerHeight + row2.outerHeight()/studentWindowInnerHeight + row3.outerHeight()/studentWindowInnerHeight + row4.outerHeight()/studentWindowInnerHeight, 1 - (row1.outerHeight()/studentWindowInnerHeight + row2.outerHeight()/studentWindowInnerHeight + row3.outerHeight()/studentWindowInnerHeight));
+    // console.log(row4.outerHeight(), row4.outerHeight() - 10 - 10 - $('div.sde-se-header').outerHeight(), $('div.sde-se-content').outerHeight());
+    // console.log(row1.outerHeight()/studentWindowInnerHeight, row2.outerHeight()/studentWindowInnerHeight, row3.outerHeight()/studentWindowInnerHeight, row4.outerHeight()/studentWindowInnerHeight, row1.outerHeight()/studentWindowInnerHeight + row2.outerHeight()/studentWindowInnerHeight + row3.outerHeight()/studentWindowInnerHeight + row4.outerHeight()/studentWindowInnerHeight, 1 - (row1.outerHeight()/studentWindowInnerHeight + row2.outerHeight()/studentWindowInnerHeight + row3.outerHeight()/studentWindowInnerHeight));
 
   }
 
