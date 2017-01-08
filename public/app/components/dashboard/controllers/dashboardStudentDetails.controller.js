@@ -43,9 +43,10 @@ app.controller('DashboardStudentDetails', ['$compile', '$scope', '$location', '$
         row1Header: 34.97918200352931/608.6875 * studentWindowInnerHeight
       },
       sectionPadding: {
-        leftS: 10/608.6875 * studentWindowInnerHeight,
-        leftL: 15/608.6875 * studentWindowInnerHeight,
-        right: 15/608.6875 * studentWindowInnerHeight
+        leftS: 10/1234 * studentWindowWidth,
+        leftL: 15/1234 * studentWindowWidth,
+        rightS: 10/1234 * studentWindowWidth,
+        right: 15/1234 * studentWindowWidth
       },
       sectionTitles: {
         row2Font: 16/608.6875 * studentWindowInnerHeight,
@@ -53,10 +54,15 @@ app.controller('DashboardStudentDetails', ['$compile', '$scope', '$location', '$
         row4Font: 16/608.6875 * studentWindowInnerHeight,
         row2Margin: 10/608.6875 * studentWindowInnerHeight,
         row3Margin: 15/608.6875 * studentWindowInnerHeight,
-        row4Margin: 10/608.6875 * studentWindowInnerHeight
+        row4Margin: 10/608.6875 * studentWindowInnerHeight,
+        figCaptionFont: 9/608.6875 * studentWindowInnerHeight,
+      },
+      sectionFigures: {
+        discChartHeight: 31/608.6875 * studentWindowInnerHeight,
+        discChartBarHeight: 12/608.6875 * studentWindowInnerHeight
       },
       sectionFigCaption: {
-        paddingLeft: 8/608.6875 * studentWindowInnerHeight,
+        paddingLeft: 8/1234 * studentWindowWidth,
         fontSize: 9/608.6875 * studentWindowInnerHeight
       },
       contentHeight: {
@@ -68,36 +74,46 @@ app.controller('DashboardStudentDetails', ['$compile', '$scope', '$location', '$
         row4Sed: 114.265625/608.6875 * studentWindowInnerHeight
       },
       contentPadding: {
-        left: 10/608.6875 * studentWindowInnerHeight
+        left: 10/1234 * studentWindowWidth
       },
       valueSizing: {
         paddingBottom: 5/608.6875 * studentWindowInnerHeight,
-        subPaddingLeft: 5/608.6875 * studentWindowInnerHeight,
+        subPaddingLeft: 5/1234 * studentWindowWidth,
         nameFont: 32/608.6875 * studentWindowInnerHeight,
         smallFont: 10/608.6875 * studentWindowInnerHeight,
         smallFontLh: (10/608.6875) * studentWindowInnerHeight,
         smallFontMarginBottom: 5/608.6875 * studentWindowInnerHeight,
         mediumFont: 16/608.6875 * studentWindowInnerHeight,
         mediumFontLh: (16/608.6875  * 4/5) * studentWindowInnerHeight,
-        LargeFont: 20/608.6875 * studentWindowInnerHeight,
-        LargeFontLh: (20/608.6875  * 4/5) * studentWindowInnerHeight
+        largeFont: 20/608.6875 * studentWindowInnerHeight,
+        largeFontLh: (20/608.6875  * 4/5) * studentWindowInnerHeight
       },
       labelSizing: {
-        font: 10/608.6875 * studentWindowInnerHeight
+        font: 10/608.6875 * studentWindowInnerHeight,
+        lineHeight: 10/608.6875 * studentWindowInnerHeight
       },
       skillsDimensions: {
-        spanMarginRight: 14/608.6875 * studentWindowInnerHeight,
-        spanWidth: 119.2/608.6875 * studentWindowInnerHeight
+        spanMarginRight: 16.5/1234 * studentWindowWidth,
+        spanWidth: 110/1234 * studentWindowWidth,
+        valLh: 12.8/1234 * studentWindowWidth
       }
     };
 
     // Universal Elements
-    var pSub = $('p.sd-sub');
     var valContent = $('div.sd-content-p');
+    var pSub = $('p.sd-sub');
+    var label = $('label.sd-label');
+    var figCaption = $('figcaption.sde-row3-title-caption');
+
     var setUniversalDimensions = function () {
+      valContent.css('margin-bottom', responsiveCalcs.valueSizing.paddingBottom + "px");
+      pSub.css('font-size', responsiveCalcs.valueSizing.smallFont + 'px');
+      pSub.css('line-height', responsiveCalcs.valueSizing.smallFontLh + 'px');
       pSub.css('padding-left', responsiveCalcs.valueSizing.subPaddingLeft + 'px');
-      pSub.css('margin-bottom', responsiveCalcs.valueSizing.marginBottom + 'px');
-      valContent.css('padding-bottom', responsiveCalcs.valueSizing.paddingBottom + "px");
+      label.css('font-size', responsiveCalcs.labelSizing.font + 'px');
+      label.css('line-height', responsiveCalcs.labelSizing.lineHeight + 'px');
+      figCaption.css('font-size', responsiveCalcs.sectionFigCaption.fontSize);
+      figCaption.css('padding-left', responsiveCalcs.sectionFigCaption.paddingLeft);
     }
     setUniversalDimensions();
 
@@ -138,39 +154,77 @@ app.controller('DashboardStudentDetails', ['$compile', '$scope', '$location', '$
     var row2Dems2Values = $('p.sde-dems2');
     var row2Dems2Labels = $('label.sde-dems2');
 
-    function setRow2HeightByElements() {
-      // row2.height(studentWindowInnerHeight * 0.24);
+    function setRow2Dimensions() {
       row2.css('padding', responsiveCalcs.rowTopBottomPadding.row2[0] + 'px 0 ' + responsiveCalcs.rowTopBottomPadding.row2[1] + 'px 0');
-      sdeDems2.css('padding-right', responsiveCalcs.sectionPadding.right + 'px');
+      sdeDems2.css('padding-right', responsiveCalcs.sectionPadding.rightS + 'px');
       sdeDems2Content.height(responsiveCalcs.contentHeight.row2Dems2);
-      sdeDems2Content.css('padding-left', responsiveCalcs.sectionPadding.leftS + 'px');
+      sdeDems2Content.css('padding-left', responsiveCalcs.contentPadding.left + 'px');
       row2Dems2HeaderDiv.css('margin-bottom', responsiveCalcs.sectionTitles.row2Margin + 'px');
       row2Dems2TitleFont.css('font-size', responsiveCalcs.sectionTitles.row2Font + 'px');
       row2Dems2Values.css('font-size', responsiveCalcs.valueSizing.smallFont + 'px');
       row2Dems2Values.css('line-height', (responsiveCalcs.valueSizing.smallFontLh) + 'px');
-      // row2Dems2Values.css('margin-bottom', responsiveCalcs.valueSizing.marginBottom + 'px');
       row2Dems2Labels.css('font-size', responsiveCalcs.labelSizing.font + 'px');
     }
-    setRow2HeightByElements();
-    // console.log(row2.outerHeight(), row2.outerHeight() - 51.5, sdeDems2Content.outerHeight());
+    setRow2Dimensions();
 
     // Row 3 Elements
     var row3 = $('section.sde-row3');
+
     var row3Disc = $('div.sde-disc');
     var row3DiscContent = $('div.sde-disc-content');
+    var discHeader = $('div.sde-disc-header');
+    var discVals = $('p.sde-disc');
+    var discChart = $('figure.disc-chart');
+    var discChartBar = $('div.disc-bar')
     var row3Motivators = $('div.sde-motivators');
     var row3MotivatorsContent = $('div.sde-motivators-content');
+    var motivatorsHeader = $('div.sde-motivators-header');
+    var motivatorsVals = $('p.sde-motivators');
     var row3Skills = $('div.sde-skills');
     var row3SkillsContent = $('div.sde-skills-content');
-    row3.height(studentWindowInnerHeight * 0.365);
+    var skillsHeader = $('div.sde-skills-header');
+    var skillsSpans = $('span.sde-skills');
+    var skillsVals = $('p.sde-skills');
+
+    var row3Title = $('h4.sde-row3-title');
+    var row3TitleCaption = $('figcaption.sde-row3-title-caption');
+
     function setRow3HeightByElements() {
-      // row3DiscContent.height(row3SkillsContent.height());
-      // row3MotivatorsContent.height(row3SkillsContent.height());
+
+      row3.css('padding', responsiveCalcs.rowTopBottomPadding.row3[0] + 'px 0 ' + responsiveCalcs.rowTopBottomPadding.row3[1] + 'px 0');
+      row3Title.css('font-size', responsiveCalcs.sectionTitles.row3Font + 'px');
+
+      // Disc
+      row3Disc.css('padding-right', responsiveCalcs.sectionPadding.right + 'px');
+      row3DiscContent.height(responsiveCalcs.contentHeight.row3Disc + 'px');
+      row3DiscContent.css('padding', responsiveCalcs.contentPadding.left + 'px');
+      discHeader.css('margin-bottom', responsiveCalcs.sectionTitles.row3Margin + 'px');
+      discVals.css('font-size', responsiveCalcs.valueSizing.largeFont + 'px');
+      discVals.css('line-height', responsiveCalcs.valueSizing.largeFontLh + 'px');
+      discChart.height(responsiveCalcs.sectionFigures.discChartHeight);
+      discChartBar.height(responsiveCalcs.sectionFigures.discChartBarHeight);
+
+      // Motivators
+      row3Motivators.css('padding', '0 ' + responsiveCalcs.sectionPadding.right + 'px 0 ' + responsiveCalcs.sectionPadding.leftL + 'px');
+      row3MotivatorsContent.height(responsiveCalcs.contentHeight.row3Motivators + 'px');
+      row3MotivatorsContent.css('padding', responsiveCalcs.contentPadding.left + 'px');
+      motivatorsHeader.css('margin-bottom', responsiveCalcs.sectionTitles.row3Margin + 'px');
+      motivatorsVals.css('font-size', responsiveCalcs.valueSizing.largeFont + 'px');
+      motivatorsVals.css('line-height', responsiveCalcs.valueSizing.largeFontLh + 'px');
+
+      // Skills
+      row3Skills.css('padding-left', responsiveCalcs.sectionPadding.leftL + 'px');
+      row3SkillsContent.height(responsiveCalcs.contentHeight.row3Skills + 'px');
+      row3SkillsContent.css('padding-left', responsiveCalcs.contentPadding.left + 'px');
+      skillsHeader.css('margin-bottom', responsiveCalcs.sectionTitles.row3Margin + 'px');
+      skillsVals.css('font-size', responsiveCalcs.valueSizing.mediumFont + 'px');
+      skillsVals.css('line-height', responsiveCalcs.valueSizing.mediumFontLh + 'px');
+      skillsSpans.css('max-width', responsiveCalcs.skillsDimensions.spanWidth + 'px');
+      skillsSpans.css('margin-right', responsiveCalcs.skillsDimensions.spanMarginRight + 'px');
+      skillsVals.css('line-height', responsiveCalcs.skillsDimensions.valLh + 'px');
     }
     setRow3HeightByElements();
 
-    // console.log(row3.outerHeight(), row3.outerHeight() - 23.5 - $('div.sde-disc-header').outerHeight() - 15, row3DiscContent.height());
-    // 238.109375 178.109375 155
 
     // Row 4 Elements
     var row4 = $('section.sde-row4');
@@ -184,9 +238,6 @@ app.controller('DashboardStudentDetails', ['$compile', '$scope', '$location', '$
       row4.height(studentWindowInnerHeight * 0.240527774925557);
     }
     setRow4HeightByElements();
-
-    // console.log(row4.outerHeight(), row4.outerHeight() - 10 - 10 - $('div.sde-se-header').outerHeight(), $('div.sde-se-content').outerHeight());
-    // console.log(row1.outerHeight()/studentWindowInnerHeight, row2.outerHeight()/studentWindowInnerHeight, row3.outerHeight()/studentWindowInnerHeight, row4.outerHeight()/studentWindowInnerHeight, row1.outerHeight()/studentWindowInnerHeight + row2.outerHeight()/studentWindowInnerHeight + row3.outerHeight()/studentWindowInnerHeight + row4.outerHeight()/studentWindowInnerHeight, 1 - (row1.outerHeight()/studentWindowInnerHeight + row2.outerHeight()/studentWindowInnerHeight + row3.outerHeight()/studentWindowInnerHeight));
 
   }
 

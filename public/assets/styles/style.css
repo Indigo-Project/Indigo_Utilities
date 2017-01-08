@@ -529,8 +529,6 @@ p.sd-val {
   width: fit-content;
   height: fit-content;
   font-family: 'Open Sans', sans-serif;
-  font-size: 1.6rem;
-  line-height: 1.6rem;
   margin: 0;
   padding: 0; }
 
@@ -538,18 +536,13 @@ p.sd-sub {
   width: fit-content;
   height: fit-content;
   font-family: 'Open Sans', sans-serif;
-  font-size: 1rem;
-  line-height: 1rem;
   font-weight: 300;
-  color: #b4b4b4;
-  margin: 0;
-  padding-left: 5px; }
+  color: #d2d2d2;
+  margin: 0; }
 
 label.sd-label {
   width: fit-content;
   color: #b8b7b7;
-  font-size: 1rem;
-  line-height: 1rem;
   font-family: 'Open Sans', sans-serif;
   font-weight: 300;
   margin: 0;
@@ -557,10 +550,8 @@ label.sd-label {
 
 figcaption.sde-row3-title-caption {
   color: #858282;
-  font-size: 0.9rem;
   font-family: 'Open Sans', sans-serif;
-  font-weight: 300;
-  padding-left: 8px; }
+  font-weight: 300; }
 
 section.sde-row1 {
   display: flex;
@@ -631,57 +622,40 @@ h4.sde-row2-title {
 section.sde-row3 {
   display: flex;
   width: 100%;
-  padding: 10px 0px 12.5px 0px;
   border-bottom: 1px solid #e6e6e6; }
 
 div.sde-disc {
   display: flex;
   flex-direction: column;
-  width: 26%;
-  padding-right: 15px; }
+  width: 26%; }
   div.sde-disc div.sde-disc-header {
-    display: flex;
-    margin-bottom: 15px; }
+    display: flex; }
   div.sde-disc div.sde-disc-content {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    height: 182.203125px;
-    padding-left: 10px; }
+    justify-content: space-between; }
     div.sde-disc div.sde-disc-content div.disc-val-container {
       display: flex;
       justify-content: space-between;
       width: 100%; }
-      div.sde-disc div.sde-disc-content div.disc-val-container span.sd-span p.sd-val {
-        font-size: 2rem; }
       div.sde-disc div.sde-disc-content div.disc-val-container figure.disc-chart {
         display: flex;
         flex-direction: column;
         justify-content: flex-end;
         width: 70%;
-        height: 31px;
         padding-right: 5%; }
-        div.sde-disc div.sde-disc-content div.disc-val-container figure.disc-chart div.disc-bar-1 {
-          height: 12px;
-          background-color: blue; }
-        div.sde-disc div.sde-disc-content div.disc-val-container figure.disc-chart div.disc-bar-2 {
-          height: 12px; }
 
 div.sde-motivators {
   display: flex;
   flex-direction: column;
   width: 18%;
-  padding: 0px 15px 0px 15px;
   border-right: 1px solid #e6e6e6;
   border-left: 1px solid #e6e6e6; }
   div.sde-motivators div.sde-motivators-header {
-    display: flex;
-    margin-bottom: 15px; }
+    display: flex; }
   div.sde-motivators div.sde-motivators-content {
     display: flex;
-    flex-flow: column wrap;
-    height: 170px;
-    padding-left: 10px; }
+    flex-flow: column wrap; }
     div.sde-motivators div.sde-motivators-content span.sd-span {
       flex-basis: 33.33333%; }
       div.sde-motivators div.sde-motivators-content span.sd-span:nth-of-type(2), div.sde-motivators div.sde-motivators-content span.sd-span:nth-of-type(5) {
@@ -691,28 +665,19 @@ div.sde-motivators {
       div.sde-motivators div.sde-motivators-content span.sd-span:nth-of-type(4), div.sde-motivators div.sde-motivators-content span.sd-span:nth-of-type(5), div.sde-motivators div.sde-motivators-content span.sd-span:nth-of-type(6) {
         padding-left: 25%; }
       div.sde-motivators div.sde-motivators-content span.sd-span p.sd-val {
-        color: #d4af37;
-        font-size: 2rem; }
+        color: #d4af37; }
 
 div.sde-skills {
   display: flex;
   flex-direction: column;
-  width: 56%;
-  padding-left: 15px; }
+  width: 56%; }
   div.sde-skills div.sde-skills-header {
-    display: flex;
-    margin-bottom: 15px; }
+    display: flex; }
   div.sde-skills div.sde-skills-content {
-    height: 182.203125px;
     display: flex;
-    flex-flow: row wrap;
-    padding-left: 10px; }
+    flex-flow: row wrap; }
     div.sde-skills div.sde-skills-content span.sd-span {
-      flex-basis: 20%;
-      margin-right: 14px;
-      max-width: 119.2px; }
-      div.sde-skills div.sde-skills-content span.sd-span p.sd-val {
-        line-height: 1.28rem; }
+      flex-basis: 20%; }
       div.sde-skills div.sde-skills-content span.sd-span label.sd-label {
         white-space: nowrap;
         overflow: hidden;

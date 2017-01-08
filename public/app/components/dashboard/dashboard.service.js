@@ -724,16 +724,16 @@ app.factory('DashboardService', ['$http', function($http) {
           studentDiscSpansVals.append('p').text(function(d) { return d[1]; })
           .attr("class", "sd-val sde-disc");
           studentDiscSpansVals.append('p').text(function(d) { return d[2]; })
-          .attr("class", "sd-sub sde-disc");
+          .attr("class", "sd-sub sde-disc-sub");
           studentDiscValsSpans.append('label').text(function(d) { return d[0]; })
           .attr("class", "sd-label sde-disc");
 
           var studentDiscValsCharts = studentDiscValsDivs.append('figure').attr('class', "disc-chart");
-          var naturalBar = studentDiscValsCharts.append('div').attr("class", "disc-bar-1");
+          var naturalBar = studentDiscValsCharts.append('div').attr("class", "disc-bar");
           var naturalBarColors = ["rgb(255, 0, 0)", "rgb(250, 255, 0)", "rgb(12, 255, 0)", "rgb(0, 25, 250)"]
           naturalBar.style("width", function(d) { return d[1] + "%" })
           naturalBar.style("background-color", function(d, i) { return naturalBarColors[i] })
-          var adaptedBar = studentDiscValsCharts.append('div').attr("class", "disc-bar-2");
+          var adaptedBar = studentDiscValsCharts.append('div').attr("class", "disc-bar");
           adaptedBar.style("width", function(d) { return d[2] + "%" })
           adaptedBar.style("background-color", "rgb(233, 233, 233)")
 
@@ -748,7 +748,7 @@ app.factory('DashboardService', ['$http', function($http) {
           studentMotivatorSpansVals.append('p').text(function(d) { return d[1]; })
           .attr("class", "sd-val sde-motivators");
           studentMotivatorSpansVals.append('p').text(function(d) { return d[2]; })
-          .attr("class", "sd-sub sde-motivators");
+          .attr("class", "sd-sub sde-motivators-sub");
           studentMotivatorValsSpans.append('label').text(function(d) { return d[0]; })
           .attr("class", "sd-label sde-motivators");
 
@@ -762,7 +762,7 @@ app.factory('DashboardService', ['$http', function($http) {
           studentSkillsSpansVals.append('p').text(function(d) { return d[1]; })
           .attr("class", "sd-val sde-skills")
           studentSkillsSpansVals.append('p').text(function(d) { return d[2]; })
-          .attr("class", "sd-sub sde-skills")
+          .attr("class", "sd-sub sde-skills-sub")
           studentSkillsValsSpans.append('label').text(function(d) { return d[0]; })
           .attr("class", "sd-label sde-skills")
           .attr("title", function(d) { return d[0] });

@@ -34,15 +34,14 @@ div.sd-content-p {
   width: fit-content;
   display: flex;
   align-items: flex-end;
-  // padding-bottom: 0.5rem;
 }
 
 p.sd-val {
   width: fit-content;
   height: fit-content;
   font-family: 'Open Sans', sans-serif;
-  font-size: 1.6rem;
-  line-height: 1.6rem;
+  // font-size: 1.6rem;
+  // line-height: 1.6rem;
   margin: 0;
   padding: 0;
 }
@@ -51,19 +50,16 @@ p.sd-sub {
   width: fit-content;
   height: fit-content;
   font-family: 'Open Sans', sans-serif;
-  font-size: 1rem;
-  line-height: 1rem;
   font-weight: 300;
-  color: rgb(180, 180, 180);
+  color: rgb(210, 210, 210);
   margin: 0;
-  padding-left: 5px;
 }
 
 label.sd-label {
   width: fit-content;
   color: rgb(184, 183, 183);
-  font-size: 1rem;
-  line-height: 1rem;
+  // font-size: 1rem;
+  // line-height: 1rem;
   font-family: 'Open Sans', sans-serif;
   font-weight: 300;
   margin: 0;
@@ -72,10 +68,10 @@ label.sd-label {
 
 figcaption.sde-row3-title-caption {
   color: rgb(133, 130, 130);
-  font-size: 0.9rem;
+  // font-size: 0.9rem;
   font-family: 'Open Sans', sans-serif;
   font-weight: 300;
-  padding-left: 8px;
+  // padding-left: 8px;
 }
 
 
@@ -98,7 +94,6 @@ div.sde-header {
   width: 100%;
   h3.sde-name {
     font-family: 'Open Sans', sans-serif;
-    // font-size: 2.28571428571429em;
     font-weight: 600;
     display: flex;
     align-items: flex-end;
@@ -111,16 +106,9 @@ div.sde-header {
     width: 45%;
     justify-content: space-between;
     align-items: flex-end;
-    // padding: 0 15px 0 15px;
     border-right: 1px solid rgb(230, 230, 230);
     span.sd-span {
       justify-content: flex-end;
-      p.sd-val {
-        // font-size: 1rem;
-      }
-      label.sd-label {
-        // font-size: 1rem;
-      }
     }
   }
   div.sde-flags {
@@ -131,22 +119,15 @@ div.sde-header {
 // ROW 2
 section.sde-row2 {
   display: flex;
-  // padding: 10px 0px 12.5px 0px;
   border-bottom: 1px solid rgb(230, 230, 230);
   div.sde-dems2 {
     display: flex;
     flex-direction: column;
     width: 50%;
-    // padding-right: 15px;
     border-right: 1px solid rgb(230, 230, 230);
-    div.sde-dems2-header {
-      // margin-bottom: 10px;
-    }
     div.sde-dems2-content {
       display: flex;
       justify-content: space-between;
-      // height: 114.890625px;
-      // padding-left: 10px;
       div.sde-dems2-0 {
         display: flex;
         flex-direction: column;
@@ -172,7 +153,6 @@ section.sde-row2 {
 h4.sde-row2-title {
   font-family: 'Open Sans', sans-serif;
   font-weight: 300;
-  // font-size: 1.6rem;
   color: rgb(149, 149, 149);
   margin: 0;
 }
@@ -181,7 +161,6 @@ h4.sde-row2-title {
 section.sde-row3 {
   display: flex;
   width: 100%;
-  padding: 10px 0px 12.5px 0px;
   border-bottom: 1px solid rgb(230, 230, 230);
 }
 
@@ -189,41 +168,23 @@ div.sde-disc {
   display: flex;
   flex-direction: column;
   width: 26%;
-  padding-right: 15px;
   div.sde-disc-header {
     display: flex;
-    margin-bottom: 15px;
   }
   div.sde-disc-content {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 182.203125px;
-    padding-left: 10px;
     div.disc-val-container {
       display: flex;
       justify-content: space-between;
       width: 100%;
-      span.sd-span {
-        p.sd-val {
-          font-size: 2rem;
-        }
-      }
       figure.disc-chart {
         display: flex;
         flex-direction: column;
         justify-content: flex-end;
         width: 70%;
-        height: 31px;
         padding-right: 5%;
-        div.disc-bar-1 {
-          height: 12px;
-          background-color: blue;
-        }
-        div.disc-bar-2 {
-          height: 12px;
-          // background-color: red;
-        }
       }
     }
   }
@@ -233,18 +194,14 @@ div.sde-motivators {
   display: flex;
   flex-direction: column;
   width: 18%;
-  padding: 0px 15px 0px 15px;
   border-right: 1px solid rgb(230, 230, 230);
   border-left: 1px solid rgb(230, 230, 230);
   div.sde-motivators-header {
     display: flex;
-    margin-bottom: 15px;
   }
   div.sde-motivators-content {
     display: flex;
     flex-flow: column wrap;
-    height: 170px;
-    padding-left: 10px;
     span.sd-span {
       flex-basis: 33.33333%;
       &:nth-of-type(2), &:nth-of-type(5) {
@@ -254,12 +211,10 @@ div.sde-motivators {
         justify-content: flex-end;
       }
       &:nth-of-type(4), &:nth-of-type(5), &:nth-of-type(6) {
-        // align-items: center;
         padding-left: 25%;
       }
       p.sd-val {
         color: rgb(212, 175, 55);
-        font-size: 2rem;
       }
     }
   }
@@ -269,30 +224,24 @@ div.sde-skills {
   display: flex;
   flex-direction: column;
   width: 56%;
-  padding-left: 15px;
   div.sde-skills-header {
     display: flex;
-    margin-bottom: 15px;
   }
   div.sde-skills-content {
-    height: 182.203125px;
     display: flex;
     flex-flow: row wrap;
-    padding-left: 10px;
-    // height: 216.109px;
     span.sd-span {
       flex-basis: 20%;
-      margin-right: 14px;
-      max-width: 119.2px;
+      // margin-right: 14px;
+      // max-width: 119.2px;
       p.sd-val {
-        line-height: 1.28rem;
+        // line-height: 1.28rem;
       }
       label.sd-label {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
         display: inline-block;
-        // width: 135.306px;
       }
     }
   }
