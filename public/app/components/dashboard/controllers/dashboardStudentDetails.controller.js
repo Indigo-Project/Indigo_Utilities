@@ -71,6 +71,7 @@ app.controller('DashboardStudentDetails', ['$compile', '$scope', '$location', '$
       },
       valueSizing: {
         marginBottom: 5/608.6875 * studentWindowInnerHeight,
+        subPaddingLeft: 5/608.6875 * studentWindowInnerHeight,
         nameFont: 32/608.6875 * studentWindowInnerHeight,
         smallFont: 10/608.6875 * studentWindowInnerHeight,
         mediumFont: 16/608.6875 * studentWindowInnerHeight,
@@ -114,7 +115,7 @@ app.controller('DashboardStudentDetails', ['$compile', '$scope', '$location', '$
     var row2Flags  = $('div.sde-flags');
     function setRow2HeightByElements() {
       // row2.height(studentWindowInnerHeight * 0.24);
-      
+
     }
     setRow2HeightByElements();
     // console.log(row2.outerHeight(), row2.outerHeight() - 51.5, sdeDems2Content.outerHeight());
