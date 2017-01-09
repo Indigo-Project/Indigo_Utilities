@@ -776,9 +776,9 @@ app.factory('DashboardService', ['$http', function($http) {
           .attr("class", "sd-span sde-se-0");
           var studentSe1_0SpansVals = studentSe1_0Spans.append('div').attr('class', 'sd-content-p')
           studentSe1_0SpansVals.append('p').text(function(d) { return d[1]; })
-          .attr("class", "sd-val sde-se-0")
+          .attr("class", "sd-val sde-se")
           studentSe1_0SpansVals.append('p').text(function(d) { return d[2]; })
-          .attr("class", "sd-sub sde-se-0")
+          .attr("class", "sd-sub sde-se-sub")
           studentSe1_0Spans.append('label').text(function(d) { return d[0]; })
           .attr("class", "sd-label sde-se-0");
 
@@ -790,9 +790,9 @@ app.factory('DashboardService', ['$http', function($http) {
           .attr("class", "sd-span sde-se-1");
           var studentSe1_1SpansVals = studentSe1_1Spans.append('div').attr('class', 'sd-content-p')
           studentSe1_1SpansVals.append('p').text(function(d) { return d[1]; })
-          .attr("class", "sd-val sde-se-1")
+          .attr("class", "sd-val sde-se")
           studentSe1_1SpansVals.append('p').text(function(d) { return d[2]; })
-          .attr("class", "sd-sub sde-se-1")
+          .attr("class", "sd-sub sde-se-sub")
           studentSe1_1Spans.append('label').text(function(d) { return d[0]; })
           .attr("class", "sd-label sde-se-1");
 
@@ -800,9 +800,9 @@ app.factory('DashboardService', ['$http', function($http) {
           var studentSed1_0 = d3.select('div.sde-sed-0');
           var sed1_0 = setSdSectionData(null, "ATTEND", "PREPARING");
           var studentSed1_0Spans = studentSed1_0.selectAll('span').data(sed1_0, function(d) { return d; }).enter().append('span')
-          .attr("class", "sd-span sde-sed-0");
+          .attr("class", "sd-span sde-sed");
           studentSed1_0Spans.append('p').text(function(d) { return d[1]; })
-          .attr("class", "sd-val sde-sed-0")
+          .attr("class", "sd-val sde-sed")
           studentSed1_0Spans.append('label').text(function(d) { return d[0]; })
           .attr("class", "sd-label sde-sed-0");
 
@@ -811,6 +811,7 @@ app.factory('DashboardService', ['$http', function($http) {
           var sed1_1Calc = setSdSectionData(null, "TOO MANY TESTS", "TOO MUCH HOMEWORK", "MANAGING MY TIME", "SOCIAL LIFE/FRIENDS", "TOO MANY RULES", "BEING COMPARED TO OTHERS", "BULLYING/ MEAN PEERS", "GETTING GOOD GRADES", "APPLYING FOR COLLEGE");
           var sed1_1Calc2 = sed1_1Calc.filter(function(e,i) { return e; })
           var sed1_1Calc3 = "";
+
           for (var i = 0; i < sed1_1Calc2.length; i++) {
             if (sed1_1Calc2[i][1] !== "---") {
               if (i === sed1_1Calc2.length - 1) {
@@ -824,9 +825,9 @@ app.factory('DashboardService', ['$http', function($http) {
 
           var sed1_1 = [['School Stressors', sed1_1Calc3]];
           var studentSed1_1Spans = studentSed1_1.selectAll('span').data(sed1_1, function(d) { return d; }).enter().append('span')
-          .attr("class", "sd-span sde-sed-1");
+          .attr("class", "sd-span sde-sed");
           studentSed1_1Spans.append('p').text(function(d) { return d[1]; })
-          .attr("class", "sd-val sde-sed-1")
+          .attr("class", "sd-val sde-sed")
           studentSed1_1Spans.append('label').text(function(d) { return d[0]; })
           .attr("class", "sd-label sde-sed-1");
 
@@ -834,9 +835,9 @@ app.factory('DashboardService', ['$http', function($http) {
           var studentSed1_2 = d3.select('div.sde-sed-2');
           var sed1_2 = setSdSectionData(null, "OTHERSTRESS");
           var studentSed1_2Spans = studentSed1_2.selectAll('span').data(sed1_2, function(d) { return d; }).enter().append('span')
-          .attr("class", "sd-span sde-sed-2");
+          .attr("class", "sd-span sde-sed");
           studentSed1_2Spans.append('p').text(function(d) { return d[1]; })
-          .attr("class", "sd-val sde-sed-2")
+          .attr("class", "sd-val sde-sed")
           studentSed1_2Spans.append('label').text(function(d) { return d[0]; })
           .attr("class", "sd-label sde-sed-2");
 

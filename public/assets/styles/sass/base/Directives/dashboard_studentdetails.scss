@@ -232,11 +232,6 @@ div.sde-skills {
     flex-flow: row wrap;
     span.sd-span {
       flex-basis: 20%;
-      // margin-right: 14px;
-      // max-width: 119.2px;
-      p.sd-val {
-        // line-height: 1.28rem;
-      }
       label.sd-label {
         white-space: nowrap;
         overflow: hidden;
@@ -265,18 +260,11 @@ div.sde-se {
   flex-direction: column;
   width: 20%;
   border-right: 1px solid rgb(230, 230, 230);
-  padding-right: 15px;
   div.sde-se-header {
     display: flex;
-    margin-bottom: 10px;
   }
   div.sde-se-content {
     display: flex;
-    height: 114.265625px;
-    padding-left: 10px;
-    p.sd-val {
-      line-height: 1.28rem;
-    }
     div.sde-se-0 {
       display: flex;
       flex-direction: column;
@@ -300,15 +288,11 @@ div.sde-sed {
   display: flex;
   flex-direction: column;
   width: 80%;
-  padding-left: 15px;
   div.sde-sed-header {
     display: flex;
-    margin-bottom: 10px;
   }
   div.sde-sed-content {
     display: flex;
-    height: 114.265625px;
-    padding-left: 10px;
     div.sde-sed-0 {
       display: flex;
       flex-direction: column;
@@ -331,7 +315,6 @@ div.sde-sed {
 h4.sde-row4-title {
   font-family: 'Open Sans', sans-serif;
   font-weight: 300;
-  font-size: 1.6rem;
   color: rgb(149, 149, 149);
   margin: 0;
 }

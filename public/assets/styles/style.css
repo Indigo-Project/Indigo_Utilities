@@ -698,17 +698,11 @@ div.sde-se {
   display: flex;
   flex-direction: column;
   width: 20%;
-  border-right: 1px solid #e6e6e6;
-  padding-right: 15px; }
+  border-right: 1px solid #e6e6e6; }
   div.sde-se div.sde-se-header {
-    display: flex;
-    margin-bottom: 10px; }
+    display: flex; }
   div.sde-se div.sde-se-content {
-    display: flex;
-    height: 114.265625px;
-    padding-left: 10px; }
-    div.sde-se div.sde-se-content p.sd-val {
-      line-height: 1.28rem; }
+    display: flex; }
     div.sde-se div.sde-se-content div.sde-se-0 {
       display: flex;
       flex-direction: column;
@@ -725,15 +719,11 @@ div.sde-se {
 div.sde-sed {
   display: flex;
   flex-direction: column;
-  width: 80%;
-  padding-left: 15px; }
+  width: 80%; }
   div.sde-sed div.sde-sed-header {
-    display: flex;
-    margin-bottom: 10px; }
+    display: flex; }
   div.sde-sed div.sde-sed-content {
-    display: flex;
-    height: 114.265625px;
-    padding-left: 10px; }
+    display: flex; }
     div.sde-sed div.sde-sed-content div.sde-sed-0 {
       display: flex;
       flex-direction: column;
@@ -750,7 +740,6 @@ div.sde-sed {
 h4.sde-row4-title {
   font-family: 'Open Sans', sans-serif;
   font-weight: 300;
-  font-size: 1.6rem;
   color: #959595;
   margin: 0; }
 

@@ -39,65 +39,66 @@ app.controller('DashboardStudentDetails', ['$compile', '$scope', '$location', '$
         row4: [(10/608.6875 * studentWindowInnerHeight), 0]
       },
       sectionHeights: {
-        row1Spacer: 6.086875/608.6875 * studentWindowInnerHeight,
+        row1Spacer: Math.min(6.086875/608.6875 * studentWindowInnerHeight, 12.34/1234 * studentWindowInnerWidth),
         row1Header: 34.97918200352931/608.6875 * studentWindowInnerHeight
       },
       sectionPadding: {
-        leftS: 10/1234 * studentWindowWidth,
-        leftL: 15/1234 * studentWindowWidth,
-        rightS: 10/1234 * studentWindowWidth,
+        left: 15/1234 * studentWindowWidth,
         right: 15/1234 * studentWindowWidth
       },
       sectionTitles: {
-        row2Font: 16/608.6875 * studentWindowInnerHeight,
-        row3Font: 18/608.6875 * studentWindowInnerHeight,
-        row4Font: 16/608.6875 * studentWindowInnerHeight,
+        row2Font: Math.min(16/608.6875 * studentWindowInnerHeight, 16/1234 * studentWindowWidth),
+        row3Font: Math.min(18/608.6875 * studentWindowInnerHeight, 18/1234 * studentWindowWidth),
+        row4Font: Math.min(16/608.6875 * studentWindowInnerHeight, 16/1234 * studentWindowWidth),
+        row4Font2: Math.min(14/608.6875 * studentWindowInnerHeight, 14/1234 * studentWindowWidth),
         row2Margin: 10/608.6875 * studentWindowInnerHeight,
         row3Margin: 15/608.6875 * studentWindowInnerHeight,
         row4Margin: 10/608.6875 * studentWindowInnerHeight,
-        figCaptionFont: 9/608.6875 * studentWindowInnerHeight,
+        row4Margin2: 16/608.6875 * studentWindowInnerHeight,
       },
       sectionFigures: {
-        discChartHeight: 31/608.6875 * studentWindowInnerHeight,
-        discChartBarHeight: 12/608.6875 * studentWindowInnerHeight
+        discChartHeight: Math.min(31/608.6875 * studentWindowInnerHeight, 31/1234 * studentWindowWidth),
+        discChartBarHeight: Math.min(12/608.6875 * studentWindowInnerHeight, 12/1234 * studentWindowWidth)
       },
       sectionFigCaption: {
         paddingLeft: 8/1234 * studentWindowWidth,
-        fontSize: 9/608.6875 * studentWindowInnerHeight
+        fontSize:  Math.min(9/608.6875 * studentWindowInnerHeight, 9/1234 * studentWindowWidth),
       },
       contentHeight: {
         row2Dems2: 114.890625/608.6875 * studentWindowInnerHeight,
         row3Disc: 182.203125/608.6875 * studentWindowInnerHeight,
         row3Motivators: 170/608.6875 * studentWindowInnerHeight,
         row3Skills: 182.203125/608.6875 * studentWindowInnerHeight,
-        row4Se: 114.265625/608.6875 * studentWindowInnerHeight,
+        row4Se: 102.265625/608.6875 * studentWindowInnerHeight,
         row4Sed: 114.265625/608.6875 * studentWindowInnerHeight
       },
       contentPadding: {
         left: 10/1234 * studentWindowWidth
       },
       valueSizing: {
-        paddingBottom: 5/608.6875 * studentWindowInnerHeight,
+        marginBottom: 5/608.6875 * studentWindowInnerHeight,
         subPaddingLeft: 5/1234 * studentWindowWidth,
-        nameFont: 32/608.6875 * studentWindowInnerHeight,
-        smallFont: 10/608.6875 * studentWindowInnerHeight,
-        smallFontLh: (10/608.6875) * studentWindowInnerHeight,
+        nameFont: Math.min(32/608.6875 * studentWindowInnerHeight, 32/1234 * studentWindowWidth),
+        smallFont: Math.min(10/608.6875 * studentWindowInnerHeight, 10/1234 * studentWindowWidth),
+        smallFontLh: Math.min(9/608.6875 * studentWindowInnerHeight, 9/1234 * studentWindowWidth),
         smallFontMarginBottom: 5/608.6875 * studentWindowInnerHeight,
-        mediumFont: 16/608.6875 * studentWindowInnerHeight,
-        mediumFontLh: (16/608.6875  * 4/5) * studentWindowInnerHeight,
-        largeFont: 20/608.6875 * studentWindowInnerHeight,
-        largeFontLh: (20/608.6875  * 4/5) * studentWindowInnerHeight
+        mediumFont: Math.min(16/608.6875 * studentWindowInnerHeight, 16/1234 * studentWindowWidth),
+        mediumFontLh: Math.min((16/608.6875  * 4/5) * studentWindowInnerHeight, (16/1234 * 4/5) * studentWindowInnerWidth),
+        largeFont: Math.min(20/608.6875 * studentWindowInnerHeight, 20/1234 * studentWindowWidth),
+        largeFontLh: Math.min((20/608.6875  * 4/5) * studentWindowInnerHeight, (20/1234 * 4/5) * studentWindowInnerWidth),
       },
       labelSizing: {
-        font: 10/608.6875 * studentWindowInnerHeight,
-        lineHeight: 10/608.6875 * studentWindowInnerHeight
+        font: Math.min(10/608.6875 * studentWindowInnerHeight, 10/1234 * studentWindowWidth),
+        lineHeight: Math.min(10/608.6875 * studentWindowInnerHeight, 10/1234 * studentWindowWidth),
       },
       skillsDimensions: {
         spanMarginRight: 16.5/1234 * studentWindowWidth,
         spanWidth: 110/1234 * studentWindowWidth,
-        valLh: 12.8/1234 * studentWindowWidth
+        valLh: Math.min(12.8/608.6875 * studentWindowInnerHeight, 12.8/1234 * studentWindowWidth),
       }
     };
+
+    console.log(responsiveCalcs.sectionTitles.row2Font);
 
     // Universal Elements
     var valContent = $('div.sd-content-p');
@@ -106,7 +107,7 @@ app.controller('DashboardStudentDetails', ['$compile', '$scope', '$location', '$
     var figCaption = $('figcaption.sde-row3-title-caption');
 
     var setUniversalDimensions = function () {
-      valContent.css('margin-bottom', responsiveCalcs.valueSizing.paddingBottom + "px");
+      valContent.css('margin-bottom', responsiveCalcs.valueSizing.marginBottom + "px");
       pSub.css('font-size', responsiveCalcs.valueSizing.smallFont + 'px');
       pSub.css('line-height', responsiveCalcs.valueSizing.smallFontLh + 'px');
       pSub.css('padding-left', responsiveCalcs.valueSizing.subPaddingLeft + 'px');
@@ -132,7 +133,7 @@ app.controller('DashboardStudentDetails', ['$compile', '$scope', '$location', '$
       row1Header.height(responsiveCalcs.sectionHeights.row1Header);
       row1.css('padding-bottom', responsiveCalcs.rowTopBottomPadding.row1[1] + 'px;');
       row1Name.css('font-size', responsiveCalcs.valueSizing.nameFont + 'px');
-      row1Dems1.css('padding', '0 ' + responsiveCalcs.sectionPadding.right + 'px 0 ' + responsiveCalcs.sectionPadding.leftL + 'px');
+      row1Dems1.css('padding', '0 ' + responsiveCalcs.sectionPadding.right + 'px 0 ' + responsiveCalcs.sectionPadding.left + 'px');
       row1Dem1Values.css('font-size', responsiveCalcs.valueSizing.smallFont + 'px');
       row1Dem1Values.css('line-height', responsiveCalcs.valueSizing.smallFontLh + 'px');
       row1Dem1Values.css('margin-bottom', responsiveCalcs.valueSizing.smallFontMarginBottom + 'px');
@@ -156,7 +157,7 @@ app.controller('DashboardStudentDetails', ['$compile', '$scope', '$location', '$
 
     function setRow2Dimensions() {
       row2.css('padding', responsiveCalcs.rowTopBottomPadding.row2[0] + 'px 0 ' + responsiveCalcs.rowTopBottomPadding.row2[1] + 'px 0');
-      sdeDems2.css('padding-right', responsiveCalcs.sectionPadding.rightS + 'px');
+      sdeDems2.css('padding-right', responsiveCalcs.sectionPadding.right + 'px');
       sdeDems2Content.height(responsiveCalcs.contentHeight.row2Dems2);
       sdeDems2Content.css('padding-left', responsiveCalcs.contentPadding.left + 'px');
       row2Dems2HeaderDiv.css('margin-bottom', responsiveCalcs.sectionTitles.row2Margin + 'px');
@@ -205,7 +206,7 @@ app.controller('DashboardStudentDetails', ['$compile', '$scope', '$location', '$
       discChartBar.height(responsiveCalcs.sectionFigures.discChartBarHeight);
 
       // Motivators
-      row3Motivators.css('padding', '0 ' + responsiveCalcs.sectionPadding.right + 'px 0 ' + responsiveCalcs.sectionPadding.leftL + 'px');
+      row3Motivators.css('padding', '0 ' + responsiveCalcs.sectionPadding.right + 'px 0 ' + responsiveCalcs.sectionPadding.left + 'px');
       row3MotivatorsContent.height(responsiveCalcs.contentHeight.row3Motivators + 'px');
       row3MotivatorsContent.css('padding', responsiveCalcs.contentPadding.left + 'px');
       motivatorsHeader.css('margin-bottom', responsiveCalcs.sectionTitles.row3Margin + 'px');
@@ -213,7 +214,7 @@ app.controller('DashboardStudentDetails', ['$compile', '$scope', '$location', '$
       motivatorsVals.css('line-height', responsiveCalcs.valueSizing.largeFontLh + 'px');
 
       // Skills
-      row3Skills.css('padding-left', responsiveCalcs.sectionPadding.leftL + 'px');
+      row3Skills.css('padding-left', responsiveCalcs.sectionPadding.left + 'px');
       row3SkillsContent.height(responsiveCalcs.contentHeight.row3Skills + 'px');
       row3SkillsContent.css('padding-left', responsiveCalcs.contentPadding.left + 'px');
       skillsHeader.css('margin-bottom', responsiveCalcs.sectionTitles.row3Margin + 'px');
@@ -228,14 +229,44 @@ app.controller('DashboardStudentDetails', ['$compile', '$scope', '$location', '$
 
     // Row 4 Elements
     var row4 = $('section.sde-row4');
+    var row4Titles = $('h4.sde-row4-title');
+
+    var seSection = $('div.sde-se');
+    var seContent = $('div.sde-se-content');
+    var seHeader = $('div.sde-se-header');
     var row4se0 = $('div.sde-se-0');
     var row4se1 = $('div.sde-se-1');
+
+    var sedSection = $('div.sde-sed');
+    var sedContent = $('div.sde-sed-content');
+    var sedHeader = $('div.sde-sed-header');
     var row4sed0 = $('div.sde-sed-0');
     var row4sed1 = $('div.sde-sed-1');
     var row4sed2 = $('div.sde-sed-2');
 
+    var seVals = $('p.sde-se');
+    var sedVals = $('p.sde-sed');
+
     function setRow4HeightByElements() {
-      row4.height(studentWindowInnerHeight * 0.240527774925557);
+
+      row4.css('padding-top', responsiveCalcs.rowTopBottomPadding.row4[0]);
+      row4Titles.css('font-size', responsiveCalcs.sectionTitles.row4Font + 'px');
+      // row4Titles.css('margin-bottom', responsiveCalcs.sectionTitles.row4Margin + 'px');
+
+      seSection.css('padding-right', responsiveCalcs.sectionPadding.right + 'px');
+      seContent.height(responsiveCalcs.contentHeight.row4Se);
+      seContent.css('padding-left', responsiveCalcs.contentPadding.left + 'px');
+      seHeader.css('margin-bottom', responsiveCalcs.sectionTitles.row4Margin2 + 'px');
+      seVals.css('font-size', responsiveCalcs.sectionTitles.row4Font2 + 'px');
+      seVals.css('line-height', responsiveCalcs.sectionTitles.row4Font2 + 'px');
+
+      sedSection.css('padding-left', responsiveCalcs.sectionPadding.left + 'px');
+      sedContent.height(responsiveCalcs.contentHeight.row4Sed);
+      sedContent.css('padding-left', responsiveCalcs.contentPadding.left + 'px');
+      sedHeader.css('margin-bottom', responsiveCalcs.sectionTitles.row4Margin + 'px');
+      sedVals.css('font-size', responsiveCalcs.valueSizing.smallFont + 'px');
+      sedVals.css('line-height', responsiveCalcs.valueSizing.smallFontLh + 'px');
+      sedVals.css('margin-bottom', responsiveCalcs.valueSizing.marginBottom + 'px');
     }
     setRow4HeightByElements();
 
