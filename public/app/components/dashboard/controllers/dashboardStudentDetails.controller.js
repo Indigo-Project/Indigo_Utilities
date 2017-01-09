@@ -98,7 +98,7 @@ app.controller('DashboardStudentDetails', ['$compile', '$scope', '$location', '$
       }
     };
 
-    console.log(responsiveCalcs.sectionTitles.row2Font);
+    // console.log(responsiveCalcs.sectionTitles.row2Font);
 
     // Universal Elements
     var valContent = $('div.sd-content-p');
@@ -279,7 +279,7 @@ app.controller('DashboardStudentDetails', ['$compile', '$scope', '$location', '$
   $scope.view.loadStudentDetails = function() {
 
     var studentDataObj = localStorageService.get('currentStudentData');
-    $scope.data.currentStudentDataObject = { columnHeaders: studentDataObj.columnHeaders, currentStudentData: studentDataObj.studentData };
+    $scope.data.currentStudentDataObject = { columnHeaders: studentDataObj.columnHeaders, currentStudentData: studentDataObj.studentData, metaData: studentDataObj.metaData };
 
     window.requestAnimationFrame(responsiveAdaptationSD);
     var resizeTimeout;

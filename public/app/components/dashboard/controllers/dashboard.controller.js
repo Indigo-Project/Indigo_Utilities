@@ -250,7 +250,7 @@ app.controller('Dashboard', ['$compile', '$scope', '$location', '$state', '$stat
   }
 
 
-
+  // console.log(localStorageService.get("currentDashboardData"));
   // open student details window when student name is clicked
   $scope.view.openStudentDetails = function(event) {
     function getStudentDataObjectFromRouteParams () {
@@ -262,15 +262,36 @@ app.controller('Dashboard', ['$compile', '$scope', '$location', '$state', '$stat
         var schoolCollection = $location.path().split("/")[2];
         var versionId = $location.path().split("/")[3];
 
-        var dashDataStudents = localStorageService.get("currentDashboardData").compiledData.studentData;
-        var columnHeaders = localStorageService.get("currentDashboardData").compiledData.columnHeaders[0];
+
+
+        var currentDashboardData = localStorageService.get("currentDashboardData");
+        var dashDataStudents = currentDashboardData.compiledData.studentData;
+        var columnHeaders = currentDashboardData.compiledData.columnHeaders[0];
         var studentIndex;
         for (var i = 0; i < dashDataStudents.length; i++) {
           var pathCode = dashDataStudents[i][0].replace(/[.,\/#!$%\^&\*;:{}=\-_`~()\s]/g,"").toLowerCase() + i;
           if (studentPath === pathCode) studentIndex = i;
         }
         var studentData = dashDataStudents[studentIndex];
-        var studentDataObj = { stateInfo: [schoolCollection, versionId, studentPath], columnHeaders: columnHeaders, studentData: studentData }
+
+        // Create key to define whether current student uses DNA or HD Skills
+        var metaData = {};
+        var skillsOptionByClassGroupKey = {};
+        var cDDKeys = Object.keys(currentDashboardData);
+        for (var i = 0; i < cDDKeys.length; i++) {
+          if (cDDKeys[i] !== 'compiledData' && cDDKeys[i] !== 'metaData' && cDDKeys[i] !== '_id') {
+            // console.log(currentDashboardData[cDDKeys[i]].uploadTypes[currentDashboardData[cDDKeys[i]].uploadTypePriorityIndex[0]].substring(0,6));
+            skillsOptionByClassGroupKey[cDDKeys[i]] = currentDashboardData[cDDKeys[i]].uploadTypes[currentDashboardData[cDDKeys[i]].uploadTypePriorityIndex[0]].substring(0,6) === 'Talent' ? 'DNA' : 'HD';
+          }
+        }
+        for (var classGroup in skillsOptionByClassGroupKey) {
+          console.log(classGroup, studentData[4] + "/" + studentData[5]);
+          if (studentData[4] + "/" + studentData[5] === classGroup) {
+            metaData.skillsOption = skillsOptionByClassGroupKey[classGroup];
+          }
+        }
+
+        var studentDataObj = { stateInfo: [schoolCollection, versionId, studentPath], columnHeaders: columnHeaders, studentData: studentData, metaData: metaData }
 
         if (studentDataObj) {
           localStorageService.set("currentStudentData", studentDataObj);

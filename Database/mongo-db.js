@@ -69,7 +69,7 @@ var database = {
   // Add new dashboard object to school collection (already connected to DB)
   addDashboard: function(db, data, schoolCode) {
     return new Promise(function(resolve, reject) {
-      console.log('adding dashboard...');
+      // console.log('adding dashboard...');
 
       // Access collection. If collection does not exist, create it and access it.
       function enterCollection() {
@@ -80,20 +80,20 @@ var database = {
           db.collection(schoolCode, {strict: true}, function(err, collection) {
             if (err) {
               if (err.message === 'Collection ' + schoolCode + ' does not exist. Currently in strict mode.') {
-                console.log(schoolCode + ' collection does not exist. Create ' + schoolCode + ' collection');
+                // console.log(schoolCode + ' collection does not exist. Create ' + schoolCode + ' collection');
                 db.createCollection(schoolCode, function(err, collection) {
                   dashboardCollection = collection;
-                  console.log('recently created collection', dashboardCollection);
+                  // console.log('recently created collection', dashboardCollection);
                   if (dashboardCollection) resolve(dashboardCollection);
                 })
               } else {
-                console.log('unidentified error - no collection created. check logs');
+                // console.log('unidentified error - no collection created. check logs');
                 reject();
               }
             }
             else {
               dashboardCollection = collection;
-              console.log(schoolCode + ' collection exists', dashboardCollection);
+              // console.log(schoolCode + ' collection exists', dashboardCollection);
               if (dashboardCollection) resolve(dashboardCollection);
             }
           });
@@ -107,9 +107,9 @@ var database = {
           collection.find().toArray(function(err, documents) {
 
             for (var i = 0; i < documents.length; i++) {
-              console.log("version index " + i + ":", documents[i].metaData.version)
+              // console.log("version index " + i + ":", documents[i].metaData.version)
             }
-            console.log('documents.length', documents.length);
+            // console.log('documents.length', documents.length);
             if (!documents.length) {
               version = 1;
             } else {
@@ -147,8 +147,8 @@ var database = {
       .then(function(collection) {
         insertDashboardData(collection)
         .then(function(result) {
-          console.log('result', result);
-          console.log('result dataId', result.result.insertedId);
+          // console.log('result', result);
+          // console.log('result dataId', result.result.insertedId);
           if (result) resolve(result.result.insertedId);
         })
       })
@@ -158,7 +158,7 @@ var database = {
   // Get document by Id
   getDocumentById: function(db, schoolCode, id) {
     return new Promise(function(resolve, reject) {
-      console.log('getting document...');
+      // console.log('getting document...');
       db.collection(schoolCode, {strict: true}, function(err, collection) {
         if (err) {
         } else {
@@ -176,29 +176,29 @@ var database = {
 
   // Get dashboard data with school code and collectionIdentifier
   getDashboardData: function(db, schoolCode, dataId, idOption) {
-    console.log('179', schoolCode, dataId, idOption);
+    // console.log('179', schoolCode, dataId, idOption);
     return new Promise(function(resolve, reject) {
       db.collection(schoolCode, function(err, collection) {
         collection.find().toArray(function(err, docs) {
-          console.log('docs', docs);
+          // console.log('docs', docs);
           var id;
           if (idOption === "version") {
             for (var i = 0; i < docs.length; i++) {
               if(docs[i].metaData.version === dataId) {
                 id = docs[i]._id;
-                console.log('id =', id);
+                // console.log('id =', id);
               }
             }
           } else if (idOption === "id") {
             for (var i = 0; i < docs.length; i++) {
-              console.log(docs[i]._id.toString(), dataId);
+              // console.log(docs[i]._id.toString(), dataId);
               if(docs[i]._id.toString() === dataId) {
-                console.log('MATCH');
+                // console.log('MATCH');
                 id = docs[i]._id;
               }
             }
           }
-          console.log('ID', id, toString.call(id), id.length);
+          // console.log('ID', id, toString.call(id), id.length);
           // console.log('docs', docs);
           collection.findOne({_id: id}, function(err, doc) {
             if (err) {

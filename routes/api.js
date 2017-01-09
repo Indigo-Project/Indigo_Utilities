@@ -1422,19 +1422,46 @@ router.get('/dashboard-names', function(req, res, next) {
 
 router.post('/dashboard-gen', function(req, res, next) {
 
+  console.log('in dashboard gen');
   // Convert data from all source types to unified & useable form
   function convertToUseable(report) {
+    console.log('CTU REPORT DATA', report.uploadType);
     return new Promise(function(resolve, reject) {
       var returnObj = report;
       if (report.uploadType === "csv upload") {
         csv.parse(report.data, function(error, output) {
+          // var reportDataArr = report.data.split('\n')
+          // var reportDataArrSubs = [];
+          // for (var i = 0; i < reportDataArr.length; i++) {
+          //   reportDataArrSubs.push(reportDataArr[i].split(","));
+          // }
+          // // console.log(reportDataArrSubs.length, reportDataArrSubs);
+          // for (var i = 0; i < reportDataArrSubs.length; i++) {
+          //   console.log(reportDataArrSubs[i].length);
+          // }
+          if (error) {
+              console.log('PARSE ERROR', error);
+              // console.log(report.data);
+              // var reportDataArr = report.data.split('\n')
+              // var reportDataArrSubs = [];
+              // for (var i = 0; i < reportDataArr.length; i++) {
+              //   reportDataArrSubs.push(reportDataArr[i].split(","));
+              // }
+              // // console.log(reportDataArrSubs.length, reportDataArrSubs);
+              // for (var i = 0; i < reportDataArrSubs.length; i++) {
+              //   console.log(reportDataArrSubs[i].length);
+              // }
+          }
           // console.log('ASSESSMENT/INSTRUMENT LENGTH', returnObj.name + " --- " + output[0].length);
+          console.log('parse output', report.name, toString.call(output));
           returnObj.data = output;
           resolve(returnObj);
         })
       } else if (report.uploadType === "tti import") {
 
       }
+    }).catch(function(error) {
+      console.log('PARSE ERROR', error);
     })
   }
 
@@ -1442,6 +1469,10 @@ router.post('/dashboard-gen', function(req, res, next) {
   function removeDuplicates(report) {
     var reportData = report.data;
     var reportRole = report.role;
+    // console.log('RM DUPLICATES VAR SETTING');
+    // console.log(report);
+    // console.log(report.name);
+    // console.log(reportData, reportRole);
 
     return new Promise(function(resolve, reject) {
 
@@ -1453,96 +1484,96 @@ router.post('/dashboard-gen', function(req, res, next) {
         formattedNameArr.push((reportData[i][0] + reportData[i][1]).toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").replace(/\s{2,}/g," "));
       }
 
-        // Create an array with all the indices of a value in another array
-        function getElementIndices(arr, val) {
-          return new Promise(function(resolve, reject) {
-            var indices = [];
-            for(var k = 0; k < arr.length; k++) {
-              if (arr[k] === val) indices.push(k);
-            }
-            resolve({name: val, indices: indices});
-          })
-        }
-
-        // Create matchObj Object
-        function dupCheckArr(arr) {
-          return new Promise(function(resolve, reject) {
-            for (var l = 0; l < arr.length; l++) {
-              getElementIndices(arr, arr[l])
-              .then(function(data) {
-                matchObj[data.name] = data.indices;
-                if (l === arr.length) resolve()
-              }).catch(function(error) {
-                console.log(error);
-              })
-            }
-          })
-        }
-
-        var matchObj = {};
-        var matchArr = [];
-
-        dupCheckArr(formattedNameArr)
-        .then(function() {
-          // console.log('matchObj', matchObj);
-          mOKeys = Object.keys(matchObj);
-          var removeIndices = [];
-          for (var m = 0; m < mOKeys.length; m++) {
-
-            // FOR TTI UPLOADS, dateObj will = [oldest <--> newest]
-            var dateObj = [];
-
-            for (var n = 0; n < matchObj[mOKeys[m]].length; n++) {
-              var date = new Date((reportData[matchObj[mOKeys[m]][n]][5]).split('-').join("/"));
-              dateObj.push(date)
-            }
-
-            var keepIndex = "";
-            var dateObjCount = 0;
-            if (dateObj.length > 1) {
-              if (reportRole === "Students") {
-                for (var o = dateObj.length-1; o > 0; o--) {
-                  if ((dateObj[o] - dateObj[o-1] || 0) > 7776000000) {
-                    keepIndex = matchObj[mOKeys[m]][o];
-                    break;
-                  } else {
-                    keepIndex = matchObj[mOKeys[m]][o-1];
-                  }
-                }
-              } else if (reportRole === "Staff") {
-                  keepIndex = matchObj[mOKeys[m]][dateObj.length-1];
-              }
-
-              for (var o = 0; o < dateObj.length; o++) {
-                if (matchObj[mOKeys[m]][o] !== keepIndex) {
-                  removeIndices.push(matchObj[mOKeys[m]][o])
-                }
-              }
-            }
+      // Create an array with all the indices of a value in another array
+      function getElementIndices(arr, val) {
+        return new Promise(function(resolve, reject) {
+          var indices = [];
+          for(var k = 0; k < arr.length; k++) {
+            if (arr[k] === val) indices.push(k);
           }
-          dupNumber = removeIndices.length;
-          // console.log('dupNumber:', dupNumber);
-          function sortDescending(a,b) {
-            return b-a;
-          }
-          removeIndices.sort(sortDescending);
-          // console.log('report length before:', reportData.length);
-          if (removeIndices.length) {
-            for (var o = 0; o < removeIndices.length; o++) {
-              reportData.splice(Number(removeIndices[o]), 1);
-              if (o === removeIndices.length-1) {
-                report.data = reportData;
-                resolve({dupNumber: dupNumber, report: report});
-              }
-            }
-          } else {
-            report.data = reportData;
-            resolve({dupNumber: dupNumber, report: report});
-          }
-          // console.log("report length after", reportData.length);
-        }).catch(function(error) {
-          console.log(error);
+          resolve({name: val, indices: indices});
         })
+      }
+
+      // Create matchObj Object
+      function dupCheckArr(arr) {
+        return new Promise(function(resolve, reject) {
+          for (var l = 0; l < arr.length; l++) {
+            getElementIndices(arr, arr[l])
+            .then(function(data) {
+              matchObj[data.name] = data.indices;
+              if (l === arr.length) resolve()
+            }).catch(function(error) {
+              console.log(error);
+            })
+          }
+        })
+      }
+
+      var matchObj = {};
+      var matchArr = [];
+
+      dupCheckArr(formattedNameArr)
+      .then(function() {
+        // console.log('matchObj', matchObj);
+        mOKeys = Object.keys(matchObj);
+        var removeIndices = [];
+        for (var m = 0; m < mOKeys.length; m++) {
+
+          // FOR TTI UPLOADS, dateObj will = [oldest <--> newest]
+          var dateObj = [];
+
+          for (var n = 0; n < matchObj[mOKeys[m]].length; n++) {
+            var date = new Date((reportData[matchObj[mOKeys[m]][n]][5]).split('-').join("/"));
+            dateObj.push(date)
+          }
+
+          var keepIndex = "";
+          var dateObjCount = 0;
+          if (dateObj.length > 1) {
+            if (reportRole === "Students") {
+              for (var o = dateObj.length-1; o > 0; o--) {
+                if ((dateObj[o] - dateObj[o-1] || 0) > 7776000000) {
+                  keepIndex = matchObj[mOKeys[m]][o];
+                  break;
+                } else {
+                  keepIndex = matchObj[mOKeys[m]][o-1];
+                }
+              }
+            } else if (reportRole === "Staff") {
+                keepIndex = matchObj[mOKeys[m]][dateObj.length-1];
+            }
+
+            for (var o = 0; o < dateObj.length; o++) {
+              if (matchObj[mOKeys[m]][o] !== keepIndex) {
+                removeIndices.push(matchObj[mOKeys[m]][o])
+              }
+            }
+          }
+        }
+        dupNumber = removeIndices.length;
+        // console.log('dupNumber:', dupNumber);
+        function sortDescending(a,b) {
+          return b-a;
+        }
+        removeIndices.sort(sortDescending);
+        // console.log('report length before:', reportData.length);
+        if (removeIndices.length) {
+          for (var o = 0; o < removeIndices.length; o++) {
+            reportData.splice(Number(removeIndices[o]), 1);
+            if (o === removeIndices.length-1) {
+              report.data = reportData;
+              resolve({dupNumber: dupNumber, report: report});
+            }
+          }
+        } else {
+          report.data = reportData;
+          resolve({dupNumber: dupNumber, report: report});
+        }
+        // console.log("report length after", reportData.length);
+      }).catch(function(error) {
+        console.log(error);
+      })
     })
   }
 
@@ -1551,19 +1582,24 @@ router.post('/dashboard-gen', function(req, res, next) {
     // 2. removes duplicates from all individual reports
     // 3. reorganizes all data by class/school year or staff groupings
   function prepareRawObject1(input0) {
+    console.log('in prepare raw object 1');
+
     return new Promise(function(resolve, reject) {
 
       return new Promise(function(resolve, reject) {
 
         var count = 0;
-        var staffCount =0;
+        var staffCount= 0;
         var useableObject1 = {}
         // console.log('input0', input0);
         bPromise.each(input0, function(element, i, length) {
+          // console.log('PRO1 bPromise', i, element);
           convertToUseable(input0[i])
           .then(function(parsedReport) {
+            // console.log(parsedReport, 'CONVERTED TO USEABLE');
             removeDuplicates(parsedReport)
             .then(function(data) {
+              console.log('DUPLICATES REMOVED');
               // console.log('data', data);
 
               count ++;
@@ -1607,12 +1643,12 @@ router.post('/dashboard-gen', function(req, res, next) {
   }
 
   // STEP 2 of raw input preparation
-    // 1. Create uploadTypes array with assessment/instrument type for each data upload
+    // 1. Create uploadTypes array with assessment/instrument type for each data file upload
     // 2. Create assessment/instrument priority index for setting column headers & data compilation
     // 3. Define compiled data column headers
     // 4. populate compiled data field with available data
   function prepareRawObject2(input1) {
-    // console.log('inside pRO2');
+    console.log('inside pRO2', input1);
     var input1Keys = Object.keys(input1);
     return new Promise(function(resolve, reject) {
 
@@ -1632,35 +1668,37 @@ router.post('/dashboard-gen', function(req, res, next) {
           }
         }
       }
+      console.log(1671, input1);
 
       //2
       for (var groupKey in input1) {
         var group = input1[groupKey];
+        console.log(group.uploadTypes);
         group.uploadTypePriorityIndex = [];
         // For the first found Trimetrix Report, throw it into the first priority position and break out of loop.
         for (var i = 0; i < group.uploadTypes.length; i++) {
-          if (group.uploadTypes[i] === "Trimetrix HD Talent (Legacy)") {
+          if (group.uploadTypes[i] === "Trimetrix HD Talent (Legacy) D" || group.uploadTypes[i] === "Trimetrix HD Talent (Legacy)") {
             group.uploadTypePriorityIndex.push(i);
             break;
           }
         };
-        // If there is a Trimetrix Report (only way length doesn't = 0), look for Talent Insights and if found, make first priority.
+        // If there is a Trimetrix Report (only way priorityIndex length doesn't = 0), look for Talent Insights and if found, make first priority.
         if (!group.uploadTypePriorityIndex.length) {
           for (var i = 0; i < group.uploadTypes.length; i++) {
-            if (group.uploadTypes[i] === "Talent Insights") {
+            if (group.uploadTypes[i] === "Talent Insights D" || group.uploadTypes[i] === "Talent Insights") {
               group.uploadTypePriorityIndex.push(i);
               break;
             }
           };
           if(group.uploadTypePriorityIndex.length === 1) {
             for (var i = 0; i < group.uploadTypes.length; i++) {
-              if (group.uploadTypes[i] === "TTI DNA Personal Soft Skills Indicator") {
+              if (group.uploadTypes[i] === "TTI DNA Personal Soft Skills Indicator D" || group.uploadTypes[i] === "TTI DNA Personal Soft Skills Indicator") {
                 group.uploadTypePriorityIndex.push(i);
                 break;
               }
             };
             for (var i = 0; i < group.uploadTypes.length; i++) {
-              if (group.uploadTypes[i] === "Hartman Value Profile") {
+              if (group.uploadTypes[i] === "Hartman Value Profile D" || group.uploadTypes[i] === "Hartman Value Profile") {
                 group.uploadTypePriorityIndex.push(i);
                 break;
               }
@@ -1670,6 +1708,7 @@ router.post('/dashboard-gen', function(req, res, next) {
           }
         }
       }
+      // console.log(1711, input1);
 
       //3
       var studentUMD = ['FULL NAME', 'FIRST NAME', 'LAST NAME', 'GENDER', 'CLASS', 'SCHOOL YEAR', 'REPORT DATE', 'EMAIL', 'COMPANY', 'POSITION', 'LINK', 'PASSWORD' ];
@@ -1694,7 +1733,7 @@ router.post('/dashboard-gen', function(req, res, next) {
           // console.log("---------- DATA SET " + i + " ----------");
           var currentDataSetCH = groupDataArr[groupPriorityIndex[i]][0]
           // console.log(i, currentDataSetCH);
-          var matchCount = 0
+          var matchCount = 0;
           for (var j = 0; j < currentDataSetCH.length; j++) {
             var currentColumnHeader = currentDataSetCH[j].toUpperCase();
             // console.log("----- currentColumnHeader " + j + ' -----');
@@ -1722,9 +1761,15 @@ router.post('/dashboard-gen', function(req, res, next) {
       // console.log('staffData CH:', staffUMD);
       input1.compiledData = { studentData: [studentUMD], staffData: [staffUMD] };
       // console.log('input1 cD after step 2.3', input1.compiledData);
-
+      // console.log('STUDENT DATA COLUMN HEADERS');
+      // for (var i = 0; i < input1.compiledData.studentData[0].length; i++) {
+      //   console.log(input1.compiledData.studentData[0][i]);
+      // }
+      // // console.log(1764, input1.compiledData.studentData[0]);
 
       // 4
+
+      console.log(input1);
 
       console.log('4.1');
       for (var groupKey in input1) {
@@ -1756,7 +1801,7 @@ router.post('/dashboard-gen', function(req, res, next) {
 
           var prioritySet = groupDataArr[groupPriorityIndex[0]];
 
-          // Set UMD anchors for studentData/staffData using prioritySet
+          // Set UMD (Universal MetaData) anchors for studentData/staffData using prioritySet
           for (var j = 1; j < prioritySet.length; j++) {
             var umdSET = [];
             for (var k = 0; k < 9; k++) {
@@ -1853,9 +1898,14 @@ router.post('/dashboard-gen', function(req, res, next) {
         }
       }
       console.log(studentData.length);
+      console.log(1901, input1.compiledData.studentData[0]);
+      // input1.compiledData.columnHeaders[0][j],
       // console.log(studentData[0]);
-      for (var i = 0; i < studentData.length; i++) {
-        console.log('studentData ' + i, studentData[i]);
+      for (var i = 1; i < studentData.length; i++) {
+        console.log('----- studentData ' + i + ' -----');
+        for (var j = 0; j < studentData[i].length; j++) {
+          console.log(input1.compiledData.studentData[0][j], studentData[i][j]);
+        }
       }
       input1.compiledData.columnHeaders = [input1.compiledData.studentData[0], input1.compiledData.staffData[0]];
       studentData.shift();
@@ -1902,8 +1952,10 @@ router.post('/dashboard-gen', function(req, res, next) {
 
     prepareRawObject1(input0)
     .then(function(input1) {
+      console.log('AFTER PREPARE RAW OBJECT 1');
       prepareRawObject2(input1)
       .then(function(input2) {
+        console.log('AFTER PREPARE RAW OBJECT 2');
         updateDatabase(input2, req.body.schoolCode)
         .then(function(input3) {
           console.log('INPUT 3', input3);

@@ -96,29 +96,65 @@ var APIs = {
 }
 
 exportTypeIdentifier = {
+  "Trimetrix HD Talent (Legacy) D": {
+    length: 161,
+    category: 'assessment',
+    demographics: true
+  },
   "Trimetrix HD Talent (Legacy)": {
     length: 161,
-    category: 'assessment'
+    category: 'assessment',
+    demographics: false
+  },
+  "Talent Insights D": {
+    length: 113,
+    category: 'assessment',
+    demographics: true
   },
   "Talent Insights": {
     length: 67,
-    category: 'assessment'
+    category: 'assessment',
+    demographics: false
+  },
+  "Hartman Value Profile D": {
+    length: 175,
+    category: 'instrument',
+    demographics: true
   },
   "Hartman Value Profile": {
     length: 141,
-    category: 'instrument'
+    category: 'instrument',
+    demographics: false
+  },
+  "TTI DNA Personal Soft Skills Indicator D": {
+    length: 84,
+    category: 'instrument',
+    demographics: true
   },
   "TTI DNA Personal Soft Skills Indicator": {
     length: 50,
-    category: 'instrument'
+    category: 'instrument',
+    demographics: false
+  },
+  "Motivation Insights D": {
+    length: 79,
+    category: 'instrument',
+    demographics: true
   },
   "Motivation Insights": {
     length: 45,
-    category: 'instrument'
+    category: 'instrument',
+    demographics: false
+  },
+  "Style Insights D": {
+    length: 83,
+    category: 'instrument',
+    demographics: true
   },
   "Style Insights": {
     length: 49,
-    category: 'instrument'
+    category: 'instrument',
+    demographics: false
   }
 
 }
@@ -127,6 +163,10 @@ dashboardSchoolNames = {
   "indigo-school": {
     name: "Indigo Test",
     optionDisplay: "Indigo Test (Sample)"
+  },
+  "gals": {
+    name: "GALS",
+    optionDisplay: "GALS"
   },
   "lewiston-porter": {
     name: "Lewiston Porter",

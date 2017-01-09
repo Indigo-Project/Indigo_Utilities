@@ -22,7 +22,7 @@ app.factory('DashboardService', ['$http', function($http) {
           url: '/api/dashboard-gen',
           data: { inputFiles: loadedFiles, schoolCode: schoolCode }
         }).then(function(data) {
-          if (data) resolve(data)
+          if (data) resolve(data);
         }).catch(function(error) {
           console.log(error);
         })
@@ -489,8 +489,7 @@ app.factory('DashboardService', ['$http', function($http) {
 
         }
 
-        function loadStudentDetails(columnHeaders, studentData) {
-
+        function loadStudentDetails(columnHeaders, studentData, metaData) {
           // student details data object setup
           var sDDataObject = {};
           for (var i = 0; i < columnHeaders.length; i++) {
@@ -507,11 +506,17 @@ app.factory('DashboardService', ['$http', function($http) {
             "MOTIVATORS": ['6.0', '5.3', '4.3', '4.2', '5.5', '4.7'],
             // HD SKILLS ["CONCEPTUAL THINKING", "CONFLICT MANAGEMENT", "CONTINUOUS LEARNING", "CREATIVITY", "CUSTOMER FOCUS", "DECISION MAKING", "DIPLOMACY & TACT", "EMPATHY", "EMPLOYEE DEVELOPMENT/COACHING", "FLEXIBILITY", "FUTURISTIC THINKING", "GOAL ACHIEVEMENT", "INTERPERSONAL SKILLS", "LEADERSHIP", "NEGOTIATION", "PERSONAL ACCOUNTABILITY", "PERSUASION", "PLANNING & ORGANIZING", "PRESENTING", "PROBLEM SOLVING ABILITY", "RESILIENCY", "SELF-MANAGEMENT", "TEAMWORK", "UNDERSTANDING & EVALUATING OTHERS", "WRITTEN COMMUNICATION"];
             "HD-SKILLS": ['6.9', '5.3', '6.7', '5.0', '7.3', '7.2', '6.0', '4.1', '6.6', '7.3', '2.3', '7.2', '7.3', '6.0', '4.4', '7.0', '5.2', '5.5', '5.3', '7.2', '7.2', '7.2', '6.8', '7.9', '5.7'],
-            // DNA SKILLS ["Analytical Problem Solving", "Conflict Management", "Continuous Learning", "Creativity/Innovation", "Customer Service", "Decision Making", "Diplomacy", "Empathy", "Employee Development/Coaching", "Flexibility", "Futuristic Thinking", "Goal Orientation", "Interpersonal Skills", "Leadership", "Management", "Negotiation", "Personal Effectiveness", "Persuasion", "Planning/Organizing", "Presenting", "Self-Management (time and priorities)", "Teamwork", "Written Communication"]
+            // DNA SKILLS ["ANALYTICAL PROBLEM SOLVING", "CONFLICT MANAGEMENT", "CONTINUOUS LEARNING", "CREATIVITY/INNOVATION", "CUSTOMER SERVICE", "DECISION MAKING", "DIPLOMACY", "EMPATHY", "EMPLOYEE DEVELOPMENT/COACHING", "FLEXIBILITY", "FUTURISTIC THINKING", "GOAL ORIENTATION", "INTERPERSONAL SKILLS", "LEADERSHIP", "MANAGEMENT", "NEGOTIATION", "PERSONAL EFFECTIVENESS", "PERSUASION", "PLANNING/ORGANIZING", "PRESENTING", "SELF-MANAGEMENT (TIME AND PRIORITIES)", "TEAMWORK", "WRITTEN COMMUNICATION"]
             "DNA-SKILLS": ['4.7', '5.2', '6.1', '4.8', '6.3', '4.0', '5.9', '3.6', '6.8', '4.5', '2.8', '6.8', '6.8', '6.1', '5.7', '3.8', '5.5', '5.5', '4.8', '6.1', '4.4', '6.3', '5.4'],
             "SOCIAL-EMOTIONAL-1": ['8.1', '8.0', '7.8'],
             "SOCIAL-EMOTIONAL-2": ['7.2', '7.1', '6.8']
           }
+          var dnaSkills = ["Analytical Problem Solving", "Conflict Management", "Continuous Learning", "Creativity/Innovation", "Customer Service", "Decision Making", "Diplomacy", "Empathy", "Employee Development/Coaching", "Flexibility", "Futuristic Thinking", "Goal Orientation", "Interpersonal Skills", "Leadership", "Management", "Negotiation", "Personal Effectiveness", "Persuasion", "Planning/Organizing", "Presenting", "Self-Management (time and priorities)", "Teamwork", "Written Communication"]
+          var capDNASKILLS = []
+          for (var i = 0; i < dnaSkills.length; i++) {
+            capDNASKILLS.push(dnaSkills[i].toUpperCase());
+          }
+          console.log(capDNASKILLS);
 
           // row 1 - header name
           var studentName = d3.select('h3.sde-name');
@@ -527,7 +532,7 @@ app.factory('DashboardService', ['$http', function($http) {
             function setSubValArray () {
               if (subValCategory === 'DISC') {
                 subValArr = [ sDDataObject['D ADAPTED (%)'].value, sDDataObject['I ADAPTED (%)'].value, sDDataObject['S ADAPTED (%)'].value, sDDataObject['C ADAPTED (%)'].value ]
-                console.log(subValArr);
+                // console.log(subValArr);
               } else if (subValCategory === 'SOCIAL-EMOTIONAL-0') {
                 subValArr = [ sDDataObject['UNDERSTANDING OTHERS BIAS'].value, sDDataObject['PRACTICAL THINKING BIAS'].value, sDDataObject['SYSTEMS JUDGMENT BIAS'].value ];
               } else if (subValCategory === 'SOCIAL-EMOTIONAL-1') {
@@ -643,6 +648,7 @@ app.factory('DashboardService', ['$http', function($http) {
 
             for (var i = 0; i < arguments.length; i++) {
               var pushVal;
+              console.log(arguments[i]);
               for (var j = 0; j < conversionObjKeys.length; j++) {
                 var label;
                 var value;
@@ -754,7 +760,11 @@ app.factory('DashboardService', ['$http', function($http) {
 
           // skills
           var studentSkillsVals = d3.select('div.sde-skills-content');
-          var skillsVals = setSdSectionData("HD-SKILLS", "CONCEPTUAL THINKING", "CONFLICT MANAGEMENT", "CONTINUOUS LEARNING", "CREATIVITY", "CUSTOMER FOCUS", "DECISION MAKING", "DIPLOMACY & TACT", "EMPATHY", "EMPLOYEE DEVELOPMENT/COACHING", "FLEXIBILITY", "FUTURISTIC THINKING", "GOAL ACHIEVEMENT", "INTERPERSONAL SKILLS", "LEADERSHIP", "NEGOTIATION", "PERSONAL ACCOUNTABILITY", "PERSUASION", "PLANNING & ORGANIZING", "PRESENTING", "PROBLEM SOLVING ABILITY", "RESILIENCY", "SELF-MANAGEMENT", "TEAMWORK", "UNDERSTANDING & EVALUATING OTHERS", "WRITTEN COMMUNICATION");
+          console.log(metaData.skillsOption);
+          var skillsOption = metaData.skillsOption;
+          var skillsVals = skillsOption === 'DNA' ? setSdSectionData("DNA-SKILLS", "ANALYTICAL PROBLEM SOLVING", "CONFLICT MANAGEMENT", "CONTINUOUS LEARNING", "CREATIVITY/INNOVATION", "CUSTOMER SERVICE", "DECISION MAKING", "DIPLOMACY", "EMPATHY", "EMPLOYEE DEVELOPMENT/COACHING", "FLEXIBILITY", "FUTURISTIC THINKING", "GOAL ORIENTATION", "INTERPERSONAL SKILLS", "LEADERSHIP", "MANAGEMENT", "NEGOTIATION", "PERSONAL EFFECTIVENESS", "PERSUASION", "PLANNING/ORGANIZING", "PRESENTING", "SELF-MANAGEMENT (TIME AND PRIORITIES)", "TEAMWORK", "WRITTEN COMMUNICATION") : setSdSectionData("HD-SKILLS", "CONCEPTUAL THINKING", "CONFLICT MANAGEMENT", "CONTINUOUS LEARNING", "CREATIVITY", "CUSTOMER FOCUS", "DECISION MAKING", "DIPLOMACY & TACT", "EMPATHY", "EMPLOYEE DEVELOPMENT/COACHING", "FLEXIBILITY", "FUTURISTIC THINKING", "GOAL ACHIEVEMENT", "INTERPERSONAL SKILLS", "LEADERSHIP", "NEGOTIATION", "PERSONAL ACCOUNTABILITY", "PERSUASION", "PLANNING & ORGANIZING", "PRESENTING", "PROBLEM SOLVING ABILITY", "RESILIENCY", "SELF-MANAGEMENT", "TEAMWORK", "UNDERSTANDING & EVALUATING OTHERS", "WRITTEN COMMUNICATION");
+          // var skillsVals = setSdSectionData("HD-SKILLS", "CONCEPTUAL THINKING", "CONFLICT MANAGEMENT", "CONTINUOUS LEARNING", "CREATIVITY", "CUSTOMER FOCUS", "DECISION MAKING", "DIPLOMACY & TACT", "EMPATHY", "EMPLOYEE DEVELOPMENT/COACHING", "FLEXIBILITY", "FUTURISTIC THINKING", "GOAL ACHIEVEMENT", "INTERPERSONAL SKILLS", "LEADERSHIP", "NEGOTIATION", "PERSONAL ACCOUNTABILITY", "PERSUASION", "PLANNING & ORGANIZING", "PRESENTING", "PROBLEM SOLVING ABILITY", "RESILIENCY", "SELF-MANAGEMENT", "TEAMWORK", "UNDERSTANDING & EVALUATING OTHERS", "WRITTEN COMMUNICATION");
+          // var skillsVals = setSdSectionData("DNA-SKILLS", "ANALYTICAL PROBLEM SOLVING", "CONFLICT MANAGEMENT", "CONTINUOUS LEARNING", "CREATIVITY/INNOVATION", "CUSTOMER SERVICE", "DECISION MAKING", "DIPLOMACY", "EMPATHY", "EMPLOYEE DEVELOPMENT/COACHING", "FLEXIBILITY", "FUTURISTIC THINKING", "GOAL ORIENTATION", "INTERPERSONAL SKILLS", "LEADERSHIP", "MANAGEMENT", "NEGOTIATION", "PERSONAL EFFECTIVENESS", "PERSUASION", "PLANNING/ORGANIZING", "PRESENTING", "SELF-MANAGEMENT (TIME AND PRIORITIES)", "TEAMWORK", "WRITTEN COMMUNICATION");
           var skillsAvgs = adultAverages.SKILLS;
           var studentSkillsValsSpans = studentSkillsVals.selectAll('span').data(skillsVals, function(d) { return d; }).enter().append('span')
           .attr("class", "sd-span sde-skills");
@@ -850,7 +860,8 @@ app.factory('DashboardService', ['$http', function($http) {
           createDashboard(inputObject.data, inputObject.schoolName)
           resolve();
         } else if (controlOption === "studentDetails") {
-          loadStudentDetails(inputObject.columnHeaders, inputObject.currentStudentData);
+          console.log(inputObject);
+          loadStudentDetails(inputObject.columnHeaders, inputObject.currentStudentData, inputObject.metaData);
           resolve();
         }
 

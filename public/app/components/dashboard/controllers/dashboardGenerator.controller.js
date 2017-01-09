@@ -101,6 +101,7 @@ app.controller('DashboardGenerator', ['$compile', '$scope', '$location', '$state
 
         DashboardService.getDataObject($scope.uploader.loadedFiles, $scope.data.schoolCode)
         .then(function(data) {
+          console.log('dashboard data object', data);
           var data = data.data;
           var dataObjKeys = Object.keys(data);
           $scope.data.studentNumber = data.compiledData.studentData.length;
