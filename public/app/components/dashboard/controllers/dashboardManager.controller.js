@@ -83,6 +83,15 @@ app.controller('DashboardManager', ['$compile', '$scope', '$location', '$state',
       var returnVersions = {};
       $scope.view.currentVersions = $scope.data.availableVersions[$scope.view.dashMschoolCode];
       console.log($scope.view.currentVersions);
+      // var sortableArr = [];
+      // for (var version in $scope.view.currentVersions) {
+      //   sortableArr.push([version, $scope.view.currentVersions[version].dateCreated]);
+      // }
+      // console.log(sortableArr);
+      // sortableArr.sort(function(a,b) {
+      //   return a[1] - b[1];
+      // })
+      // console.log(sortableArr);
     } else {
       console.log('NO COLLECTION SELECTED');
     }

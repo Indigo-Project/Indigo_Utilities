@@ -67,13 +67,17 @@
   </div>
 
   <form class="download-form" ng-submit="data.generateDashboard()">
-    <div>
-      <select class="form-control" name="schoolName" ng-init="view.loadSchoolNameOptions()" ng-model="data.schoolCode">
-        <option value=""> -- Select School -- </option>
-        <option ng-repeat="school in view.schoolNameOptions" value="{{school.code}}">{{school.optionDisplay}}</option>
-      </select>
-    </div>
+    <!-- <div> -->
+    <select class="form-control dashboard-school-name" name="schoolName" ng-init="view.loadSchoolNameOptions()" ng-model="data.schoolCode">
+      <option value=""> -- Select School -- </option>
+      <option ng-repeat="school in view.schoolNameOptions" value="{{school.code}}">{{school.optionDisplay}}</option>
+    </select>
+    <!-- </div> -->
+    <input type="text" class="dashboard-version-name form-control" ng-model="data.dashboardVersionName" placeholder="Enter Dashboard Name" required>
     <button type="submit" class="format-data form-control">Generate Dashboard</button>
+    <div class="dash-gen-success" ng-show="view.dashboardCreationStatus === 'generating'">
+      <h4 class="dash-success-message">Generating Dashboard...</h4>
+    </div>
     <div class="dash-gen-success" ng-show="view.dashboardCreationStatus === 'success'">
       <h4 class="dash-success-message">Success! "{{view.dashboardGeneratedVersion}}" created for "{{view.dashboardGeneratedSchool}}"</h4>
     </div>

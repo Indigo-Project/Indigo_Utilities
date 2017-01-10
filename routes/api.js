@@ -1677,28 +1677,33 @@ router.post('/dashboard-gen', function(req, res, next) {
         group.uploadTypePriorityIndex = [];
         // For the first found Trimetrix Report, throw it into the first priority position and break out of loop.
         for (var i = 0; i < group.uploadTypes.length; i++) {
-          if (group.uploadTypes[i] === "Trimetrix HD Talent (Legacy) D" || group.uploadTypes[i] === "Trimetrix HD Talent (Legacy)") {
+          if (group.uploadTypes[i] === "Trimetrix HD Talent (Legacy) D" || group.uploadTypes[i] === "Trimetrix HD Talent (Legacy)" || group.uploadTypes[i] === "Trimetrix HD Talent (Legacy) Temp") {
+            console.log(i, group.uploadTypes[i]);
             group.uploadTypePriorityIndex.push(i);
             break;
           }
         };
-        // If there is a Trimetrix Report (only way priorityIndex length doesn't = 0), look for Talent Insights and if found, make first priority.
-        if (!group.uploadTypePriorityIndex.length) {
+        // If there is no Trimetrix Report (only way priorityIndex length = 0), look for Talent Insights and if found, make first priority.
+        // Unless, the first value is a Trimetrix Temp (in which case we want the other files as well)
+        if (!group.uploadTypePriorityIndex.length || group.uploadTypes[0] === "Trimetrix HD Talent (Legacy) Temp") {
           for (var i = 0; i < group.uploadTypes.length; i++) {
             if (group.uploadTypes[i] === "Talent Insights D" || group.uploadTypes[i] === "Talent Insights") {
+              console.log(i, group.uploadTypes[i]);
               group.uploadTypePriorityIndex.push(i);
               break;
             }
           };
           if(group.uploadTypePriorityIndex.length === 1) {
             for (var i = 0; i < group.uploadTypes.length; i++) {
-              if (group.uploadTypes[i] === "TTI DNA Personal Soft Skills Indicator D" || group.uploadTypes[i] === "TTI DNA Personal Soft Skills Indicator") {
+              if (group.uploadTypes[i] === "TTI DNA Personal Soft Skills Indicator D" || group.uploadTypes[i] === "TTI DNA Personal Soft Skills Indicator" || group.uploadTypes[i] === "TTI DNA Personal Soft Skills Indicator API Instrument") {
+                console.log(i, group.uploadTypes[i]);
                 group.uploadTypePriorityIndex.push(i);
                 break;
               }
             };
             for (var i = 0; i < group.uploadTypes.length; i++) {
               if (group.uploadTypes[i] === "Hartman Value Profile D" || group.uploadTypes[i] === "Hartman Value Profile") {
+                console.log(i, group.uploadTypes[i]);
                 group.uploadTypePriorityIndex.push(i);
                 break;
               }
@@ -1708,9 +1713,9 @@ router.post('/dashboard-gen', function(req, res, next) {
           }
         }
       }
-      // console.log(1711, input1);
+      console.log(1716, input1);
 
-      //3
+      // 3
       var studentUMD = ['FULL NAME', 'FIRST NAME', 'LAST NAME', 'GENDER', 'CLASS', 'SCHOOL YEAR', 'REPORT DATE', 'EMAIL', 'COMPANY', 'POSITION', 'LINK', 'PASSWORD' ];
       var staffUMD = ['FULL NAME', 'FIRST NAME', 'LAST NAME', 'GENDER', 'REPORT DATE', 'EMAIL', 'COMPANY', 'POSITION', 'LINK', 'PASSWORD' ];
 
@@ -1751,7 +1756,7 @@ router.post('/dashboard-gen', function(req, res, next) {
             }
             if (!match) {
               compiledDataCH.push(currentColumnHeader);
-              // console.log('added ' + currentColumnHeader + ' to ' +  groupRole);
+              // console.log('added ' + currentColumnHeader + ' to ' +  groupRole + ' Column Headers');
             }
           }
           // console.log('matchCount ----------', matchCount);
@@ -1762,15 +1767,11 @@ router.post('/dashboard-gen', function(req, res, next) {
       input1.compiledData = { studentData: [studentUMD], staffData: [staffUMD] };
       // console.log('input1 cD after step 2.3', input1.compiledData);
       // console.log('STUDENT DATA COLUMN HEADERS');
-      // for (var i = 0; i < input1.compiledData.studentData[0].length; i++) {
-      //   console.log(input1.compiledData.studentData[0][i]);
-      // }
-      // // console.log(1764, input1.compiledData.studentData[0]);
+      for (var i = 0; i < input1.compiledData.studentData[0].length; i++) {
+        console.log(input1.compiledData.studentData[0][i]);
+      }
 
       // 4
-
-      console.log(input1);
-
       console.log('4.1');
       for (var groupKey in input1) {
         function titleCase(str) {
@@ -1863,17 +1864,19 @@ router.post('/dashboard-gen', function(req, res, next) {
           var chRef = compiledData[0];
           // console.log('chRef', chRef);
           for (var i = 1; i < compiledData.length; i++) {
-            // console.log(compiledData[i]);
             var currCdRow = compiledData[i]
+            // console.log(currCdRow);
             var anchorNameString = (currCdRow[1] + currCdRow[2]).toLowerCase()
             // console.log(nameString);
             for (var j = 0; j < groupPriorityIndex.length; j++) {
               var currentGroup = groupDataArr[groupPriorityIndex[j]];
               for (var k = 1; k < currentGroup.length; k++) {
                 // console.log('currGroup ' + k, currentGroup[k]);
-                var nameString = (currentGroup[k][0] + currentGroup[k][1]).toLowerCase();
-                // console.log(anchorNameString, nameString);
+                // var nameString = (currentGroup[k][1] + currentGroup[k][2]).toLowerCase();
+                // console.log('FIRST', currentGroup[k][chRef.indexOf('FIRST NAME')], 'LAST', currentGroup[k][chRef.indexOf('LAST NAME')]);
+                var nameString = (currentGroup[k][currentGroup[0].indexOf('FIRST NAME')] + currentGroup[k][currentGroup[0].indexOf('LAST NAME')]).toLowerCase();
                 if (anchorNameString === nameString) {
+                  console.log('NAME MATCH' + j + ':', anchorNameString, nameString);
                   // console.log("-----------------");
                   // console.log(currCdRow, currentGroup[k]);
                   var dataChRef = currentGroup[0]
@@ -1881,11 +1884,11 @@ router.post('/dashboard-gen', function(req, res, next) {
                     // console.log("----------");
                     for (var l = dataStart; l < chRef.length; l++) {
                       if (dataChRef[m].toUpperCase() === chRef[l].toUpperCase()) {
-                        // console.log('CH REF MATCH', dataChRef[m], chRef[l]);
+                        console.log('CH REF MATCH', dataChRef[m], chRef[l]);
                         // console.log(m, l);
                         // console.log(i, k);
                         if (!currCdRow[l]) {
-                          // console.log('no ' + chRef[l] + ', populate with ' + currentGroup[0][m], currentGroup[k][m] || "''" );
+                          console.log('no ' + chRef[l] + ', populate with ' + currentGroup[0][m], currentGroup[k][m] || "''" );
                           currCdRow[l] = currentGroup[k][m] || "";
                         }
                       }
@@ -1897,14 +1900,14 @@ router.post('/dashboard-gen', function(req, res, next) {
           }
         }
       }
-      console.log(studentData.length);
-      console.log(1901, input1.compiledData.studentData[0]);
+      // console.log(studentData.length);
+      // console.log(1901, input1.compiledData.studentData[0]);
       // input1.compiledData.columnHeaders[0][j],
       // console.log(studentData[0]);
       for (var i = 1; i < studentData.length; i++) {
-        console.log('----- studentData ' + i + ' -----');
+        // console.log('----- studentData ' + i + ' -----');
         for (var j = 0; j < studentData[i].length; j++) {
-          console.log(input1.compiledData.studentData[0][j], studentData[i][j]);
+          // console.log(input1.compiledData.studentData[0][j], studentData[i][j]);
         }
       }
       input1.compiledData.columnHeaders = [input1.compiledData.studentData[0], input1.compiledData.staffData[0]];
@@ -1933,7 +1936,7 @@ router.post('/dashboard-gen', function(req, res, next) {
     return new Promise(function(resolve, reject) {
       mongo.mongoDBConnect(mongo.indigoDashboardsURI)
       .then(function(data) {
-        mongo.addDashboard(data.db, input2, req.body.schoolCode)
+        mongo.addDashboard(data.db, input2, req.body.schoolCode, req.body.dashboardVersionName)
         .then(function(documentId) {
           mongo.getDocumentById(data.db, schoolCode, documentId)
           .then(function(dashObj) {
@@ -1958,7 +1961,13 @@ router.post('/dashboard-gen', function(req, res, next) {
         console.log('AFTER PREPARE RAW OBJECT 2');
         updateDatabase(input2, req.body.schoolCode)
         .then(function(input3) {
-          console.log('INPUT 3', input3);
+          // console.log('INPUT 3', input3);
+          // for (var i = 0; i < input3.compiledData.studentData.length; i++) {
+          //   for (var j = 0; j < input3.compiledData.studentData[i].length; j++) {
+          //     console.log(input3.compiledData.columnHeaders[0][j], input3.compiledData.studentData[i][j]);
+          //     // console.log(input3.compiledData.studentData[i][j]);
+          //   }
+          // }
           res.send(input3)
         }).catch(function(error) {
           console.log(error);

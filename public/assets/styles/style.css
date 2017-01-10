@@ -250,15 +250,20 @@ form.add-reports-dg {
   display: flex;
   flex-direction: column; }
 
-form.download-form div {
-  display: flex;
-  flex-direction: column;
-  margin-right: 20px; }
-form.download-form input {
-  width: 400px; }
-form.download-form button {
-  font-weight: bold;
-  font-size: 14px; }
+form.download-form {
+  display: flex; }
+  form.download-form div {
+    display: flex;
+    flex-direction: column;
+    margin-right: 20px; }
+  form.download-form select {
+    margin-right: 20px; }
+  form.download-form input {
+    width: 300px;
+    margin-right: 20px; }
+  form.download-form button {
+    font-weight: bold;
+    font-size: 14px; }
 
 table.queued-reports {
   width: 600px; }

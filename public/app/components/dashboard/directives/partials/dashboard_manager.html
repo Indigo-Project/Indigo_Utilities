@@ -9,7 +9,7 @@
 
     <select ng-hide="!view.dashMschoolCode" class="form-control dash-version-selection" ng-change="view.loadVersion()" ng-model="view.dashMschoolVersion">
       <option value=""> -- Select Version -- </option>
-      <option ng-repeat="(version, versionData) in view.currentVersions" value="{{version}}">{{version}}</option>
+      <option ng-repeat="version in view.currentVersions" value="{{version.version}}">{{version.version}} -- {{version.dateCreated}}</option>
     </select>
 
     <button class="form-control full-screen-dash" ng-hide="!view.dashMschoolVersion" ng-click="view.openFSDashboard()">View in Full Screen</button>

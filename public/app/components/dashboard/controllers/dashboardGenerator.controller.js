@@ -7,6 +7,7 @@ app.controller('DashboardGenerator', ['$compile', '$scope', '$location', '$state
 
   $scope.data.schoolName = "";
   $scope.data.schoolCode = "";
+  $scope.data.dashboardVersionName = "";
 
   $scope.view.selectedFunction = "dashboard_gen";
   $scope.view.dashboardCreationStatus = "";
@@ -90,7 +91,7 @@ app.controller('DashboardGenerator', ['$compile', '$scope', '$location', '$state
       alert("PLEASE SELECT SCHOOL");
     } else {
       if(confirm("Please confirm that the school name is correct. Upon submission for dashboard generation, this name will become a unique identifier for the dashboard, associated within the same grouping as future versions of dashboards for the same school. refer to FAQ for a more detailed explanation of how this works.")) {
-        $scope.view.dashboardCreationStatus = "Generating Dashboard...";
+        $scope.view.dashboardCreationStatus = "generating";
 
         for (var schoolKey in $scope.view.dashboardNameOptions) {
           if ($scope.view.dashboardNameOptions[schoolKey].code === $scope.data.schoolCode) {
@@ -99,7 +100,7 @@ app.controller('DashboardGenerator', ['$compile', '$scope', '$location', '$state
         }
         // $scope.data.schoolName = $scope.view.dashboardNameOptions[$scope.data.schoolCode].name;
 
-        DashboardService.getDataObject($scope.uploader.loadedFiles, $scope.data.schoolCode)
+        DashboardService.getDataObject($scope.uploader.loadedFiles, $scope.data.schoolCode, $scope.data.dashboardVersionName)
         .then(function(data) {
           console.log('dashboard data object', data);
           var data = data.data;

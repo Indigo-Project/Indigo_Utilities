@@ -68,13 +68,18 @@ form.add-reports-dg {
 }
 
 form.download-form {
+  display: flex;
   div {
     display: flex;
     flex-direction: column;
     margin-right: 20px;
   }
+  select {
+    margin-right: 20px;
+  }
   input {
-    width: 400px;
+    width: 300px;
+    margin-right: 20px;
   }
   button {
     font-weight: bold;

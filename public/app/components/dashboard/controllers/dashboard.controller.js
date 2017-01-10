@@ -280,8 +280,8 @@ app.controller('Dashboard', ['$compile', '$scope', '$location', '$state', '$stat
         var cDDKeys = Object.keys(currentDashboardData);
         for (var i = 0; i < cDDKeys.length; i++) {
           if (cDDKeys[i] !== 'compiledData' && cDDKeys[i] !== 'metaData' && cDDKeys[i] !== '_id') {
-            // console.log(currentDashboardData[cDDKeys[i]].uploadTypes[currentDashboardData[cDDKeys[i]].uploadTypePriorityIndex[0]].substring(0,6));
-            skillsOptionByClassGroupKey[cDDKeys[i]] = currentDashboardData[cDDKeys[i]].uploadTypes[currentDashboardData[cDDKeys[i]].uploadTypePriorityIndex[0]].substring(0,6) === 'Talent' ? 'DNA' : 'HD';
+            var topPriorityString = currentDashboardData[cDDKeys[i]].uploadTypes[currentDashboardData[cDDKeys[i]].uploadTypePriorityIndex[0]];
+            skillsOptionByClassGroupKey[cDDKeys[i]] = topPriorityString.substring(0,6) === 'Talent' ? 'DNA' : topPriorityString === "Trimetrix HD Talent (Legacy) Temp" ? 'DNA' : 'HD';
           }
         }
         for (var classGroup in skillsOptionByClassGroupKey) {

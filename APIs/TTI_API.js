@@ -102,7 +102,12 @@ exportTypeIdentifier = {
     demographics: true
   },
   "Trimetrix HD Talent (Legacy)": {
-    length: 161,
+    length: 127,
+    category: 'assessment',
+    demographics: false
+  },
+  "Trimetrix HD Talent (Legacy) Temp": {
+    length: 125,
     category: 'assessment',
     demographics: false
   },
@@ -112,7 +117,7 @@ exportTypeIdentifier = {
     demographics: true
   },
   "Talent Insights": {
-    length: 67,
+    length: 79,
     category: 'assessment',
     demographics: false
   },
@@ -133,6 +138,11 @@ exportTypeIdentifier = {
   },
   "TTI DNA Personal Soft Skills Indicator": {
     length: 50,
+    category: 'instrument',
+    demographics: false
+  },
+  "TTI DNA Personal Soft Skills Indicator API Instrument": {
+    length: 36,
     category: 'instrument',
     demographics: false
   },

@@ -67,7 +67,7 @@ var database = {
   },
 
   // Add new dashboard object to school collection (already connected to DB)
-  addDashboard: function(db, data, schoolCode) {
+  addDashboard: function(db, data, schoolCode, dashboardVersionName) {
     return new Promise(function(resolve, reject) {
       // console.log('adding dashboard...');
 
@@ -106,27 +106,16 @@ var database = {
           var version;
           collection.find().toArray(function(err, documents) {
 
-            for (var i = 0; i < documents.length; i++) {
-              // console.log("version index " + i + ":", documents[i].metaData.version)
-            }
-            // console.log('documents.length', documents.length);
-            if (!documents.length) {
-              version = 1;
+            if (dashboardVersionName) {
+              data.metaData.version = dashboardVersionName;
             } else {
-              version = documents.length + 1;
-              // for (var i = 0; i < documents.length; i++) {
-              //   if (documents[i].metaData.version.substring(0,8) === "version ") {
-              //     version = Number(documents[i].metaData.version.substring(8)) + 1;
-              //     console.log('prev version number:', documents[i].metaData.version.substring(8));
-              //     console.log('new version number:', version);
-              //     break;
-              //   } else {
-              //     version = documents.length + 1;
-              //   }
-              // }
+              if (!documents.length) {
+                version = 1;
+              } else {
+                version = documents.length + 1;
+              }
+              data.metaData.version = "version " + version;
             }
-
-            data.metaData.version = "version " + version;
 
             collection.insertOne(data, function(err, result) {
               if (assert.equal(err, null) === undefined) {

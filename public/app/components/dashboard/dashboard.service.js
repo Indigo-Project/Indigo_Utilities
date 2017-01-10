@@ -15,12 +15,12 @@ app.factory('DashboardService', ['$http', function($http) {
       })
     },
 
-    getDataObject: function(loadedFiles, schoolCode) {
+    getDataObject: function(loadedFiles, schoolCode, dashboardVersionName) {
       return new Promise(function(resolve, reject) {
         $http({
           method: 'POST',
           url: '/api/dashboard-gen',
-          data: { inputFiles: loadedFiles, schoolCode: schoolCode }
+          data: { inputFiles: loadedFiles, schoolCode: schoolCode, dashboardVersionName: dashboardVersionName }
         }).then(function(data) {
           if (data) resolve(data);
         }).catch(function(error) {
@@ -883,7 +883,6 @@ app.factory('DashboardService', ['$http', function($http) {
 
     getStoredDashboardData: function(schoolCode, version, id) {
       return new Promise(function(resolve, reject) {
-        console.log(schoolCode, version, id);
         $http({
           method: 'POST',
           url: '/api/dashboard-data',
