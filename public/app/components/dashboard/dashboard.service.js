@@ -1,4 +1,4 @@
-app.factory('DashboardService', ['$http', function($http) {
+app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', function($compile, $rootScope, $http, RWD) {
 
   return {
 
@@ -33,6 +33,7 @@ app.factory('DashboardService', ['$http', function($http) {
       return new Promise(function(resolve, reject) {
 
         function createDashboard(data, schoolName) {
+
           // Global Vars
           var studentSelections = [];
           var classSelections = [];
@@ -65,9 +66,9 @@ app.factory('DashboardService', ['$http', function($http) {
           var table = d3.select('div.student-data-table').append('table').attr('class', 'student-data');
           var titles = d3.values(dashboardCHs);
 
-          var columnColorIndex = ["rgba(255,255,255,", "rgba(255,255,255,", "rgba(255,255,255,", "rgba(255, 52, 52,", "rgba(250, 238, 74,", "rgba(41, 218, 32,", "rgba(96, 112, 255,", "rgba(212, 175, 55,", "rgba(212, 175, 55,", "rgba(212, 175, 55,", "rgba(212, 175, 55,", "rgba(212, 175, 55,", "rgba(212, 175, 55,"]
+          var columnColorIndex = ["rgba(255,255,255,", "rgba(255,255,255,", "rgba(255,255,255,", "rgba(255, 52, 52,", "rgba(250, 238, 74,", "rgba(41, 218, 32,", "rgba(96, 112, 255,", "rgba(212, 175, 55,", "rgba(212, 175, 55,", "rgba(212, 175, 55,", "rgba(212, 175, 55,", "rgba(212, 175, 55,", "rgba(212, 175, 55,"];
 
-          // setup headers
+          // Dashboard Headers Setup
           function setHeaders() {
 
             var rowObj = tableBody.selectAll('tr').data(dashData, function(d) { return d }).enter().append('tr');
@@ -101,7 +102,7 @@ app.factory('DashboardService', ['$http', function($http) {
 
           }
 
-          // setup filters
+          // Dashboard Filters Setup
           function setFilters(data, filtersApplied) {
 
             if (filtersApplied[0].length || filtersApplied[1].length) {
@@ -266,7 +267,7 @@ app.factory('DashboardService', ['$http', function($http) {
             }
           }
 
-          // sort calc function
+          // Sort Calculation Function
           function stringCompare(a, b, sort, i) {
             // console.log(i);
             if (i > 3) {
@@ -283,21 +284,33 @@ app.factory('DashboardService', ['$http', function($http) {
             else if (sort === "des") return a < b ? 1 : a == b ? 0 : -1;
           }
 
-          // apply recent filter selections to dashbaord
+          // Triggered on change to any filter checkbox - applies updated filter selection to dashbaord
           function updateDashboard(action, filter, value) {
 
-            if (filter === "student") action === "add" ? studentSelections.push(value) : studentSelections.splice(studentSelections.indexOf(value), 1);
-            if (filter === "class") action === "add" ? classSelections.push(value) : classSelections.splice(classSelections.indexOf(value), 1);
-            if (filter === "gender") action === "add" ? genderSelections.push(value) : genderSelections.splice(genderSelections.indexOf(value), 1);
-
-            // console.log(studentSelections);
-
-            // update data object with students filter
-            if (studentSelections.length) {
-              var filteredData = dashData.filter(function(d,i) { return studentSelections.includes(d[0]) });
-            } else {
-              var filteredData = dashData;
+            function updateGlobalFilterObjects() {
+              return new Promise(function(resolve, reject) {
+                if (filter === "student") action === "add" ? studentSelections.push(value) : studentSelections.splice(studentSelections.indexOf(value), 1);
+                if (filter === "class") action === "add" ? classSelections.push(value) : classSelections.splice(classSelections.indexOf(value), 1);
+                if (filter === "gender") action === "add" ? genderSelections.push(value) : genderSelections.splice(genderSelections.indexOf(value), 1);
+                resolve();
+              })
             }
+            updateGlobalFilterObjects()
+            .then(function() {
+
+            });
+
+            function createFilteredDataSetObject() {
+
+            }
+            // update data object with students filter
+            var filteredData;
+            if (studentSelections.length) {
+              filteredData = dashData.filter(function(d,i) { return studentSelections.includes(d[0]) });
+            } else {
+              filteredData = dashData;
+            }
+            console.log(filteredData.length);
 
             // update data object with class filter
             if (filteredData) {
@@ -341,10 +354,11 @@ app.factory('DashboardService', ['$http', function($http) {
                 var filteredData = dashData;
               }
             }
+
             var filtersApplied = [classSelections, genderSelections, studentSelections];
 
             setFilters(dashData, filtersApplied)
-            setRowData(filteredData);
+            setRowData(filteredData, false);
           }
 
           // table body object reference
@@ -352,7 +366,7 @@ app.factory('DashboardService', ['$http', function($http) {
 
           // populate rows with data, based on student data object index references
           function setRowData(rowData, init) {
-            // console.log('setting row data', rowData);
+            console.log('setting row data', rowData);
 
             // setHeaders(rowObj);
             if (init) {
@@ -409,9 +423,11 @@ app.factory('DashboardService', ['$http', function($http) {
                 return cellColor + opacity + ")";
               })
 
+              // RWD.responsiveAdaptationDashboard();
               rowObj.exit().remove();
 
             } else {
+              console.log('row data update');
 
               var rowObj = tableBody.selectAll('tr').data(rowData, function(d) { return d });
 
@@ -427,8 +443,12 @@ app.factory('DashboardService', ['$http', function($http) {
                 })
               }).enter()
               .append('td').attr('class', 'student-data')
-              .attr('data-th', function (d) {
+              .attr('column-th', function (d) {
                 return d.name;
+              })
+              .attr('ng-click', 'view.openStudentDetails($event)')
+              .text(function (d, i, a) {
+                return d.value;
               })
               .text(function (d, i, a) {
                 return d.value;
@@ -440,39 +460,42 @@ app.factory('DashboardService', ['$http', function($http) {
                 var opacity = i > 2 && i <= 6 ? discOpacityCalc : i > 6 ? motivOpacityCalc : 1;
                 return cellColor + opacity + ")";
               })
+
+              // Reapply responsive calculations to recreated table
+              RWD.responsiveAdaptationDashboard();
               rowObj.exit().remove();
             }
             return;
           }
 
           // search bar Functionality
-          d3.select('input.search-bar')
-          .on("keyup", function() {
-            var searchedData = dashData;
-            var text = this.value.trim();
-            console.log('keyup', text);
-
-            var searchResults = searchedData.map(function(e) {
-              // console.log(e);
-              var regex = new RegExp(text + ".*", "i");
-              if (regex.test(e[0])) {
-                return regex.exec(e[0])[0]
-              }
-            })
-
-            var searchResultIndices = [];
-            for (var i = 0; i < searchResults.length; i++) {
-              if (searchResults[i]) searchResultIndices.push(i);
-            }
-
-            var searchReturn = [];
-            for (var i = 0; i < searchResultIndices.length; i++) {
-              searchReturn.push(dashData[searchResultIndices[i]]);
-            }
-
-            setFilters(searchReturn, [classSelections,genderSelections,studentSelections]);
-
-          })
+          // d3.select('input.search-bar')
+          // .on("keyup", function() {
+          //   var searchedData = dashData;
+          //   var text = this.value.trim();
+          //   console.log('keyup', text);
+          //
+          //   var searchResults = searchedData.map(function(e) {
+          //     // console.log(e);
+          //     var regex = new RegExp(text + ".*", "i");
+          //     if (regex.test(e[0])) {
+          //       return regex.exec(e[0])[0]
+          //     }
+          //   })
+          //
+          //   var searchResultIndices = [];
+          //   for (var i = 0; i < searchResults.length; i++) {
+          //     if (searchResults[i]) searchResultIndices.push(i);
+          //   }
+          //
+          //   var searchReturn = [];
+          //   for (var i = 0; i < searchResultIndices.length; i++) {
+          //     searchReturn.push(dashData[searchResultIndices[i]]);
+          //   }
+          //
+          //   setFilters(searchReturn, [classSelections,genderSelections,studentSelections]);
+          //
+          // })
 
           // setHeaders();
           setFilters(dashData, [[],[],[]]);

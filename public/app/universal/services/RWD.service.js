@@ -1,5 +1,7 @@
 app.factory('RWD', ['$state', function($state) {
-  return {
+
+  var RWD = {
+
     calculateBaseDimensions: function(doc) {
       var baseDimensions = {
         screenWidth: window.screen.width,
@@ -16,6 +18,171 @@ app.factory('RWD', ['$state', function($state) {
         documentHeight: doc.height()
       }
       return baseDimensions;
+    },
+
+    responsiveAdaptationDashboard: function() {
+      console.log('responsive calc..');
+      // Responsive initialization of dimensions
+      var dashboardFrameElement = $('section.dashboard-frame');
+      // console.log(dashboardFrameElement.width(), dashboardFrameElement.height());
+
+      var baseDimensions = RWD.calculateBaseDimensions(dashboardFrameElement);
+
+      // Dashboard frame width and height changed to viewport width and height
+      var dashboardWidth = baseDimensions.viewportWidth; dashboardFrameElement.width(dashboardWidth);
+      var dashboardHeight = baseDimensions.viewportHeight; dashboardFrameElement.height(dashboardHeight);
+
+      // Set Padding and Dimensions of studentData Dashboard Section (inner-frame)
+      var dashboardFramePadding = { top: (.020747 * dashboardHeight) + "px", right: (.017361 * dashboardWidth) + "px", bottom: (.020747 * dashboardHeight) + "px", left: (.017361 * dashboardWidth) + "px"}
+      dashboardFrameElement.css("padding", dashboardFramePadding.top + " " + dashboardFramePadding.right + " " + dashboardFramePadding.bottom + " " + dashboardFramePadding.left + " ");
+      var studentDataWidthExp = dashboardWidth - (.017361 * dashboardWidth * 2)
+      var studentDataHeightExp = dashboardHeight - ((.020747 * dashboardHeight) * 2)
+
+      var studentDataElement = $('section.dashboard-studentData');
+      studentDataElement.width(studentDataWidthExp);
+      studentDataElement.height(studentDataHeightExp);
+
+      //Calculate Width/Height Ratio
+      var widthToHeightRatio = dashboardWidth/dashboardHeight;
+
+      // Grid structure
+      var studentData_Row1 = $('section.sd-row1');
+      var studentData_Row2 = $('section.sd-row2');
+      var studentData_Row2_Column1 = $('section.sd-column1');
+      var studentData_Row2_Column2 = $('section.sd-column2');
+      var studentData_Row2_Column2_Row1 = $('section.sd-column2-row1');
+      var studentData_Row2_Column2_Row2 = $('section.sd-column2-row2');
+
+      studentData_Row1.height(studentDataHeightExp * .102733);
+      // console.log("Row 1", studentDataHeightExp * .102733, studentData_Row1.height());
+      studentData_Row2.height(studentDataHeightExp * .897267);
+      // console.log("Row 2", studentDataHeightExp * .897267, studentData_Row2.height());
+      studentData_Row2_Column1.height(studentDataHeightExp * .897267)
+      // console.log("Row 2 C1", studentDataHeightExp * .897267, studentData_Row2_Column1.height());
+      studentData_Row2_Column2.height(studentDataHeightExp * .897267)
+      // console.log("Row 2 C2", studentDataHeightExp * .897267, studentData_Row2_Column2.height());
+      studentData_Row2_Column2_Row1.height((studentDataHeightExp * .897267) * .79695)
+      // console.log("Row 2 C2 R1", (studentDataHeightExp * .897267) * .79695, studentData_Row2_Column2_Row1.height());
+      studentData_Row2_Column2_Row2.height((studentDataHeightExp * .897267) * .20305)
+      // console.log("Row 2 C2 R2", (studentDataHeightExp * .897267) * .20305, studentData_Row2_Column2_Row2.height());
+
+      // Grid Components Variable Definition
+      var studentFilterFrame = $('section.student-filter-frame');
+      var studentFilterOuter = $('section.student-filter-outer');
+      var studentFilterInner = $('section.student-filter-inner');
+      var studentFilter = $('div.student-filter');
+      var studentSearchBar = $('input.search-bar');
+      var classFilterFrame = $('section.class-filter-frame');
+      var classFilterOuter = $('section.class-filter-outer');
+      var classFilterInner = $('section.class-filter-inner');
+      var classFilter = $('div.class-filter');
+      var genderFilterFrame = $('section.gender-filter-frame');
+      var genderFilterOuter = $('section.gender-filter-outer');
+      var genderFilterInner = $('section.gender-filter-inner');
+      var genderFilter = $('div.gender-filter');
+
+      studentFilterFrame.height(studentData_Row2_Column1.height() * .35);
+      studentFilterFrame.css("margin-bottom", (studentData_Row2_Column1.height() * .05) + "px");
+      studentFilterOuter.outerHeight(studentFilterFrame.height());
+      studentFilterInner.height(studentFilterOuter.height() - 20);
+      studentFilter.height(studentFilterInner.height() * .65736004);
+      // studentSearchBar.width(studentFilterInner.width());
+
+      genderFilterFrame.height(studentData_Row2_Column1.height() * .15058088);
+      genderFilterFrame.css("margin-bottom", (studentData_Row2_Column1.height() * .05) + "px");
+      genderFilterOuter.outerHeight(genderFilterFrame.height());
+      genderFilterInner.height(genderFilterOuter.height() - 20);
+      classFilterFrame.height(studentData_Row2_Column1.height() * .4328851);
+
+      // Row 2 - Column 2 - Row 2 Variable Definition
+      var studentData_studentCount = $('section.student-count');
+      var studentData_adultAvgs = $('section.adult-avgs');
+
+      studentData_studentCount.height(studentData_Row2_Column2_Row2.height());
+      studentData_adultAvgs.height(studentData_Row2_Column2_Row2.height());
+
+      // Dashboard Table Components Variable Definition
+      var studentData_Table_Container = $('div.student-data-table');
+      var studentData_Table = $('table.student-data');
+      var studentData_tHead = $('table.student-data > thead');
+      var studentData_tBody = $('table.student-data > tbody');
+
+      studentData_Table_Container.width(studentData_Row2_Column2.width());
+      studentData_Table.width(studentData_Table_Container.width());
+      studentData_tHead.width(studentData_Table.width())
+      var sD_tHead_minusBorders = studentData_tHead.width() - 26;
+      studentData_tBody.width(studentData_Table.width());
+      studentData_tBody.height((studentData_Row2_Column2_Row1.height() - studentData_tHead.height()) * .9);
+      // console.log('table width', studentData_Table.width());
+      // console.log('thead width', studentData_tHead.width());
+      // console.log('tbody width', studentData_tBody.width());
+
+      // tHead Column Headers Variable Definition
+      var tHead = {
+        students: $('thead.student-data th:nth-of-type(1)'),
+        // students2: $('thead.student-data th:nth-child(1)'),
+        gender: $('thead.student-data th:nth-of-type(2)'),
+        class: $('thead.student-data th:nth-of-type(3)'),
+        dominance: $('thead.student-data th:nth-of-type(4)'),
+        influencing: $('thead.student-data th:nth-of-type(5)'),
+        steadiness: $('thead.student-data th:nth-of-type(6)'),
+        compliance: $('thead.student-data th:nth-of-type(7)'),
+        theoretical: $('thead.student-data th:nth-of-type(8)'),
+        utilitarian: $('thead.student-data th:nth-of-type(9)'),
+        aesthetic: $('thead.student-data th:nth-of-type(10)'),
+        social: $('thead.student-data th:nth-of-type(11)'),
+        individualistic: $('thead.student-data th:nth-of-type(12)'),
+        traditional: $('thead.student-data th:nth-of-type(13)')
+      }
+
+      tHead.students.innerWidth(sD_tHead_minusBorders * 0.14059753954306);
+      tHead.gender.innerWidth(sD_tHead_minusBorders * 0.03866432337434);
+      tHead.class.innerWidth(sD_tHead_minusBorders * 0.03866432337434);
+      tHead.dominance.innerWidth(sD_tHead_minusBorders * 0.07820738137083);
+      tHead.influencing.innerWidth(sD_tHead_minusBorders * 0.07820738137083);
+      tHead.steadiness.innerWidth(sD_tHead_minusBorders * 0.07820738137083);
+      tHead.compliance.innerWidth(sD_tHead_minusBorders * 0.07820738137083);
+      tHead.theoretical.innerWidth(sD_tHead_minusBorders * 0.07820738137083);
+      tHead.utilitarian.innerWidth(sD_tHead_minusBorders * 0.07820738137083);
+      tHead.aesthetic.innerWidth(sD_tHead_minusBorders * 0.07820738137083);
+      tHead.social.innerWidth(sD_tHead_minusBorders * 0.07820738137083);
+      tHead.individualistic.innerWidth(sD_tHead_minusBorders * 0.07820738137083);
+      tHead.traditional.innerWidth(sD_tHead_minusBorders * 0.07820738137083);
+
+      // tBody Columns Variable Definition
+      var tBodyColumns = {
+        students: $('tbody.student-data td:nth-child(1)'),
+        gender: $('tbody.student-data td:nth-child(2)'),
+        class: $('tbody.student-data td:nth-child(3)'),
+        dominance: $('tbody.student-data td:nth-child(4)'),
+        influencing: $('tbody.student-data td:nth-child(5)'),
+        steadiness: $('tbody.student-data td:nth-child(6)'),
+        compliance: $('tbody.student-data td:nth-child(7)'),
+        theoretical: $('tbody.student-data td:nth-child(8)'),
+        utilitarian: $('tbody.student-data td:nth-child(9)'),
+        aesthetic: $('tbody.student-data td:nth-child(10)'),
+        social: $('tbody.student-data td:nth-child(11)'),
+        individualistic: $('tbody.student-data td:nth-child(12)'),
+        traditional: $('tbody.student-data td:nth-child(13)')
+      }
+
+      // tHead and tBody column width alignment
+      tBodyColumns.students.innerWidth(tHead.students.innerWidth());
+      tBodyColumns.gender.innerWidth(tHead.gender.innerWidth());
+      tBodyColumns.class.innerWidth(tHead.class.innerWidth());
+      tBodyColumns.dominance.innerWidth(tHead.dominance.innerWidth());
+      tBodyColumns.influencing.innerWidth(tHead.influencing.innerWidth());
+      tBodyColumns.steadiness.innerWidth(tHead.steadiness.innerWidth());
+      tBodyColumns.compliance.innerWidth(tHead.compliance.innerWidth());
+      tBodyColumns.theoretical.innerWidth(tHead.theoretical.innerWidth());
+      tBodyColumns.utilitarian.innerWidth(tHead.utilitarian.innerWidth());
+      tBodyColumns.aesthetic.innerWidth(tHead.aesthetic.innerWidth());
+      tBodyColumns.social.innerWidth(tHead.social.innerWidth());
+      tBodyColumns.individualistic.innerWidth(tHead.individualistic.innerWidth());
+      tBodyColumns.traditional.innerWidth(tHead.traditional.innerWidth());
     }
   }
+
+  return RWD;
+
 }])
