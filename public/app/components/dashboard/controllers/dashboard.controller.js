@@ -17,6 +17,7 @@ app.controller('Dashboard', ['$compile', '$scope', '$location', '$state', '$stat
 
   // RWD resize reaction event
   function responsiveAdaptationFS() {
+    console.log('responsive calc..');
     // Responsive initialization of dimensions
     var dashboardFrameElement = $('section.dashboard-frame');
     // console.log(dashboardFrameElement.width(), dashboardFrameElement.height());
@@ -312,39 +313,46 @@ app.controller('Dashboard', ['$compile', '$scope', '$location', '$state', '$stat
 
 
   // Filter application and toggle functions
-  $scope.view.applyFilters = function() {
-    DashboardService.applyFilters($scope.view.studentFilter, $scope.view.classFilter, $scope.view.genderFilter);
-  }
+  // $scope.view.applyFilters = function() {
+  //   DashboardService.applyFilters($scope.view.studentFilter, $scope.view.classFilter, $scope.view.genderFilter);
+  //   $compile($('table.student-data tbody td:nth-of-type(1)'))($scope);
+  // }
 
-  $scope.view.toggleStudentSelection = function(studentName) {
-    var i = $scope.data.studentFilter.indexOf(studentName)
-    if (i > -1) {
-      $scope.data.studentFilter.splice(i, 1);
-    } else {
-      $scope.data.studentFilter.push(studentName);
-    }
-    console.log($scope.data.studentFilter);
-  }
+  // $scope.view.toggleStudentSelection = function(studentName) {
+  //   var i = $scope.data.studentFilter.indexOf(studentName)
+  //   if (i > -1) {
+  //     $scope.data.studentFilter.splice(i, 1);
+  //   } else {
+  //     $scope.data.studentFilter.push(studentName);
+  //   }
+  //   $compile($('table.student-data tbody td:nth-of-type(1)'))($scope);
+  //   responsiveAdaptationFS();
+  //   console.log($scope.data.studentFilter);
+  // }
 
-  $scope.view.toggleClassSelection = function(className) {
-    var i = $scope.data.classFilter.indexOf(className)
-    if (i > -1) {
-      $scope.data.classFilter.splice(i, 1);
-    } else {
-      $scope.data.classFilter.push(className);
-    }
-    console.log($scope.data.classFilter);
-  }
+  // $scope.view.toggleClassSelection = function(className) {
+  //   var i = $scope.data.classFilter.indexOf(className)
+  //   if (i > -1) {
+  //     $scope.data.classFilter.splice(i, 1);
+  //   } else {
+  //     $scope.data.classFilter.push(className);
+  //   }
+  //   $compile($('table.student-data tbody td:nth-of-type(1)'))($scope);
+  //   responsiveAdaptationFS();
+  //   console.log($scope.data.classFilter);
+  // }
 
-  $scope.view.toggleGenderSelection = function(gender) {
-    var i = $scope.data.genderFilter.indexOf(gender)
-    if (i > -1) {
-      $scope.data.genderFilter.splice(i, 1);
-    } else {
-      $scope.data.genderFilter.push(gender);
-    }
-    console.log($scope.data.genderFilter);
-  }
+  // $scope.view.toggleGenderSelection = function(gender) {
+  //   var i = $scope.data.genderFilter.indexOf(gender)
+  //   if (i > -1) {
+  //     $scope.data.genderFilter.splice(i, 1);
+  //   } else {
+  //     $scope.data.genderFilter.push(gender);
+  //   }
+  //   $compile($('table.student-data tbody td:nth-of-type(1)'))($scope);
+  //   responsiveAdaptationFS();
+  //   console.log($scope.data.genderFilter);
+  // }
 
   // Initialization Execution
   $scope.data.dashboardInit();
