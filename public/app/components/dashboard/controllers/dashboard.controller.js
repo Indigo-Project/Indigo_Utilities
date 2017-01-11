@@ -19,6 +19,8 @@ app.controller('Dashboard', ['$compile', '$scope', '$location', '$state', '$stat
   $scope.view.responsiveAdaptationDashboard = function() {
 
     RWD.responsiveAdaptationDashboard();
+    var studentNameCells = $('table.student-data tbody td:nth-of-type(1)');
+    $compile(studentNameCells)($scope);
     $scope.$apply();
   //   console.log('responsive calc..');
   //   // Responsive initialization of dimensions

@@ -1669,8 +1669,8 @@ router.post('/dashboard-gen', function(req, res, next) {
         }
       }
       console.log(1671, input1);
-      console.log(input1['----/2015-2016'].data[0][0].length);
-      console.log(input1['----/2015-2016'].data[1][0].length);
+      // console.log(input1['----/2015-2016'].data[0][0].length);
+      // console.log(input1['----/2015-2016'].data[1][0].length);
 
       //2
       for (var groupKey in input1) {
@@ -1824,20 +1824,39 @@ router.post('/dashboard-gen', function(req, res, next) {
                 titleCase(umdSET[8]),
               ])
             } else if (groupRole === "Students") {
-              compiledData.push([
-                titleCase(umdSET[1]) + ", " + titleCase(umdSET[0]),
-                titleCase(umdSET[0]),
-                titleCase(umdSET[1]),
-                titleCase(umdSET[6]),
-                sClass,
-                sSchoolYear,
-                titleCase(umdSET[5]),
-                titleCase(umdSET[2]),
-                titleCase(umdSET[3]),
-                titleCase(umdSET[4]),
-                titleCase(umdSET[7]),
-                titleCase(umdSET[8]),
-              ])
+              if (group.uploadTypes[0] === "Talent Insights lD") {
+                console.log(1827, group.uploadTypes[0]);
+                console.log(1829, umdSET);
+                compiledData.push([
+                  titleCase(umdSET[1]) + ", " + titleCase(umdSET[0]),
+                  titleCase(umdSET[0]),
+                  titleCase(umdSET[1]),
+                  titleCase(umdSET[2]),
+                  sClass,
+                  sSchoolYear,
+                  // titleCase(umdSET[5]),
+                  // titleCase(umdSET[2]),
+                  // titleCase(umdSET[3]),
+                  // titleCase(umdSET[4]),
+                  // titleCase(umdSET[7]),
+                  // titleCase(umdSET[8]),
+                ])
+              } else {
+                compiledData.push([
+                  titleCase(umdSET[1]) + ", " + titleCase(umdSET[0]),
+                  titleCase(umdSET[0]),
+                  titleCase(umdSET[1]),
+                  titleCase(umdSET[6]),
+                  sClass,
+                  sSchoolYear,
+                  titleCase(umdSET[5]),
+                  titleCase(umdSET[2]),
+                  titleCase(umdSET[3]),
+                  titleCase(umdSET[4]),
+                  titleCase(umdSET[7]),
+                  titleCase(umdSET[8]),
+                ])
+              }
             }
           }
         }
