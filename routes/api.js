@@ -1669,6 +1669,8 @@ router.post('/dashboard-gen', function(req, res, next) {
         }
       }
       console.log(1671, input1);
+      console.log(input1['----/2015-2016'].data[0][0].length);
+      console.log(input1['----/2015-2016'].data[1][0].length);
 
       //2
       for (var groupKey in input1) {
@@ -1687,7 +1689,7 @@ router.post('/dashboard-gen', function(req, res, next) {
         // Unless, the first value is a Trimetrix Temp (in which case we want the other files as well)
         if (!group.uploadTypePriorityIndex.length || group.uploadTypes[0] === "Trimetrix HD Talent (Legacy) Temp") {
           for (var i = 0; i < group.uploadTypes.length; i++) {
-            if (group.uploadTypes[i] === "Talent Insights D" || group.uploadTypes[i] === "Talent Insights") {
+            if (group.uploadTypes[i] === "Talent Insights D" || group.uploadTypes[i] === "Talent Insights lD" || group.uploadTypes[i] === "Talent Insights") {
               console.log(i, group.uploadTypes[i]);
               group.uploadTypePriorityIndex.push(i);
               break;
@@ -1695,14 +1697,14 @@ router.post('/dashboard-gen', function(req, res, next) {
           };
           if(group.uploadTypePriorityIndex.length === 1) {
             for (var i = 0; i < group.uploadTypes.length; i++) {
-              if (group.uploadTypes[i] === "TTI DNA Personal Soft Skills Indicator D" || group.uploadTypes[i] === "TTI DNA Personal Soft Skills Indicator" || group.uploadTypes[i] === "TTI DNA Personal Soft Skills Indicator API Instrument") {
+              if (group.uploadTypes[i] === "TTI DNA Personal Soft Skills Indicator D" || group.uploadTypes[i] === "TTI DNA Personal Soft Skills Indicator lD" || group.uploadTypes[i] === "TTI DNA Personal Soft Skills Indicator" || group.uploadTypes[i] === "TTI DNA Personal Soft Skills Indicator API Instrument") {
                 console.log(i, group.uploadTypes[i]);
                 group.uploadTypePriorityIndex.push(i);
                 break;
               }
             };
             for (var i = 0; i < group.uploadTypes.length; i++) {
-              if (group.uploadTypes[i] === "Hartman Value Profile D" || group.uploadTypes[i] === "Hartman Value Profile") {
+              if (group.uploadTypes[i] === "Hartman Value Profile D" || group.uploadTypes[i] === "Hartman Value Profile lD" || group.uploadTypes[i] === "Hartman Value Profile") {
                 console.log(i, group.uploadTypes[i]);
                 group.uploadTypePriorityIndex.push(i);
                 break;

@@ -116,6 +116,11 @@ exportTypeIdentifier = {
     category: 'assessment',
     demographics: true
   },
+  "Talent Insights lD": {
+    length: 73,
+    category: 'assessment',
+    demographics: true
+  },
   "Talent Insights": {
     length: 79,
     category: 'assessment',
@@ -126,6 +131,11 @@ exportTypeIdentifier = {
     category: 'instrument',
     demographics: true
   },
+  "Hartman Value Profile lD": {
+    length: 135,
+    category: 'instrument',
+    demographics: true
+  },
   "Hartman Value Profile": {
     length: 141,
     category: 'instrument',
@@ -133,6 +143,11 @@ exportTypeIdentifier = {
   },
   "TTI DNA Personal Soft Skills Indicator D": {
     length: 84,
+    category: 'instrument',
+    demographics: true
+  },
+  "TTI DNA Personal Soft Skills Indicator lD": {
+    length: 44,
     category: 'instrument',
     demographics: true
   },
@@ -173,6 +188,10 @@ dashboardSchoolNames = {
   "indigo-school": {
     name: "Indigo Test",
     optionDisplay: "Indigo Test (Sample)"
+  },
+  "asu-prep": {
+    name: "ASU Prep",
+    optionDisplay: "ASU Prep"
   },
   "gals": {
     name: "GALS",

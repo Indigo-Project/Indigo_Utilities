@@ -1,4 +1,4 @@
-app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', function($compile, $rootScope, $http, RWD) {
+app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', function($compile, $http, $rootScope, RWD) {
 
   return {
 
@@ -671,21 +671,28 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
 
             for (var i = 0; i < arguments.length; i++) {
               var pushVal;
-              console.log(arguments[i]);
+              // console.log(arguments[i]);
               for (var j = 0; j < conversionObjKeys.length; j++) {
-                var label;
-                var value;
-                var sub;
+                var label, value, sub;
                 if (arguments[i] === conversionObjKeys[j]) {
-                  sub = subValArr ? subValArr[i] : 'null';
-                  label = conversionObj[conversionObjKeys[j]].label ? conversionObj[conversionObjKeys[j]].label(sDDataObject[arguments[i]].label) : sDDataObject[arguments[i]].label;
-                  value = conversionObj[conversionObjKeys[j]].value ? conversionObj[conversionObjKeys[j]].value(sDDataObject[arguments[i]].value) : sDDataObject[arguments[i]].value;
-                  pushVal = [label, value, sub];
-                  break;
+                  if (sDDataObject[arguments[i]]) {
+                    sub = subValArr ? subValArr[i] : 'null';
+                    label = conversionObj[conversionObjKeys[j]].label ? conversionObj[conversionObjKeys[j]].label(sDDataObject[arguments[i]].label) : sDDataObject[arguments[i]].label;
+                    value = conversionObj[conversionObjKeys[j]].value ? conversionObj[conversionObjKeys[j]].value(sDDataObject[arguments[i]].value) : sDDataObject[arguments[i]].value;
+                    pushVal = [label, value, sub];
+                    break;
+                  } else {
+                    // console.log(arguments[i] === conversionObjKeys[j] ? conversionObj[conversionObjKeys[j]].label('') : false, arguments[i]);
+                    sub = subValArr ? subValArr[i] : 'null';
+                    value = sDDataObject[arguments[i]] ? sDDataObject[arguments[i]].value : '---';
+                    label = sDDataObject[arguments[i]] ? sDDataObject[arguments[i]].label : arguments[i] === conversionObjKeys[j] ? conversionObj[conversionObjKeys[j]].label('') : arguments[i];
+                    pushVal = [label, value, sub];
+                    break;
+                  }
                 } else {
                   sub = subValArr ? subValArr[i] : 'null';
-                  label = sDDataObject[arguments[i]].label;
-                  value = sDDataObject[arguments[i]].value;
+                  label = sDDataObject[arguments[i]] ? sDDataObject[arguments[i]].label : arguments[i].replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});;
+                  value = sDDataObject[arguments[i]] ? sDDataObject[arguments[i]].value : '---';
                   pushVal = [label, value, sub];
                 }
               }
