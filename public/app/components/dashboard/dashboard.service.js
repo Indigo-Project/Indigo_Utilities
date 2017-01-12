@@ -1,5 +1,8 @@
 app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', function($compile, $http, $rootScope, RWD) {
 
+  // console.log(angular.element('dashboard').scope());
+  // console.log($('table.student-data tbody td:nth-of-type(1)'));
+
   return {
 
     getSchoolNameOptions: function() {
@@ -35,80 +38,73 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
         function createDashboard(data, schoolName) {
 
           // Global Vars
-          var studentSelections = [];
-          var classSelections = [];
-          var genderSelections = [];
+          var studentSelections, classSelections, genderSelections, dashData, sdCHs, dataKeys, studentClasses, dashValCHs, dashboardCHs, dashValsIndex, sortAscending, table, tablebody, titles, columnColorIndex;
+          function setDashboardGlobalVars() {
 
-          var dashData = data.compiledData.studentData;
-          var sdCHs = data.compiledData.columnHeaders[0];
-          var dataKeys = Object.keys(data)
-          var studentClasses = [];
+            studentSelections = [];
+            classSelections = [];
+            genderSelections = [];
 
-          for (var i = 0; i < dataKeys.length; i++) {
-            if (dataKeys[i] !== "Staff" && dataKeys[i] !== "compiledData" && dataKeys[i] !== "metaData" && dataKeys[i] !== "_id") {
-              studentClasses.push(dataKeys[i].substring(0,4))
-            }
-          }
+            dashData = data.compiledData.studentData;
+            sdCHs = data.compiledData.columnHeaders[0];
+            dataKeys = Object.keys(data)
+            studentClasses = [];
 
-          var dashValCHs = ["FULL NAME", "GENDER", "CLASS", "D NATURAL (%)", "I NATURAL (%)", "S NATURAL (%)", "C NATURAL (%)", "TEN_THE", "TEN_UTI", "TEN_AES", "TEN_SOC", "TEN_IND", "TEN_TRA"];
-          var dashboardCHs = ["Students", "Gender", "Class", "Dominance", "Influencing", "Steadiness", "Compliance", "Theoretical", "Utilitarian", "Aesthetic", "Social", "Individualistic", "Traditional"];
-          var dashValsIndex = [];
-
-          for (var i = 0; i < sdCHs.length; i++) {
-            for (var j = 0; j < dashValCHs.length; j++) {
-              if(sdCHs[i] === dashValCHs[j]) {
-                dashValsIndex.push(i);
+            for (var i = 0; i < dataKeys.length; i++) {
+              if (dataKeys[i] !== "Staff" && dataKeys[i] !== "compiledData" && dataKeys[i] !== "metaData" && dataKeys[i] !== "_id") {
+                studentClasses.push(dataKeys[i].substring(0,4))
               }
             }
-          }
 
-          var sortAscending = true;
-          var table = d3.select('div.student-data-table').append('table').attr('class', 'student-data');
-          var titles = d3.values(dashboardCHs);
+            dashValCHs = ["FULL NAME", "GENDER", "CLASS", "D NATURAL (%)", "I NATURAL (%)", "S NATURAL (%)", "C NATURAL (%)", "TEN_THE", "TEN_UTI", "TEN_AES", "TEN_SOC", "TEN_IND", "TEN_TRA"];
+            dashboardCHs = ["Students", "Gender", "Class", "Dominance", "Influencing", "Steadiness", "Compliance", "Theoretical", "Utilitarian", "Aesthetic", "Social", "Individualistic", "Traditional"];
+            dashValsIndex = [];
 
-          var columnColorIndex = ["rgba(255,255,255,", "rgba(255,255,255,", "rgba(255,255,255,", "rgba(255, 52, 52,", "rgba(250, 238, 74,", "rgba(41, 218, 32,", "rgba(96, 112, 255,", "rgba(212, 175, 55,", "rgba(212, 175, 55,", "rgba(212, 175, 55,", "rgba(212, 175, 55,", "rgba(212, 175, 55,", "rgba(212, 175, 55,"];
-
-          // Dashboard Headers Setup
-          function setHeaders() {
-
-            var rowObj = tableBody.selectAll('tr').data(dashData, function(d) { return d }).enter().append('tr');
-
-            var headers = table.append('thead').attr('class', 'student-data')
-            .selectAll('th')
-            .data(titles).enter()
-            .append('th').attr('class', 'student-data')
-            .text(function (d) {
-              return d;
-            })
-            .on('click', function(d, i) {
-              i = dashValsIndex[i];
-              headers.attr('class', 'student-data header');
-              if (sortAscending) {
-                console.log('Ascending');
-                rowObj.sort(function(a, b) {
-                  return a == null || b == null ? 0 : stringCompare(a[i], b[i], 'asc', i)
-                });
-                sortAscending = false;
-                this.className = 'student-data header des';
-              } else {
-                console.log('Descending');
-                rowObj.sort(function(a, b) { return a == null || b == null ? 0 : stringCompare(a[i], b[i], 'des', i) });
-                sortAscending = true;
-                this.className = 'student-data header asc';
+            for (var i = 0; i < sdCHs.length; i++) {
+              for (var j = 0; j < dashValCHs.length; j++) {
+                if(sdCHs[i] === dashValCHs[j]) {
+                  dashValsIndex.push(i);
+                }
               }
-            })
+            }
 
-            rowObj.exit();
+            sortAscending = true;
+            table = d3.select('div.student-data-table').append('table').attr('class', 'student-data');
+            tableBody = table.append('tbody').attr('class', 'student-data');
+            titles = d3.values(dashboardCHs);
 
+            columnColorIndex = ["rgba(255,255,255,", "rgba(255,255,255,", "rgba(255,255,255,", "rgba(255, 52, 52,", "rgba(250, 238, 74,", "rgba(41, 218, 32,", "rgba(96, 112, 255,", "rgba(212, 175, 55,", "rgba(212, 175, 55,", "rgba(212, 175, 55,", "rgba(212, 175, 55,", "rgba(212, 175, 55,", "rgba(212, 175, 55,"];
           }
 
           // Dashboard Filters Setup
-          function setFilters(data, filtersApplied) {
+          // Setting and updating available filter options
+          function setupFilters(data, filtersApplied, init) {
+
+            function studentFilterSetup(data) {
+
+            }
+
+            function genderFilterSetup(data) {
+
+            }
+
+            function classFilterSetup(data) {
+
+            }
+
+            // if (init) {
+            //
+            //   studentFilterSetup(data);
+            //   genderFilterSetup(data);
+            //   classFilterSetup(data;)
+            //
+            // }
 
             if (filtersApplied[0].length || filtersApplied[1].length) {
               if (filtersApplied[0].length) {
                 console.log('class filter applied');
                 data = data.filter(function(e, i, a) {
+                  console.log(e);
                   return filtersApplied[0].indexOf(e[4]) !== -1;
                 })
               }
@@ -159,7 +155,7 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
               // data.unshift([['Test Name']])
 
               var studentFilter = d3.select('div.student-filter')
-              var studentFilterLabels = studentFilter.selectAll('label').data(data, function(d) { console.log(d); return d; })
+              var studentFilterLabels = studentFilter.selectAll('label').data(data, function(d) { return d; })
               var studentFilterLabelsInner = studentFilterLabels.enter().append('label');
               studentFilterLabelsInner.append('input').attr('type', 'checkbox')
               studentFilterLabelsInner.append('p')
@@ -173,7 +169,7 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
               studentFilterInputs.on("change", function(data,i,arr) {
                 var value = data[0];
                 var action = this.checked ? "add" : "remove";
-                updateDashboard(action, "student", value)
+                applyFilters(action, "student", value)
               })
 
             } if (filtersApplied[2].length) {
@@ -210,7 +206,7 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
               studentFilterInputs.on("change", function(data,i,arr) {
                 var value = data[0];
                 var action = this.checked ? "add" : "remove";
-                updateDashboard(action, "student", value)
+                applyFilters(action, "student", value)
               })
 
             } else {
@@ -230,7 +226,7 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
               studentFilterInputs.on("change", function(data,i,arr) {
                 var value = data[0];
                 var action = this.checked ? "add" : "remove";
-                updateDashboard(action, "student", value)
+                applyFilters(action, "student", value)
               })
 
               // classFilter init
@@ -246,7 +242,7 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
               classFilterInputs.on("change", function(data,i,arr) {
                 var value = data;
                 var action = this.checked ? "add" : "remove";
-                updateDashboard(action, "class", value)
+                applyFilters(action, "class", value)
               })
 
               // genderFilter init
@@ -262,30 +258,212 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
               genderFilterInputs.on("change", function(data,i,arr) {
                 var value = data;
                 var action = this.checked ? "add" : "remove";
-                updateDashboard(action, "gender", value)
+                applyFilters(action, "gender", value)
               })
             }
           }
 
-          // Sort Calculation Function
-          function stringCompare(a, b, sort, i) {
-            // console.log(i);
-            if (i > 3) {
-              a = Number(a);
-              b = Number(b);
+          // populate rows with data, based on student data object index references
+          function generateTable(rowData, init) {
+
+            // Dashboard Headers Setup
+            function setupHeaders(init) {
+
+              // Sort Calculation Function
+              function stringCompare(a, b, sort, i) {
+                // console.log(i);
+                if (i > 3) {
+                  a = Number(a);
+                  b = Number(b);
+                }
+                var tsA = toString.call(a);
+                var tsB = toString.call(b);
+                if (tsA === "[object String]" && tsB === "[object String]") {
+                  a = a.toLowerCase();
+                  b = b.toLowerCase();
+                }
+                if (sort === "asc") return a > b ? 1 : a == b ? 0 : -1;
+                else if (sort === "des") return a < b ? 1 : a == b ? 0 : -1;
+              }
+
+              if (init) {
+
+                var headers = table.append('thead').attr('class', 'student-data')
+                .selectAll('th')
+                .data(titles).enter()
+                .append('th').attr('class', 'student-data')
+                .text(function (d) {
+                  return d;
+                })
+                .on('click', function(d, i) {
+                  i = dashValsIndex[i];
+                  headers.attr('class', 'student-data header');
+                  if (sortAscending) {
+                    console.log('Ascending');
+                    rowObj.sort(function(a, b) {
+                      return a == null || b == null ? 0 : stringCompare(a[i], b[i], 'asc', i)
+                    });
+                    sortAscending = false;
+                    this.className = 'student-data header des';
+                  } else {
+                    console.log('Descending');
+                    rowObj.sort(function(a, b) { return a == null || b == null ? 0 : stringCompare(a[i], b[i], 'des', i) });
+                    sortAscending = true;
+                    this.className = 'student-data header asc';
+                  }
+                })
+
+              } else {
+
+                var headers = table.select('thead').selectAll('th');
+
+                headers.on('click', function(d, i) {
+                  i = dashValsIndex[i];
+                  headers.attr('class', 'student-data header');
+                  if (sortAscending) {
+                    console.log('Ascending');
+                    tableBody.selectAll('tr')
+                    .sort(function(a, b) {
+                      return a == null || b == null ? 0 : stringCompare(a[i], b[i], 'asc', i)
+                    });
+                    sortAscending = false;
+                    this.className = 'student-data header des';
+                  } else {
+                    console.log('Descending');
+                    tableBody.selectAll('tr')
+                    .sort(function(a, b) {
+                      return a == null || b == null ? 0 : stringCompare(a[i], b[i], 'des', i)
+                    });
+                    sortAscending = true;
+                    this.className = 'student-data header asc';
+                  }
+                })
+              }
             }
-            var tsA = toString.call(a);
-            var tsB = toString.call(b);
-            if (tsA === "[object String]" && tsB === "[object String]") {
-              a = a.toLowerCase();
-              b = b.toLowerCase();
+
+            // Dashboard Rows Setup
+            function setupRows(init) {
+
+              if (init) {
+
+                rowObj.attr('row-index', function(d, i) {
+                  return i;
+                })
+                rowObj.selectAll('td').data(function (d,i) {
+                  return dashValsIndex.map(function (k, i) {
+                    return { 'value': d[k], 'name': dashValCHs[i] };
+                  })
+                }).enter()
+                .append('td').attr('class', 'student-data')
+                .attr('column-th', function (d, i, a) {
+                  return d.name;
+                })
+                .attr('ng-click', 'view.openStudentDetails($event)')
+                .text(function (d, i, a) {
+                  return d.value;
+                })
+                .style("background-color", function(d, i) {
+                  var discOpacityCalc = (((Number(d.value) * 80) / 100) + 20) / 100;
+                  var motivOpacityCalc = (((Number(d.value) * 8) / 10) + 2) / 10;
+                  var cellColor = i > 2 ? columnColorIndex[i] : "rgba(255,255,255,";
+                  var opacity = i > 2 && i <= 6 ? discOpacityCalc : i > 6 ? motivOpacityCalc : 1;
+                  return cellColor + opacity + ")";
+                })
+
+                RWD.responsiveAdaptationDashboard();
+                $compile($('table.student-data tbody td:nth-of-type(1)'))(angular.element('dashboard').scope());
+                rowObj.exit().remove();
+
+              } else {
+
+                rowObj.enter().append('tr').attr('class', 'student-data')
+                .attr('row-index', function(d, i) {
+                  return i;
+                })
+                .selectAll('td').data(function (d,i) {
+                  return dashValsIndex.map(function (k, i) {
+                    return { 'value': d[k], 'name': dashValCHs[i] };
+                  })
+                }).enter()
+                .append('td').attr('class', 'student-data')
+                .attr('column-th', function (d) {
+                  return d.name;
+                })
+                .attr('ng-click', 'view.openStudentDetails($event)')
+                .text(function (d, i, a) {
+                  return d.value;
+                })
+                .text(function (d, i, a) {
+                  return d.value;
+                }).style("background-color", function(d, i) {
+                  var discOpacityCalc = (((Number(d.value) * 80) / 100) + 20) / 100;
+                  var motivOpacityCalc = (((Number(d.value) * 8) / 10) + 2) / 10;
+                  var cellColor = i > 2 ? columnColorIndex[i] : "rgba(255,255,255,";
+                  var opacity = i > 2 && i <= 6 ? discOpacityCalc : i > 6 ? motivOpacityCalc : 1;
+                  return cellColor + opacity + ")";
+                })
+
+                RWD.responsiveAdaptationDashboard();
+                $compile($('table.student-data tbody td:nth-of-type(1)'))(angular.element('dashboard').scope());
+                rowObj.exit().remove();
+
+              }
             }
-            if (sort === "asc") return a > b ? 1 : a == b ? 0 : -1;
-            else if (sort === "des") return a < b ? 1 : a == b ? 0 : -1;
+
+            if (init) {
+
+              console.log('initializing row data');
+
+              var rowObj = tableBody.selectAll('tr').data(rowData, function(d) { return d }).enter().append('tr').attr('class', 'student-data');
+
+              setupHeaders(true);
+              setupRows(true);
+
+            } else {
+              console.log('row data update');
+
+              var rowObj = tableBody.selectAll('tr').data(rowData, function(d) { return d })
+
+              setupHeaders(false);
+              setupRows(false);
+
+            }
+            return;
           }
 
+
+
+          // search bar Functionality
+          // d3.select('input.search-bar')
+          // .on("keyup", function() {
+          //   var searchedData = dashData;
+          //   var text = this.value.trim();
+          //   console.log('keyup', text);
+          //
+          //   var searchResults = searchedData.map(function(e) {
+          //     // console.log(e);
+          //     var regex = new RegExp(text + ".*", "i");
+          //     if (regex.test(e[0])) {
+          //       return regex.exec(e[0])[0]
+          //     }
+          //   })
+          //
+          //   var searchResultIndices = [];
+          //   for (var i = 0; i < searchResults.length; i++) {
+          //     if (searchResults[i]) searchResultIndices.push(i);
+          //   }
+          //
+          //   var searchReturn = [];
+          //   for (var i = 0; i < searchResultIndices.length; i++) {
+          //     searchReturn.push(dashData[searchResultIndices[i]]);
+          //   }
+          //
+          //   setupFilters(searchReturn, [classSelections,genderSelections,studentSelections]);
+          //
+          // })
+
           // Triggered on change to any filter checkbox - applies updated filter selection to dashbaord
-          function updateDashboard(action, filter, value) {
+          function applyFilters(action, filter, value) {
 
             function updateGlobalFilterObjects() {
               return new Promise(function(resolve, reject) {
@@ -330,7 +508,7 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
                 // console.log(filteredData);
                 var filteredData = filteredData.filter(function(d,i) {
                   var gender;
-                  console.log(d[3]);
+                  // console.log(d[3]);
                   if (d[3] === 'M') {
                     gender = 'Male';
                   } else if (d[3] === 'F') {
@@ -357,159 +535,16 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
 
             var filtersApplied = [classSelections, genderSelections, studentSelections];
 
-            setFilters(dashData, filtersApplied)
-            setRowData(filteredData, false);
+            setupFilters(dashData, filtersApplied)
+            generateTable(filteredData, false);
           }
 
-          // table body object reference
-          var tableBody = table.append('tbody').attr('class', 'student-data');
-
-          // populate rows with data, based on student data object index references
-          function setRowData(rowData, init) {
-            console.log('setting row data', rowData);
-
-            // setHeaders(rowObj);
-            if (init) {
-              var headers = table.append('thead').attr('class', 'student-data')
-              .selectAll('th')
-              .data(titles).enter()
-              .append('th').attr('class', 'student-data')
-              .text(function (d) {
-                return d;
-              })
-              .on('click', function(d, i) {
-                i = dashValsIndex[i];
-                headers.attr('class', 'student-data header');
-                if (sortAscending) {
-                console.log('Ascending');
-                rowObj.sort(function(a, b) {
-                  return a == null || b == null ? 0 : stringCompare(a[i], b[i], 'asc', i) });
-                  sortAscending = false;
-                  this.className = 'student-data header des';
-                } else {
-                  console.log('Descending');
-                  rowObj.sort(function(a, b) { return a == null || b == null ? 0 : stringCompare(a[i], b[i], 'des', i) });
-                  sortAscending = true;
-                  this.className = 'student-data header asc';
-                }
-                // rowObj.exit();
-              })
-
-              var rowObj = tableBody.selectAll('tr').data(rowData, function(d) { return d }).enter().append('tr').attr('class', 'student-data')
-              rowObj.attr('row-index', function(d, i) {
-                return i;
-              })
-              rowObj.selectAll('td').data(function (d,i) {
-                // console.log('d, i', d, i);
-                return dashValsIndex.map(function (k, i) {
-                  // console.log('k, i', k,i);
-                  return { 'value': d[k], 'name': dashValCHs[i] };
-                })
-              }).enter()
-              .append('td').attr('class', 'student-data')
-              .attr('column-th', function (d, i, a) {
-                return d.name;
-              })
-              .attr('ng-click', 'view.openStudentDetails($event)')
-              .text(function (d, i, a) {
-                return d.value;
-              })
-              .style("background-color", function(d, i) {
-                var discOpacityCalc = (((Number(d.value) * 80) / 100) + 20) / 100;
-                var motivOpacityCalc = (((Number(d.value) * 8) / 10) + 2) / 10;
-                // console.log(Number(d.value), newValue);
-                var cellColor = i > 2 ? columnColorIndex[i] : "rgba(255,255,255,";
-                var opacity = i > 2 && i <= 6 ? discOpacityCalc : i > 6 ? motivOpacityCalc : 1;
-                return cellColor + opacity + ")";
-              })
-
-              // RWD.responsiveAdaptationDashboard();
-              rowObj.exit().remove();
-
-            } else {
-              console.log('row data update');
-
-              var rowObj = tableBody.selectAll('tr').data(rowData, function(d) { return d });
-
-              rowObj.enter().append('tr').attr('class', 'student-data')
-              // .style("border-bottom", function() {
-              //   return "1px solid black";
-              // })
-              .selectAll('td').data(function (d,i) {
-                // console.log('d, i', d, i);
-                return dashValsIndex.map(function (k, i) {
-                  // console.log('k, i', k,i);
-                  return { 'value': d[k], 'name': dashValCHs[i] };
-                })
-              }).enter()
-              .append('td').attr('class', 'student-data')
-              .attr('column-th', function (d) {
-                return d.name;
-              })
-              .attr('ng-click', 'view.openStudentDetails($event)')
-              .text(function (d, i, a) {
-                return d.value;
-              })
-              .text(function (d, i, a) {
-                return d.value;
-              }).style("background-color", function(d, i) {
-                var discOpacityCalc = (((Number(d.value) * 80) / 100) + 20) / 100;
-                var motivOpacityCalc = (((Number(d.value) * 8) / 10) + 2) / 10;
-                // console.log(Number(d.value), newValue);
-                var cellColor = i > 2 ? columnColorIndex[i] : "rgba(255,255,255,";
-                var opacity = i > 2 && i <= 6 ? discOpacityCalc : i > 6 ? motivOpacityCalc : 1;
-                return cellColor + opacity + ")";
-              })
-
-              // Reapply responsive calculations to recreated table
-              RWD.responsiveAdaptationDashboard();
-              rowObj.exit().remove();
-            }
-            return;
+          function dashboardInitialization() {
+            setDashboardGlobalVars();
+            setupFilters(dashData, [[],[],[]], true);
+            generateTable(dashData, true);
           }
-
-          // search bar Functionality
-          // d3.select('input.search-bar')
-          // .on("keyup", function() {
-          //   var searchedData = dashData;
-          //   var text = this.value.trim();
-          //   console.log('keyup', text);
-          //
-          //   var searchResults = searchedData.map(function(e) {
-          //     // console.log(e);
-          //     var regex = new RegExp(text + ".*", "i");
-          //     if (regex.test(e[0])) {
-          //       return regex.exec(e[0])[0]
-          //     }
-          //   })
-          //
-          //   var searchResultIndices = [];
-          //   for (var i = 0; i < searchResults.length; i++) {
-          //     if (searchResults[i]) searchResultIndices.push(i);
-          //   }
-          //
-          //   var searchReturn = [];
-          //   for (var i = 0; i < searchResultIndices.length; i++) {
-          //     searchReturn.push(dashData[searchResultIndices[i]]);
-          //   }
-          //
-          //   setFilters(searchReturn, [classSelections,genderSelections,studentSelections]);
-          //
-          // })
-
-          // setHeaders();
-          setFilters(dashData, [[],[],[]]);
-          setRowData(dashData, true);
-          return;
-
-          // var studentName = d3.select('h3.sde-name');
-          // studentName.text(sDDMap.get('FULL NAME'));
-          // var studentDems1 = d3.select('div.sde-dems1');
-          // console.log(studentName, studentDems1);
-          // var fullName = 'test';
-          // studentDems1.selectAll('p').data(fullName, function(d) { return d;}).enter().append('p')
-          // .text(function(d) { console.log(d); return d; }).exit();
-
+          return dashboardInitialization();
         }
 
         function loadStudentDetails(columnHeaders, studentData, metaData) {
@@ -890,7 +925,6 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
           createDashboard(inputObject.data, inputObject.schoolName)
           resolve();
         } else if (controlOption === "studentDetails") {
-          console.log(inputObject);
           loadStudentDetails(inputObject.columnHeaders, inputObject.currentStudentData, inputObject.metaData);
           resolve();
         }

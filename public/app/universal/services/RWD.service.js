@@ -1,4 +1,4 @@
-app.factory('RWD', ['$state', function($state) {
+app.factory('RWD', ['$compile', '$state', function($state) {
 
   var RWD = {
 
