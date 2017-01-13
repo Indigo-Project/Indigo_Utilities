@@ -81,6 +81,7 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
           function setupFilters(data, filtersApplied, init) {
 
             console.log('setupFilters', data, filtersApplied);
+
             // Student Filter
             function studentFilterSetup(data) {
 
@@ -97,6 +98,10 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
               // Apply change event to inputs
               var studentFilterInputs = studentFilter.selectAll('label > input')
               studentFilterInputs.on("change", function(data,i,arr) {
+
+                // var noDataContainer = d3.select('div.dashboard-no-data-display');
+                // noData ? noDataContainer.remove() : null;
+
                 var value = data[0];
                 var action = this.checked ? "add" : "remove";
                 applyFilters(action, "student", value)
@@ -118,9 +123,12 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
               // Apply change event to inputs
               var genderFilterInputs = genderFilter.selectAll('label > input')
               genderFilterInputs.on("change", function(data,i,arr) {
+
+                var noDataContainer = d3.select('div.dashboard-no-data-display');
+                noData ? noDataContainer.remove() : null;
+
                 var value = data;
                 var action = this.checked ? "add" : "remove";
-                console.log(action, "gender", value);
                 applyFilters(action, "gender", value)
               })
 
@@ -140,6 +148,10 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
               // Apply change event to inputs
               var classFilterInputs = classFilter.selectAll('label > input')
               classFilterInputs.on("change", function(data,i,arr) {
+
+                var noDataContainer = d3.select('div.dashboard-no-data-display');
+                noData ? noDataContainer.remove() : null;
+
                 var value = data;
                 var action = this.checked ? "add" : "remove";
                 applyFilters(action, "class", value)
@@ -395,6 +407,8 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
 
                 console.log('No Data Message');
 
+                noData = true;
+
                 rowObj.enter();
                 rowObj.exit().remove();
 
@@ -430,67 +444,25 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
                     .attr('checked', function(d,i,a) { return a[i].checked = false; })
                     studentSelections = [];
 
-                    console.log(studentSelections, genderSelections, classSelections);
-
                   }
 
-                  unselectFilters()
+                  unselectFilters();
                   setupFilters(dashData, [[],[],[]], true);
                   generateTable(dashData, 'filterReset');
+
                 })
 
-                // .select('h3').append('h3').attr('class','no-data-message')
-                // .text(function(d) { return d; })
+                noData = true;
 
-                // console.log(tableBody);
-                // console.log(d3.selectAll('tbody')._groups[0][0]);
-                // tableBody
-                // d3.select('tbody')
-                // console.log(d3.select('div.student-data-table').select('table').select('tbody'));
-                // d3.select('div.student-data-table').select('table').select('tbody')
-                // .select('tr').append('tr')
-                // .data(message).enter()
-                // .select('td').append('td')
-                // // // .selectAll('tr').append('tr')
-                // // // .selectAll('td').append('td')
-                // // // .append('tr')
-                // // // .append('td')
-                // .text(function(d) { console.log(d); return d; })
-
-                // .append('tr').attr('class', 'student-data')
-                // .attr('row-index', function(d, i) {
-                //   return i;
-                // })
-                // .selectAll('td').data(function (d,i) {
-                //   return dashValsIndex.map(function (k, i) {
-                //     return { 'value': d[k], 'name': dashValCHs[i] };
-                //   })
-                // }).enter()
-                // .append('td').attr('class', 'student-data')
-                // .attr('column-th', function (d) {
-                //   return d.name;
-                // })
-                // .attr('ng-click', 'view.openStudentDetails($event)')
-                // .text(function (d, i, a) {
-                //   return d.value;
-                // })
-                // .text(function (d, i, a) {
-                //   return d.value;
-                // }).style("background-color", function(d, i) {
-                //   var discOpacityCalc = (((Number(d.value) * 80) / 100) + 20) / 100;
-                //   var motivOpacityCalc = (((Number(d.value) * 8) / 10) + 2) / 10;
-                //   var cellColor = i > 2 ? columnColorIndex[i] : "rgba(255,255,255,";
-                //   var opacity = i > 2 && i <= 6 ? discOpacityCalc : i > 6 ? motivOpacityCalc : 1;
-                //   return cellColor + opacity + ")";
-                // })
-                //
                 RWD.responsiveAdaptationDashboard();
-                // $compile($('table.student-data tbody td:nth-of-type(1)'))(angular.element('dashboard').scope());
 
               } else if (status === 'update') {
 
+                console.log('update');
+
                 rowObj.enter().append('tr').attr('class', 'student-data')
                 .attr('row-index', function(d, i) {
+                  // console.log(d, i);
                   return i;
                 })
                 .selectAll('td').data(function (d,i) {
@@ -641,6 +613,7 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
                 setupFilters(dashData, data.filtersApplied, false);
 
                 // Setup Dashboard based on Filtered Data. If no data, display 'No Data' Message
+                console.log(!data.filteredData.length, data.filteredData);
                 !data.filteredData.length ? generateTable(data.filteredData, 'noData') : generateTable(data.filteredData, 'update');
 
                 // Setup Dashboard based on Filterd Data
@@ -648,7 +621,6 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
 
               })
             });
-
           }
 
           // Search Bar Functionality

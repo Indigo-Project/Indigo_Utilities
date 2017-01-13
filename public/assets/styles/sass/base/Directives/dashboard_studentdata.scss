@@ -10,13 +10,14 @@ div.dashboard-no-data-display {
   left: 0px;
   bottom: 0px;
   width: 100%;
-  background-color: rgba(78, 168, 134, 0.6);
+  // background-color: rgba(78, 168, 134, 0.6);
 }
 
 div.no-data-message {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   width: fit-content;
 }
 
@@ -25,5 +26,13 @@ h3.no-data-message {
 }
 
 button.no-data-cta {
-
+  width: 50%;
+  font-size: 16px;
+  margin-top: 30px;
+  font-weight: bold;
+  vertical-align: center;
 }
+
+// section.class-filter-frame {
+//   height: fit-content;
+// }

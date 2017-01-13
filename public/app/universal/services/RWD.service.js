@@ -19,7 +19,6 @@ app.factory('RWD', ['$compile', '$state', function($state) {
       }
       return baseDimensions;
     },
-
     responsiveAdaptationDashboard: function() {
       console.log('responsive calc..');
       // Responsive initialization of dimensions
@@ -185,6 +184,8 @@ app.factory('RWD', ['$compile', '$state', function($state) {
       if (noDataMessage) {
         noDataMessage.height(studentData_tBody.outerHeight());
       }
+    },
+    responsiveAdaptationStudentDetails: function() {
 
     }
   }
