@@ -180,6 +180,12 @@ app.factory('RWD', ['$compile', '$state', function($state) {
       tBodyColumns.social.innerWidth(tHead.social.innerWidth());
       tBodyColumns.individualistic.innerWidth(tHead.individualistic.innerWidth());
       tBodyColumns.traditional.innerWidth(tHead.traditional.innerWidth());
+
+      var noDataMessage = $('div.dashboard-no-data-display');
+      if (noDataMessage) {
+        noDataMessage.height(studentData_tBody.outerHeight());
+      }
+
     }
   }
 

@@ -497,6 +497,28 @@ iframe.dashM-iframe {
   overflow: hidden;
   border: 1px solid black; }
 
+div.student-data-table {
+  position: relative; }
+
+div.dashboard-no-data-display {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  width: 100%;
+  background-color: rgba(78, 168, 134, 0.6); }
+
+div.no-data-message {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: fit-content; }
+
+h3.no-data-message {
+  font-size: 24px; }
+
 section.dashboard-studentdetails {
   display: flex;
   justify-content: center;

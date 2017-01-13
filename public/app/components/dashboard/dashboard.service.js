@@ -38,7 +38,7 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
         function createDashboard(data, schoolName) {
 
           // Global Vars
-          var studentSelections, classSelections, genderSelections, dashData, sdCHs, dataKeys, studentClasses, dashValCHs, dashboardCHs, dashValsIndex, sortAscending, table, tablebody, titles, columnColorIndex;
+          var studentSelections, classSelections, genderSelections, dashData, sdCHs, dataKeys, studentClasses, dashValCHs, dashboardCHs, dashValsIndex, sortAscending, table, tablebody, titles, columnColorIndex, noData;
           function setDashboardGlobalVars() {
 
             studentSelections = [];
@@ -78,7 +78,7 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
 
           // Dashboard Filters Setup
           // Setting and updating available filter options
-          function setupFilters(data, filtersInfo, filtersApplied, init) {
+          function setupFilters(data, filtersApplied, init) {
 
             console.log('setupFilters', data, filtersApplied);
             // Student Filter
@@ -120,6 +120,7 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
               genderFilterInputs.on("change", function(data,i,arr) {
                 var value = data;
                 var action = this.checked ? "add" : "remove";
+                console.log(action, "gender", value);
                 applyFilters(action, "gender", value)
               })
 
@@ -154,37 +155,33 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
 
             } else {
 
-              studentFilterSetup(data);
-              genderFilterSetup(data);
-              classFilterSetup(data);
+              // If Class or Gender filter has been applied
+              if (filtersApplied[0].length || filtersApplied[1].length) {
 
-              // console.log('studentSelections', studentSelections);
-              // console.log('updating filter options', filtersApplied[0], filtersApplied[1]);
+                // Update data object w/ Class Filter
+                if (filtersApplied[0].length) {
+                  data = data.filter(function(e, i, a) {
+                    return filtersApplied[0].indexOf(e[4]) !== -1;
+                  })
+                }
 
-            //   if (filtersApplied[0].length || filtersApplied[1].length) {
-            //     if (filtersApplied[0].length) {
-            //       data = data.filter(function(e, i, a) {
-            //         return filtersApplied[0].indexOf(e[4]) !== -1;
-            //       })
-            //
-            //       console.log('class filter applied', data);
-            //       genderFilterSetup(data);
-            //       studentFilterSetup(data);
-            //
-            //     }
-            //     if (filtersApplied[1].length) {
-            //       data = data.filter(function(e, i, a) {
-            //         var gTransform = e[3] === 'M' ? 'Male' : 'Female';
-            //         return filtersApplied[1].indexOf(gTransform) !== -1;
-            //       })
-            //
-            //       console.log('gender filter applied', data);
-            //       classFilterSetup(data);
-            //       studentFilterSetup(data);
-            //
-            //     }
-            //   }
-            //
+                // Update data object w/ Gender Filter
+                if (filtersApplied[1].length) {
+                  data = data.filter(function(e, i, a) {
+                    var gTransform = e[3] === 'M' ? 'Male' : 'Female';
+                    return filtersApplied[1].indexOf(gTransform) !== -1;
+                  })
+                }
+
+                // Update student filter options with updated data object
+                studentFilterSetup(data);
+
+              } else {
+
+                // Update student filter options with original data object (no filters applied)
+                studentFilterSetup(data);
+
+              }
             }
 
               // keep selectedStudents (checked students) at top of student filter option
@@ -284,10 +281,10 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
           }
 
           // populate rows with data, based on student data object index references
-          function generateTable(rowData, init) {
+          function generateTable(rowData, status) {
 
             // Dashboard Headers Setup
-            function setupHeaders(init) {
+            function setupHeaders(status) {
 
               // Sort Calculation Function
               function stringCompare(a, b, sort, i) {
@@ -306,7 +303,7 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
                 else if (sort === "des") return a < b ? 1 : a == b ? 0 : -1;
               }
 
-              if (init) {
+              if (status === 'init') {
 
                 var headers = table.append('thead').attr('class', 'student-data')
                 .selectAll('th')
@@ -362,9 +359,9 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
             }
 
             // Dashboard Rows Setup
-            function setupRows(init) {
+            function setupRows(status) {
 
-              if (init) {
+              if (status === 'init') {
 
                 rowObj.attr('row-index', function(d, i) {
                   return i;
@@ -394,7 +391,103 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
                 $compile($('table.student-data tbody td:nth-of-type(1)'))(angular.element('dashboard').scope());
                 rowObj.exit().remove();
 
-              } else {
+              } else if (status === 'noData') {
+
+                console.log('No Data Message');
+
+                rowObj.enter();
+                rowObj.exit().remove();
+
+
+                var noDataContainer = d3.select('div.student-data-table')
+                .append('div').attr('class', 'dashboard-no-data-display')
+
+                var messageContainer = noDataContainer.append('div').attr('class', 'no-data-message')
+
+                messageContainer
+                .append('h3').attr('class','no-data-message')
+                .text("No Data Returned by Filters")
+
+                messageContainer
+                .append('button').attr('class','no-data-cta form-control')
+                .text("reset filters")
+                .on("click", function() {
+
+                  noDataContainer.remove();
+
+                  function unselectFilters() {
+
+
+                    var genderFilters = d3.select('div.gender-filter').selectAll('input')
+                    .attr('checked', function(d,i,a) { return a[i].checked = false; })
+                    genderSelections = [];
+
+                    var classFilters = d3.select('div.class-filter').selectAll('input')
+                    .attr('checked', function(d,i,a) { return a[i].checked = false; })
+                    classSelections = [];
+
+                    var studentFilters = d3.select('div.student-filter').selectAll('input')
+                    .attr('checked', function(d,i,a) { return a[i].checked = false; })
+                    studentSelections = [];
+
+                    console.log(studentSelections, genderSelections, classSelections);
+
+                  }
+
+                  unselectFilters()
+                  setupFilters(dashData, [[],[],[]], true);
+                  generateTable(dashData, 'filterReset');
+                })
+
+                // .select('h3').append('h3').attr('class','no-data-message')
+                // .text(function(d) { return d; })
+
+                // console.log(tableBody);
+                // console.log(d3.selectAll('tbody')._groups[0][0]);
+                // tableBody
+                // d3.select('tbody')
+                // console.log(d3.select('div.student-data-table').select('table').select('tbody'));
+                // d3.select('div.student-data-table').select('table').select('tbody')
+                // .select('tr').append('tr')
+                // .data(message).enter()
+                // .select('td').append('td')
+                // // // .selectAll('tr').append('tr')
+                // // // .selectAll('td').append('td')
+                // // // .append('tr')
+                // // // .append('td')
+                // .text(function(d) { console.log(d); return d; })
+
+                // .append('tr').attr('class', 'student-data')
+                // .attr('row-index', function(d, i) {
+                //   return i;
+                // })
+                // .selectAll('td').data(function (d,i) {
+                //   return dashValsIndex.map(function (k, i) {
+                //     return { 'value': d[k], 'name': dashValCHs[i] };
+                //   })
+                // }).enter()
+                // .append('td').attr('class', 'student-data')
+                // .attr('column-th', function (d) {
+                //   return d.name;
+                // })
+                // .attr('ng-click', 'view.openStudentDetails($event)')
+                // .text(function (d, i, a) {
+                //   return d.value;
+                // })
+                // .text(function (d, i, a) {
+                //   return d.value;
+                // }).style("background-color", function(d, i) {
+                //   var discOpacityCalc = (((Number(d.value) * 80) / 100) + 20) / 100;
+                //   var motivOpacityCalc = (((Number(d.value) * 8) / 10) + 2) / 10;
+                //   var cellColor = i > 2 ? columnColorIndex[i] : "rgba(255,255,255,";
+                //   var opacity = i > 2 && i <= 6 ? discOpacityCalc : i > 6 ? motivOpacityCalc : 1;
+                //   return cellColor + opacity + ")";
+                // })
+                //
+                RWD.responsiveAdaptationDashboard();
+                // $compile($('table.student-data tbody td:nth-of-type(1)'))(angular.element('dashboard').scope());
+
+              } else if (status === 'update') {
 
                 rowObj.enter().append('tr').attr('class', 'student-data')
                 .attr('row-index', function(d, i) {
@@ -430,25 +523,40 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
               }
             }
 
-            if (init) {
+            if (status === 'init') {
 
               console.log('initializing row data');
 
               var rowObj = tableBody.selectAll('tr').data(rowData, function(d) { return d }).enter().append('tr').attr('class', 'student-data');
 
-              setupHeaders(true);
-              setupRows(true);
+              setupHeaders('init');
+              return setupRows('init');
 
-            } else {
-              console.log('row data update');
+            } else if (status === 'update') {
 
-              var rowObj = tableBody.selectAll('tr').data(rowData, function(d) { return d })
+              // console.log('row data update', rowData);
 
-              setupHeaders(false);
-              setupRows(false);
+              var rowObj = tableBody.selectAll('tr').data(rowData, function(d) { return d });
+
+              setupHeaders('reinitialize');
+              return setupRows('update');
+
+            } else if (status === 'noData') {
+
+              // console.log('No Data Message');
+
+              var rowObj = tableBody.selectAll('tr').data(rowData, function(d) { return d });
+
+              setupHeaders('reinitialize');
+              return setupRows('noData');
+
+            } else if (status === 'filterReset') {
+
+              var rowObj = tableBody.selectAll('tr').data(rowData, function(d) { return d });
+
+              return setupRows('update');
 
             }
-            return;
           }
 
           // Triggered on change to any filter checkbox - applies updated filter selection to dashbaord
@@ -530,10 +638,13 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
               .then(function(data) {
 
                 // Setup Filters based on Applied Filters
-                setupFilters(data.filteredData, data.filtersApplied, false);
+                setupFilters(dashData, data.filtersApplied, false);
+
+                // Setup Dashboard based on Filtered Data. If no data, display 'No Data' Message
+                !data.filteredData.length ? generateTable(data.filteredData, 'noData') : generateTable(data.filteredData, 'update');
 
                 // Setup Dashboard based on Filterd Data
-                generateTable(data.filteredData, false);
+                // generateTable(data.filteredData, 'update');
 
               })
             });
@@ -575,10 +686,9 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
           function dashboardInitialization() {
             setDashboardGlobalVars();
             setupFilters(dashData, [[],[],[]], true);
-            generateTable(dashData, true);
+            generateTable(dashData, 'init');
           }
 
-          // update data object with students filter
           return dashboardInitialization();
 
         }
