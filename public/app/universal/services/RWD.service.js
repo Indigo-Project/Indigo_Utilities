@@ -77,6 +77,7 @@ app.factory('RWD', ['$compile', '$state', function($state) {
       // console.log("Row 2 C2 R2", (dashboardInnerHeight * .897267) * .20305, studentData_Row2_Column2_Row2.height());
 
       // Grid Components Variable Definition
+      var filterCheckbox = $('input[type=checkbox]');
       var studentFilterFrame = $('section.student-filter-frame');
       var studentFilterOuter = $('section.student-filter-outer');
       var studentFilterInner = $('section.student-filter-inner');
@@ -96,7 +97,9 @@ app.factory('RWD', ['$compile', '$state', function($state) {
       studentFilterOuter.outerHeight(studentFilterFrame.height());
       studentFilterInner.height(studentFilterOuter.height() - 20);
       studentFilter.height(studentFilterInner.height() * .65736004);
-      studentSearchBar.height(Math.min(26/683 * dashboardInnerHeight, 26/1380 * dashboardInnerWidth));
+      studentSearchBar.height(Math.min(20/683 * dashboardInnerHeight, 20/1380 * dashboardInnerWidth));
+
+      filterCheckbox.css('transform', "scale(" + Math.min(1/683 * dashboardInnerHeight, 1/1380 * dashboardInnerWidth) + ")");
 
       genderFilterFrame.height(studentData_Row2_Column1.height() * .15058088);
       genderFilterFrame.css("margin-bottom", (studentData_Row2_Column1.height() * .05) + "px");
@@ -257,6 +260,7 @@ app.factory('RWD', ['$compile', '$state', function($state) {
       // filter heading,16/18
       var filterHeaders = $('h4.filter-header');
       filterHeaders.css('font-size', Math.min(16/683 * dashboardInnerHeight, 16/1380 * dashboardInnerWidth))
+      filterHeaders.css('margin-bottom', Math.min(5/683 * dashboardInnerHeight, 5/1380 * dashboardInnerWidth))
       // filter options,14/20
       var filterLabels = $('label.filter-label');
       filterLabels.css('font-size', Math.min(14/683 * dashboardInnerHeight, 14/1380 * dashboardInnerWidth))
@@ -279,6 +283,12 @@ app.factory('RWD', ['$compile', '$state', function($state) {
       caaTitle.css('font-size', Math.min(14/683 * dashboardInnerHeight, 14/1380 * dashboardInnerWidth))
       caaTh.css('font-size', Math.min(14/683 * dashboardInnerHeight, 14/1380 * dashboardInnerWidth))
       caaValues.css('font-size', Math.min(14/683 * dashboardInnerHeight, 14/1380 * dashboardInnerWidth))
+
+      var noDataMessage = $('h3.no-data-message');
+      var noDataButton = $('button.no-data-cta');
+      noDataMessage.css('font-size', Math.min(24/683 * dashboardInnerHeight, 24/1380 * dashboardInnerWidth))
+      noDataButton.css('font-size', Math.min(16/683 * dashboardInnerHeight, 16/1380 * dashboardInnerWidth))
+      noDataButton.css('margin-top', Math.min(30/683 * dashboardInnerHeight, 30/1380 * dashboardInnerWidth))
 
       var noDataMessage = $('div.dashboard-no-data-display');
       if (noDataMessage) {

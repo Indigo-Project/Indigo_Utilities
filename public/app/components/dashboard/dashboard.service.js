@@ -101,9 +101,9 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
 
                 // var noDataContainer = d3.select('div.dashboard-no-data-display');
                 // noData ? noDataContainer.remove() : null;
-
                 var value = data[0];
                 var action = this.checked ? "add" : "remove";
+                console.log(action, "student", value);
                 applyFilters(action, "student", value)
               })
 
@@ -630,7 +630,7 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
                     // matchedFilters[0] ? console.log('student within existing filter set') : filteredData.push(dashData[matchedFilters[1]]);
                   }
                   // filtere
-                  dData = dashData.filter(function(d,i) { return studentSelections.includes(d[0]) });
+                  filteredData = dashData.filter(function(d,i) { return studentSelections.includes(d[0]) });
                 }
 
                 console.log(filteredData, studentSelections);

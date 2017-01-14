@@ -11,9 +11,9 @@ section.dashboard-frame {
   margin: 0;
 }
 
-// span.sd-title-name {
-//   margin-right: 15px;
-// }
+input[type=checkbox]{
+  transform: scale(1);
+}
 
 section.dashboard-studentData {
   display: flex;
@@ -297,13 +297,13 @@ div.no-data-message {
 }
 
 h3.no-data-message {
-  font-size: 24px;
+  // font-size: 24px;
 }
 
 button.no-data-cta {
   width: 50%;
-  font-size: 16px;
-  margin-top: 30px;
+  // font-size: 16px;
+  // margin-top: 30px;
   font-weight: bold;
   vertical-align: center;
 }
