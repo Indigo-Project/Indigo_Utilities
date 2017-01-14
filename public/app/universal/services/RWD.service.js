@@ -29,8 +29,10 @@ app.factory('RWD', ['$compile', '$state', function($state) {
       // viewport height: 723
 
       // Dashboard frame width and height changed to viewport width and height
-      var dashboardWidth = baseDimensions.viewportWidth; dashboardFrameElement.width(dashboardWidth);
-      var dashboardHeight = baseDimensions.viewportHeight; dashboardFrameElement.height(dashboardHeight);
+      var dashboardWidth = baseDimensions.viewportWidth;
+      // dashboardFrameElement.width(dashboardWidth);
+      var dashboardHeight = baseDimensions.viewportHeight;
+      // dashboardFrameElement.height(dashboardHeight);
 
       var horizontalPaddingRatio = 30/1440;
       var verticalPaddingRatio = 20/723;
@@ -100,6 +102,19 @@ app.factory('RWD', ['$compile', '$state', function($state) {
       studentSearchBar.height(Math.min(20/683 * dashboardInnerHeight, 20/1380 * dashboardInnerWidth));
 
       filterCheckbox.css('transform', "scale(" + Math.min(1/683 * dashboardInnerHeight, 1/1380 * dashboardInnerWidth) + ")");
+
+      studentFilterInner.css('padding', Math.min(10/683 * dashboardInnerHeight, 10/1380 * dashboardInnerWidth));
+      genderFilterInner.css('padding', Math.min(10/683 * dashboardInnerHeight, 10/1380 * dashboardInnerWidth));
+      classFilterInner.css('padding', Math.min(10/683 * dashboardInnerHeight, 10/1380 * dashboardInnerWidth));
+
+      studentFilter.css('padding-left', Math.min(5/683 * dashboardInnerHeight, 5/1380 * dashboardInnerWidth));
+      genderFilter.css('padding-left', Math.min(5/683 * dashboardInnerHeight, 5/1380 * dashboardInnerWidth));
+      classFilter.css('padding-left', Math.min(5/683 * dashboardInnerHeight, 5/1380 * dashboardInnerWidth));
+
+      // studentFilter.css('margin-left', Math.min(5/683 * dashboardInnerHeight, 5/1380 * dashboardInnerWidth));
+      // genderFilter.css('padding-left', Math.min(5/683 * dashboardInnerHeight, 5/1380 * dashboardInnerWidth));
+      // classFilter.css('padding-left', Math.min(5/683 * dashboardInnerHeight, 5/1380 * dashboardInnerWidth));
+
 
       genderFilterFrame.height(studentData_Row2_Column1.height() * .15058088);
       genderFilterFrame.css("margin-bottom", (studentData_Row2_Column1.height() * .05) + "px");
@@ -259,8 +274,8 @@ app.factory('RWD', ['$compile', '$state', function($state) {
       title2.css('font-size', Math.min(36/683 * dashboardInnerHeight, 36/1380 * dashboardInnerWidth));
       // filter heading,16/18
       var filterHeaders = $('h4.filter-header');
-      filterHeaders.css('font-size', Math.min(16/683 * dashboardInnerHeight, 16/1380 * dashboardInnerWidth))
-      filterHeaders.css('margin-bottom', Math.min(5/683 * dashboardInnerHeight, 5/1380 * dashboardInnerWidth))
+      filterHeaders.css('font-size', Math.min(14/683 * dashboardInnerHeight, 14/1380 * dashboardInnerWidth))
+      filterHeaders.css('margin-bottom', Math.min(5/683 * dashboardInnerHeight, 5/1380 * dashboardInnerWidth) + "px");
       // filter options,14/20
       var filterLabels = $('label.filter-label');
       filterLabels.css('font-size', Math.min(14/683 * dashboardInnerHeight, 14/1380 * dashboardInnerWidth))
@@ -269,7 +284,9 @@ app.factory('RWD', ['$compile', '$state', function($state) {
       var tableColumnHeaders = $('th.student-data');
       var tableCellValues = $('td.student-data');
       tableColumnHeaders.css('font-size', Math.min(10.5/683 * dashboardInnerHeight, 10.5/1380 * dashboardInnerWidth))
+      tableColumnHeaders.css('padding', Math.min(4/683 * dashboardInnerHeight, 4/1380 * dashboardInnerWidth))
       tableCellValues.css('font-size', Math.min(10.5/683 * dashboardInnerHeight, 10.5/1380 * dashboardInnerWidth))
+      tableCellValues.css('padding', Math.min(4/683 * dashboardInnerHeight, 4/1380 * dashboardInnerWidth))
       // student count, 36/40
       var studentCountNum = $('div.student-count h1');
       var studentCountTitle = $('div.student-count h3');
@@ -280,10 +297,18 @@ app.factory('RWD', ['$compile', '$state', function($state) {
       var caaTitle = $('div.adult-avgs');
       var caaTh = $('thead.adult-avgs th');
       var caaValues = $('tbody.adult-avgs td');
-      caaTitle.css('font-size', Math.min(14/683 * dashboardInnerHeight, 14/1380 * dashboardInnerWidth))
-      caaTh.css('font-size', Math.min(14/683 * dashboardInnerHeight, 14/1380 * dashboardInnerWidth))
-      caaValues.css('font-size', Math.min(14/683 * dashboardInnerHeight, 14/1380 * dashboardInnerWidth))
-
+      var caaCellPadding = {
+        top: Math.min(3/683 * dashboardInnerHeight, 3/1380 * dashboardInnerWidth),
+        right: Math.min(6/683 * dashboardInnerHeight, 6/1380 * dashboardInnerWidth),
+        bottom: Math.min(3/683 * dashboardInnerHeight, 3/1380 * dashboardInnerWidth),
+        left: Math.min(7/683 * dashboardInnerHeight, 7/1380 * dashboardInnerWidth)
+      }
+      caaTitle.css('font-size', Math.min(13/683 * dashboardInnerHeight, 13/1380 * dashboardInnerWidth))
+      caaTh.css('font-size', Math.min(12/683 * dashboardInnerHeight, 12/1380 * dashboardInnerWidth))
+      caaTh.css('padding', caaCellPadding.top + "px " + caaCellPadding.right + "px " + caaCellPadding.bottom + "px "+ caaCellPadding.left + "px");
+      caaValues.css('font-size', Math.min(12/683 * dashboardInnerHeight, 12/1380 * dashboardInnerWidth))
+      caaTh.css('padding', caaCellPadding.top + "px " + caaCellPadding.right + "px " + caaCellPadding.bottom + "px "+ caaCellPadding.left + "px");
+      // no Data Message/CTA
       var noDataMessage = $('h3.no-data-message');
       var noDataButton = $('button.no-data-cta');
       noDataMessage.css('font-size', Math.min(24/683 * dashboardInnerHeight, 24/1380 * dashboardInnerWidth))

@@ -307,10 +307,18 @@ iframe.dashM-iframe {
   border: 1px solid black; }
 
 section.dashboard-frame {
+  width: 100%;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  margin: 0; }
+  margin: 0;
+  font-family: 'Open Sans', sans-serif; }
+
+span.sd-title-name {
+  font-weight: 600; }
+
+span.sd-title-static {
+  font-weight: 300; }
 
 input[type=checkbox] {
   transform: scale(1); }
@@ -381,8 +389,11 @@ table.student-data {
         border-right: 1px solid black; }
 
 h4.filter-header {
-  margin: 0 0 5px 0;
-  font-size: 16px; }
+  margin: 0;
+  font-weight: 600; }
+
+label.filter-label {
+  flex-basis: 100%; }
 
 section.student-filter-frame {
   width: 100%; }
@@ -392,18 +403,18 @@ section.student-filter-outer {
   border: 1px solid black; }
 
 section.student-filter-inner {
-  padding: 10px;
   height: auto; }
 
 input.search-bar {
   width: 100%; }
 
 div.student-filter {
+  display: flex;
+  flex-direction: column;
   width: 100%;
   height: auto;
   overflow-y: scroll;
-  overflow-x: auto;
-  padding-left: 5px; }
+  overflow-x: auto; }
   div.student-filter label p {
     display: inline;
     margin: 0; }
@@ -416,7 +427,6 @@ section.gender-filter-outer {
   border: 1px solid black; }
 
 section.gender-filter-inner {
-  padding: 10px;
   height: auto; }
 
 div.gender-filter {
@@ -424,7 +434,7 @@ div.gender-filter {
   flex-direction: column;
   width: 100%;
   height: auto;
-  padding-left: 5px; }
+  margin: 5px 0 0 0; }
   div.gender-filter label p {
     display: inline;
     margin: 0; }
@@ -440,7 +450,6 @@ section.class-filter-outer {
   border: 1px solid black; }
 
 section.class-filter-inner {
-  padding: 10px;
   height: auto; }
 
 div.class-filter {
@@ -448,8 +457,7 @@ div.class-filter {
   flex-direction: column;
   width: 100%;
   height: auto;
-  margin-bottom: 5px;
-  padding-left: 5px; }
+  margin: 5px 0 0 0; }
   div.class-filter label p {
     display: inline;
     margin: 0; }
@@ -472,8 +480,10 @@ section.adult-avgs {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  width: 77%;
-  height: 132.38px; }
+  width: 77%; }
+
+div.adult-avgs h5 {
+  font-weight: 600; }
 
 table.adult-avgs {
   border-collapse: collapse; }
@@ -501,8 +511,7 @@ tr.student-data:hover td {
 td.student-data, th.student-data {
   padding: 4px;
   border: 1px solid #ccc;
-  text-align: left;
-  font-size: 10.5px; }
+  text-align: left; }
 
 div.student-data-table {
   position: relative; }
