@@ -393,7 +393,15 @@ h4.filter-header {
   font-weight: 600; }
 
 label.filter-label {
-  flex-basis: 100%; }
+  flex-basis: 100%;
+  overflow: hidden;
+  height: fit-content;
+  padding-top: 0;
+  padding-bottom: 0; }
+  label.filter-label p {
+    white-space: nowrap;
+    display: inline-block;
+    text-overflow: ellipsis; }
 
 section.student-filter-frame {
   width: 100%; }
@@ -411,6 +419,7 @@ input.search-bar {
 div.student-filter {
   display: flex;
   flex-direction: column;
+  flex-wrap: nowrap;
   width: 100%;
   height: auto;
   overflow-y: scroll;

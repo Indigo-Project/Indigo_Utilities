@@ -117,11 +117,19 @@ table.student-data {
 h4.filter-header {
   margin: 0;
   font-weight: 600;
-  // font-size: 16px;
 }
 
 label.filter-label {
   flex-basis: 100%;
+  overflow: hidden;
+  height: fit-content;
+  padding-top: 0;
+  padding-bottom: 0;
+  p {
+    white-space: nowrap;
+    display: inline-block;
+    text-overflow: ellipsis;
+  }
 }
 
 section.student-filter-frame {
@@ -145,6 +153,7 @@ input.search-bar {
 div.student-filter {
   display: flex;
   flex-direction: column;
+  flex-wrap: nowrap;
   width: 100%;
   height: auto;
   overflow-y: scroll;
