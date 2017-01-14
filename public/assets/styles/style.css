@@ -453,7 +453,8 @@ div.gender-filter {
   flex-direction: column;
   width: 100%;
   height: auto;
-  margin: 5px 0 0 0; }
+  margin: 5px 0 0 0;
+  overflow-y: scroll; }
   div.gender-filter label p {
     display: inline;
     margin: 0; }
@@ -476,7 +477,8 @@ div.class-filter {
   flex-direction: column;
   width: 100%;
   height: auto;
-  margin: 5px 0 0 0; }
+  margin: 5px 0 0 0;
+  overflow-y: scroll; }
   div.class-filter label p {
     display: inline;
     margin: 0; }

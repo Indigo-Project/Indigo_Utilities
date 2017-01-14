@@ -196,6 +196,7 @@ div.gender-filter {
   width: 100%;
   height: auto;
   margin: 5px 0 0 0;
+  overflow-y: scroll;
   // padding-left: 5px;
   label p {
     display: inline;
@@ -228,6 +229,7 @@ div.class-filter {
   width: 100%;
   height: auto;
   margin: 5px 0 0 0;
+  overflow-y: scroll;
   // margin-bottom: 5px;
   // padding-left: 5px;
   label p {
