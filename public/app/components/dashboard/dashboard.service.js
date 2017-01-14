@@ -80,7 +80,7 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
           // Setting and updating available filter options
           function setupFilters(data, filtersApplied, init) {
 
-            console.log('setupFilters', data, filtersApplied);
+            // console.log('setupFilters', data, filtersApplied);
 
             // Student Filter
             function studentFilterSetup(data) {
@@ -458,7 +458,7 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
 
               } else if (status === 'update') {
 
-                console.log('update');
+                // console.log('update');
 
                 rowObj.enter().append('tr').attr('class', 'student-data')
                 .attr('row-index', function(d, i) {
@@ -497,7 +497,7 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
 
             if (status === 'init') {
 
-              console.log('initializing row data');
+              // console.log('initializing row data');
 
               var rowObj = tableBody.selectAll('tr').data(rowData, function(d) { return d }).enter().append('tr').attr('class', 'student-data');
 
@@ -547,53 +547,93 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
 
               return new Promise(function(resolve, reject) {
 
-                var filteredData;
-                if (studentSelections.length) {
-                  filteredData = dashData.filter(function(d,i) { return studentSelections.includes(d[0]) });
-                } else {
-                  filteredData = dashData;
+                // var filteredData;
+                // if (studentSelections.length) {
+                //   filteredData = dashData.filter(function(d,i) { return studentSelections.includes(d[0]) });
+                // } else {
+                //   filteredData = dashData;
+                // }
+                //
+                // // update data object with class filter
+                // if (filteredData) {
+                //   if (classSelections.length) {
+                //     var filteredData = filteredData.filter(function(d,i) { return classSelections.includes(d[4]) });
+                //   }
+                // } else {
+                //   if (classSelections.length) {
+                //     var filteredData = dashData.filter(function(d,i) { return classSelections.includes(d[4]) });
+                //   } else {
+                //     var filteredData = dashData;
+                //   }
+                // }
+                // // update data object with gender filter
+                // if (filteredData) {
+                //   if (genderSelections.length) {
+                //     var filteredData = filteredData.filter(function(d,i) {
+                //       var gender;
+                //       if (d[3] === 'M') {
+                //         gender = 'Male';
+                //       } else if (d[3] === 'F') {
+                //         gender = 'Female';
+                //       }
+                //       return genderSelections.includes(gender)
+                //     });
+                //   }
+                // } else {
+                //   if (genderSelections.length) {
+                //     var filteredData = filteredData.filter(function(d,i) {
+                //       var gender;
+                //       if (d[3] === 'M') {
+                //         gender = 'Male';
+                //       } else if (d[3] === 'F') {
+                //         gender = 'Female';
+                //       }
+                //       return genderSelections.includes(gender)
+                //     });
+                //   } else {
+                //     var filteredData = dashData;
+                //   }
+                // }
+
+                var filteredData = dashData;
+
+
+                // Update filtered data object with class filter
+                if (classSelections.length) {
+                  filteredData = filteredData.filter(function(d,i) { return classSelections.includes(d[4]) });
                 }
 
-                // update data object with class filter
-                if (filteredData) {
-                  if (classSelections.length) {
-                    var filteredData = filteredData.filter(function(d,i) { return classSelections.includes(d[4]) });
-                  }
-                } else {
-                  if (classSelections.length) {
-                    var filteredData = dashData.filter(function(d,i) { return classSelections.includes(d[4]) });
-                  } else {
-                    var filteredData = dashData;
-                  }
+                // Update filtered data object with gender filter
+                if (genderSelections.length) {
+                  var filteredData = filteredData.filter(function(d,i) {
+                    var gender;
+                    if (d[3] === 'M') {
+                      gender = 'Male';
+                    } else if (d[3] === 'F') {
+                      gender = 'Female';
+                    }
+                    return genderSelections.includes(gender)
+                  });
                 }
-                // update data object with gender filter
-                if (filteredData) {
-                  if (genderSelections.length) {
-                    var filteredData = filteredData.filter(function(d,i) {
-                      var gender;
-                      if (d[3] === 'M') {
-                        gender = 'Male';
-                      } else if (d[3] === 'F') {
-                        gender = 'Female';
+
+                // Update filtered data object with student filter
+                if (studentSelections.length) {
+                  for (var i = 0; i < studentSelections.length; i++) {
+                    var matchedFilters = [false, null];
+                    for (var j = 0; j < dashData.length; j++) {
+                      if (studentSelections[i] === dashData[j][0]) {
+                        matchedFilters = [true, j];
+                        break;
                       }
-                      return genderSelections.includes(gender)
-                    });
+                    }
+                    // matchedFilters[0] ? console.log('found', matchedFilters[1]) : console.log('student not found');
+                    // matchedFilters[0] ? console.log('student within existing filter set') : filteredData.push(dashData[matchedFilters[1]]);
                   }
-                } else {
-                  if (genderSelections.length) {
-                    var filteredData = filteredData.filter(function(d,i) {
-                      var gender;
-                      if (d[3] === 'M') {
-                        gender = 'Male';
-                      } else if (d[3] === 'F') {
-                        gender = 'Female';
-                      }
-                      return genderSelections.includes(gender)
-                    });
-                  } else {
-                    var filteredData = dashData;
-                  }
+                  // filtere
+                  dData = dashData.filter(function(d,i) { return studentSelections.includes(d[0]) });
                 }
+
+                console.log(filteredData, studentSelections);
 
                 // console.log('filteredData', filteredData);
 
@@ -613,7 +653,7 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
                 setupFilters(dashData, data.filtersApplied, false);
 
                 // Setup Dashboard based on Filtered Data. If no data, display 'No Data' Message
-                console.log(!data.filteredData.length, data.filteredData);
+                // console.log(!data.filteredData.length, data.filteredData);
                 !data.filteredData.length ? generateTable(data.filteredData, 'noData') : generateTable(data.filteredData, 'update');
 
                 // Setup Dashboard based on Filterd Data
@@ -656,6 +696,7 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
           }
 
           function dashboardInitialization() {
+            searchBarInit();
             setDashboardGlobalVars();
             setupFilters(dashData, [[],[],[]], true);
             generateTable(dashData, 'init');

@@ -111,6 +111,11 @@ exportTypeIdentifier = {
     category: 'assessment',
     demographics: false
   },
+  "Trimetrix HD Talent (Legacy) TR1": {
+    length: 103,
+    category: 'assessment',
+    demographics: false
+  },
   "Talent Insights D": {
     length: 113,
     category: 'assessment',
@@ -186,6 +191,10 @@ exportTypeIdentifier = {
 
 dashboardSchoolNames = {
   "indigo-school": {
+    name: "Indigo School",
+    optionDisplay: "Indigo School"
+  },
+  "indigo-test": {
     name: "Indigo Test",
     optionDisplay: "Indigo Test (Sample)"
   },

@@ -20,7 +20,7 @@ app.factory('RWD', ['$compile', '$state', function($state) {
       return baseDimensions;
     },
     responsiveAdaptationDashboard: function() {
-      console.log('responsive calc..');
+      // console.log('responsive calc..');
       // Responsive initialization of dimensions
       var dashboardFrameElement = $('section.dashboard-frame');
       // console.log(dashboardFrameElement.width(), dashboardFrameElement.height());
