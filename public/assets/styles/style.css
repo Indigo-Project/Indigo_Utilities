@@ -393,15 +393,25 @@ h4.filter-header {
   font-weight: 600; }
 
 label.filter-label {
+  display: flex;
+  align-items: center;
   flex-basis: 100%;
   overflow: hidden;
   height: fit-content;
   padding-top: 0;
   padding-bottom: 0; }
+  label.filter-label input {
+    display: flex;
+    height: fit-content;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0; }
   label.filter-label p {
     white-space: nowrap;
     display: inline-block;
-    text-overflow: ellipsis; }
+    text-overflow: ellipsis;
+    margin: 0; }
 
 section.student-filter-frame {
   width: 100%; }

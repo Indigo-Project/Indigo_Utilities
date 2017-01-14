@@ -98,8 +98,12 @@ app.factory('RWD', ['$compile', '$state', function($state) {
       studentFilterFrame.css("margin-bottom", (studentData_Row2_Column1.height() * .05) + "px");
       studentFilterOuter.outerHeight(studentFilterFrame.height());
       studentFilterInner.height(studentFilterOuter.height() - 20);
-      studentFilter.height(studentFilterInner.height() * .65736004);
+      studentFilter.height(studentFilterInner.innerHeight() * 136.484/212.484);
       studentSearchBar.height(Math.min(20/683 * dashboardInnerHeight, 20/1380 * dashboardInnerWidth));
+
+      console.log(classFilterInner.innerHeight());
+      genderFilter.height(genderFilterInner.innerHeight() * 45.27/90.27);
+      // classFilter.height(classFilterInner.innerHeight() * 80/125);
 
       filterCheckbox.css('transform', "scale(" + Math.min(1/683 * dashboardInnerHeight, 1/1380 * dashboardInnerWidth) + ")");
 
@@ -111,10 +115,29 @@ app.factory('RWD', ['$compile', '$state', function($state) {
       genderFilter.css('padding-left', Math.min(5/683 * dashboardInnerHeight, 5/1380 * dashboardInnerWidth));
       classFilter.css('padding-left', Math.min(5/683 * dashboardInnerHeight, 5/1380 * dashboardInnerWidth));
 
-      // studentFilter.css('margin-left', Math.min(5/683 * dashboardInnerHeight, 5/1380 * dashboardInnerWidth));
-      // genderFilter.css('padding-left', Math.min(5/683 * dashboardInnerHeight, 5/1380 * dashboardInnerWidth));
-      // classFilter.css('padding-left', Math.min(5/683 * dashboardInnerHeight, 5/1380 * dashboardInnerWidth));
-
+      var filterDivMargins = {
+        student: {
+          top: Math.min(10/683 * dashboardInnerHeight, 10/1380 * dashboardInnerWidth),
+          right: 0,
+          bottom: 0,
+          left: 0
+        },
+        gender: {
+          top: Math.min(10/683 * dashboardInnerHeight, 10/1380 * dashboardInnerWidth),
+          right: 0,
+          bottom: 0,
+          left: 0
+        },
+        class: {
+          top: Math.min(10/683 * dashboardInnerHeight, 10/1380 * dashboardInnerWidth),
+          right: 0,
+          bottom: 0,
+          left: 0
+        }
+      }
+      studentFilter.css('margin', filterDivMargins.student.top + "px " + filterDivMargins.student.right + "px " + filterDivMargins.student.bottom + "px " + filterDivMargins.student.left + "px");
+      genderFilter.css('margin', filterDivMargins.gender.top + "px " + filterDivMargins.gender.right + "px " + filterDivMargins.gender.bottom + "px " + filterDivMargins.gender.left + "px");
+      classFilter.css('margin', filterDivMargins.class.top + "px " + filterDivMargins.class.right + "px " + filterDivMargins.class.bottom + "px " + filterDivMargins.class.left + "px");
 
       genderFilterFrame.height(studentData_Row2_Column1.height() * .15058088);
       genderFilterFrame.css("margin-bottom", (studentData_Row2_Column1.height() * .05) + "px");
