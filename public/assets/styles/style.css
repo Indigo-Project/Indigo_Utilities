@@ -289,9 +289,27 @@ p.dashboard-nav {
 button.format-data {
   margin-right: 20px; }
 
+section.dash-selection {
+  display: flex;
+  border-bottom: 1px solid black;
+  padding-bottom: 20px; }
+  section.dash-selection select {
+    margin-right: 20px; }
+
+button.full-screen-dash {
+  width: 200px; }
+
+iframe.dashM-iframe {
+  width: 100%;
+  height: 50.208333%;
+  margin-top: 20px;
+  overflow: hidden;
+  border: 1px solid black; }
+
 section.dashboard-frame {
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
   margin: 0; }
 
 section.dashboard-studentData {
@@ -300,8 +318,14 @@ section.dashboard-studentData {
   width: 100%;
   height: auto; }
   section.dashboard-studentData section.sd-row1 {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
     width: 100%; }
-    section.dashboard-studentData section.sd-row1 h3 {
+    section.dashboard-studentData section.sd-row1 h1 {
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
       margin: 0px; }
   section.dashboard-studentData section.sd-row2 {
     display: flex;
@@ -403,8 +427,7 @@ div.gender-filter {
     margin: 0; }
 
 section.gender-filter {
-  width: 100%;
-  height: 305px; }
+  width: 100%; }
 
 section.class-filter-frame {
   width: 100%; }
@@ -432,9 +455,7 @@ section.student-count {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  width: 23%;
-  height: 132.38px;
-  margin-left: 50px; }
+  width: 23%; }
 
 div.student-count h1 {
   text-align: center;
@@ -457,7 +478,7 @@ table.adult-avgs {
     padding: 3px 7px 3px 6px;
     text-align: left; }
   table.adult-avgs th {
-    background-color: #8afff4;
+    background-color: #c8fffa;
     border-top: 1px solid black;
     border-bottom: 1px solid black;
     border-left: 0.5px solid #828282;
@@ -478,24 +499,7 @@ td.student-data, th.student-data {
   padding: 4px;
   border: 1px solid #ccc;
   text-align: left;
-  font-size: 9px; }
-
-section.dash-selection {
-  display: flex;
-  border-bottom: 1px solid black;
-  padding-bottom: 20px; }
-  section.dash-selection select {
-    margin-right: 20px; }
-
-button.full-screen-dash {
-  width: 200px; }
-
-iframe.dashM-iframe {
-  width: 100%;
-  height: 50.208333%;
-  margin-top: 20px;
-  overflow: hidden;
-  border: 1px solid black; }
+  font-size: 10.5px; }
 
 div.student-data-table {
   position: relative; }

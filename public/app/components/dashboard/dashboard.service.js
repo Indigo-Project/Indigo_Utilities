@@ -87,7 +87,7 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
 
               var studentFilter = d3.select('div.student-filter')
               var studentFilterLabels = studentFilter.selectAll('label').data(data, function(d) { return d })
-              var studentFilterLabelsInner = studentFilterLabels.enter().append('label');
+              var studentFilterLabelsInner = studentFilterLabels.enter().append('label').attr('class', 'filter-label');
               studentFilterLabelsInner.append('input').attr('type', 'checkbox')
               studentFilterLabelsInner.append('p')
               .text(function(d) {
@@ -113,7 +113,7 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
             function genderFilterSetup(data) {
 
               var genderFilter = d3.select('div.gender-filter')
-              var genderFilterLabels = genderFilter.selectAll('label').data(['Male', 'Female']).enter().append('label');
+              var genderFilterLabels = genderFilter.selectAll('label').data(['Male', 'Female']).enter().append('label').attr('class', 'filter-label');
               genderFilterLabels.append('input').attr('type', 'checkbox');
               genderFilterLabels.append('p')
               .text(function(d) {
@@ -138,7 +138,7 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
             function classFilterSetup(data) {
 
               var classFilter = d3.select('div.class-filter')
-              var classFilterLabels = classFilter.selectAll('label').data(studentClasses).enter().append('label');
+              var classFilterLabels = classFilter.selectAll('label').data(studentClasses).enter().append('label').attr('class', 'filter-label');
               classFilterLabels.append('input').attr('type', 'checkbox');
               classFilterLabels.append('p')
               .text(function(d) {
