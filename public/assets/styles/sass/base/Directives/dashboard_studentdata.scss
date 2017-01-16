@@ -165,6 +165,7 @@ div.student-filter {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
+  justify-content: flex-start;
   width: 100%;
   height: auto;
   overflow-y: scroll;

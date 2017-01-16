@@ -1,8 +1,8 @@
 section.dashboard-studentdetails {
+  position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
-  position: absolute;
   top: 0px;
   left: 0px;
   width: 100vw;
@@ -11,12 +11,23 @@ section.dashboard-studentdetails {
 }
 
 section.student-window {
+  position: relative;
   display: flex;
   flex-direction: column;
   background-color: white;
   width: 90vw;
   height: 90vh;
   border: 1px solid #4F4498;
+}
+
+div.exit-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: rgb(255, 119, 119);
+  &:hover {
+    color: rgb(255, 41, 41);
+  }
 }
 
 // Universal Elements

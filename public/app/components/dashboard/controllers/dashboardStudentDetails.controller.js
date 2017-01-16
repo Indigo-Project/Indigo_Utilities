@@ -86,6 +86,7 @@ app.controller('DashboardStudentDetails', ['$compile', '$scope', '$location', '$
         mediumFontLh: Math.min((16/608.6875  * 4/5) * studentWindowInnerHeight, (16/1234 * 4/5) * studentWindowInnerWidth),
         largeFont: Math.min(20/608.6875 * studentWindowInnerHeight, 20/1234 * studentWindowWidth),
         largeFontLh: Math.min((20/608.6875  * 4/5) * studentWindowInnerHeight, (20/1234 * 4/5) * studentWindowInnerWidth),
+        sedSSPaddingRight: Math.min((20/608.6875  * 4/5) * studentWindowInnerHeight, (20/1234 * 4/5) * studentWindowInnerWidth)
       },
       labelSizing: {
         font: Math.min(10/608.6875 * studentWindowInnerHeight, 10/1234 * studentWindowWidth),
@@ -95,6 +96,11 @@ app.controller('DashboardStudentDetails', ['$compile', '$scope', '$location', '$
         spanMarginRight: 16.5/1234 * studentWindowWidth,
         spanWidth: 110/1234 * studentWindowWidth,
         valLh: Math.min(12.8/608.6875 * studentWindowInnerHeight, 12.8/1234 * studentWindowWidth),
+      },
+      miscDimensions: {
+        exitButton: {
+          heightWidth: Math.min(15/608.6875 * studentWindowInnerHeight, 15/1234 * studentWindowWidth)
+        }
       }
     };
 
@@ -105,6 +111,7 @@ app.controller('DashboardStudentDetails', ['$compile', '$scope', '$location', '$
     var pSub = $('p.sd-sub');
     var label = $('label.sd-label');
     var figCaption = $('figcaption.sde-row3-title-caption');
+    var exitButton = $('div.exit-button')
 
     var setUniversalDimensions = function () {
       valContent.css('margin-bottom', responsiveCalcs.valueSizing.marginBottom + "px");
@@ -115,6 +122,8 @@ app.controller('DashboardStudentDetails', ['$compile', '$scope', '$location', '$
       label.css('line-height', responsiveCalcs.labelSizing.lineHeight + 'px');
       figCaption.css('font-size', responsiveCalcs.sectionFigCaption.fontSize);
       figCaption.css('padding-left', responsiveCalcs.sectionFigCaption.paddingLeft);
+      exitButton.width(responsiveCalcs.miscDimensions.exitButton.heightWidth);
+      exitButton.height(responsiveCalcs.miscDimensions.exitButton.heightWidth)
     }
     setUniversalDimensions();
 
@@ -190,7 +199,7 @@ app.controller('DashboardStudentDetails', ['$compile', '$scope', '$location', '$
     var row3Title = $('h4.sde-row3-title');
     var row3TitleCaption = $('figcaption.sde-row3-title-caption');
 
-    function setRow3HeightByElements() {
+    function setRow3Dimensions() {
 
       row3.css('padding', responsiveCalcs.rowTopBottomPadding.row3[0] + 'px 0 ' + responsiveCalcs.rowTopBottomPadding.row3[1] + 'px 0');
       row3Title.css('font-size', responsiveCalcs.sectionTitles.row3Font + 'px');
@@ -224,7 +233,7 @@ app.controller('DashboardStudentDetails', ['$compile', '$scope', '$location', '$
       skillsSpans.css('margin-right', responsiveCalcs.skillsDimensions.spanMarginRight + 'px');
       skillsVals.css('line-height', responsiveCalcs.skillsDimensions.valLh + 'px');
     }
-    setRow3HeightByElements();
+    setRow3Dimensions();
 
 
     // Row 4 Elements
@@ -247,7 +256,7 @@ app.controller('DashboardStudentDetails', ['$compile', '$scope', '$location', '$
     var seVals = $('p.sde-se');
     var sedVals = $('p.sde-sed');
 
-    function setRow4HeightByElements() {
+    function setRow4Dimensions() {
 
       row4.css('padding-top', responsiveCalcs.rowTopBottomPadding.row4[0]);
       row4Titles.css('font-size', responsiveCalcs.sectionTitles.row4Font + 'px');
@@ -263,12 +272,13 @@ app.controller('DashboardStudentDetails', ['$compile', '$scope', '$location', '$
       sedSection.css('padding-left', responsiveCalcs.sectionPadding.left + 'px');
       sedContent.height(responsiveCalcs.contentHeight.row4Sed);
       sedContent.css('padding-left', responsiveCalcs.contentPadding.left + 'px');
-      sedHeader.css('margin-bottom', responsiveCalcs.sectionTitles.row4Margin + 'px');
+      sedHeader.css('margin-bottom', responsiveCalcs.sectionTitles.row4Margin2 + 'px');
       sedVals.css('font-size', responsiveCalcs.valueSizing.smallFont + 'px');
       sedVals.css('line-height', responsiveCalcs.valueSizing.smallFontLh + 'px');
       sedVals.css('margin-bottom', responsiveCalcs.valueSizing.marginBottom + 'px');
+      sedVals.css('margin-right', responsiveCalcs.valueSizing.sedSSPaddingRight + 'px');
     }
-    setRow4HeightByElements();
+    setRow4Dimensions();
 
   }
 
