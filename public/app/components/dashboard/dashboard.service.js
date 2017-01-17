@@ -76,6 +76,18 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
             columnColorIndex = ["rgba(255,255,255,", "rgba(255,255,255,", "rgba(255,255,255,", "rgba(255, 52, 52,", "rgba(250, 238, 74,", "rgba(41, 218, 32,", "rgba(96, 112, 255,", "rgba(212, 175, 55,", "rgba(212, 175, 55,", "rgba(212, 175, 55,", "rgba(212, 175, 55,", "rgba(212, 175, 55,", "rgba(212, 175, 55,"];
           }
 
+          function resetFiltersCta() {
+            var resetFilterCTA = d3.select('p.reset-filters-cta')
+            console.log(resetFilterCTA);
+            resetFilterCTA.on('click', function() {
+              unselectFilters();
+              setupFilters(dashData, [[],[],[]], true);
+              generateTable(dashData, 'filterReset');
+            })
+            // console.log(angular.element('p.reset-filters-cta'));
+            // $compile($('table.student-data tbody td:nth-of-type(1)'))(angular.element('p.reset-filters-cta').scope());
+          }
+
           // Dashboard Filters Setup
           // Setting and updating available filter options
           function setupFilters(data, filtersApplied, init) {
@@ -292,6 +304,25 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
 
           }
 
+          // Unselect all filters
+          // Uncheck all checked boxes, and empty global filter selection objects
+          function unselectFilters() {
+
+
+            var genderFilters = d3.select('div.gender-filter').selectAll('input')
+            .attr('checked', function(d,i,a) { return a[i].checked = false; })
+            genderSelections = [];
+
+            var classFilters = d3.select('div.class-filter').selectAll('input')
+            .attr('checked', function(d,i,a) { return a[i].checked = false; })
+            classSelections = [];
+
+            var studentFilters = d3.select('div.student-filter').selectAll('input')
+            .attr('checked', function(d,i,a) { return a[i].checked = false; })
+            studentSelections = [];
+
+          }
+
           // populate rows with data, based on student data object index references
           function generateTable(rowData, status) {
 
@@ -428,23 +459,6 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
                 .on("click", function() {
 
                   noDataContainer.remove();
-
-                  function unselectFilters() {
-
-
-                    var genderFilters = d3.select('div.gender-filter').selectAll('input')
-                    .attr('checked', function(d,i,a) { return a[i].checked = false; })
-                    genderSelections = [];
-
-                    var classFilters = d3.select('div.class-filter').selectAll('input')
-                    .attr('checked', function(d,i,a) { return a[i].checked = false; })
-                    classSelections = [];
-
-                    var studentFilters = d3.select('div.student-filter').selectAll('input')
-                    .attr('checked', function(d,i,a) { return a[i].checked = false; })
-                    studentSelections = [];
-
-                  }
 
                   unselectFilters();
                   setupFilters(dashData, [[],[],[]], true);
@@ -696,9 +710,10 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
           }
 
           function dashboardInitialization() {
-            searchBarInit();
             setDashboardGlobalVars();
             setupFilters(dashData, [[],[],[]], true);
+            searchBarInit();
+            resetFiltersCta();
             generateTable(dashData, 'init');
           }
 

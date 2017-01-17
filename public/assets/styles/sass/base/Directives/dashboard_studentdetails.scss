@@ -24,9 +24,16 @@ div.exit-button {
   position: absolute;
   top: 0;
   right: 0;
-  color: rgb(255, 119, 119);
+  // height: fit-content;
+  // width: fit-content;
+  // font-size: 20px;
+  // line-height: 10px;
+  // padding: 2px;
+  color: rgb(255, 156, 156);
   &:hover {
-    color: rgb(255, 41, 41);
+    color: rgb(255, 0, 0);
+    cursor: pointer;
+    cursor: hand;
   }
 }
 

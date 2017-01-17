@@ -119,17 +119,45 @@ h4.filter-header {
   font-weight: 600;
 }
 
+// label.filter-label {
+//   display: flex;
+//   align-items: center;
+//   flex-basis: 100%;
+//   overflow: hidden;
+//   height: fit-content;
+//   padding-top: 0;
+//   padding-bottom: 0;
+//   input {
+//     display: flex;
+//     height: fit-content;
+//     justify-content: center;
+//     align-items: center;
+//     margin: 0;
+//     padding: 0;
+//   }
+//   p {
+//     white-space: nowrap;
+//     display: inline-block;
+//     text-overflow: ellipsis;
+//     margin: 0;
+//   }
+// }
+
 label.filter-label {
   display: flex;
   align-items: center;
   flex-basis: 100%;
   overflow: hidden;
-  height: fit-content;
+  // height: fit-content;
   padding-top: 0;
   padding-bottom: 0;
+  cursor: pointer;
+  cursor: hand;
+  // min-height: 14px;
+  // max-height: 0;
   input {
     display: flex;
-    height: fit-content;
+    // height: fit-content;
     justify-content: center;
     align-items: center;
     margin: 0;
@@ -197,7 +225,7 @@ div.gender-filter {
   width: 100%;
   height: auto;
   margin: 5px 0 0 0;
-  overflow-y: scroll;
+  // overflow-y: scroll;
   // padding-left: 5px;
   label p {
     display: inline;
@@ -230,7 +258,7 @@ div.class-filter {
   width: 100%;
   height: auto;
   margin: 5px 0 0 0;
-  overflow-y: scroll;
+  // overflow-y: scroll;
   // margin-bottom: 5px;
   // padding-left: 5px;
   label p {
@@ -354,6 +382,15 @@ button.no-data-cta {
   vertical-align: center;
 }
 
-// section.class-filter-frame {
-//   height: fit-content;
-// }
+p.reset-filters-cta {
+  width: fit-content;
+  font-size: 12px;
+  margin: 0 0 23px 0;
+  padding: 0;
+  color: rgb(106, 139, 255);
+  &:hover {
+    color: rgb(20, 2, 245);
+    cursor: pointer;
+    cursor: hand;
+  }
+}

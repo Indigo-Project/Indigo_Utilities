@@ -397,12 +397,12 @@ label.filter-label {
   align-items: center;
   flex-basis: 100%;
   overflow: hidden;
-  height: fit-content;
   padding-top: 0;
-  padding-bottom: 0; }
+  padding-bottom: 0;
+  cursor: pointer;
+  cursor: hand; }
   label.filter-label input {
     display: flex;
-    height: fit-content;
     justify-content: center;
     align-items: center;
     margin: 0;
@@ -454,8 +454,7 @@ div.gender-filter {
   flex-direction: column;
   width: 100%;
   height: auto;
-  margin: 5px 0 0 0;
-  overflow-y: scroll; }
+  margin: 5px 0 0 0; }
   div.gender-filter label p {
     display: inline;
     margin: 0; }
@@ -478,8 +477,7 @@ div.class-filter {
   flex-direction: column;
   width: 100%;
   height: auto;
-  margin: 5px 0 0 0;
-  overflow-y: scroll; }
+  margin: 5px 0 0 0; }
   div.class-filter label p {
     display: inline;
     margin: 0; }
@@ -559,6 +557,17 @@ button.no-data-cta {
   font-weight: bold;
   vertical-align: center; }
 
+p.reset-filters-cta {
+  width: fit-content;
+  font-size: 12px;
+  margin: 0 0 23px 0;
+  padding: 0;
+  color: #6a8bff; }
+  p.reset-filters-cta:hover {
+    color: #1402f5;
+    cursor: pointer;
+    cursor: hand; }
+
 section.dashboard-studentdetails {
   position: absolute;
   display: flex;
@@ -583,9 +592,11 @@ div.exit-button {
   position: absolute;
   top: 0;
   right: 0;
-  color: #ff7777; }
+  color: #ff9c9c; }
   div.exit-button:hover {
-    color: #ff2929; }
+    color: red;
+    cursor: pointer;
+    cursor: hand; }
 
 span.sd-span {
   display: flex;
