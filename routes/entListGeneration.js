@@ -104,7 +104,6 @@ router.post('/generate', function(req, res, next) {
         var UtiCalc = Math.max(-20, Math.min(10*(UtiScore - 4), 20) );
         var IndCalc = Math.max(-20, 10 * (IndScore - 5) );
 
-
         // ENT LIST OR NOT, SOC-ENT OR NOT
         var socialEntr;
         var studentOutput;
