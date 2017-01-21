@@ -80,18 +80,13 @@ app.controller('DashboardManager', ['$compile', '$scope', '$location', '$state',
   // On Dashboard Manager school selection, configure available versions for selected school
   $scope.view.updateVersionOptions = function() {
     if ($scope.view.dashMschoolCode) {
+
+      $scope.view.showMDashboard ? $scope.view.showMDashboard = false : null;
+
       var returnVersions = {};
       $scope.view.currentVersions = $scope.data.availableVersions[$scope.view.dashMschoolCode];
+      $scope.view.dashMschoolVersion = "";
       console.log($scope.view.currentVersions);
-      // var sortableArr = [];
-      // for (var version in $scope.view.currentVersions) {
-      //   sortableArr.push([version, $scope.view.currentVersions[version].dateCreated]);
-      // }
-      // console.log(sortableArr);
-      // sortableArr.sort(function(a,b) {
-      //   return a[1] - b[1];
-      // })
-      // console.log(sortableArr);
     } else {
       console.log('NO COLLECTION SELECTED');
     }
