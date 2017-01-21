@@ -2,10 +2,7 @@ app.factory('siteNavigation', ['$state', function($state) {
 
   return {
     accessFunction: function(selectedFunction) {
-      console.log(selectedFunction);
-      if (selectedFunction === "pbi_pfmt") {
-        $state.go("pbi_pfmt");
-      } else if (selectedFunction === "blue_list") {
+      if (selectedFunction === "blue_list") {
         $state.go("blue_list");
       } else if (selectedFunction === "ent_list") {
         $state.go("ent_list");

@@ -1,8 +1,9 @@
 app.directive('dashboardStudentDetails', ['DashboardService', function(DashboardService) {
 
   function link(scope, element, attrs) {
-    // Generate student Details Popup using D3
-    DashboardService.d3Setup(scope.data.currentStudentDataObject, "studentDetails")
+
+    // Generate Student Details Window (D3)
+    DashboardService.generateD3Dashboard(scope.data.currentStudentDataObject, "studentDetails")
   }
 
   return {

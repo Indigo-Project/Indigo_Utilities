@@ -1,14 +1,4 @@
-app.controller('TTIMassDownloader', ['$scope', '$state', '$http', 'siteNavigation', 'TTI_API', 'socket', '$window', function($scope, $state, $http, siteNavigation, TTI_API, socket, $window) {
-
-  // socket.disconnect()
-  // .then(function() {
-  //   console.log('disconnected');
-  //   socket.connect('http://localhost:3000');
-  //   console.log('reconnected');
-  // })
-
-  // socket.connect('http://localhost:3000')
-
+app.controller('TTIBatchDownloader', ['$scope', '$state', '$http', 'siteNavigation', 'TTI_API', 'socket', '$window', function($scope, $state, $http, siteNavigation, TTI_API, socket, $window) {
 
   $scope.data = {};
   $scope.view = {};

@@ -33,10 +33,9 @@ app.controller('BlueListGenerator', ['$scope', '$state', '$http', 'siteNavigatio
     $scope.uploader.schoolYearTaken = undefined;
     $scope.uploader.class = undefined;
     $('input[type=file]').val(null)
-    // console.log($scope.uploader.loadedFiles);
   }
 
-  $scope.data.generateEntList = function(fileName) {
+  $scope.data.generateBlueList = function(fileName) {
     if ($scope.uploader.loadedFiles.length === 0) {
       alert("NO FILES HAVE BEEN LOADED FOR FORMATTING");
     } else if (fileName === undefined || fileName === "" ) {
@@ -45,7 +44,8 @@ app.controller('BlueListGenerator', ['$scope', '$state', '$http', 'siteNavigatio
       console.log('GENERATING');
       $http({
         method: 'POST',
-        url: '/api/blue-list',
+        url: '/blue-list/generate',
+        // url: '/api/blue-list',
         data: { inputFiles:$scope.uploader.loadedFiles, outputFileName: fileName }
         // responseType: 'blob'
       })

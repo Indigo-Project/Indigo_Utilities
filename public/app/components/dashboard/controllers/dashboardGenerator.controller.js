@@ -21,7 +21,7 @@ app.controller('DashboardGenerator', ['$compile', '$scope', '$location', '$state
 
   // load school name options for 'Select School' dropdown
   $scope.view.loadSchoolNameOptions = function() {
-    DashboardService.getSchoolNameOptions()
+    DashboardService.retrieveSchoolNameOptions()
     .then(function(schools) {
       var schoolKeys = Object.keys(schools.data);
       for (var i = 0; i < schoolKeys.length; i++) {
@@ -100,7 +100,7 @@ app.controller('DashboardGenerator', ['$compile', '$scope', '$location', '$state
         }
         // $scope.data.schoolName = $scope.view.dashboardNameOptions[$scope.data.schoolCode].name;
 
-        DashboardService.getDataObject($scope.uploader.loadedFiles, $scope.data.schoolCode, $scope.data.dashboardVersionName)
+        DashboardService.createDashboardVersionDataObject($scope.uploader.loadedFiles, $scope.data.schoolCode, $scope.data.dashboardVersionName)
         .then(function(data) {
           console.log('dashboard data object', data);
           var data = data.data;
@@ -116,7 +116,7 @@ app.controller('DashboardGenerator', ['$compile', '$scope', '$location', '$state
               $scope.data.studentClasses.push(dataObjKeys[i].substring(0,4))
             }
           }
-          DashboardService.d3Setup({ data: data }, "studentData")
+          DashboardService.generateD3Dashboard({ data: data }, "studentData")
           $('span.sd-title-name').html($scope.data.schoolName + " ");
           $scope.view.dashboardCreationStatus = "success";
           $scope.view.dashboardGeneratedVersion = data.metaData.version;

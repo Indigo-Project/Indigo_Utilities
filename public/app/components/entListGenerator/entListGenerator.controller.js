@@ -14,7 +14,6 @@ app.controller('EntListGenerator', ['$scope', '$state', '$http', 'siteNavigation
     siteNavigation.accessFunction($scope.view.selectedFunction);
   }
 
-
   $scope.uploader.addChosenReports = function() {
     if($scope.uploader.file === undefined)  {
       alert("NO FILE UPLOADED");
@@ -46,7 +45,8 @@ app.controller('EntListGenerator', ['$scope', '$state', '$http', 'siteNavigation
       console.log('GENERATING');
       $http({
         method: 'POST',
-        url: '/api/ent-list',
+        url: '/ent-list/generate',
+        // url: '/api/ent-list',
         data: { inputFiles:$scope.uploader.loadedFiles, outputFileName: fileName }
         // responseType: 'blob'
       })

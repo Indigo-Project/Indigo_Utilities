@@ -48,7 +48,8 @@ app.controller('SumStatsGenerator', ['$scope', '$state', '$http', 'siteNavigatio
       console.log(fileName);
       $http({
         method: 'POST',
-        url: '/api/summary-stats',
+        url: '/summary-stats/generate',
+        // url: '/api/summary-stats',
         data: { inputFiles: $scope.uploader.loadedFiles, outputFileName: fileName }
         // responseType: 'blob'
       })

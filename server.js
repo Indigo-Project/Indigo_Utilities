@@ -11,7 +11,13 @@ var app = express();
 
 var io = socket_io();
 app.io = io;
-var api = require('./routes/api')(io);
+
+var entListGeneration = require('./routes/entListGeneration');
+var blueListGeneration = require('./routes/blueListGeneration');
+var sumStatsGeneration = require('./routes/sumStatsGeneration');
+var batchReportDownloader = require('./routes/batchReportDownloader')(io);
+var TTI_API = require('./routes/TTI_API');
+var dashboard = require('./routes/dashboard');
 
 // app.set('views', path.join(__dirname, 'views'));
 // app.set('view engine', 'jade');
@@ -25,7 +31,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // reroute url parameters of angular ui-router routes
-app.use("/pbi_pfmt", express.static(__dirname + "/public/index.html"));
 app.use("/blue_list", express.static(__dirname + "/public/index.html"));
 app.use("/ent_list", express.static(__dirname + "/public/index.html"));
 app.use("/tti_massdl", express.static(__dirname + "/public/index.html"));
@@ -36,7 +41,12 @@ app.use("/dashboard_manager", express.static(__dirname + "/public/index.html"));
 app.use("/dashboards/:collection/:id", express.static(__dirname + "/public/index.html"));
 app.use("/dashboards/:collection/:id/:studentpath", express.static(__dirname + "/public/index.html"));
 
-app.use('/api', api);
+app.use('/ent-list', entListGeneration);
+app.use('/blue-list', blueListGeneration);
+app.use('/summary-stats', sumStatsGeneration);
+app.use('/batch-download', batchReportDownloader);
+app.use('/TTI-API', TTI_API);
+app.use('/dashboard', dashboard);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

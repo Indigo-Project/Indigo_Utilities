@@ -24,7 +24,7 @@ app.controller('DashboardManager', ['$compile', '$scope', '$location', '$state',
   }
 
   // school names init
-  DashboardService.getSchoolNameOptions()
+  DashboardService.retrieveSchoolNameOptions()
   .then(function(data) {
     $scope.view.schoolNameOptions = data.data;
     var schoolKeys = Object.keys($scope.view.schoolNameOptions);
@@ -32,7 +32,7 @@ app.controller('DashboardManager', ['$compile', '$scope', '$location', '$state',
       $scope.view.schoolNameOptions[schoolKeys[i]].code = schoolKeys[i]
     }
 
-    DashboardService.getStoredSchools()
+    DashboardService.retrieveSchoolsWithDashboards()
     .then(function(collections) {
       var collectionNames = Object.keys(collections.data);
       // console.log(collectionNames);
@@ -102,13 +102,13 @@ app.controller('DashboardManager', ['$compile', '$scope', '$location', '$state',
     $scope.view.showMDashboard = false;
     if ($scope.view.dashMschoolVersion) {
       // console.log($scope.view.dashMschoolCode, $scope.view.dashMschoolVersion);
-      DashboardService.getStoredDashboardData($scope.view.dashMschoolCode, $scope.view.dashMschoolVersion)
+      DashboardService.retrieveStoredDashboardVersionDataObject($scope.view.dashMschoolCode, $scope.view.dashMschoolVersion)
       .then(function(data) {
         console.log('got data', data);
         $scope.data.currentDashboardDataObject = data
         localStorageService.set('currentDashboardData', data);
         var inputObject = { data: $scope.data.currentDashboardDataObject, schoolName: $scope.view.dashMschoolCode}
-        DashboardService.d3Setup(inputObject, "studentData");
+        DashboardService.generateD3Dashboard(inputObject, "studentData");
         $scope.view.iframeSrc = '/dashboards/' + $scope.view.dashMschoolCode + "/" + $scope.data.currentDashboardDataObject._id;
         $scope.view.showMDashboard = true;
         responsiveAdaptationDM();
@@ -124,13 +124,13 @@ app.controller('DashboardManager', ['$compile', '$scope', '$location', '$state',
   // if no dash-data set has been specified from manager, load based on full screen params
   $scope.data.loadVersionFS = function() {
     return new Promise(function(resolve, reject) {
-      DashboardService.getStoredDashboardData($stateParams.collection, null, $stateParams.id)
+      DashboardService.retrieveStoredDashboardVersionDataObject($stateParams.collection, null, $stateParams.id)
       .then(function(data) {
         console.log(data);
         $scope.data.currentDashboardDataObject = data
         localStorageService.set('currentDashboardData', data, $scope.view.dashMschoolCode);
         var inputObject = { data: $scope.data.currentDashboardDataObject, schoolName: $scope.view.dashMschoolCode };
-        DashboardService.d3Setup(inputObject, "studentData");
+        DashboardService.generateD3Dashboard(inputObject, "studentData");
         // $scope.view.iframeSrc = '/dashboards/' + $scope.view.dashMschoolCode + "/" + $scope.data.currentDashboardDataObject._id;
         // $scope.view.showMDashboard = true;
         responsiveAdaptationDM();

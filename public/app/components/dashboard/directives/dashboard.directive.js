@@ -1,10 +1,9 @@
 app.directive('dashboard', ['$compile','DashboardService', function($compile, DashboardService) {
 
   function link(scope, element, attrs) {
-    DashboardService.d3Setup({ data: scope.data.currentDashboardDataObject }, 'studentData');
 
-    // compile ng-click='view.openStudentDetails' attribute added during d3Setup to DOM
-    // $compile($('table.student-data tbody td:nth-of-type(1)'))(scope);
+    // Generate D3 Dashboard
+    DashboardService.generateD3Dashboard({ data: scope.data.currentDashboardDataObject }, 'studentData');
   }
 
   return {

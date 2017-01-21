@@ -344,7 +344,8 @@ section.dashboard-studentData {
     section.dashboard-studentData section.sd-row2 section.sd-column1 {
       display: flex;
       flex-direction: column;
-      width: 16%; }
+      width: 16%;
+      justify-content: space-between; }
     section.dashboard-studentData section.sd-row2 section.sd-column2 {
       display: flex;
       flex-direction: column;
@@ -413,20 +414,26 @@ label.filter-label {
     text-overflow: ellipsis;
     margin: 0; }
 
-section.student-filter-frame {
+form.filter-form {
+  height: fit-content; }
+
+section.student-filter-outer-frame {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
   width: 100%; }
 
-section.student-filter-outer {
+section.student-filter-frame {
   width: 80%;
   border: 1px solid black; }
 
-section.student-filter-inner {
-  height: auto; }
-
 input.search-bar {
-  width: 100%; }
+  width: 100%;
+  padding: 1px;
+  margin: 0;
+  border-width: 1px; }
 
-div.student-filter {
+div.student-filter-options {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
@@ -435,50 +442,42 @@ div.student-filter {
   height: auto;
   overflow-y: scroll;
   overflow-x: auto; }
-  div.student-filter label p {
+  div.student-filter-options label p {
     display: inline;
     margin: 0; }
+
+section.gender-filter-outer-frame {
+  width: 100%; }
 
 section.gender-filter-frame {
-  width: 100%; }
-
-section.gender-filter-outer {
   width: 80%;
+  height: fit-content;
   border: 1px solid black; }
 
-section.gender-filter-inner {
-  height: auto; }
-
-div.gender-filter {
+div.gender-filter-options {
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: auto;
-  margin: 5px 0 0 0; }
-  div.gender-filter label p {
+  height: fit-content; }
+  div.gender-filter-options label p {
     display: inline;
     margin: 0; }
 
-section.gender-filter {
-  width: 100%; }
+section.class-filter-outer-frame {
+  width: 100%;
+  height: fit-content; }
 
 section.class-filter-frame {
-  width: 100%; }
-
-section.class-filter-outer {
   width: 80%;
+  height: fit-content;
   border: 1px solid black; }
 
-section.class-filter-inner {
-  height: auto; }
-
-div.class-filter {
+div.class-filter-options {
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: auto;
-  margin: 5px 0 0 0; }
-  div.class-filter label p {
+  height: fit-content; }
+  div.class-filter-options label p {
     display: inline;
     margin: 0; }
 
@@ -533,6 +532,14 @@ td.student-data, th.student-data {
   border: 1px solid #ccc;
   text-align: left; }
 
+th.des:after {
+  content: "\21E9";
+  float: right; }
+
+th.asc:after {
+  content: "\21E7";
+  float: right; }
+
 div.student-data-table {
   position: relative; }
 
@@ -556,6 +563,11 @@ button.no-data-cta {
   width: 50%;
   font-weight: bold;
   vertical-align: center; }
+
+div.filter-options {
+  display: flex;
+  align-items: flex-end;
+  height: max-content; }
 
 p.reset-filters-cta {
   width: fit-content;

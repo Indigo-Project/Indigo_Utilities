@@ -21,162 +21,247 @@ app.factory('RWD', ['$compile', '$state', function($state) {
     },
 
     responsiveAdaptationDashboard: function() {
-      // console.log('responsive calc..');
+
       // Responsive initialization of dimensions
       var dashboardFrameElement = $('section.dashboard-frame');
       var baseDimensions = RWD.calculateBaseDimensions(dashboardFrameElement);
 
-      // viewport width: 1440
-      // viewport height: 723
+      // my viewport width: 1440
+      // my viewport height: 723
 
       // Dashboard frame width and height changed to viewport width and height
       var dashboardWidth = baseDimensions.viewportWidth;
-      // dashboardFrameElement.width(dashboardWidth);
       var dashboardHeight = baseDimensions.viewportHeight;
-      // dashboardFrameElement.height(dashboardHeight);
 
       var horizontalPaddingRatio = 30/1440;
       var verticalPaddingRatio = 20/723;
 
-      // Set Padding and Dimensions of studentData Dashboard Section (inner-frame)
+      // Set Padding for Dashboard Frame
       var dashboardFramePadding = { top: verticalPaddingRatio * dashboardHeight, right: horizontalPaddingRatio * dashboardWidth, bottom: verticalPaddingRatio * dashboardHeight, left: horizontalPaddingRatio * dashboardWidth }
       dashboardFrameElement.css("padding", dashboardFramePadding.top + "px " + dashboardFramePadding.right + "px " + dashboardFramePadding.bottom + "px  " + dashboardFramePadding.left + "px");
+
+      // Set dimensions for inner Dashboard Section
+      var dashboardElement = $('section.dashboard-studentData');
       var dashboardInnerWidth = dashboardWidth - (dashboardFramePadding.left + dashboardFramePadding.right);
       var dashboardInnerHeight = dashboardHeight - (dashboardFramePadding.top + dashboardFramePadding.bottom);
-
-      console.log(dashboardInnerWidth, dashboardInnerHeight);
-
-      var dashboardElement = $('section.dashboard-studentData');
       dashboardElement.width(dashboardInnerWidth);
       dashboardElement.height(dashboardInnerHeight);
 
-      console.log(dashboardFrameElement.width(), dashboardFrameElement.height());
-      console.log(dashboardElement.width(), dashboardElement.height());
-
+      // 1380, 683
 
       var responsiveCalcs = {
+        framePadding: {
+          horizontalRatio: 30/1440,
+          verticalRatio: 20/723
+        },
+        sectionHeights: {
+          row1: dashboardInnerHeight * .102733,
+          row2: dashboardInnerHeight * .897267,
+          row2_column1: dashboardInnerHeight * .897267,
+          row2_column2: dashboardInnerHeight * .897267,
+          row2_column2_row1: (dashboardInnerHeight * .897267) * .79695,
+          row2_column2_row2: (dashboardInnerHeight * .897267) * .20305
+        },
+        filterUniversal: {
+          checkboxScale: Math.min(1/683 * dashboardInnerHeight, 1/1380 * dashboardInnerWidth),
+          titleFontSize: Math.min(14/683 * dashboardInnerHeight, 14/1380 * dashboardInnerWidth),
+          titleLineHeight: Math.min(14/683 * dashboardInnerHeight, 14/1380 * dashboardInnerWidth),
+          headerMarginBottom: Math.min(5/683 * dashboardInnerHeight, 5/1380 * dashboardInnerWidth)
+        },
+        studentFilter: {
+          outerFrame: {
+            height: (dashboardInnerHeight * .897267) * .35,
+            marginBottom: (dashboardInnerHeight * .897267) * .05
+          },
+          frame: {
+            height: ((dashboardInnerHeight * .897267) * .35),
+            padding: Math.min(10/683 * dashboardInnerHeight, 10/1380 * dashboardInnerWidth)
+          },
+          optionsDiv: {
+            height: ( ((dashboardInnerHeight * .897267) * .35) - (Math.min(10/683 * dashboardInnerHeight, 10/1380 * dashboardInnerWidth) * 2) ) * 147.438/192.484,
+            paddingLeft: Math.min(5/683 * dashboardInnerHeight, 5/1380 * dashboardInnerWidth),
+            margins: {
+              top: Math.min(4/683 * dashboardInnerHeight, 4/1380 * dashboardInnerWidth),
+              right: 0,
+              bottom: 0,
+              left: 0
+            }
+          },
+          searchBar: {
+            height: Math.min(20/683 * dashboardInnerHeight, 20/1380 * dashboardInnerWidth),
 
+          }
+        },
+        genderFilter: {
+          outerFrame: {
+            marginBottom: (dashboardInnerHeight * .897267) * .05
+          },
+          frame: {
+            padding: Math.min(10/683 * dashboardInnerHeight, 10/1380 * dashboardInnerWidth)
+          },
+          optionsDiv: {
+            paddingLeft: Math.min(5/683 * dashboardInnerHeight, 5/1380 * dashboardInnerWidth),
+            margins: {
+              top: Math.min(10/683 * dashboardInnerHeight, 10/1380 * dashboardInnerWidth),
+              right: 0,
+              bottom: 0,
+              left: 0
+            }
+          }
+        },
+        classFilter: {
+          frame: {
+            padding: Math.min(10/683 * dashboardInnerHeight, 10/1380 * dashboardInnerWidth)
+          },
+          optionsDiv: {
+            paddingLeft: Math.min(5/683 * dashboardInnerHeight, 5/1380 * dashboardInnerWidth),
+            margins: {
+              top: Math.min(10/683 * dashboardInnerHeight, 10/1380 * dashboardInnerWidth),
+              right: 0,
+              bottom: 0,
+              left: 0
+            }
+          }
+        },
       }
 
-      // Grid structure
-      var studentData_Row1 = $('section.sd-row1');
-      var studentData_Row2 = $('section.sd-row2');
-      var studentData_Row2_Column1 = $('section.sd-column1');
-      var studentData_Row2_Column2 = $('section.sd-column2');
-      var studentData_Row2_Column2_Row1 = $('section.sd-column2-row1');
-      var studentData_Row2_Column2_Row2 = $('section.sd-column2-row2');
+      // Grid structure variable definition
+      var Row1 = $('section.sd-row1');
+      var Row2 = $('section.sd-row2');
+      var Row2_Column1 = $('section.sd-column1');
+      var Row2_Column2 = $('section.sd-column2');
+      var Row2_Column2_Row1 = $('section.sd-column2-row1');
+      var Row2_Column2_Row2 = $('section.sd-column2-row2');
 
-      studentData_Row1.height(dashboardInnerHeight * .102733);
-      // console.log("Row 1", dashboardInnerHeight * .102733, studentData_Row1.height());
-      studentData_Row2.height(dashboardInnerHeight * .897267);
-      // console.log("Row 2", dashboardInnerHeight * .897267, studentData_Row2.height());
-      studentData_Row2_Column1.height(dashboardInnerHeight * .897267)
-      // console.log("Row 2 C1", dashboardInnerHeight * .897267, studentData_Row2_Column1.height());
-      studentData_Row2_Column2.height(dashboardInnerHeight * .897267)
-      // console.log("Row 2 C2", dashboardInnerHeight * .897267, studentData_Row2_Column2.height());
-      studentData_Row2_Column2_Row1.height((dashboardInnerHeight * .897267) * .79695)
-      // console.log("Row 2 C2 R1", (dashboardInnerHeight * .897267) * .79695, studentData_Row2_Column2_Row1.height());
-      studentData_Row2_Column2_Row2.height((dashboardInnerHeight * .897267) * .20305)
-      // console.log("Row 2 C2 R2", (dashboardInnerHeight * .897267) * .20305, studentData_Row2_Column2_Row2.height());
+      // Set grid dimensions
+      function setGridDimensions() {
 
-      // Grid Components Variable Definition
+        Row1.height(responsiveCalcs.sectionHeights.row1);
+        Row2.height(responsiveCalcs.sectionHeights.row2);
+        Row2_Column1.height(responsiveCalcs.sectionHeights.row2_column1);
+        Row2_Column2.height(responsiveCalcs.sectionHeights.row2_column2);
+        Row2_Column2_Row1.height(responsiveCalcs.sectionHeights.row2_column2_row1);
+        Row2_Column2_Row2.height(responsiveCalcs.sectionHeights.row2_column2_row2);
+
+      }
+      setGridDimensions();
+
+
+      // Filter components DOM variable definition
+
+      // Universal Filter Components variable definition
       var filterCheckbox = $('input[type=checkbox]');
+      var filterHeaders = $('h4.filter-header');
+      var filterLabels = $('label.filter-label');
+
+      // Student Filter Components variable definition
+      var studentFilterOuterFrame = $('section.student-filter-outer-frame');
       var studentFilterFrame = $('section.student-filter-frame');
-      var studentFilterOuter = $('section.student-filter-outer');
-      var studentFilterInner = $('section.student-filter-inner');
-      var studentFilter = $('div.student-filter');
+      var studentFilterOptions = $('div.student-filter-options');
       var studentSearchBar = $('input.search-bar');
-      var classFilterFrame = $('section.class-filter-frame');
-      var classFilterOuter = $('section.class-filter-outer');
-      var classFilterInner = $('section.class-filter-inner');
-      var classFilter = $('div.class-filter');
+
+      // Gender Filter Components variable definition
+      var genderFilterOuterFrame = $('section.gender-filter-outer-frame');
       var genderFilterFrame = $('section.gender-filter-frame');
-      var genderFilterOuter = $('section.gender-filter-outer');
-      var genderFilterInner = $('section.gender-filter-inner');
-      var genderFilter = $('div.gender-filter');
+      var genderFilterOptions = $('div.gender-filter-options');
 
-      studentFilterFrame.height(studentData_Row2_Column1.height() * .35);
-      studentFilterFrame.css("margin-bottom", (studentData_Row2_Column1.height() * .05) + "px");
-      studentFilterOuter.outerHeight(studentFilterFrame.height());
-      studentFilterInner.height(studentFilterOuter.height() - (Math.min(10/683 * dashboardInnerHeight, 10/1380 * dashboardInnerWidth) * 2));
-      studentFilter.height(studentFilterInner.innerHeight() * 142.484/212.484);
-      studentSearchBar.height(Math.min(20/683 * dashboardInnerHeight, 20/1380 * dashboardInnerWidth));
+      // Class Filter Components variable definition
+      var classFilterOuterFrame = $('section.class-filter-outer-frame');
+      var classFilterFrame = $('section.class-filter-frame');
+      var classFilterOptions = $('div.class-filter-options');
 
-      console.log(classFilterInner.innerHeight());
+      // Universal Filter Dimensions setup
+      function setUniversalFilterDimensions() {
 
-      filterCheckbox.css('transform', "scale(" + Math.min(1/683 * dashboardInnerHeight, 1/1380 * dashboardInnerWidth) + ")");
+        filterCheckbox.css('transform', "scale(" + responsiveCalcs.filterUniversal.checkboxScale + ")");
 
-      studentFilterInner.css('padding', Math.min(10/683 * dashboardInnerHeight, 10/1380 * dashboardInnerWidth));
-      genderFilterInner.css('padding', Math.min(10/683 * dashboardInnerHeight, 10/1380 * dashboardInnerWidth));
-      classFilterInner.css('padding', Math.min(10/683 * dashboardInnerHeight, 10/1380 * dashboardInnerWidth));
+        var filterHeaders = $('h4.filter-header');
+        filterHeaders.css('font-size', responsiveCalcs.filterUniversal.titleFontSize + "px")
+        filterHeaders.css('line-height', responsiveCalcs.filterUniversal.titleLineHeight + "px")
+        filterHeaders.css('margin-bottom', responsiveCalcs.filterUniversal.headerMarginBottom + "px");
+        // filter options,14/20
+        var filterLabels = $('label.filter-label');
+        filterLabels.css('font-size', Math.min(14/683 * dashboardInnerHeight, 14/1380 * dashboardInnerWidth) + "px")
+        filterLabels.css('min-height', Math.min(20/683 * dashboardInnerHeight, 20/1380 * dashboardInnerWidth) + "px")
 
-      studentFilter.css('padding-left', Math.min(5/683 * dashboardInnerHeight, 5/1380 * dashboardInnerWidth));
-      genderFilter.css('padding-left', Math.min(5/683 * dashboardInnerHeight, 5/1380 * dashboardInnerWidth));
-      classFilter.css('padding-left', Math.min(5/683 * dashboardInnerHeight, 5/1380 * dashboardInnerWidth));
 
-      var filterDivMargins = {
-        student: {
-          top: Math.min(4/683 * dashboardInnerHeight, 10/1380 * dashboardInnerWidth),
-          right: 0,
-          bottom: 0,
-          left: 0
-        },
-        gender: {
-          top: Math.min(10/683 * dashboardInnerHeight, 10/1380 * dashboardInnerWidth),
-          right: 0,
-          bottom: 0,
-          left: 0
-        },
-        class: {
-          top: Math.min(10/683 * dashboardInnerHeight, 10/1380 * dashboardInnerWidth),
-          right: 0,
-          bottom: 0,
-          left: 0
-        }
       }
-      studentFilter.css('margin', filterDivMargins.student.top + "px " + filterDivMargins.student.right + "px " + filterDivMargins.student.bottom + "px " + filterDivMargins.student.left + "px");
-      genderFilter.css('margin', filterDivMargins.gender.top + "px " + filterDivMargins.gender.right + "px " + filterDivMargins.gender.bottom + "px " + filterDivMargins.gender.left + "px");
-      classFilter.css('margin', filterDivMargins.class.top + "px " + filterDivMargins.class.right + "px " + filterDivMargins.class.bottom + "px " + filterDivMargins.class.left + "px");
+      setUniversalFilterDimensions();
 
-      genderFilterFrame.height(studentData_Row2_Column1.height() * .15058088);
-      genderFilterFrame.css("margin-bottom", (studentData_Row2_Column1.height() * .05) + "px");
-      genderFilterOuter.outerHeight(genderFilterFrame.height());
-      genderFilterInner.height(genderFilterOuter.height() -  Math.min(20/683 * dashboardInnerHeight, 20/1380 * dashboardInnerWidth));
-      genderFilter.height(genderFilterInner.innerHeight() * 45.27/90.27);
+      // Student Filter Dimensions setup
+      function setStudentFilterDimensions() {
 
-      classFilterFrame.height(studentData_Row2_Column1.height() * .4328851);
-      // classFilterOuter.outerHeight(classFilterFrame.height());
-      // classFilterInner.height(classFilterOuter.height() - 20);
-      // classFilter.height(classFilterInner.innerHeight() * 80/125);
+        studentFilterOuterFrame.height(responsiveCalcs.studentFilter.outerFrame.height);
+        studentFilterOuterFrame.css("margin-bottom", responsiveCalcs.studentFilter.outerFrame.marginBottom + "px");
+
+        studentFilterFrame.outerHeight(responsiveCalcs.studentFilter.frame.height);
+        studentFilterFrame.css('padding', responsiveCalcs.studentFilter.frame.padding);
+
+        studentFilterOptions.height(responsiveCalcs.studentFilter.optionsDiv.height);
+        studentFilterOptions.css('padding-left', responsiveCalcs.studentFilter.optionsDiv.paddingLeft);
+        studentFilterOptions.css('margin', responsiveCalcs.studentFilter.optionsDiv.margins.top + "px " + responsiveCalcs.studentFilter.optionsDiv.margins.right + "px " + responsiveCalcs.studentFilter.optionsDiv.margins.bottom + "px " + responsiveCalcs.studentFilter.optionsDiv.margins.left + "px");
+
+        studentSearchBar.height(responsiveCalcs.studentFilter.searchBar.height);
+
+      }
+      setStudentFilterDimensions();
+
+      // Gender Filter Dimensions setup
+      function setGenderFilterDimensions() {
+
+        genderFilterOuterFrame.css("margin-bottom", responsiveCalcs.genderFilter.outerFrame.marginBottom + "px");
+
+        genderFilterFrame.css('padding', responsiveCalcs.genderFilter.frame.padding + 'px');
+
+        genderFilterOptions.css('padding-left', responsiveCalcs.genderFilter.optionsDiv.paddingLeft);
+        genderFilterOptions.css('margin', responsiveCalcs.genderFilter.optionsDiv.margins.top + "px " + responsiveCalcs.genderFilter.optionsDiv.margins.right + "px " + responsiveCalcs.genderFilter.optionsDiv.margins.left + "px " + responsiveCalcs.genderFilter.optionsDiv.margins.bottom + "px");
+
+      }
+      setGenderFilterDimensions();
+
+      // Class Filter Dimensions setup
+      function setClassFilterDimensions() {
+
+        classFilterFrame.css('padding', responsiveCalcs.classFilter.frame.padding);
+
+        classFilterOptions.css('padding-left', responsiveCalcs.classFilter.optionsDiv.paddingLeft);
+        classFilterOptions.css('margin', responsiveCalcs.classFilter.optionsDiv.margins.top + "px " + responsiveCalcs.classFilter.optionsDiv.margins.right + "px " + responsiveCalcs.classFilter.optionsDiv.margins.bottom + "px " + responsiveCalcs.classFilter.optionsDiv.margins.left + "px");
+
+      }
+      setClassFilterDimensions();
+
 
       // Row 2 - Column 2 - Row 2 Variable Definition
-      var studentData_studentCount_Container = $('section.student-count');
-      var studentData_studentCount = $('div.student-count');
-      var studentData_adultAvgs = $('section.adult-avgs');
+      var studentCount_Container = $('section.student-count');
+      var studentCount = $('div.student-count');
+      var adultAvgs = $('section.adult-avgs');
 
-      studentData_studentCount_Container.height(studentData_Row2_Column2_Row2.height());
-      studentData_adultAvgs.height(studentData_Row2_Column2_Row2.height());
+      function setColumn2Row2ComponentDimensions() {
+
+        studentCount_Container.height(Row2_Column2_Row2.height());
+        adultAvgs.height(Row2_Column2_Row2.height());
+
+      }
+      setColumn2Row2ComponentDimensions();
 
       // Dashboard Table Components Variable Definition
-      var studentData_Table_Container = $('div.student-data-table');
-      var studentData_Table = $('table.student-data');
-      var studentData_tHead = $('table.student-data > thead');
-      var studentData_tBody = $('table.student-data > tbody');
+      var Table_Container = $('div.student-data-table');
+      var Table = $('table.student-data');
+      var tHead = $('table.student-data > thead');
+      var tBody = $('table.student-data > tbody');
 
-      studentData_Table_Container.width(studentData_Row2_Column2.width());
-      studentData_Table.width(studentData_Table_Container.width());
-      studentData_tHead.width(studentData_Table.width())
-      var sD_tHead_minusBorders = studentData_tHead.width() - 26;
-      studentData_tBody.width(studentData_Table.width());
-      studentData_tBody.height((studentData_Row2_Column2_Row1.height() - studentData_tHead.height()) * .9);
-      // console.log('table width', studentData_Table.width());
-      // console.log('thead width', studentData_tHead.width());
-      // console.log('tbody width', studentData_tBody.width());
+      Table_Container.width(Row2_Column2.width());
+      Table.width(Table_Container.width());
+      tHead.width(Table.width())
+      var sD_tHead_minusBorders = tHead.width() - 26;
+      tBody.width(Table.width());
+      tBody.height((Row2_Column2_Row1.height() - tHead.height()) * .9);
+
+      var sD_tHead_minusBorders = tHead.width() - 26;
 
       // tHead Column Headers Variable Definition
       var tHead = {
         students: $('thead.student-data th:nth-of-type(1)'),
-        // students2: $('thead.student-data th:nth-child(1)'),
         gender: $('thead.student-data th:nth-of-type(2)'),
         class: $('thead.student-data th:nth-of-type(3)'),
         dominance: $('thead.student-data th:nth-of-type(4)'),
@@ -191,9 +276,9 @@ app.factory('RWD', ['$compile', '$state', function($state) {
         traditional: $('thead.student-data th:nth-of-type(13)')
       }
 
-      tHead.students.innerWidth(sD_tHead_minusBorders * 0.14059753954306);
-      tHead.gender.innerWidth(sD_tHead_minusBorders * 0.03866432337434);
-      tHead.class.innerWidth(sD_tHead_minusBorders * 0.03866432337434);
+      tHead.students.innerWidth(sD_tHead_minusBorders * 0.1272618629174);
+      tHead.gender.innerWidth(sD_tHead_minusBorders * 0.05);
+      tHead.class.innerWidth(sD_tHead_minusBorders * 0.04166432337434);
       tHead.dominance.innerWidth(sD_tHead_minusBorders * 0.07820738137083);
       tHead.influencing.innerWidth(sD_tHead_minusBorders * 0.07820738137083);
       tHead.steadiness.innerWidth(sD_tHead_minusBorders * 0.07820738137083);
@@ -237,12 +322,12 @@ app.factory('RWD', ['$compile', '$state', function($state) {
       tBodyColumns.individualistic.innerWidth(tHead.individualistic.innerWidth());
       tBodyColumns.traditional.innerWidth(tHead.traditional.innerWidth());
 
-      console.log(tBodyColumns.students.outerWidth() + tBodyColumns.gender.outerWidth() + tBodyColumns.class.outerWidth(), studentData_studentCount_Container.width(), studentData_Row2_Column2_Row2.width());
+      // console.log(tBodyColumns.students.outerWidth() + tBodyColumns.gender.outerWidth() + tBodyColumns.class.outerWidth(), studentCount_Container.width(), Row2_Column2_Row2.width());
 
-      studentData_studentCount_Container.width(tBodyColumns.students.outerWidth() + tBodyColumns.gender.outerWidth() + tBodyColumns.class.outerWidth());
-      // studentData_studentCount_Container.css('padding-left', studentData_studentCount_Container.width() * 0.1 + "px");
-      studentData_studentCount.css('margin-left', "20px");
-      studentData_adultAvgs.width(studentData_Row2_Column2_Row2.outerWidth() - studentData_studentCount_Container.outerWidth());
+      studentCount_Container.width(tBodyColumns.students.outerWidth() + tBodyColumns.gender.outerWidth() + tBodyColumns.class.outerWidth());
+      // studentCount_Container.css('padding-left', studentCount_Container.width() * 0.1 + "px");
+      studentCount.css('margin-left', "20px");
+      adultAvgs.width(Row2_Column2_Row2.outerWidth() - studentCount_Container.outerWidth());
 
       var adultAvgs_Table = $('table.adult-avgs');
       var adultAvgs_ColumnHeaders = {
@@ -299,14 +384,7 @@ app.factory('RWD', ['$compile', '$state', function($state) {
       title1.css('font-size', Math.min(36/683 * dashboardInnerHeight, 36/1380 * dashboardInnerWidth));
       title1.css('margin-right', Math.min(15/683 * dashboardInnerHeight, 15/1380 * dashboardInnerWidth));
       title2.css('font-size', Math.min(36/683 * dashboardInnerHeight, 36/1380 * dashboardInnerWidth));
-      // filter heading,16/18
-      var filterHeaders = $('h4.filter-header');
-      filterHeaders.css('font-size', Math.min(14/683 * dashboardInnerHeight, 14/1380 * dashboardInnerWidth))
-      filterHeaders.css('margin-bottom', Math.min(5/683 * dashboardInnerHeight, 5/1380 * dashboardInnerWidth) + "px");
-      // filter options,14/20
-      var filterLabels = $('label.filter-label');
-      filterLabels.css('font-size', Math.min(14/683 * dashboardInnerHeight, 14/1380 * dashboardInnerWidth) + "px")
-      filterLabels.css('min-height', Math.min(20/683 * dashboardInnerHeight, 20/1380 * dashboardInnerWidth) + "px")
+
       // th column headers, 9/13
       // row td fonts, 9/13
       var tableColumnHeaders = $('th.student-data');
@@ -315,11 +393,13 @@ app.factory('RWD', ['$compile', '$state', function($state) {
       tableColumnHeaders.css('padding', Math.min(4/683 * dashboardInnerHeight, 4/1380 * dashboardInnerWidth))
       tableCellValues.css('font-size', Math.min(10.5/683 * dashboardInnerHeight, 10.5/1380 * dashboardInnerWidth))
       tableCellValues.css('padding', Math.min(4/683 * dashboardInnerHeight, 4/1380 * dashboardInnerWidth))
+
       // student count, 36/40
       var studentCountNum = $('div.student-count h1');
       var studentCountTitle = $('div.student-count h3');
       studentCountNum.css('font-size', Math.min(36/683 * dashboardInnerHeight, 36/1380 * dashboardInnerWidth))
       studentCountTitle.css('font-size', Math.min(24/683 * dashboardInnerHeight, 24/1380 * dashboardInnerWidth))
+
       // caa title, 14/15
       // caa type, 14/20
       var caaTitle = $('div.adult-avgs');
@@ -336,6 +416,7 @@ app.factory('RWD', ['$compile', '$state', function($state) {
       caaTh.css('padding', caaCellPadding.top + "px " + caaCellPadding.right + "px " + caaCellPadding.bottom + "px "+ caaCellPadding.left + "px");
       caaValues.css('font-size', Math.min(12/683 * dashboardInnerHeight, 12/1380 * dashboardInnerWidth))
       caaTh.css('padding', caaCellPadding.top + "px " + caaCellPadding.right + "px " + caaCellPadding.bottom + "px "+ caaCellPadding.left + "px");
+
       // no Data Message/CTA
       var noDataMessage = $('h3.no-data-message');
       var noDataButton = $('button.no-data-cta');
@@ -345,11 +426,16 @@ app.factory('RWD', ['$compile', '$state', function($state) {
 
       var noDataMessage = $('div.dashboard-no-data-display');
       if (noDataMessage) {
-        noDataMessage.height(studentData_tBody.outerHeight());
+        noDataMessage.height(tBody.outerHeight());
       }
+
+      var resetFiltersCTA = $('p.reset-filters-cta')
+      resetFiltersCTA.css('font-size', Math.min(12/683 * dashboardInnerHeight, 12/1380 * dashboardInnerWidth))
+      resetFiltersCTA.css('margin', '0 0 ' + Math.min(23/683 * dashboardInnerHeight, 23/1380 * dashboardInnerWidth) + 'px 0')
     },
 
     responsiveAdaptationStudentDetails: function() {
+
       var studentDetailsPopup = $('section.student-window');
       baseDimensions = RWD.calculateBaseDimensions(studentDetailsPopup);
 

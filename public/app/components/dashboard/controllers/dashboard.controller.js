@@ -1,6 +1,5 @@
 app.controller('Dashboard', ['$compile', '$scope', '$location', '$state', '$stateParams', '$http', 'siteNavigation', 'TTI_API', 'socket', '$window', 'DashboardService', 'localStorageService', 'RWD', function($compile, $scope, $location, $state, $stateParams, $http, siteNavigation, TTI_API, socket, $window, DashboardService, localStorageService, RWD) {
 
-  // $scope object instantiation
   $scope.data = {};
   $scope.view = {};
 
@@ -25,33 +24,12 @@ app.controller('Dashboard', ['$compile', '$scope', '$location', '$state', '$stat
     $state.reload();
   }
 
-  // if no object in local storage, or localstorage object's id is not same as in url parameter, get correct student data object
-  $scope.data.dashboardInit = function() {
-    if (!localStorageService.get('currentDashboardData') || localStorageService.get('currentDashboardData')._id !== $stateParams.id ) {
-      $scope.data.reloadDashboardData();
-    } else {
-      $scope.view.showFSDashboard = false;
-      $scope.view.loadDashboardDataFromLS()
-      .then(function(data) {
-        // console.log(data);
-        $scope.data.currentDashboardDataObject = data;
-        window.requestAnimationFrame($scope.view.responsiveAdaptationDashboard);
-        var resizeTimeout;
-        $(window).on("resize orientationChange", function() {
-          clearTimeout(resizeTimeout);
-          // 100ms after most recent resize, refresh the $state
-          resizeTimeout = setTimeout($scope.view.doneResizing(), 100);
-          window.requestAnimationFrame($scope.view.responsiveAdaptationDashboard);
-        })
-      });
-    }
-  }
-  // upon load, if no dash-data set has been specified from manager, load based on url parameters
+  // Upon state load, if no dashboard data object has been specified into local storage from manager, locate and load from url parameters
   $scope.data.reloadDashboardData = function() {
 
     return new Promise(function(resolve, reject) {
 
-      DashboardService.getStoredDashboardData($stateParams.collection, null, $stateParams.id)
+      DashboardService.retrieveStoredDashboardVersionDataObject($stateParams.collection, null, $stateParams.id)
       .then(function(data) {
 
         $scope.data.currentDashboardDataObject = data;
@@ -67,7 +45,8 @@ app.controller('Dashboard', ['$compile', '$scope', '$location', '$state', '$stat
 
     })
   }
-  // load dashboard within full screen view
+
+  // Load dashboard within full screen view
   $scope.view.loadDashboardDataFromLS = function() {
 
     return new Promise(function(resolve, reject) {
@@ -89,9 +68,9 @@ app.controller('Dashboard', ['$compile', '$scope', '$location', '$state', '$stat
     })
   }
 
-  // console.log(localStorageService.get("currentDashboardData"));
   // open student details window when student name is clicked
   $scope.view.openStudentDetails = function(event) {
+
     function getStudentDataObjectFromRouteParams () {
       return new Promise(function(resolve, reject) {
 
@@ -103,8 +82,6 @@ app.controller('Dashboard', ['$compile', '$scope', '$location', '$state', '$stat
         var studentPath = studentNameCondensed + rowIndex;
         var schoolCollection = $location.path().split("/")[2];
         var versionId = $location.path().split("/")[3];
-
-
 
         var currentDashboardData = localStorageService.get("currentDashboardData");
         var dashDataStudents = currentDashboardData.compiledData.studentData;
@@ -145,6 +122,7 @@ app.controller('Dashboard', ['$compile', '$scope', '$location', '$state', '$stat
         if (studentDataObj) {
           localStorageService.set("currentStudentData", studentDataObj);
           resolve(studentDataObj)
+          console.log(studentDataObj);
         } else {
           reject('no student data');
         }
@@ -159,47 +137,27 @@ app.controller('Dashboard', ['$compile', '$scope', '$location', '$state', '$stat
     })
   }
 
-  // Filter application and toggle functions
-  // $scope.view.applyFilters = function() {
-  //   DashboardService.applyFilters($scope.view.studentFilter, $scope.view.classFilter, $scope.view.genderFilter);
-  //   $compile($('table.student-data tbody td:nth-of-type(1)'))($scope);
-  // }
 
-  // $scope.view.toggleStudentSelection = function(studentName) {
-  //   var i = $scope.data.studentFilter.indexOf(studentName)
-  //   if (i > -1) {
-  //     $scope.data.studentFilter.splice(i, 1);
-  //   } else {
-  //     $scope.data.studentFilter.push(studentName);
-  //   }
-  //   $compile($('table.student-data tbody td:nth-of-type(1)'))($scope);
-  //   responsiveAdaptationDashboard();
-  //   console.log($scope.data.studentFilter);
-  // }
-
-  // $scope.view.toggleClassSelection = function(className) {
-  //   var i = $scope.data.classFilter.indexOf(className)
-  //   if (i > -1) {
-  //     $scope.data.classFilter.splice(i, 1);
-  //   } else {
-  //     $scope.data.classFilter.push(className);
-  //   }
-  //   $compile($('table.student-data tbody td:nth-of-type(1)'))($scope);
-  //   responsiveAdaptationDashboard();
-  //   console.log($scope.data.classFilter);
-  // }
-
-  // $scope.view.toggleGenderSelection = function(gender) {
-  //   var i = $scope.data.genderFilter.indexOf(gender)
-  //   if (i > -1) {
-  //     $scope.data.genderFilter.splice(i, 1);
-  //   } else {
-  //     $scope.data.genderFilter.push(gender);
-  //   }
-  //   $compile($('table.student-data tbody td:nth-of-type(1)'))($scope);
-  //   responsiveAdaptationDashboard();
-  //   console.log($scope.data.genderFilter);
-  // }
+  // if no object in local storage, or localstorage object's id is not same as in url parameter, get correct student data object
+  $scope.data.dashboardInit = function() {
+    if (!localStorageService.get('currentDashboardData') || localStorageService.get('currentDashboardData')._id !== $stateParams.id ) {
+      $scope.data.reloadDashboardData();
+    } else {
+      $scope.view.showFSDashboard = false;
+      $scope.view.loadDashboardDataFromLS()
+      .then(function(data) {
+        $scope.data.currentDashboardDataObject = data;
+        window.requestAnimationFrame($scope.view.responsiveAdaptationDashboard);
+        var resizeTimeout;
+        $(window).on("resize orientationChange", function() {
+          clearTimeout(resizeTimeout);
+          // 100ms after most recent resize, refresh the $state
+          resizeTimeout = setTimeout($scope.view.doneResizing(), 100);
+          window.requestAnimationFrame($scope.view.responsiveAdaptationDashboard);
+        })
+      });
+    }
+  }
 
   // Initialization Execution
   $scope.data.dashboardInit();

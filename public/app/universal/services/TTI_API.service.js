@@ -6,7 +6,7 @@ app.factory('TTI_API', ['$state', '$http', 'FileSaver', 'Blob', function($state,
       return new Promise(function(resolve, reject) {
         $http({
           method: "POST",
-          url: "/api/validate-local-dir",
+          url: "/batch-download/validate-local-dir",
           data: { localDir: dirPath }
         }).then(function(data) {
           console.log(data);
@@ -21,7 +21,8 @@ app.factory('TTI_API', ['$state', '$http', 'FileSaver', 'Blob', function($state,
       return new Promise(function(resolve, reject) {
         $http({
           method: "POST",
-          url: "/api/validate-tti-request",
+          url: "/TTI_API/validate-request-endpoint",
+          // url: "/api/validate-tti-request",
           data: { login: login, password: password, accountID: accountID, linkID: linkID, reportTypeFilter: reportTypeFilter, mode: mode, currentLinkReportList: currentLinkReportList }
         }).then(function(data) {
           console.log(data);
@@ -42,7 +43,7 @@ app.factory('TTI_API', ['$state', '$http', 'FileSaver', 'Blob', function($state,
           return new Promise(function(resolve, reject) {
             $http({
               method: "POST",
-              url: "/api/batch-download",
+              url: "/batch-download/batch-download",
               data: { processStatus: processStatus, currentSegmentIndex: nextSegmentIndex, distReportArrC: distReportArrC, dlCount: dlCount, numOfSegments: numOfSegments, dupNumber: dupNumber, login: login_, password: password_, accountID: accountID_, linkID: linkID_, reportList: reportList_, reportTypes: reportTypes_ }
             }).then(function(data1) {
               console.log('HTTP REQUEST RESPONDED');
@@ -57,7 +58,7 @@ app.factory('TTI_API', ['$state', '$http', 'FileSaver', 'Blob', function($state,
               console.log('archive and download reports');
               $http({
                 method: "POST",
-                url: "/api/dl-to-client",
+                url: "/batch-download/dl-to-client",
                 data: { dataPath: data2.data.dataPath },
                 responseType: 'arraybuffer'
               }).then(function(data3) {
@@ -93,7 +94,7 @@ app.factory('TTI_API', ['$state', '$http', 'FileSaver', 'Blob', function($state,
       return new Promise(function(resolve, reject) {
         $http({
           method: "POST",
-          url: "/api/sumpage-download",
+          url: "/batch-download/sumpage-download",
           data: { login: login, password: password, accountID: accountID, linkID: linkID, destination: directory, reportList: reportList, reportTypes: reportTypes }
         }).then(function(data) {
           if(data) {
