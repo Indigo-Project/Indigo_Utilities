@@ -89,14 +89,16 @@ router.post('/generate', function(req, res, next) {
 
       var entListArr = [];
 
+      console.log(indexArr);
+
       for (var i = 1; i < data.length; i++) {
 
         // GET SCORES
         var DomScore = data[i][indexArr[3]]
-        var ComScore = data[i][indexArr[4]]
-        var UtiScore = data[i][indexArr[5]]
-        var IndScore = data[i][indexArr[6]]
-        var SocScore = data[i][indexArr[7]]
+        var ComScore = data[i][indexArr[6]]
+        var UtiScore = data[i][indexArr[8]]
+        var SocScore = data[i][indexArr[10]]
+        var IndScore = data[i][indexArr[11]]
 
         // CREATE CALCS
         var DomCalc = Math.max(-20, (DomScore - 50) );
@@ -108,7 +110,6 @@ router.post('/generate', function(req, res, next) {
         var socialEntr;
         var studentOutput;
 
-        // console.log(DomCalc, ComCalc, UtiCalc, IndCalc, DomCalc + ComCalc + UtiCalc + IndCalc);
         if ((DomCalc + ComCalc + UtiCalc + IndCalc) > 19) {
           if ( (SocScore >= UtiScore) && (SocScore > 4.9) ){
             socialEntr = "Yes";
