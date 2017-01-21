@@ -94,11 +94,11 @@ router.post('/generate', function(req, res, next) {
       for (var i = 1; i < data.length; i++) {
 
         // GET SCORES
-        var DomScore = data[i][indexArr[3]]
-        var ComScore = data[i][indexArr[6]]
-        var UtiScore = data[i][indexArr[8]]
-        var SocScore = data[i][indexArr[10]]
-        var IndScore = data[i][indexArr[11]]
+        var DomScore = data[i][indexArr[3]];
+        var ComScore = data[i][indexArr[6]];
+        var UtiScore = data[i][indexArr[8]];
+        var SocScore = data[i][indexArr[10]];
+        var IndScore = data[i][indexArr[11]];
 
         // CREATE CALCS
         var DomCalc = Math.max(-20, (DomScore - 50) );
