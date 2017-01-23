@@ -4,8 +4,6 @@ app.directive('dashboardStudentDetails', ['$rootScope', 'DashboardService', func
 
     DashboardService.generateD3Dashboard(scope.data.currentStudentDataObject, "studentDetails")
 
-    $rootScope.stateIsLoading = false;
-    
   }
 
   return {

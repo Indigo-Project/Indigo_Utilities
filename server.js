@@ -31,6 +31,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // reroute url parameters of angular ui-router routes
+app.use("/logo", express.static(__dirname + "/public/index.html"));
 app.use("/blue_list", express.static(__dirname + "/public/index.html"));
 app.use("/ent_list", express.static(__dirname + "/public/index.html"));
 app.use("/tti_massdl", express.static(__dirname + "/public/index.html"));

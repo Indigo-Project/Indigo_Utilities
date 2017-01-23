@@ -1,4 +1,4 @@
-app.controller('DashboardStudentDetails', ['$compile', '$scope', '$location', '$state', '$stateParams', '$http', 'siteNavigation', 'TTI_API', 'socket', '$window', 'DashboardService', 'localStorageService', 'RWD', function($compile, $scope, $location, $state, $stateParams, $http, siteNavigation, TTI_API, socket, $window, DashboardService, localStorageService, RWD) {
+app.controller('DashboardStudentDetails', ['$compile', '$rootScope', '$scope', '$location', '$state', '$stateParams', '$http', 'siteNavigation', 'TTI_API', 'socket', '$window', 'DashboardService', 'localStorageService', 'RWD', function($compile, $rootScope, $scope, $location, $state, $stateParams, $http, siteNavigation, TTI_API, socket, $window, DashboardService, localStorageService, RWD) {
 
   // $scope object instantiation
   $scope.data = {};
@@ -39,6 +39,7 @@ app.controller('DashboardStudentDetails', ['$compile', '$scope', '$location', '$
       var returnPath = $location.path()
       var returnPathArr = returnPath.split('/')
       $state.go('dashboard', { collection: returnPathArr[2], id: returnPathArr[3] })
+      $rootScope.stateIsLoading = false;
     }
   }
 

@@ -848,4 +848,24 @@ h4.sde-row4-title {
   color: #959595;
   margin: 0; }
 
+@keyframes opacityTransition {
+  0% {
+    opacity: 1; }
+  50% {
+    opacity: 0.1; } }
+div.dashboard-loading-indicator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh; }
+  div.dashboard-loading-indicator div.indigo-logo {
+    width: 6.944444444444vw;
+    height: 22.959889349931vh;
+    background-image: url("../images/indigo.png");
+    animation-name: opacityTransition;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+    animation-duration: 0.5s; }
+
 /*# sourceMappingURL=style.css.map */

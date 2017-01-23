@@ -42,9 +42,19 @@ app.config(function($stateProvider, $urlRouterProvider) {
     .state('dashboard', {
       url: '/dashboards/:collection/:id',
       templateUrl: "views/dashboard.html",
+      // resolve: {
+      //   stateLoaded: function() {
+      //     return false;
+      //   }
+      // },
+      // controller: function($rootScope, stateLoaded) {
+      //   console.log(stateLoaded);
+      //   console.log($rootScope.stateIsLoading);
+      //   // $rootScope.stateIsLoading = stateLoaded;
+      // }
     })
-    .state('dashboard_student_detail', {
-      url: '/dashboards/:collection/:id/:studentpath',
+    .state('dashboard.dashboard_student_detail', {
+      url: '/:studentpath',
       templateUrl: "views/dashboard_studentdetail.html",
     })
 

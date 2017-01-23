@@ -9,8 +9,9 @@ app.controller('DashboardManager', ['$compile', '$scope', '$location', '$state',
   $scope.view.dashMschoolCode = "";
   $scope.view.dashMschoolVersion = "";
 
-  $scope.data.schoolNameOptionsLoaded = false;
+  console.log($scope.data.schoolNameOptionsLoaded);
 
+  $scope.data.schoolNameOptionsLoaded = false;
 
   function responsiveAdaptationDM() {
 

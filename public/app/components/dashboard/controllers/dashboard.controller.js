@@ -1,5 +1,7 @@
 app.controller('Dashboard', ['$compile', '$scope', '$location', '$state', '$stateParams', '$http', 'siteNavigation', 'TTI_API', 'socket', '$window', 'DashboardService', 'localStorageService', 'RWD', function($compile, $scope, $location, $state, $stateParams, $http, siteNavigation, TTI_API, socket, $window, DashboardService, localStorageService, RWD) {
 
+  // console.log(stateLoaded);
+
   $scope.data = {};
   $scope.view = {};
 
@@ -108,7 +110,7 @@ app.controller('Dashboard', ['$compile', '$scope', '$location', '$state', '$stat
           var pathCode = dashDataStudents[i][0].replace(/[.,\/#!$%\^&\*;:{}=\-_`~()\s]/g,"").toLowerCase();
           if (nameFromTable === pathCode) studentIndex = i;
         }
-        console.log(dashDataStudents, studentIndex);
+        // console.log(dashDataStudents, studentIndex);
         var studentData = dashDataStudents[studentIndex];
 
         // Create key to define whether current student uses DNA or HD Skills
@@ -140,7 +142,7 @@ app.controller('Dashboard', ['$compile', '$scope', '$location', '$state', '$stat
 
     getStudentDataObjectFromRouteParams()
     .then(function(data) {
-      $state.go('dashboard_student_detail', { collection: data.stateInfo[0], id: data.stateInfo[1], studentpath: data.stateInfo[2]});
+      $state.go('dashboard.dashboard_student_detail', { collection: data.stateInfo[0], id: data.stateInfo[1], studentpath: data.stateInfo[2]});
     }).catch(function(error) {
       console.log(error);
     })
