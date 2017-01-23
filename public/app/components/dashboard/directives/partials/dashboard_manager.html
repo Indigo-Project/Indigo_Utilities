@@ -2,7 +2,9 @@
 
   <section class="dash-selection">
 
-    <select class="form-control dash-school-selection" ng-change="view.updateVersionOptions()" ng-model="view.dashMschoolCode">
+    <h4 class="loading-manager-options" ng-show="!data.schoolNameOptionsLoaded">Loading Schools...</h4>
+
+    <select class="form-control dash-school-selection" ng-show="data.schoolNameOptionsLoaded" ng-change="view.updateVersionOptions()" ng-model="view.dashMschoolCode">
       <option value=""> -- Select School -- </option>
       <option ng-repeat="school in data.availableCollections" value="{{school.code}}">{{school.optionDisplay}}</option>
     </select>

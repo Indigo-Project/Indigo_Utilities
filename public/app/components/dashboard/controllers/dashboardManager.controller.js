@@ -9,6 +9,9 @@ app.controller('DashboardManager', ['$compile', '$scope', '$location', '$state',
   $scope.view.dashMschoolCode = "";
   $scope.view.dashMschoolVersion = "";
 
+  $scope.data.schoolNameOptionsLoaded = false;
+
+
   function responsiveAdaptationDM() {
 
     var dashboardIframe = $('iframe.dashM-iframe');
@@ -22,55 +25,6 @@ app.controller('DashboardManager', ['$compile', '$scope', '$location', '$state',
     dashboardIframe.width(iframeWidth);
     dashboardIframe.height(dashboardIframe.width() * dFERatio);
   }
-
-  // school names init
-  DashboardService.retrieveSchoolNameOptions()
-  .then(function(data) {
-    $scope.view.schoolNameOptions = data.data;
-    var schoolKeys = Object.keys($scope.view.schoolNameOptions);
-    for (var i = 0; i < schoolKeys.length; i++) {
-      $scope.view.schoolNameOptions[schoolKeys[i]].code = schoolKeys[i]
-    }
-
-    DashboardService.retrieveSchoolsWithDashboards()
-    .then(function(collections) {
-      var collectionNames = Object.keys(collections.data);
-      // console.log(collectionNames);
-      $scope.data.dbCollections = {};
-      for (var i = 0; i < collectionNames.length; i++) {
-        for (var j = 0; j < schoolKeys.length; j++) {
-          if (collectionNames[i] === schoolKeys[j]) {
-            // console.log(collectionNames[i], schoolKeys[j]);
-            $scope.data.dbCollections[collectionNames[i]] = collections.data[collectionNames[i]];
-            $scope.data.dbCollections[collectionNames[i]].nameOptions = $scope.view.schoolNameOptions[collectionNames[i]];
-          }
-        }
-      }
-      // console.log($scope.data.dbCollections);
-
-      var dbCollections = Object.keys($scope.data.dbCollections);
-      $scope.data.availableCollections = {};
-      for (var i = 0; i < dbCollections.length; i++) {
-        $scope.data.availableCollections[dbCollections[i]] = $scope.data.dbCollections[dbCollections[i]].nameOptions;
-      }
-      // console.log($scope.data.availableCollections);
-
-      $scope.data.availableVersions = {};
-      for (var i = 0; i < dbCollections.length; i++) {
-        var currentCollection = $scope.data.dbCollections[dbCollections[i]];
-        var collectionVKeys = Object.keys(currentCollection)
-        $scope.data.availableVersions[dbCollections[i]] = {};
-        for (var j = 0; j < collectionVKeys.length; j++) {
-          if (collectionVKeys[j] !== "nameOptions") {
-            $scope.data.availableVersions[dbCollections[i]][collectionVKeys[j]] = currentCollection[collectionVKeys[j]];
-          }
-        }
-      }
-      // console.log($scope.data.availableVersions);
-
-      $scope.$apply();
-    });
-  });
 
   // dynamically change options based on selected function
   $scope.view.accessFunction = function () {
@@ -144,5 +98,56 @@ app.controller('DashboardManager', ['$compile', '$scope', '$location', '$state',
     window.open('/dashboards/' + collection + '/' + id, '_blank');
   }
 
+  // Dashboard Manager Initialization
+  $scope.view.initializeDashboardManager = function() {
+
+    DashboardService.retrieveSchoolNameOptions()
+    .then(function(data) {
+      $scope.view.schoolNameOptions = data.data;
+      var schoolKeys = Object.keys($scope.view.schoolNameOptions);
+      for (var i = 0; i < schoolKeys.length; i++) {
+        $scope.view.schoolNameOptions[schoolKeys[i]].code = schoolKeys[i]
+      }
+
+      DashboardService.retrieveSchoolsWithDashboards()
+      .then(function(collections) {
+        var collectionNames = Object.keys(collections.data);
+        $scope.data.dbCollections = {};
+        for (var i = 0; i < collectionNames.length; i++) {
+          for (var j = 0; j < schoolKeys.length; j++) {
+            if (collectionNames[i] === schoolKeys[j]) {
+              $scope.data.dbCollections[collectionNames[i]] = collections.data[collectionNames[i]];
+              $scope.data.dbCollections[collectionNames[i]].nameOptions = $scope.view.schoolNameOptions[collectionNames[i]];
+            }
+          }
+        }
+
+        var dbCollections = Object.keys($scope.data.dbCollections);
+        $scope.data.availableCollections = {};
+        for (var i = 0; i < dbCollections.length; i++) {
+          $scope.data.availableCollections[dbCollections[i]] = $scope.data.dbCollections[dbCollections[i]].nameOptions;
+        }
+
+        $scope.data.availableVersions = {};
+        for (var i = 0; i < dbCollections.length; i++) {
+          var currentCollection = $scope.data.dbCollections[dbCollections[i]];
+          var collectionVKeys = Object.keys(currentCollection)
+          $scope.data.availableVersions[dbCollections[i]] = {};
+          for (var j = 0; j < collectionVKeys.length; j++) {
+            if (collectionVKeys[j] !== "nameOptions") {
+              $scope.data.availableVersions[dbCollections[i]][collectionVKeys[j]] = currentCollection[collectionVKeys[j]];
+            }
+          }
+        }
+
+        $scope.data.schoolNameOptionsLoaded = true;
+
+        $scope.$apply();
+      });
+    });
+
+  }
+
+  $scope.view.initializeDashboardManager();
 
 }])

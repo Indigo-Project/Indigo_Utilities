@@ -25,6 +25,7 @@
     <!-- <script src="lib/socket.io/lib/socket.js"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.5.1/socket.io.min.js"></script>
 
+
     <!-- ***** ANGULAR COMPONENTS  ***** -->
     <!-- ******************************* -->
 
@@ -32,14 +33,18 @@
     <script src="app/app.module.js"></script>
     <script src="app/app.config.js"></script>
     <script src="app/app.routes.js"></script>
+    <script src="app/app.run.js"></script>
 
     <!-- ***** UNIVERSAL COMPONENTS ***** -->
     <script src="app/universal/services/RWD.service.js"></script>
     <script src="app/universal/services/siteNavigation.service.js"></script>
     <script src="app/universal/services/socket.service.js"></script>
     <script src="app/universal/services/TTI_API.service.js"></script>
+
     <script src="app/universal/directives/fileread.directive.js"></script>
     <script src="app/universal/directives/header.directive.js"></script>
+    <script src="app/universal/directives/stateLoadingIndicator.directive.js"></script>
+
     <script src="app/universal/Main.controller.js"></script>
 
 
@@ -81,14 +86,10 @@
     <script src="app/components/sumStatsGenerator/sumStatsGenerator.controller.js"></script>
     <script src="app/components/sumStatsGenerator/directives/sumStatsGenerator.directive.js"></script>
 
-    <!-- POWER BI PREFORMATTER -->
-    <!-- <script src="app/components/pbiPreformat/pbiPreformat.controller.js"></script>
-    <script src="app/components/pbiPreformat/directives/pbiPreformat.directive.js"></script> -->
-
-
 </head>
 <body>
 
+  <state-loading-indicator></state-loading-indicator>
   <ui-view></ui-view>
 
 </body>

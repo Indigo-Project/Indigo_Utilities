@@ -21,6 +21,7 @@ app.controller('DashboardStudentDetails', ['$compile', '$scope', '$location', '$
 
     window.requestAnimationFrame($scope.view.responsiveAdaptation);
     var resizeTimeout;
+
     $(window).on("resize orientationChange", function() {
       clearTimeout(resizeTimeout)
       // 100ms after most recent resize, refresh the $state

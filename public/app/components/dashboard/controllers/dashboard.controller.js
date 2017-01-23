@@ -24,48 +24,61 @@ app.controller('Dashboard', ['$compile', '$scope', '$location', '$state', '$stat
     $state.reload();
   }
 
-  // Upon state load, if no dashboard data object has been specified into local storage from manager, locate and load from url parameters
-  $scope.data.reloadDashboardData = function() {
+  // Load Dashboard Data
+  $scope.data.loadDashboardData = function() {
 
-    return new Promise(function(resolve, reject) {
+    // If no dashboard data object has been specified into local storage from manager, locate and load from url parameters
+    $scope.data.reloadDashboardData = function() {
 
-      DashboardService.retrieveStoredDashboardVersionDataObject($stateParams.collection, null, $stateParams.id)
-      .then(function(data) {
+      return new Promise(function(resolve, reject) {
 
-        $scope.data.currentDashboardDataObject = data;
-        var inputObject = { data: $scope.data.currentDashboardDataObject, schoolName: $scope.view.dashMschoolCode}
+        DashboardService.retrieveStoredDashboardVersionDataObject($stateParams.collection, null, $stateParams.id)
+        .then(function(data) {
 
-        localStorageService.set('currentDashboardData', data);
-        $scope.view.responsiveAdaptationDashboard();
+          $scope.data.currentDashboardDataObject = data;
+          var inputObject = { data: $scope.data.currentDashboardDataObject, schoolName: $scope.view.dashMschoolCode}
 
-        $scope.$apply();
-      }).catch(function(error) {
-        console.log(error);
+          localStorageService.set('currentDashboardData', data);
+          $scope.view.responsiveAdaptationDashboard();
+
+          $scope.$apply();
+        }).catch(function(error) {
+          console.log(error);
+        })
+
       })
+    }
 
-    })
-  }
+    // If dashboard data object exists within local storage, load to dashboard
+    $scope.data.loadDashboardDataFromLS = function() {
 
-  // Load dashboard within full screen view
-  $scope.view.loadDashboardDataFromLS = function() {
+      return new Promise(function(resolve, reject) {
+
+        var dashboardData = localStorageService.get('currentDashboardData');
+        $scope.data.currentDashboardDataObject = dashboardData;
+
+        $scope.data.studentNumber = dashboardData.compiledData.studentData.length;
+        var inputObject = { data: dashboardData }
+        $scope.view.dashDisplayschoolName = dashboardData.metaData.schoolInfo.optionDisplay;
+        $('span.sd-title-name').html($scope.view.dashDisplayschoolName + " ");
+
+        // compile ng-click html attribute applied from D3, binding to $scope
+        var studentNameCells = $('table.student-data tbody td:nth-of-type(1)');
+        $compile(studentNameCells)($scope);
+
+        resolve();
+      })
+    }
 
     return new Promise(function(resolve, reject) {
-
-      var dashboardData = localStorageService.get('currentDashboardData');
-      $scope.data.currentDashboardDataObject = dashboardData;
-
-      $scope.data.studentNumber = dashboardData.compiledData.studentData.length;
-      var inputObject = { data: dashboardData }
-      $scope.view.dashDisplayschoolName = dashboardData.metaData.schoolInfo.optionDisplay;
-      $('span.sd-title-name').html($scope.view.dashDisplayschoolName + " ");
-
-      // compile ng-click html attribute applied from D3, binding to $scope
-      var studentNameCells = $('table.student-data tbody td:nth-of-type(1)');
-      $compile(studentNameCells)($scope);
-
-      $scope.view.showFSDashboard = true;
-      resolve(dashboardData);
+      if (!localStorageService.get('currentDashboardData') || localStorageService.get('currentDashboardData')._id !== $stateParams.id ) {
+        $scope.data.reloadDashboardData();
+      } else {
+        $scope.data.loadDashboardDataFromLS();
+      }
+      resolve();
     })
+
   }
 
   // open student details window when student name is clicked
@@ -73,8 +86,6 @@ app.controller('Dashboard', ['$compile', '$scope', '$location', '$state', '$stat
 
     function getStudentDataObjectFromRouteParams () {
       return new Promise(function(resolve, reject) {
-
-        console.log(event);
 
         var studentNameCondensed = event.currentTarget.innerText.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()\s]/g,"").toLowerCase();
         var nameFromTable = event.currentTarget.childNodes[0].wholeText.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()\s]/g,"").toLowerCase();;
@@ -111,7 +122,6 @@ app.controller('Dashboard', ['$compile', '$scope', '$location', '$state', '$stat
           }
         }
         for (var classGroup in skillsOptionByClassGroupKey) {
-          console.log(classGroup, studentData[4] + "/" + studentData[5]);
           if (studentData[4] + "/" + studentData[5] === classGroup) {
             metaData.skillsOption = skillsOptionByClassGroupKey[classGroup];
           }
@@ -122,7 +132,6 @@ app.controller('Dashboard', ['$compile', '$scope', '$location', '$state', '$stat
         if (studentDataObj) {
           localStorageService.set("currentStudentData", studentDataObj);
           resolve(studentDataObj)
-          console.log(studentDataObj);
         } else {
           reject('no student data');
         }
@@ -137,26 +146,21 @@ app.controller('Dashboard', ['$compile', '$scope', '$location', '$state', '$stat
     })
   }
 
-
   // if no object in local storage, or localstorage object's id is not same as in url parameter, get correct student data object
   $scope.data.dashboardInit = function() {
-    if (!localStorageService.get('currentDashboardData') || localStorageService.get('currentDashboardData')._id !== $stateParams.id ) {
-      $scope.data.reloadDashboardData();
-    } else {
-      $scope.view.showFSDashboard = false;
-      $scope.view.loadDashboardDataFromLS()
-      .then(function(data) {
-        $scope.data.currentDashboardDataObject = data;
+
+    $scope.data.loadDashboardData()
+    .then(function() {
+
+      window.requestAnimationFrame($scope.view.responsiveAdaptationDashboard);
+      var resizeTimeout;
+      $(window).on("resize orientationChange", function() {
+        clearTimeout(resizeTimeout);
+        // 100ms after most recent resize, refresh the $state
+        resizeTimeout = setTimeout($scope.view.doneResizing(), 100);
         window.requestAnimationFrame($scope.view.responsiveAdaptationDashboard);
-        var resizeTimeout;
-        $(window).on("resize orientationChange", function() {
-          clearTimeout(resizeTimeout);
-          // 100ms after most recent resize, refresh the $state
-          resizeTimeout = setTimeout($scope.view.doneResizing(), 100);
-          window.requestAnimationFrame($scope.view.responsiveAdaptationDashboard);
-        })
-      });
-    }
+      })
+    });
   }
 
   // Initialization Execution

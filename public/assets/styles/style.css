@@ -306,7 +306,12 @@ iframe.dashM-iframe {
   overflow: hidden;
   border: 1px solid black; }
 
-section.dashboard-frame {
+h4.loading-manager-options {
+  font-size: 24px;
+  line-height: 34px;
+  margin: 0; }
+
+section.dashboard-outer-frame {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -323,38 +328,38 @@ span.sd-title-static {
 input[type=checkbox] {
   transform: scale(1); }
 
-section.dashboard-studentData {
+section.dashboard-inner-frame {
   display: flex;
   flex-direction: column;
   width: 100%;
   height: auto; }
-  section.dashboard-studentData section.sd-row1 {
+  section.dashboard-inner-frame section.sd-row1 {
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
     width: 100%; }
-    section.dashboard-studentData section.sd-row1 h1 {
+    section.dashboard-inner-frame section.sd-row1 h1 {
       display: flex;
       align-items: flex-start;
       justify-content: flex-start;
       margin: 0px; }
-  section.dashboard-studentData section.sd-row2 {
+  section.dashboard-inner-frame section.sd-row2 {
     display: flex;
     width: 100%; }
-    section.dashboard-studentData section.sd-row2 section.sd-column1 {
+    section.dashboard-inner-frame section.sd-row2 section.sd-column1 {
       display: flex;
       flex-direction: column;
       width: 16%;
       justify-content: space-between; }
-    section.dashboard-studentData section.sd-row2 section.sd-column2 {
+    section.dashboard-inner-frame section.sd-row2 section.sd-column2 {
       display: flex;
       flex-direction: column;
       width: 84%; }
-      section.dashboard-studentData section.sd-row2 section.sd-column2 section.sd-column2-row1 {
+      section.dashboard-inner-frame section.sd-row2 section.sd-column2 section.sd-column2-row1 {
         display: flex;
         justify-content: flex-start;
         width: 100%; }
-      section.dashboard-studentData section.sd-row2 section.sd-column2 section.sd-column2-row2 {
+      section.dashboard-inner-frame section.sd-row2 section.sd-column2 section.sd-column2-row2 {
         display: flex;
         width: 100%; }
 
@@ -582,6 +587,7 @@ p.reset-filters-cta {
 
 section.dashboard-studentdetails {
   position: absolute;
+  z-index: 100;
   display: flex;
   justify-content: center;
   align-items: center;

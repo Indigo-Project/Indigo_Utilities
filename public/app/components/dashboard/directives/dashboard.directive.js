@@ -1,9 +1,11 @@
-app.directive('dashboard', ['$compile','DashboardService', function($compile, DashboardService) {
+app.directive('dashboard', ['$compile', '$rootScope', 'DashboardService', function($compile, $rootScope, DashboardService) {
 
   function link(scope, element, attrs) {
 
-    // Generate D3 Dashboard
     DashboardService.generateD3Dashboard({ data: scope.data.currentDashboardDataObject }, 'studentData');
+
+    $rootScope.stateIsLoading = false;
+
   }
 
   return {

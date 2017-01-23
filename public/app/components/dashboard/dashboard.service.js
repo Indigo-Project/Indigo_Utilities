@@ -164,7 +164,6 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
                 // noData ? noDataContainer.remove() : null;
                 var value = data[0];
                 var action = this.checked ? "add" : "remove";
-                console.log(action, "student", value);
                 applyFilters(action, "student", value)
               })
 
@@ -339,7 +338,7 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
                   i = dashValsIndex[i];
                   headers.attr('class', 'student-data header');
                   if (sortAscending) {
-                    console.log('Ascending');
+                    // console.log('Ascending');
                     tableBody.selectAll('tr')
                     .sort(function(a, b) {
                       return a == null || b == null ? 0 : stringCompare(a[i], b[i], 'asc', i)
@@ -347,7 +346,7 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
                     sortAscending = false;
                     this.className = 'student-data header des';
                   } else {
-                    console.log('Descending');
+                    // console.log('Descending');
                     tableBody.selectAll('tr')
                     .sort(function(a, b) {
                       return a == null || b == null ? 0 : stringCompare(a[i], b[i], 'des', i)
@@ -389,13 +388,13 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
                 })
 
                 RWD.responsiveAdaptationDashboard();
-                console.log(angular.element('dashboard'));
+                // console.log(angular.element('dashboard'));
                 $compile($('table.student-data tbody td:nth-of-type(1)'))(angular.element('dashboard').scope());
                 rowObj.exit().remove();
 
               } else if (status === 'noData') {
 
-                console.log('No Data Message');
+                // console.log('No Data Message');
 
                 rowObj.enter();
                 rowObj.exit().remove();
@@ -456,7 +455,6 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
                 }).style("background-color", function(d, i) {
                   var discOpacityCalc = (((Number(d.value) * 80) / 100) + 20) / 100;
                   var motivOpacityCalc = (((Number(d.value) * 8) / 10) + 2) / 10;
-                  console.log(motivOpacityCalc);
                   var cellColor = i > 2 ? columnColorIndex[i] : "rgba(255,255,255,";
                   var opacity = i > 2 && i <= 6 ? discOpacityCalc : i > 6 ? motivOpacityCalc : 1;
                   return cellColor + opacity + ")";
@@ -592,7 +590,7 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
             .on("keyup", function() {
               var searchedData = dashData;
               var text = this.value.trim();
-              console.log('keyup', text);
+              // console.log('keyup', text);
 
               var searchResults = searchedData.map(function(e) {
                 // console.log(e);
@@ -641,7 +639,7 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
             sDDataObject[columnHeaders[i]].key = columnHeaders[i];
             sDDataObject[columnHeaders[i]].label = columnHeaders[i].replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
           }
-          console.log(sDDataObject);
+          // console.log(sDDataObject);
 
           var adultAverages = {
             "DISC": ['43.0', '58.7', '60.7', '50.5'],

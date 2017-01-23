@@ -23,7 +23,7 @@ app.factory('RWD', ['$compile', '$state', function($state) {
     responsiveAdaptationDashboard: function() {
 
       // Responsive initialization of dimensions
-      var dashboardFrameElement = $('section.dashboard-frame');
+      var dashboardFrameElement = $('section.dashboard-outer-frame');
       var baseDimensions = RWD.calculateBaseDimensions(dashboardFrameElement);
 
       // my viewport width: 1440
@@ -41,7 +41,7 @@ app.factory('RWD', ['$compile', '$state', function($state) {
       dashboardFrameElement.css("padding", dashboardFramePadding.top + "px " + dashboardFramePadding.right + "px " + dashboardFramePadding.bottom + "px  " + dashboardFramePadding.left + "px");
 
       // Set dimensions for inner Dashboard Section
-      var dashboardElement = $('section.dashboard-studentData');
+      var dashboardElement = $('section.dashboard-inner-frame');
       var dashboardInnerWidth = dashboardWidth - (dashboardFramePadding.left + dashboardFramePadding.right);
       var dashboardInnerHeight = dashboardHeight - (dashboardFramePadding.top + dashboardFramePadding.bottom);
       dashboardElement.width(dashboardInnerWidth);
