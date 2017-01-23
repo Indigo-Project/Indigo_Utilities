@@ -268,15 +268,15 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
           function unselectFilters() {
 
 
-            var genderFilters = d3.select('div.gender-filter').selectAll('input')
+            var genderFilters = d3.select('div.gender-filter-options').selectAll('input')
             .attr('checked', function(d,i,a) { return a[i].checked = false; })
             genderSelections = [];
 
-            var classFilters = d3.select('div.class-filter').selectAll('input')
+            var classFilters = d3.select('div.class-filter-options').selectAll('input')
             .attr('checked', function(d,i,a) { return a[i].checked = false; })
             classSelections = [];
 
-            var studentFilters = d3.select('div.student-filter').selectAll('input')
+            var studentFilters = d3.select('div.student-filter-options').selectAll('input')
             .attr('checked', function(d,i,a) { return a[i].checked = false; })
             studentSelections = [];
 
