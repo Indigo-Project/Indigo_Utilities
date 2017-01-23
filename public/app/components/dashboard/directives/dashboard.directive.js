@@ -4,6 +4,18 @@ app.directive('dashboard', ['$compile', '$rootScope', 'DashboardService', functi
 
     DashboardService.generateD3Dashboard({ data: scope.data.currentDashboardDataObject }, 'studentData');
 
+    console.log(window.location);
+    console.log(window.parent.location);
+    console.log(document.referrer);
+    console.log(document.location.href);
+
+    var url = (window.location != window.parent.location)
+            ? document.referrer
+            : document.location.origin;
+
+    console.log(url);
+
+
     $rootScope.stateIsLoading = false;
 
   }

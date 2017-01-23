@@ -116,32 +116,3 @@ p.dashboard-nav {
 button.format-data {
   margin-right: 20px;
 }
-
-
-// ******************
-// ******************
-// Dashboard Manager
-// ******************
-// ******************
-
-section.dash-selection {
-  display: flex;
-  border-bottom: 1px solid black;
-  padding-bottom: 20px;
-  select {
-    margin-right: 20px;
-  }
-}
-
-button.full-screen-dash {
-  width: 200px;
-}
-
-iframe.dashM-iframe {
-  width: 100%;
-  height: 50.208333%;
-  margin-top: 20px;
-  overflow: hidden;
-  // resize: both;
-  border: 1px solid black;
-}
