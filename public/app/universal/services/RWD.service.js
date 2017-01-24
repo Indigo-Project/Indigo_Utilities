@@ -249,19 +249,20 @@ app.factory('RWD', ['$compile', '$state', function($state) {
       var Table_Container = $('div.student-data-table');
       var Table = $('table.student-data');
       var tHead = $('table.student-data > thead');
-      var tBody = $('table.student-data > tbody');
+      var tBody = $('tbody.student-data');
+      var tBodyStat = $('tbody.student-data-averages');
 
       Table_Container.width(Row2_Column2.width());
       Table.width(Table_Container.width());
       tHead.width(Table.width())
       var sD_tHead_minusBorders = tHead.width() - 26;
       tBody.width(Table.width());
-      tBody.height((Row2_Column2_Row1.height() - tHead.height()) * .9);
+      tBodyStat.width(Table.width());
+      tBody.height((Row2_Column2_Row1.height() - tHead.height()) * 1.09);
 
-      var sD_tHead_minusBorders = tHead.width() - 26;
 
       // tHead Column Headers Variable Definition
-      var tHead = {
+      var tHeadObj = {
         students: $('thead.student-data th:nth-of-type(1)'),
         gender: $('thead.student-data th:nth-of-type(2)'),
         class: $('thead.student-data th:nth-of-type(3)'),
@@ -277,19 +278,19 @@ app.factory('RWD', ['$compile', '$state', function($state) {
         traditional: $('thead.student-data th:nth-of-type(13)')
       }
 
-      tHead.students.innerWidth(sD_tHead_minusBorders * 0.1272618629174);
-      tHead.gender.innerWidth(sD_tHead_minusBorders * 0.05);
-      tHead.class.innerWidth(sD_tHead_minusBorders * 0.04166432337434);
-      tHead.dominance.innerWidth(sD_tHead_minusBorders * 0.07820738137083);
-      tHead.influencing.innerWidth(sD_tHead_minusBorders * 0.07820738137083);
-      tHead.steadiness.innerWidth(sD_tHead_minusBorders * 0.07820738137083);
-      tHead.compliance.innerWidth(sD_tHead_minusBorders * 0.07820738137083);
-      tHead.theoretical.innerWidth(sD_tHead_minusBorders * 0.07820738137083);
-      tHead.utilitarian.innerWidth(sD_tHead_minusBorders * 0.07820738137083);
-      tHead.aesthetic.innerWidth(sD_tHead_minusBorders * 0.07820738137083);
-      tHead.social.innerWidth(sD_tHead_minusBorders * 0.07820738137083);
-      tHead.individualistic.innerWidth(sD_tHead_minusBorders * 0.07820738137083);
-      tHead.traditional.innerWidth(sD_tHead_minusBorders * 0.07820738137083);
+      tHeadObj.students.innerWidth(sD_tHead_minusBorders * 0.1272618629174);
+      tHeadObj.gender.innerWidth(sD_tHead_minusBorders * 0.05);
+      tHeadObj.class.innerWidth(sD_tHead_minusBorders * 0.04166432337434);
+      tHeadObj.dominance.innerWidth(sD_tHead_minusBorders * 0.07820738137083);
+      tHeadObj.influencing.innerWidth(sD_tHead_minusBorders * 0.07820738137083);
+      tHeadObj.steadiness.innerWidth(sD_tHead_minusBorders * 0.07820738137083);
+      tHeadObj.compliance.innerWidth(sD_tHead_minusBorders * 0.07820738137083);
+      tHeadObj.theoretical.innerWidth(sD_tHead_minusBorders * 0.07820738137083);
+      tHeadObj.utilitarian.innerWidth(sD_tHead_minusBorders * 0.07820738137083);
+      tHeadObj.aesthetic.innerWidth(sD_tHead_minusBorders * 0.07820738137083);
+      tHeadObj.social.innerWidth(sD_tHead_minusBorders * 0.07820738137083);
+      tHeadObj.individualistic.innerWidth(sD_tHead_minusBorders * 0.07820738137083);
+      tHeadObj.traditional.innerWidth(sD_tHead_minusBorders * 0.07820738137083);
 
       // tBody Columns Variable Definition
       var tBodyColumns = {
@@ -309,21 +310,51 @@ app.factory('RWD', ['$compile', '$state', function($state) {
       }
 
       // tHead and tBody column width alignment
-      tBodyColumns.students.innerWidth(tHead.students.innerWidth());
-      tBodyColumns.gender.innerWidth(tHead.gender.innerWidth());
-      tBodyColumns.class.innerWidth(tHead.class.innerWidth());
-      tBodyColumns.dominance.innerWidth(tHead.dominance.innerWidth());
-      tBodyColumns.influencing.innerWidth(tHead.influencing.innerWidth());
-      tBodyColumns.steadiness.innerWidth(tHead.steadiness.innerWidth());
-      tBodyColumns.compliance.innerWidth(tHead.compliance.innerWidth());
-      tBodyColumns.theoretical.innerWidth(tHead.theoretical.innerWidth());
-      tBodyColumns.utilitarian.innerWidth(tHead.utilitarian.innerWidth());
-      tBodyColumns.aesthetic.innerWidth(tHead.aesthetic.innerWidth());
-      tBodyColumns.social.innerWidth(tHead.social.innerWidth());
-      tBodyColumns.individualistic.innerWidth(tHead.individualistic.innerWidth());
-      tBodyColumns.traditional.innerWidth(tHead.traditional.innerWidth());
+      tBodyColumns.students.innerWidth(tHeadObj.students.innerWidth());
+      tBodyColumns.gender.innerWidth(tHeadObj.gender.innerWidth());
+      tBodyColumns.class.innerWidth(tHeadObj.class.innerWidth());
+      tBodyColumns.dominance.innerWidth(tHeadObj.dominance.innerWidth());
+      tBodyColumns.influencing.innerWidth(tHeadObj.influencing.innerWidth());
+      tBodyColumns.steadiness.innerWidth(tHeadObj.steadiness.innerWidth());
+      tBodyColumns.compliance.innerWidth(tHeadObj.compliance.innerWidth());
+      tBodyColumns.theoretical.innerWidth(tHeadObj.theoretical.innerWidth());
+      tBodyColumns.utilitarian.innerWidth(tHeadObj.utilitarian.innerWidth());
+      tBodyColumns.aesthetic.innerWidth(tHeadObj.aesthetic.innerWidth());
+      tBodyColumns.social.innerWidth(tHeadObj.social.innerWidth());
+      tBodyColumns.individualistic.innerWidth(tHeadObj.individualistic.innerWidth());
+      tBodyColumns.traditional.innerWidth(tHeadObj.traditional.innerWidth());
 
-      // console.log(tBodyColumns.students.outerWidth() + tBodyColumns.gender.outerWidth() + tBodyColumns.class.outerWidth(), studentCount_Container.width(), Row2_Column2_Row2.width());
+      var tBodyStat = $('tbody.student-data-averages');
+      var currPopAvgsRow = $('tr.current-population-averages');
+      var corpAdultAvgsRow = $('tr.corporate-adult-averages');
+      var tBodyStatColumns = {
+        title: $('tbody.student-data-averages td:nth-child(1)'),
+        dominance: $('tbody.student-data-averages td:nth-child(2)'),
+        influencing: $('tbody.student-data-averages td:nth-child(3)'),
+        steadiness: $('tbody.student-data-averages td:nth-child(4)'),
+        compliance: $('tbody.student-data-averages td:nth-child(5)'),
+        theoretical: $('tbody.student-data-averages td:nth-child(6)'),
+        utilitarian: $('tbody.student-data-averages td:nth-child(7)'),
+        aesthetic: $('tbody.student-data-averages td:nth-child(8)'),
+        social: $('tbody.student-data-averages td:nth-child(9)'),
+        individualistic: $('tbody.student-data-averages td:nth-child(10)'),
+        traditional: $('tbody.student-data-averages td:nth-child(11)')
+      }
+
+      tBodyStat.height(currPopAvgsRow.outerHeight() + corpAdultAvgsRow.outerHeight());
+
+      tBodyStatColumns.title.innerWidth(tHeadObj.students.innerWidth() + tHeadObj.gender.innerWidth() + tHeadObj.class.innerWidth() + 5);
+      tBodyStatColumns.dominance.innerWidth(tHeadObj.dominance.innerWidth());
+      tBodyStatColumns.influencing.innerWidth(tHeadObj.influencing.innerWidth());
+      tBodyStatColumns.steadiness.innerWidth(tHeadObj.steadiness.innerWidth());
+      tBodyStatColumns.compliance.innerWidth(tHeadObj.compliance.innerWidth());
+      tBodyStatColumns.theoretical.innerWidth(tHeadObj.theoretical.innerWidth());
+      tBodyStatColumns.utilitarian.innerWidth(tHeadObj.utilitarian.innerWidth());
+      tBodyStatColumns.aesthetic.innerWidth(tHeadObj.aesthetic.innerWidth());
+      tBodyStatColumns.social.innerWidth(tHeadObj.social.innerWidth());
+      tBodyStatColumns.individualistic.innerWidth(tHeadObj.individualistic.innerWidth());
+      tBodyStatColumns.traditional.innerWidth(tHeadObj.traditional.innerWidth());
+
 
       studentCount_Container.width(tBodyColumns.students.outerWidth() + tBodyColumns.gender.outerWidth() + tBodyColumns.class.outerWidth());
       // studentCount_Container.css('padding-left', studentCount_Container.width() * 0.1 + "px");
@@ -390,10 +421,13 @@ app.factory('RWD', ['$compile', '$state', function($state) {
       // row td fonts, 9/13
       var tableColumnHeaders = $('th.student-data');
       var tableCellValues = $('td.student-data');
+      var statCells = $('td.stat-cell');
       tableColumnHeaders.css('font-size', Math.min(10.5/683 * dashboardInnerHeight, 10.5/1380 * dashboardInnerWidth))
       tableColumnHeaders.css('padding', Math.min(4/683 * dashboardInnerHeight, 4/1380 * dashboardInnerWidth))
       tableCellValues.css('font-size', Math.min(10.5/683 * dashboardInnerHeight, 10.5/1380 * dashboardInnerWidth))
       tableCellValues.css('padding', Math.min(4/683 * dashboardInnerHeight, 4/1380 * dashboardInnerWidth))
+      statCells.css('font-size', Math.min(10.5/683 * dashboardInnerHeight, 10.5/1380 * dashboardInnerWidth) + 'px');
+      statCells.css('padding', Math.min(4/683 * dashboardInnerHeight, 4/1380 * dashboardInnerWidth) + 'px');
 
       // student count, 36/40
       var studentCountNum = $('div.student-count h1');
@@ -425,10 +459,11 @@ app.factory('RWD', ['$compile', '$state', function($state) {
       noDataButton.css('font-size', Math.min(16/683 * dashboardInnerHeight, 16/1380 * dashboardInnerWidth))
       noDataButton.css('margin-top', Math.min(30/683 * dashboardInnerHeight, 30/1380 * dashboardInnerWidth))
 
-      var noDataMessage = $('div.dashboard-no-data-display');
-      if (noDataMessage) {
-        noDataMessage.height(tBody.outerHeight());
+      var noDataMessageDiv = $('div.dashboard-no-data-display');
+      if (noDataMessageDiv) {
+        noDataMessageDiv.height(tBody.outerHeight());
       }
+      noDataMessageDiv.css('top', tHead.outerHeight() + 'px');
 
       var resetFiltersCTA = $('p.reset-filters-cta')
       resetFiltersCTA.css('font-size', Math.min(12/683 * dashboardInnerHeight, 12/1380 * dashboardInnerWidth))

@@ -378,20 +378,36 @@ table.student-data {
   table.student-data thead tr {
     display: block;
     position: relative; }
-  table.student-data tbody {
+  table.student-data tbody.student-data {
     display: block;
     overflow: overlay; }
-    table.student-data tbody::-webkit-scrollbar * {
+    table.student-data tbody.student-data::-webkit-scrollbar * {
       background: transparent; }
-    table.student-data tbody td {
+    table.student-data tbody.student-data td {
       border-bottom: 1px solid #828282;
       border-right: 1px solid #828282; }
-      table.student-data tbody td:nth-child(1):hover {
+      table.student-data tbody.student-data td:nth-child(1):hover {
         cursor: pointer;
         cursor: hand; }
-      table.student-data tbody td:nth-child(3) {
+      table.student-data tbody.student-data td:nth-child(3) {
         border-right: 1px solid black; }
-      table.student-data tbody td:nth-child(7) {
+      table.student-data tbody.student-data td:nth-child(7) {
+        border-right: 1px solid black; }
+  table.student-data tbody.student-data-averages {
+    display: block;
+    border-top: 2px solid black; }
+    table.student-data tbody.student-data-averages tr.current-population-averages {
+      background-color: #d7d5d5; }
+    table.student-data tbody.student-data-averages tr.adult-averages {
+      background-color: whitesmoke; }
+    table.student-data tbody.student-data-averages tr:nth-child(1) {
+      border-bottom: 1px solid #828282; }
+    table.student-data tbody.student-data-averages td {
+      font-weight: bold;
+      border-right: 1px solid #828282; }
+      table.student-data tbody.student-data-averages td:nth-child(3) {
+        border-right: 1px solid black; }
+      table.student-data tbody.student-data-averages td:nth-child(7) {
         border-right: 1px solid black; }
 
 h4.filter-header {
@@ -535,8 +551,7 @@ th.student-data {
 tr.student-data:hover td {
   font-weight: bold; }
 
-td.student-data, th.student-data {
-  padding: 4px;
+td.student-data, td.stat-cell, th.student-data {
   border: 1px solid #ccc;
   text-align: left; }
 
@@ -557,7 +572,6 @@ div.dashboard-no-data-display {
   align-items: center;
   position: absolute;
   left: 0px;
-  bottom: 0px;
   width: 100%; }
 
 div.no-data-message {
@@ -866,6 +880,7 @@ div.dashboard-loading-indicator {
     width: 6.944444444444vw;
     height: 22.959889349931vh;
     background-image: url("../images/indigo.png");
+    background-size: 6.944444444444vw 22.959889349931vh;
     animation-name: opacityTransition;
     animation-iteration-count: infinite;
     animation-timing-function: ease-in-out;

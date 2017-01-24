@@ -82,15 +82,12 @@ table.student-data {
       position: relative;
     }
   }
-  tbody {
+  tbody.student-data {
     display: block;
     overflow: overlay;
     &::-webkit-scrollbar * {
       background: transparent;
     }
-    // &::-webkit-scrollbar-track-piece:end {
-    //     background: transparent url('images/backgrounds/scrollbar.png') repeat-y !important;
-    // }
     td {
       border-bottom: 1px solid rgb(130, 130, 130);
       border-right: 1px solid rgb(130, 130, 130);
@@ -98,6 +95,33 @@ table.student-data {
         cursor: pointer;
         cursor: hand;
       }
+      &:nth-child(3) {
+        border-right: 1px solid black;
+      }
+      &:nth-child(7) {
+        border-right: 1px solid black;
+      }
+    }
+  }
+  tbody.student-data-averages {
+    display: block;
+    border-top: 2px solid black;
+    tr {
+      &.current-population-averages {
+        background-color: rgb(215, 213, 213);
+        // background-color: rgb(200, 255, 250);
+      }
+      &.adult-averages {
+        background-color: rgb(245, 245, 245);
+        // background-color: rgb(200, 255, 250);
+      }
+      &:nth-child(1) {
+        border-bottom: 1px solid rgb(130, 130, 130);
+      }
+    }
+    td {
+      font-weight: bold;
+      border-right: 1px solid rgb(130, 130, 130);
       &:nth-child(3) {
         border-right: 1px solid black;
       }
@@ -251,8 +275,6 @@ section.adult-avgs {
   align-items: center;
   justify-content: flex-start;
   width: 77%;
-  // height: 132.38px;
-  // background-color: brown;
 }
 
 div.adult-avgs h5 {
@@ -290,8 +312,8 @@ tr.student-data:hover td {
   font-weight: bold;
 }
 
-td.student-data, th.student-data {
-	padding: 4px;
+td.student-data, td.stat-cell, th.student-data {
+	// padding: 4px;
 	border: 1px solid #ccc;
 	text-align: left;
   // font-size: 10.5px;
@@ -317,9 +339,7 @@ div.dashboard-no-data-display {
   align-items: center;
   position: absolute;
   left: 0px;
-  bottom: 0px;
   width: 100%;
-  // background-color: rgba(78, 168, 134, 0.6);
 }
 
 div.no-data-message {

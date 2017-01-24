@@ -95,6 +95,7 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
             sortAscending = true;
             table = d3.select('div.student-data-table').append('table').attr('class', 'student-data');
             tableBody = table.append('tbody').attr('class', 'student-data');
+            tableBodyAvgs = table.append('tbody').attr('class', 'student-data-averages');
             titles = d3.values(dashboardCHs);
 
             columnColorIndex = ["rgba(255,255,255,", "rgba(255,255,255,", "rgba(255,255,255,", "rgba(255, 52, 52,", "rgba(250, 238, 74,", "rgba(41, 218, 32,", "rgba(96, 112, 255,", "rgba(128, 0, 127,", "rgba(128, 0, 127,", "rgba(128, 0, 127,", "rgba(128, 0, 127,", "rgba(128, 0, 127,", "rgba(128, 0, 127,"];
@@ -257,8 +258,6 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
                   })
                 }
 
-                console.log(data);
-
                 // Update student filter options with updated data object
                 studentFilterSetup(data);
 
@@ -369,6 +368,83 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
             // Dashboard Rows Setup
             function setupRows(status) {
 
+              function appendAveragesRows(currentPopulationData, status) {
+
+                // Build compiled population object (student averages row data)
+                var currentPopulationRowData = [];
+                for (var i = 3; i < dashValsIndex.length; i++) {
+                  var currValueSum = 0;
+                  for (var j = 0; j < currentPopulationData.length; j++) {
+                    currValueSum += Number(currentPopulationData[j][dashValsIndex[i]]);
+                  }
+                  currAvgValue = (currValueSum/currentPopulationData.length).toFixed(1);
+                  currAvgValue === 'NaN' ? currAvgValue = 0 : null;
+                  currentPopulationRowData[i-3] = currAvgValue;
+                }
+                currentPopulationRowData.unshift('Current Population Averages (' + currentPopulationData.length.toString() + ' students):');
+
+                if (status === 'init') {
+
+                  console.log(currentPopulationRowData);
+
+                  // Build corporate adult averages object (caa row data)
+                  var adultAveragesRowData = ['Corporate Adult Averages:', '43.0', '58.7', '60.7', '50.5', '6.0', '5.3', '4.3', '4.2', '5.5', '4.7'];
+
+                  // Populate current population averages row with data
+                  var currentPopulationAverages = tableBodyAvgs.append('tr').attr('class', 'current-population-averages')
+                  currentPopulationAverages.selectAll('td').data(currentPopulationRowData, function(d) { return d; }).enter()
+                  .append('td').attr('class', 'current-population-averages stat-cell')
+                  .text(function(d) {
+                    return d;
+                  })
+                  .style('color', function(d, i) {
+                    return i > 0 ? i === 2 ? "rgb(245, 255, 48)": columnColorIndex[i+2] + "1)" : "rgba(255,255,255)";
+                  }).exit().remove();
+
+                  // Populate corporate adult averages row with data
+                  var adultAverages = tableBodyAvgs.append('tr').attr('class', 'adult-averages')
+                  adultAverages.selectAll('td').data(adultAveragesRowData, function(d) { return d; }).enter()
+                  .append('td').attr('class', 'corporate-adult-averages stat-cell')
+                  .text(function(d) {
+                    return d;
+                  })
+
+                  currentPopulationAverages.exit().remove();
+                  adultAverages.exit().remove();
+
+                } else if (status === 'update') {
+
+                  console.log(currentPopulationRowData);
+
+                  // Populate current population averages row with data
+                  // var currentPopulationAverages = tableBodyAvgs.select('tr.current-population-averages').data(currentPopulationRowData, function(d) { return d; })
+                  var currentPopulationAveragesRow = tableBodyAvgs.select('tr.current-population-averages')
+                  console.log(currentPopulationAverages);
+                  var currentPopulationAveragesCells = currentPopulationAveragesRow.selectAll('td.current-population-averages').data(currentPopulationRowData, function(d) { return d; })
+                  currentPopulationAveragesCells.enter()
+                  .append('td').attr('class', 'current-population-averages stat-cell')
+                  .text(function(d, i, a) {
+                    console.log(d, i);
+                    return d;
+                  })
+                  .style('color', function(d, i) {
+                    return i > 0 ? i === 2 ? "rgb(245, 255, 48)": columnColorIndex[i+2] + "1)" : "rgba(255,255,255)";
+                  }).exit().remove();
+
+                  currentPopulationAveragesCells.exit().remove();
+
+                  // Populate corporate adult averages row with data
+                  // var adultAverages = tableBodyAvgs.append('tr').attr('class', 'adult-averages')
+                  // adultAverages.selectAll('td').data(adultAveragesRowData, function(d) { return d; }).enter()
+                  // .append('td').attr('class', 'corporate-adult-averages stat-cell')
+                  // .text(function(d) {
+                  //   return d;
+                  // })
+
+                }
+
+              }
+
               if (status === 'init') {
 
                 rowObj.attr('row-index', function(d, i) {
@@ -395,18 +471,16 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
                   return cellColor + opacity + ")";
                 })
 
-                RWD.responsiveAdaptationDashboard();
-                // console.log(angular.element('dashboard'));
+                appendAveragesRows(rowData, 'init');
+
                 $compile($('table.student-data tbody td:nth-of-type(1)'))(angular.element('dashboard').scope());
+                RWD.responsiveAdaptationDashboard();
                 rowObj.exit().remove();
 
               } else if (status === 'noData') {
 
-                // console.log('No Data Message');
-
                 rowObj.enter();
                 rowObj.exit().remove();
-
 
                 var noDataContainer = d3.select('div.student-data-table')
                 .append('div').attr('class', 'dashboard-no-data-display')
@@ -437,15 +511,14 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
 
                 noData = true;
 
+                appendAveragesRows(rowData, 'update');
+
                 RWD.responsiveAdaptationDashboard();
 
               } else if (status === 'update') {
 
-                // console.log('update');
-
                 rowObj.enter().append('tr').attr('class', 'student-data')
                 .attr('row-index', function(d, i) {
-                  // console.log(d, i);
                   return i;
                 })
                 .selectAll('td').data(function (d,i) {
@@ -471,7 +544,10 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
                   return cellColor + opacity + ")";
                 })
 
+                appendAveragesRows(rowData, 'update');
+
                 RWD.responsiveAdaptationDashboard();
+
                 $compile($('table.student-data tbody td:nth-of-type(1)'))(angular.element('dashboard').scope());
                 rowObj.exit().remove();
 
@@ -480,8 +556,6 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
 
             if (status === 'init') {
 
-              // console.log('initializing row data');
-
               var rowObj = tableBody.selectAll('tr').data(rowData, function(d) { return d }).enter().append('tr').attr('class', 'student-data');
 
               setupHeaders('init');
@@ -489,16 +563,12 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
 
             } else if (status === 'update') {
 
-              // console.log('row data update', rowData);
-
               var rowObj = tableBody.selectAll('tr').data(rowData, function(d) { return d });
 
               setupHeaders('reinitialize');
               return setupRows('update');
 
             } else if (status === 'noData') {
-
-              // console.log('No Data Message');
 
               var rowObj = tableBody.selectAll('tr').data(rowData, function(d) { return d });
 
@@ -586,7 +656,7 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
                     generateTable(data.filteredData, 'update');
                     noData = false;
                   } else {
-                    console.log(data.filtersApplied);
+                    // console.log(data.filtersApplied);
                     generateTable(data.filteredData, 'update');
                     setupFilters(dashData, data.filtersApplied, false);
                   }
