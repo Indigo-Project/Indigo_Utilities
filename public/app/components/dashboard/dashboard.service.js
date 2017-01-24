@@ -62,7 +62,7 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
         function createDashboard(data, schoolName) {
 
           // Global Vars
-          var studentSelections, classSelections, genderSelections, dashData, sdCHs, dataKeys, studentClasses, dashValCHs, dashboardCHs, dashValsIndex, sortAscending, table, tablebody, titles, columnColorIndex, noData;
+          var studentSelections, classSelections, genderSelections, dashData, sdCHs, dataKeys, studentClasses, dashValCHs, dashboardCHs, dashValsIndex, sortAscending, table, tablebody, titles, columnColorIndex, noData, searchReturn;
           function setDashboardGlobalVars() {
 
             studentSelections = [];
@@ -101,10 +101,13 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
             // columnColorIndex = ["rgba(255,255,255,", "rgba(255,255,255,", "rgba(255,255,255,", "rgba(255, 52, 52,", "rgba(250, 238, 74,", "rgba(41, 218, 32,", "rgba(96, 112, 255,", "rgba(212, 175, 55,", "rgba(212, 175, 55,", "rgba(212, 175, 55,", "rgba(212, 175, 55,", "rgba(212, 175, 55,", "rgba(212, 175, 55,"];
           }
 
-          function resetFiltersCta() {
+          function resetFiltersStaticSetup() {
             var resetFilterCTA = d3.select('p.reset-filters-cta');
 
             resetFilterCTA.on('click', function() {
+
+              var searchBar = d3.select('input.search-bar');
+              searchBar._groups[0][0].value = "";
 
               var noDataContainer = d3.select('div.dashboard-no-data-display');
               noDataContainer ? noDataContainer.remove() : null;
@@ -114,7 +117,10 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
               generateTable(dashData, 'filterReset');
 
               noData = false;
-            })
+            });
+
+
+
           }
 
           // Dashboard Filters Setup
@@ -250,6 +256,8 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
                     return filtersApplied[1].indexOf(gTransform) !== -1;
                   })
                 }
+
+                console.log(data);
 
                 // Update student filter options with updated data object
                 studentFilterSetup(data);
@@ -414,6 +422,9 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
                 .text("reset filters")
                 .on("click", function() {
 
+                  var searchBar = d3.select('input.search-bar');
+                  searchBar._groups[0][0].value = "";
+
                   noDataContainer.remove();
 
                   unselectFilters();
@@ -567,6 +578,7 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
 
                 if (!data.filteredData.length) {
                   generateTable(data.filteredData, 'noData')
+                  setupFilters(dashData, data.filtersApplied, false);
                 } else {
                   if (noData) {
                     var noDataContainer = d3.select('div.dashboard-no-data-display');
@@ -574,6 +586,7 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
                     generateTable(data.filteredData, 'update');
                     noData = false;
                   } else {
+                    console.log(data.filtersApplied);
                     generateTable(data.filteredData, 'update');
                     setupFilters(dashData, data.filtersApplied, false);
                   }
@@ -588,12 +601,10 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
 
             d3.select('input.search-bar')
             .on("keyup", function() {
-              var searchedData = dashData;
+              // var searchedData = dashData;
               var text = this.value.trim();
-              // console.log('keyup', text);
 
-              var searchResults = searchedData.map(function(e) {
-                // console.log(e);
+              var searchResults = dashData.map(function(e) {
                 var regex = new RegExp(text + ".*", "i");
                 if (regex.test(e[0])) {
                   return regex.exec(e[0])[0]
@@ -605,7 +616,7 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
                 if (searchResults[i]) searchResultIndices.push(i);
               }
 
-              var searchReturn = [];
+              searchReturn = [];
               for (var i = 0; i < searchResultIndices.length; i++) {
                 searchReturn.push(dashData[searchResultIndices[i]]);
               }
@@ -620,7 +631,7 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
             setDashboardGlobalVars();
             setupFilters(dashData, [[],[],[]], true);
             searchBarInit();
-            resetFiltersCta();
+            resetFiltersStaticSetup();
             generateTable(dashData, 'init');
           }
 
