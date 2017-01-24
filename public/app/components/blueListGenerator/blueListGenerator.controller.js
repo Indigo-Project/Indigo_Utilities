@@ -49,13 +49,13 @@ app.controller('BlueListGenerator', ['$scope', '$state', '$http', 'siteNavigatio
         data: { inputFiles:$scope.uploader.loadedFiles, outputFileName: fileName }
         // responseType: 'blob'
       })
-      .success(function(data, status, headers, config) {
-        var blob = new Blob([data], {type: 'text/csv' });
-        var fileName = headers('content-disposition');
+      .then(function(response) {
+        var blob = new Blob([response.data], {type: 'text/csv' });
+        var fileName = response.headers('content-disposition');
         FileSaver.saveAs(blob, fileName);
       }).catch(function(error) {
           console.log(error);
-          alert(error.data.externalMessage);
+          error.data.externalMessage ? alert(error.data.externalMessage) : alert(error);
       })
     }
   }
