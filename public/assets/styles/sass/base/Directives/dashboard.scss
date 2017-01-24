@@ -103,6 +103,7 @@ table.student-data {
       }
     }
   }
+  
   tbody.student-data-averages {
     display: block;
     border-top: 2px solid black;
@@ -251,53 +252,53 @@ div.class-filter-options {
   }
 }
 
-section.student-count {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  width: 23%;
-}
-
-div.student-count {
-  h1 {
-    text-align: center;
-    margin: 0;
-  }
-  h3 {
-    text-align: center;
-    color: rgb(198, 198, 198);
-    margin: 0;
-  }
-}
-
-section.adult-avgs {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  width: 77%;
-}
-
-div.adult-avgs h5 {
-  font-weight: 600;
-}
-
-table.adult-avgs {
-  border-collapse: collapse;
-  td, th {
-    padding: 3px 7px 3px 6px;
-    text-align: left;
-  }
-  th {
-    background-color: rgb(200, 255, 250);
-    border-top: 1px solid black;
-    border-bottom: 1px solid black;
-    border-left: 0.5px solid rgb(130, 130, 130);
-    border-right: 0.5px solid rgb(130, 130, 130);
-  }
-  td {
-    border-left: 0.5px solid rgb(231, 231, 231);
-  }
-}
+// section.student-count {
+//   display: flex;
+//   align-items: center;
+//   justify-content: flex-start;
+//   width: 23%;
+// }
+//
+// div.student-count {
+//   h1 {
+//     text-align: center;
+//     margin: 0;
+//   }
+//   h3 {
+//     text-align: center;
+//     color: rgb(198, 198, 198);
+//     margin: 0;
+//   }
+// }
+//
+// section.adult-avgs {
+//   display: flex;
+//   align-items: center;
+//   justify-content: flex-start;
+//   width: 77%;
+// }
+//
+// div.adult-avgs h5 {
+//   font-weight: 600;
+// }
+//
+// table.adult-avgs {
+//   border-collapse: collapse;
+//   td, th {
+//     padding: 3px 7px 3px 6px;
+//     text-align: left;
+//   }
+//   th {
+//     background-color: rgb(200, 255, 250);
+//     border-top: 1px solid black;
+//     border-bottom: 1px solid black;
+//     border-left: 0.5px solid rgb(130, 130, 130);
+//     border-right: 0.5px solid rgb(130, 130, 130);
+//   }
+//   td {
+//     border-left: 0.5px solid rgb(231, 231, 231);
+//   }
+// }
 
 th.student-data {
   // display: flex;

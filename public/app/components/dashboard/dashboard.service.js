@@ -385,8 +385,6 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
 
                 if (status === 'init') {
 
-                  console.log(currentPopulationRowData);
-
                   // Build corporate adult averages object (caa row data)
                   var adultAveragesRowData = ['Corporate Adult Averages:', '43.0', '58.7', '60.7', '50.5', '6.0', '5.3', '4.3', '4.2', '5.5', '4.7'];
 
@@ -413,8 +411,6 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
                   adultAverages.exit().remove();
 
                 } else if (status === 'update') {
-
-                  console.log(currentPopulationRowData);
 
                   // Populate current population averages row with data
                   // var currentPopulationAverages = tableBodyAvgs.select('tr.current-population-averages').data(currentPopulationRowData, function(d) { return d; })
@@ -711,6 +707,7 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
         }
 
         function loadStudentDetails(columnHeaders, studentData, metaData) {
+
           // student details data object setup
           var sDDataObject = {};
           for (var i = 0; i < columnHeaders.length; i++) {
@@ -743,6 +740,7 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
           function setRow1HeaderName() {
 
           }
+
           setRow1HeaderName();
           var studentName = d3.select('h3.sde-name');
           studentName.text(sDDataObject['FULL NAME'].value)

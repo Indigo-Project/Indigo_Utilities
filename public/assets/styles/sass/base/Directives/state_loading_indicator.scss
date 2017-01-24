@@ -9,6 +9,7 @@
 
 div.dashboard-loading-indicator {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100vw;
@@ -22,5 +23,12 @@ div.dashboard-loading-indicator {
     animation-iteration-count: infinite;
     animation-timing-function: ease-in-out;
     animation-duration: 1s;
+  }
+  h4 {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 2rem;
+    color: rgb(85, 85, 85);
+    margin: 0;
+    padding: 0;
   }
 }

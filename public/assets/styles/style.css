@@ -505,43 +505,6 @@ div.class-filter-options {
     display: inline;
     margin: 0; }
 
-section.student-count {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  width: 23%; }
-
-div.student-count h1 {
-  text-align: center;
-  margin: 0; }
-div.student-count h3 {
-  text-align: center;
-  color: #c6c6c6;
-  margin: 0; }
-
-section.adult-avgs {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  width: 77%; }
-
-div.adult-avgs h5 {
-  font-weight: 600; }
-
-table.adult-avgs {
-  border-collapse: collapse; }
-  table.adult-avgs td, table.adult-avgs th {
-    padding: 3px 7px 3px 6px;
-    text-align: left; }
-  table.adult-avgs th {
-    background-color: #c8fffa;
-    border-top: 1px solid black;
-    border-bottom: 1px solid black;
-    border-left: 0.5px solid #828282;
-    border-right: 0.5px solid #828282; }
-  table.adult-avgs td {
-    border-left: 0.5px solid #e7e7e7; }
-
 th.student-data {
   background: #333;
   color: white;
@@ -872,6 +835,7 @@ h4.sde-row4-title {
     opacity: 0.1; } }
 div.dashboard-loading-indicator {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100vw;
@@ -885,5 +849,11 @@ div.dashboard-loading-indicator {
     animation-iteration-count: infinite;
     animation-timing-function: ease-in-out;
     animation-duration: 1s; }
+  div.dashboard-loading-indicator h4 {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 2rem;
+    color: #555555;
+    margin: 0;
+    padding: 0; }
 
 /*# sourceMappingURL=style.css.map */

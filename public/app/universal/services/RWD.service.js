@@ -426,7 +426,7 @@ app.factory('RWD', ['$compile', '$state', function($state) {
       tableColumnHeaders.css('padding', Math.min(4/683 * dashboardInnerHeight, 4/1380 * dashboardInnerWidth))
       tableCellValues.css('font-size', Math.min(10.5/683 * dashboardInnerHeight, 10.5/1380 * dashboardInnerWidth))
       tableCellValues.css('padding', Math.min(4/683 * dashboardInnerHeight, 4/1380 * dashboardInnerWidth))
-      statCells.css('font-size', Math.min(10.5/683 * dashboardInnerHeight, 10.5/1380 * dashboardInnerWidth) + 'px');
+      statCells.css('font-size', Math.min(11.5/683 * dashboardInnerHeight, 11.5/1380 * dashboardInnerWidth) + 'px');
       statCells.css('padding', Math.min(4/683 * dashboardInnerHeight, 4/1380 * dashboardInnerWidth) + 'px');
 
       // student count, 36/40
