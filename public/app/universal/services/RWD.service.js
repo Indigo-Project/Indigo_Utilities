@@ -183,6 +183,7 @@ app.factory('RWD', ['$compile', '$state', function($state) {
         var filterLabels = $('label.filter-label');
         filterLabels.css('font-size', Math.min(14/683 * dashboardInnerHeight, 14/1380 * dashboardInnerWidth) + "px")
         filterLabels.css('min-height', Math.min(20/683 * dashboardInnerHeight, 20/1380 * dashboardInnerWidth) + "px")
+        filterLabels.css('max-height', Math.min(20/683 * dashboardInnerHeight, 20/1380 * dashboardInnerWidth) + "px")
 
 
       }
