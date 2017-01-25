@@ -896,13 +896,15 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
                 'relation-to-adult-avg': function(object, instrumentType) {
                   console.log('relation-to-adult-avg');
 
+                  console.log(object);
                   var sortedObject = object.sort(function(a,b) {
 
-                    // console.log('a:', a[0], a[1], a[2], Math.abs(a[1] - a[2] || 0 ));
-                    // console.log('b:', b[0], b[1], bIndex, b[2], Math.abs(b[1] - b[2] || 0 ));
+                    console.log('a:', a[0], a[1], a[2], ((a[1]/a[2] * 100) - 100) );
+                    console.log('b:', b[0], b[1], b[2], ((b[1]/b[2] * 100) - 100) );
+                    console.log('-------------');
                     // console.log(Math.abs(a[1] - a[2] || 0 ) > Math.abs(b[1] - b[2] || 0 ));
 
-                    return (a[1] - a[2]) > (b[1] - b[2]) ? -1 : 1;
+                    return ((a[1]/a[2] * 100) - 100) > ((b[1]/b[2] * 100) - 100) ? -1 : 1;
                   })
                   // console.log(sortedObject);
 
@@ -1136,8 +1138,6 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
             studentMotivatorValsSpans.order()
             studentMotivatorValsSpans.enter();
             studentMotivatorValsSpans.exit().remove();
-
-            RWD.responsiveAdaptationStudentDetails();
 
           }
           setMotivators();
