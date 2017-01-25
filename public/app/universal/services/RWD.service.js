@@ -421,13 +421,16 @@ app.factory('RWD', ['$compile', '$state', function($state) {
       // row td fonts, 9/13
       var tableColumnHeaders = $('th.student-data');
       var tableCellValues = $('td.student-data');
-      var statCells = $('td.stat-cell');
+      var currPopStatCells = $('tr.current-population-averages > td.stat-cell');
+      var adultAvgStatCells = $('tr.adult-averages > td.stat-cell');
       tableColumnHeaders.css('font-size', Math.min(10.5/683 * dashboardInnerHeight, 10.5/1380 * dashboardInnerWidth))
       tableColumnHeaders.css('padding', Math.min(4/683 * dashboardInnerHeight, 4/1380 * dashboardInnerWidth))
       tableCellValues.css('font-size', Math.min(10.5/683 * dashboardInnerHeight, 10.5/1380 * dashboardInnerWidth))
       tableCellValues.css('padding', Math.min(4/683 * dashboardInnerHeight, 4/1380 * dashboardInnerWidth))
-      statCells.css('font-size', Math.min(13/683 * dashboardInnerHeight, 13/1380 * dashboardInnerWidth) + 'px');
-      statCells.css('padding', Math.min(4/683 * dashboardInnerHeight, 4/1380 * dashboardInnerWidth) + 'px');
+      currPopStatCells.css('font-size', Math.min(13/683 * dashboardInnerHeight, 13/1380 * dashboardInnerWidth) + 'px');
+      currPopStatCells.css('padding', Math.min(4/683 * dashboardInnerHeight, 4/1380 * dashboardInnerWidth) + 'px');
+      adultAvgStatCells.css('font-size', Math.min(11.5/683 * dashboardInnerHeight, 11.5/1380 * dashboardInnerWidth) + 'px');
+      adultAvgStatCells.css('padding', Math.min(4/683 * dashboardInnerHeight, 4/1380 * dashboardInnerWidth) + 'px');
 
       // student count, 36/40
       var studentCountNum = $('div.student-count h1');

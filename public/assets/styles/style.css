@@ -397,7 +397,7 @@ table.student-data {
     display: block;
     border-top: 2px solid black; }
     table.student-data tbody.student-data-averages tr.current-population-averages {
-      background-color: #c3c3c3;
+      background-color: #cdcdcd;
       border-bottom: 1px solid black; }
     table.student-data tbody.student-data-averages tr.adult-averages {
       background-color: whitesmoke; }

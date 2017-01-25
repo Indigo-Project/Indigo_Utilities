@@ -99,7 +99,7 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
             titles = d3.values(dashboardCHs);
 
             columnColorIndex = ["rgba(255,255,255,", "rgba(255,255,255,", "rgba(255,255,255,", "rgba(255, 52, 52,", "rgba(250, 238, 74,", "rgba(41, 218, 32,", "rgba(96, 112, 255,", "rgba(128, 0, 127,", "rgba(128, 0, 127,", "rgba(128, 0, 127,", "rgba(128, 0, 127,", "rgba(128, 0, 127,", "rgba(128, 0, 127,"];
-            // columnColorIndex = ["rgba(255,255,255,", "rgba(255,255,255,", "rgba(255,255,255,", "rgba(255, 52, 52,", "rgba(250, 238, 74,", "rgba(41, 218, 32,", "rgba(96, 112, 255,", "rgba(212, 175, 55,", "rgba(212, 175, 55,", "rgba(212, 175, 55,", "rgba(212, 175, 55,", "rgba(212, 175, 55,", "rgba(212, 175, 55,"];
+            avgsColumnColorIndex = ["rgb(255,255,255)", "rgb(255,255,255)", "rgb(255,255,255)", "rgb(255, 0, 0)", "rgb(245, 255, 48)", "rgb(42, 184, 36)", "rgb(93, 129, 255)", "rgb(128, 0, 127)", "rgb(128, 0, 127)", "rgb(128, 0, 127)", "rgb(128, 0, 127)", "rgb(128, 0, 127)", "rgb(128, 0, 127)"];
           }
 
           function resetFiltersStaticSetup() {
@@ -396,7 +396,7 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
                     return d;
                   })
                   .style('color', function(d, i) {
-                    return i > 0 ? i === 2 ? "rgb(245, 255, 48)": columnColorIndex[i+2] + "1)" : "rgba(255,255,255)";
+                    return i > 0 ? avgsColumnColorIndex[i+2] : "rgba(255,255,255)";
                   }).exit().remove();
 
                   // Populate corporate adult averages row with data
