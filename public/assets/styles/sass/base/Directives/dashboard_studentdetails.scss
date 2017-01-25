@@ -87,10 +87,8 @@ label.sd-label {
 
 figcaption.sde-row3-title-caption {
   color: rgb(133, 130, 130);
-  // font-size: 0.9rem;
   font-family: 'Open Sans', sans-serif;
   font-weight: 300;
-  // padding-left: 8px;
 }
 
 
@@ -212,7 +210,7 @@ div.sde-disc {
 div.sde-motivators {
   display: flex;
   flex-direction: column;
-  width: 18%;
+  width: 19.3%;
   border-right: 1px solid rgb(230, 230, 230);
   border-left: 1px solid rgb(230, 230, 230);
   div.sde-motivators-header {
@@ -233,7 +231,7 @@ div.sde-motivators {
         padding-left: 25%;
       }
       p.sd-val {
-        color: rgb(212, 175, 55);
+        color: rgb(128, 0, 127);
       }
     }
   }
@@ -242,9 +240,10 @@ div.sde-motivators {
 div.sde-skills {
   display: flex;
   flex-direction: column;
-  width: 56%;
+  width: 53.7%;
   div.sde-skills-header {
     display: flex;
+    flex-direction: row;
   }
   div.sde-skills-content {
     display: flex;
@@ -257,6 +256,9 @@ div.sde-skills {
         text-overflow: ellipsis;
         display: inline-block;
       }
+    }
+    span.sd-span:nth-of-type(5n) {
+      margin-right: 0px;
     }
   }
 }
@@ -336,4 +338,23 @@ h4.sde-row4-title {
   font-weight: 300;
   color: rgb(149, 149, 149);
   margin: 0;
+}
+
+div.sort-option {
+  display: flex;
+  flex-direction: column;
+  margin-left: auto;
+  h6 {
+    font-size: 8px;
+    font-weight: 300;
+    margin: 0 0 2px 0;
+    padding: 0;
+  }
+  select {
+    margin-left: auto;
+    width: 50px;
+    height: 14px;
+    font-size: 8px;
+    font-weight: 300;
+  }
 }

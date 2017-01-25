@@ -512,9 +512,9 @@ app.factory('RWD', ['$compile', '$state', function($state) {
           right: 15/1234 * studentWindowWidth
         },
         sectionTitles: {
-          row2Font: Math.min(16/608.6875 * studentWindowInnerHeight, 16/1234 * studentWindowWidth),
-          row3Font: Math.min(18/608.6875 * studentWindowInnerHeight, 18/1234 * studentWindowWidth),
-          row4Font: Math.min(16/608.6875 * studentWindowInnerHeight, 16/1234 * studentWindowWidth),
+          row2Font: Math.min(14/608.6875 * studentWindowInnerHeight, 14/1234 * studentWindowWidth),
+          row3Font: Math.min(16/608.6875 * studentWindowInnerHeight, 16/1234 * studentWindowWidth),
+          row4Font: Math.min(14/608.6875 * studentWindowInnerHeight, 14/1234 * studentWindowWidth),
           row4Font2: Math.min(14/608.6875 * studentWindowInnerHeight, 14/1234 * studentWindowWidth),
           row2Margin: 10/608.6875 * studentWindowInnerHeight,
           row3Margin: 15/608.6875 * studentWindowInnerHeight,
@@ -526,8 +526,8 @@ app.factory('RWD', ['$compile', '$state', function($state) {
           discChartBarHeight: Math.min(12/608.6875 * studentWindowInnerHeight, 12/1234 * studentWindowWidth)
         },
         sectionFigCaption: {
-          paddingLeft: 8/1234 * studentWindowWidth,
-          fontSize:  Math.min(9/608.6875 * studentWindowInnerHeight, 9/1234 * studentWindowWidth),
+          paddingLeft: 4/1234 * studentWindowWidth,
+          fontSize:  Math.min(7/608.6875 * studentWindowInnerHeight, 7/1234 * studentWindowWidth),
         },
         contentHeight: {
           row2Dems2: 114.890625/608.6875 * studentWindowInnerHeight,
@@ -558,9 +558,16 @@ app.factory('RWD', ['$compile', '$state', function($state) {
           lineHeight: Math.min(10/608.6875 * studentWindowInnerHeight, 10/1234 * studentWindowWidth),
         },
         skillsDimensions: {
-          spanMarginRight: 16.5/1234 * studentWindowWidth,
+          spanMarginRight: 14/1234 * studentWindowWidth,
           spanWidth: 110/1234 * studentWindowWidth,
           valLh: Math.min(12.8/608.6875 * studentWindowInnerHeight, 12.8/1234 * studentWindowWidth),
+        },
+        sortDimensions: {
+          captionFontSize: Math.min(8/608.6875 * studentWindowInnerHeight, 8/1234 * studentWindowWidth),
+          captionMarginBottom: Math.min(2/608.6875 * studentWindowInnerHeight, 2/1234 * studentWindowWidth),
+          selectWidth: Math.min(45/608.6875 * studentWindowInnerHeight, 45/1234 * studentWindowWidth),
+          selectHeight: Math.min(12/608.6875 * studentWindowInnerHeight, 12/1234 * studentWindowWidth),
+          selectFontSize: Math.min(8/608.6875 * studentWindowInnerHeight, 8/1234 * studentWindowWidth),
         },
         miscDimensions: {
           exitButton: {
@@ -578,7 +585,9 @@ app.factory('RWD', ['$compile', '$state', function($state) {
       var pSub = $('p.sd-sub');
       var label = $('label.sd-label');
       var figCaption = $('figcaption.sde-row3-title-caption');
-      var exitButton = $('div.exit-button')
+      var exitButton = $('div.exit-button');
+      var sortCaption = $('div.sort-option > h6');
+      var sortSelect = $('div.sort-option > select');
 
       var setUniversalDimensions = function () {
         valContent.css('margin-bottom', responsiveCalcs.valueSizing.marginBottom + "px");
@@ -592,6 +601,11 @@ app.factory('RWD', ['$compile', '$state', function($state) {
         exitButton.css('font-size', responsiveCalcs.miscDimensions.exitButton.fontSize + 'px');
         exitButton.css('line-height', responsiveCalcs.miscDimensions.exitButton.lineHeight + 'px');
         exitButton.css('padding', responsiveCalcs.miscDimensions.exitButton.padding + 'px');
+        sortCaption.css('font-size', responsiveCalcs.sortDimensions.captionFontSize + 'px');
+        sortCaption.css('margin', '0 0 ' + responsiveCalcs.sortDimensions.captionMarginBottom + 'px 0')
+        sortSelect.width(responsiveCalcs.sortDimensions.selectWidth);
+        sortSelect.height(responsiveCalcs.sortDimensions.selectHeight);
+        sortSelect.css('font-size', responsiveCalcs.sortDimensions.selectFontSize);
       }
       setUniversalDimensions();
 
@@ -662,6 +676,7 @@ app.factory('RWD', ['$compile', '$state', function($state) {
       var row3SkillsContent = $('div.sde-skills-content');
       var skillsHeader = $('div.sde-skills-header');
       var skillsSpans = $('span.sde-skills');
+      var skillsSpans5 = $('span.sde-skills:nth-of-type(5n)');
       var skillsVals = $('p.sde-skills');
 
       var row3Title = $('h4.sde-row3-title');
@@ -699,6 +714,7 @@ app.factory('RWD', ['$compile', '$state', function($state) {
         skillsVals.css('line-height', responsiveCalcs.valueSizing.mediumFontLh + 'px');
         skillsSpans.css('max-width', responsiveCalcs.skillsDimensions.spanWidth + 'px');
         skillsSpans.css('margin-right', responsiveCalcs.skillsDimensions.spanMarginRight + 'px');
+        skillsSpans5.css('margin-right', 0 + 'px');
         skillsVals.css('line-height', responsiveCalcs.skillsDimensions.valLh + 'px');
       }
       setRow3Dimensions();

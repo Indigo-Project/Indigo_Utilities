@@ -103,21 +103,17 @@ table.student-data {
       }
     }
   }
-  
+
   tbody.student-data-averages {
     display: block;
     border-top: 2px solid black;
     tr {
       &.current-population-averages {
         background-color: rgb(215, 213, 213);
-        // background-color: rgb(200, 255, 250);
+        border-bottom: 1px solid black;
       }
       &.adult-averages {
         background-color: rgb(245, 245, 245);
-        // background-color: rgb(200, 255, 250);
-      }
-      &:nth-child(1) {
-        border-bottom: 1px solid rgb(130, 130, 130);
       }
     }
     td {
