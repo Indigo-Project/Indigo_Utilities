@@ -381,7 +381,7 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
                   currAvgValue === 'NaN' ? currAvgValue = 0 : null;
                   currentPopulationRowData[i-3] = currAvgValue;
                 }
-                currentPopulationRowData.unshift('Current Population Averages (' + currentPopulationData.length.toString() + ' students):');
+                currentPopulationRowData.unshift('Current Population Averages (of ' + currentPopulationData.length.toString() + '):');
 
                 if (status === 'init') {
 
