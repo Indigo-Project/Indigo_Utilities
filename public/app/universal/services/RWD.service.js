@@ -20,6 +20,28 @@ app.factory('RWD', ['$compile', '$state', function($state) {
       return baseDimensions;
     },
 
+    responsiveAdaptationDM: function() {
+
+      console.log('responsiveAdaptationDM');
+
+      var managerSection = $('section.dashboard-manager')
+      var managerInterface = $('section.manager-interface')
+      var dashboardIframe = $('iframe.dashM-iframe');
+      var baseDimensionsDM = RWD.calculateBaseDimensions(dashboardIframe);
+      //
+      // var iframeWidth = $scope.view.baseDimensionsDM.viewportWidth - 40
+      // // var dFERatio = dashboardFrameElement.height() / dashboardFrameElement.width();
+      // // console.log(dashboardFrameElement.width(), dashboardFrameElement.height(), dFERatio);
+      //
+      var dFERatio = 723/1440;
+      // dashboardIframe.width(iframeWidth);
+      console.log(managerSection.width());
+      console.log((managerInterface.width() * .63) * dFERatio);
+      dashboardIframe.height(((managerSection.width() - 40) * .55) * dFERatio);
+      managerInterface.height(dashboardIframe.height);
+
+    },
+
     responsiveAdaptationDashboard: function() {
 
       // Responsive initialization of dimensions
@@ -130,7 +152,6 @@ app.factory('RWD', ['$compile', '$state', function($state) {
       var Row2 = $('section.sd-row2');
       var Row2_Column1 = $('section.sd-column1');
       var Row2_Column2 = $('section.sd-column2');
-      var Row2_Column2_Row1 = $('section.sd-column2-row1');
       var Row2_Column2_Row2 = $('section.sd-column2-row2');
 
       // Set grid dimensions
@@ -140,7 +161,6 @@ app.factory('RWD', ['$compile', '$state', function($state) {
         Row2.height(responsiveCalcs.sectionHeights.row2);
         Row2_Column1.height(responsiveCalcs.sectionHeights.row2_column1);
         Row2_Column2.height(responsiveCalcs.sectionHeights.row2_column2);
-        Row2_Column2_Row1.height(responsiveCalcs.sectionHeights.row2_column2_row1);
         Row2_Column2_Row2.height(responsiveCalcs.sectionHeights.row2_column2_row2);
 
       }
@@ -258,7 +278,7 @@ app.factory('RWD', ['$compile', '$state', function($state) {
       var sD_tHead_minusBorders = tHead.width() - 26;
       tBody.width(Table.width());
       tBodyStat.width(Table.width());
-      tBody.height((Row2_Column2_Row1.height() - tHead.height()) * 1.09);
+      tBody.height((Row2_Column2.height() - tHead.height()) * 0.87);
 
 
       // tHead Column Headers Variable Definition
@@ -355,61 +375,6 @@ app.factory('RWD', ['$compile', '$state', function($state) {
       tBodyStatColumns.individualistic.innerWidth(tHeadObj.individualistic.innerWidth());
       tBodyStatColumns.traditional.innerWidth(tHeadObj.traditional.innerWidth());
 
-
-      studentCount_Container.width(tBodyColumns.students.outerWidth() + tBodyColumns.gender.outerWidth() + tBodyColumns.class.outerWidth());
-      // studentCount_Container.css('padding-left', studentCount_Container.width() * 0.1 + "px");
-      studentCount.css('margin-left', "20px");
-      adultAvgs.width(Row2_Column2_Row2.outerWidth() - studentCount_Container.outerWidth());
-
-      var adultAvgs_Table = $('table.adult-avgs');
-      var adultAvgs_ColumnHeaders = {
-        dom: $('thead.adult-avgs th:nth-of-type(1)'),
-        inf: $('thead.adult-avgs th:nth-of-type(2)'),
-        ste: $('thead.adult-avgs th:nth-of-type(3)'),
-        com: $('thead.adult-avgs th:nth-of-type(4)'),
-        the: $('thead.adult-avgs th:nth-of-type(5)'),
-        uti: $('thead.adult-avgs th:nth-of-type(6)'),
-        aes: $('thead.adult-avgs th:nth-of-type(7)'),
-        soc: $('thead.adult-avgs th:nth-of-type(8)'),
-        ind: $('thead.adult-avgs th:nth-of-type(9)'),
-        tra: $('thead.adult-avgs th:nth-of-type(10)'),
-      }
-      var adultAvgs_Columns = {
-        dom: $('tbody.adult-avgs td:nth-of-type(1)'),
-        inf: $('tbody.adult-avgs td:nth-of-type(2)'),
-        ste: $('tbody.adult-avgs td:nth-of-type(3)'),
-        com: $('tbody.adult-avgs td:nth-of-type(4)'),
-        the: $('tbody.adult-avgs td:nth-of-type(5)'),
-        uti: $('tbody.adult-avgs td:nth-of-type(6)'),
-        aes: $('tbody.adult-avgs td:nth-of-type(7)'),
-        soc: $('tbody.adult-avgs td:nth-of-type(8)'),
-        ind: $('tbody.adult-avgs td:nth-of-type(9)'),
-        tra: $('tbody.adult-avgs td:nth-of-type(10)'),
-      }
-
-      adultAvgs_ColumnHeaders.dom.innerWidth(tBodyColumns.dominance.innerWidth())
-      adultAvgs_Columns.dom.innerWidth(tBodyColumns.dominance.innerWidth())
-      adultAvgs_ColumnHeaders.inf.innerWidth(tBodyColumns.influencing.innerWidth())
-      adultAvgs_Columns.inf.innerWidth(tBodyColumns.influencing.innerWidth())
-      adultAvgs_ColumnHeaders.ste.innerWidth(tBodyColumns.steadiness.innerWidth())
-      adultAvgs_Columns.ste.innerWidth(tBodyColumns.steadiness.innerWidth())
-      adultAvgs_ColumnHeaders.com.innerWidth(tBodyColumns.compliance.innerWidth())
-      adultAvgs_Columns.com.innerWidth(tBodyColumns.compliance.innerWidth())
-      adultAvgs_ColumnHeaders.the.innerWidth(tBodyColumns.theoretical.innerWidth())
-      adultAvgs_Columns.the.innerWidth(tBodyColumns.theoretical.innerWidth())
-      adultAvgs_ColumnHeaders.uti.innerWidth(tBodyColumns.utilitarian.innerWidth())
-      adultAvgs_Columns.uti.innerWidth(tBodyColumns.utilitarian.innerWidth())
-      adultAvgs_ColumnHeaders.aes.innerWidth(tBodyColumns.aesthetic.innerWidth())
-      adultAvgs_Columns.aes.innerWidth(tBodyColumns.aesthetic.innerWidth())
-      adultAvgs_ColumnHeaders.soc.innerWidth(tBodyColumns.social.innerWidth())
-      adultAvgs_Columns.soc.innerWidth(tBodyColumns.social.innerWidth())
-      adultAvgs_ColumnHeaders.ind.innerWidth(tBodyColumns.individualistic.innerWidth())
-      adultAvgs_Columns.ind.innerWidth(tBodyColumns.individualistic.innerWidth())
-      adultAvgs_ColumnHeaders.tra.innerWidth(tBodyColumns.traditional.innerWidth())
-      adultAvgs_Columns.tra.innerWidth(tBodyColumns.traditional.innerWidth())
-
-      // nameFont: Math.min(32/683 * dashboardInnerHeight, 32/1380 * dashboardInnerWidth),
-
       // Font Sizes
       var title1 = $('span.sd-title-name');
       var title2 = $('span.sd-title-static');
@@ -427,7 +392,7 @@ app.factory('RWD', ['$compile', '$state', function($state) {
       tableColumnHeaders.css('padding', Math.min(4/683 * dashboardInnerHeight, 4/1380 * dashboardInnerWidth))
       tableCellValues.css('font-size', Math.min(10.5/683 * dashboardInnerHeight, 10.5/1380 * dashboardInnerWidth))
       tableCellValues.css('padding', Math.min(4/683 * dashboardInnerHeight, 4/1380 * dashboardInnerWidth))
-      currPopStatCells.css('font-size', Math.min(13/683 * dashboardInnerHeight, 13/1380 * dashboardInnerWidth) + 'px');
+      currPopStatCells.css('font-size', Math.min(13.5/683 * dashboardInnerHeight, 13.5/1380 * dashboardInnerWidth) + 'px');
       currPopStatCells.css('padding', Math.min(4/683 * dashboardInnerHeight, 4/1380 * dashboardInnerWidth) + 'px');
       adultAvgStatCells.css('font-size', Math.min(11.5/683 * dashboardInnerHeight, 11.5/1380 * dashboardInnerWidth) + 'px');
       adultAvgStatCells.css('padding', Math.min(4/683 * dashboardInnerHeight, 4/1380 * dashboardInnerWidth) + 'px');
@@ -468,9 +433,10 @@ app.factory('RWD', ['$compile', '$state', function($state) {
       }
       noDataMessageDiv.css('top', tHead.outerHeight() + 'px');
 
-      var resetFiltersCTA = $('p.reset-filters-cta')
+      var filterOptionsDiv = $('section.filter-options');
+      var resetFiltersCTA = $('p.reset-filters-cta');
       resetFiltersCTA.css('font-size', Math.min(12/683 * dashboardInnerHeight, 12/1380 * dashboardInnerWidth))
-      resetFiltersCTA.css('margin', '0 0 ' + Math.min(23/683 * dashboardInnerHeight, 23/1380 * dashboardInnerWidth) + 'px 0')
+      resetFiltersCTA.css('bottom', (Row2_Column1.height() - Table_Container.height()) + 'px');
     },
 
     responsiveAdaptationStudentDetails: function() {

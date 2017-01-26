@@ -1,4 +1,4 @@
-<section class="function-section view_dashboards">
+<section class="function-section dashboard-manager">
 
   <section class="dash-selection">
 
@@ -18,6 +18,29 @@
 
   </section>
 
-  <iframe ng-show="view.showMDashboard" class="dashM-iframe" src="{{view.iframeSrc}}" frameborder="0"></iframe>
+  <section class="manager-interface" ng-show="view.showMDashboard">
+
+    <section class="row-1">
+      <iframe class="dashM-iframe" src="{{data.dashboardUrl}}" frameborder="0"></iframe>
+      <section class="manager-dashboard-data">
+        <div class="manager-dashboard-title"></div>
+        <div class="manager-dashboard-metadata"></div>
+        <div class="manager-dashboard-notes">
+          <textarea class="manager-dashboard-notes"></textarea>
+        </div>
+      </section>
+    </section>
+
+    <section class="row-2">
+      <button class="generate-frame form-control" ng-click="data.generateiFrame()">Generate iFrame</button>
+      <input class="iframe-html form-control" ng-show="data.iFrameGenerated" ng-model="data.iFrameHTML" readonly>
+      <div ng-show="data.iFrameGenerated" class="iframe-options">
+        <p class="copy-iframe">Copy to Clipboard</p>
+        <p class="hide-iframe">Hide</p>
+      </div>
+    </section>
+
+  </section>
+
 
 </section>

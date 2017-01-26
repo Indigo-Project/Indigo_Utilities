@@ -7,6 +7,23 @@ section.dashboard-outer-frame {
   font-family: 'Open Sans', sans-serif;
 }
 
+span.fullscreen-toggle {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: rgb(156, 156, 156);
+  font-size: 16px;
+  width: fit-content;
+  height: fit-content;
+  padding: 0;
+  margin: 0;
+  &:hover {
+    cursor: pointer;
+    cursor: hand;
+    color: black;
+  }
+}
+
 span.sd-title-name {
   font-weight: 600;
 }
@@ -49,17 +66,13 @@ section.dashboard-inner-frame {
       display: flex;
       flex-direction: column;
       width: 84%;
-      section.sd-column2-row1 {
-        display: flex;
-        justify-content: flex-start;
-        width: 100%;
-      }
-      section.sd-column2-row2 {
-        display: flex;
-        width: 100%;
-      }
     }
   }
+}
+
+section.dashboard-filters {
+  display: flex;
+  flex-direction: column;
 }
 
 div.student-data-table {
@@ -248,57 +261,7 @@ div.class-filter-options {
   }
 }
 
-// section.student-count {
-//   display: flex;
-//   align-items: center;
-//   justify-content: flex-start;
-//   width: 23%;
-// }
-//
-// div.student-count {
-//   h1 {
-//     text-align: center;
-//     margin: 0;
-//   }
-//   h3 {
-//     text-align: center;
-//     color: rgb(198, 198, 198);
-//     margin: 0;
-//   }
-// }
-//
-// section.adult-avgs {
-//   display: flex;
-//   align-items: center;
-//   justify-content: flex-start;
-//   width: 77%;
-// }
-//
-// div.adult-avgs h5 {
-//   font-weight: 600;
-// }
-//
-// table.adult-avgs {
-//   border-collapse: collapse;
-//   td, th {
-//     padding: 3px 7px 3px 6px;
-//     text-align: left;
-//   }
-//   th {
-//     background-color: rgb(200, 255, 250);
-//     border-top: 1px solid black;
-//     border-bottom: 1px solid black;
-//     border-left: 0.5px solid rgb(130, 130, 130);
-//     border-right: 0.5px solid rgb(130, 130, 130);
-//   }
-//   td {
-//     border-left: 0.5px solid rgb(231, 231, 231);
-//   }
-// }
-
 th.student-data {
-  // display: flex;
-  // justify-content: space-between;
 	background: #333;
 	color: white;
 	font-weight: bold;
@@ -310,10 +273,8 @@ tr.student-data:hover td {
 }
 
 td.student-data, td.stat-cell, th.student-data {
-	// padding: 4px;
 	border: 1px solid #ccc;
 	text-align: left;
-  // font-size: 10.5px;
 }
 
 th.des:after {
@@ -353,21 +314,19 @@ button.no-data-cta {
   vertical-align: center;
 }
 
-div.filter-options {
-  display: flex;
-  align-items: flex-end;
-  height: max-content;
+section.filter-options {
+  position: relative;
+  flex-grow: 1;
 }
 
 p.reset-filters-cta {
+  position: absolute;
   width: fit-content;
-  font-size: 12px;
-  margin: 0 0 23px 0;
+  margin: 0;
   padding: 0;
   color: rgb(106, 139, 255);
   &:hover {
     color: rgb(20, 2, 245);
-    cursor: pointer;
     cursor: hand;
   }
 }

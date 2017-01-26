@@ -1,4 +1,4 @@
-app.controller('Dashboard', ['$compile', '$scope', '$location', '$state', '$stateParams', '$http', 'siteNavigation', 'TTI_API', 'socket', '$window', 'DashboardService', 'localStorageService', 'RWD', function($compile, $scope, $location, $state, $stateParams, $http, siteNavigation, TTI_API, socket, $window, DashboardService, localStorageService, RWD) {
+app.controller('Dashboard', ['$compile', '$scope', '$location', '$state', '$stateParams', '$http', 'siteNavigation', 'TTI_API', 'socket', '$window', 'DashboardService', 'localStorageService', 'RWD', 'Fullscreen', function($compile, $scope, $location, $state, $stateParams, $http, siteNavigation, TTI_API, socket, $window, DashboardService, localStorageService, RWD, Fullscreen) {
 
   // console.log(stateLoaded);
 
@@ -15,6 +15,12 @@ app.controller('Dashboard', ['$compile', '$scope', '$location', '$state', '$stat
   $scope.view.genderFilter = [];
   $scope.view.dashMschoolCode = "";
   $scope.view.dashMschoolVersion = "";
+
+  $scope.data.fathymContainer = true;
+
+  $scope.view.toggleFullScreen = function () {
+    Fullscreen.isEnabled() ? Fullscreen.cancel() : Fullscreen.all();
+  }
 
   // RWD resize reaction event
   $scope.view.responsiveAdaptationDashboard = function() {

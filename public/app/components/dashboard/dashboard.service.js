@@ -441,35 +441,48 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
 
               if (status === 'init') {
 
-                rowObj.attr('row-index', function(d, i) {
-                  return i;
-                })
-                rowObj.selectAll('td').data(function (d,i) {
-                  return dashValsIndex.map(function (k, i) {
-                    return { 'value': d[k], 'name': dashValCHs[i] };
+                function initRowSetup() {
+                  return new Promise(function(resolve, reject) {
+
+                    rowObj.attr('row-index', function(d, i) {
+                      return i;
+                    })
+                    rowObj.selectAll('td').data(function (d,i) {
+                      return dashValsIndex.map(function (k, i) {
+                        return { 'value': d[k], 'name': dashValCHs[i] };
+                      })
+                    }).enter()
+                    .append('td').attr('class', 'student-data')
+                    .attr('column-th', function (d, i, a) {
+                      return d.name;
+                    })
+                    .attr('ng-click', 'view.openStudentDetails($event)')
+                    .text(function (d, i, a) {
+                      return d.value;
+                    })
+                    .style("background-color", function(d, i) {
+                      var discOpacityCalc = (((Number(d.value) * 80) / 100) + 20) / 100;
+                      var motivOpacityCalc = (((Number(d.value) * 4.5) / 10) + 2) / 10;
+                      var cellColor = i > 2 ? columnColorIndex[i] : "rgba(255,255,255,";
+                      var opacity = i > 2 && i <= 6 ? discOpacityCalc : i > 6 ? motivOpacityCalc : 1;
+                      return cellColor + opacity + ")";
+                    })
+
+                    appendAveragesRows(rowData, 'init');
+
+                    // console.log(angular.element('dashboard').scope());
+                    angular.element('dashboard').scope() ? resolve() : null;
+
                   })
-                }).enter()
-                .append('td').attr('class', 'student-data')
-                .attr('column-th', function (d, i, a) {
-                  return d.name;
-                })
-                .attr('ng-click', 'view.openStudentDetails($event)')
-                .text(function (d, i, a) {
-                  return d.value;
-                })
-                .style("background-color", function(d, i) {
-                  var discOpacityCalc = (((Number(d.value) * 80) / 100) + 20) / 100;
-                  var motivOpacityCalc = (((Number(d.value) * 4.5) / 10) + 2) / 10;
-                  var cellColor = i > 2 ? columnColorIndex[i] : "rgba(255,255,255,";
-                  var opacity = i > 2 && i <= 6 ? discOpacityCalc : i > 6 ? motivOpacityCalc : 1;
-                  return cellColor + opacity + ")";
-                })
+                }
 
-                appendAveragesRows(rowData, 'init');
-
-                $compile($('table.student-data tbody td:nth-of-type(1)'))(angular.element('dashboard').scope());
-                RWD.responsiveAdaptationDashboard();
-                rowObj.exit().remove();
+                initRowSetup()
+                .then(function() {
+                  console.log(angular.element('dashboard').scope());
+                  $compile($('table.student-data tbody td:nth-of-type(1)'))(angular.element('dashboard').scope());
+                  RWD.responsiveAdaptationDashboard();
+                  rowObj.exit().remove();
+                })
 
               } else if (status === 'noData') {
 

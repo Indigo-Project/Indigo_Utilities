@@ -1,4 +1,7 @@
 <section class="dashboard-outer-frame">
+
+  <span ng-show="data.fathymContainer" class="glyphicon glyphicon-fullscreen fullscreen-toggle" ng-click="view.toggleFullScreen()" title='Toggle Fullscreen'></span>
+
   <section class="dashboard-inner-frame">
 
 
@@ -45,62 +48,16 @@
 
         </section>
 
-        <div class="filter-options">
+        <section class="filter-options">
           <p class="reset-filters-cta">reset filters</p>
-        </div>
+        </section>
+
 
       </section>
 
       <section class="sd-column2">
 
-        <section class="sd-column2-row1">
-          <div class="student-data-table"></div>
-        </section>
-
-        <!-- <section class="sd-column2-row2">
-
-          <section class="student-count">
-            <div class="student-count">
-              <h1>{{data.studentNumber}}</h1>
-              <h3>Students</h3>
-            </div>
-          </section>
-
-          <section class="adult-avgs">
-            <div class="adult-avgs">
-              <h5>Corporate Adult Averages</h5>
-              <table class="adult-avgs">
-                <thead class="adult-avgs">
-                  <th>Dominance</th>
-                  <th>Influencing</th>
-                  <th>Steadiness</th>
-                  <th>Compliance</th>
-                  <th>Theoretical</th>
-                  <th>Utilitarian</th>
-                  <th>Aesthetic</th>
-                  <th>Social</th>
-                  <th>Individualistic</th>
-                  <th>Traditional</th>
-                </thead>
-                <tbody class="adult-avgs">
-                  <tr>
-                    <td>43.0</td>
-                    <td>58.7</td>
-                    <td>60.7</td>
-                    <td>50.5</td>
-                    <td>6.0</td>
-                    <td>5.3</td>
-                    <td>4.3</td>
-                    <td>4.2</td>
-                    <td>5.5</td>
-                    <td>4.7</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </section>
-
-        </section> -->
+        <div class="student-data-table"></div>
 
       </section>
 

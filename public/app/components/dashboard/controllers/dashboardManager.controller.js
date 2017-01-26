@@ -9,23 +9,10 @@ app.controller('DashboardManager', ['$compile', '$scope', '$location', '$state',
   $scope.view.dashMschoolCode = "";
   $scope.view.dashMschoolVersion = "";
 
-  console.log($scope.data.schoolNameOptionsLoaded);
-
   $scope.data.schoolNameOptionsLoaded = false;
-
-  function responsiveAdaptationDM() {
-
-    var dashboardIframe = $('iframe.dashM-iframe');
-    $scope.view.baseDimensionsDM = RWD.calculateBaseDimensions(dashboardIframe);
-
-    var iframeWidth = $scope.view.baseDimensionsDM.viewportWidth - 40
-    // var dFERatio = dashboardFrameElement.height() / dashboardFrameElement.width();
-    // console.log(dashboardFrameElement.width(), dashboardFrameElement.height(), dFERatio);
-
-    var dFERatio = 723/1440;
-    dashboardIframe.width(iframeWidth);
-    dashboardIframe.height(dashboardIframe.width() * dFERatio);
-  }
+  $scope.data.dashboardUrl = '';
+  $scope.data.iFrameGenerated;
+  $scope.data.iFrameHTML;
 
   // dynamically change options based on selected function
   $scope.view.accessFunction = function () {
@@ -59,9 +46,9 @@ app.controller('DashboardManager', ['$compile', '$scope', '$location', '$state',
         localStorageService.set('currentDashboardData', data);
         var inputObject = { data: $scope.data.currentDashboardDataObject, schoolName: $scope.view.dashMschoolCode}
         DashboardService.generateD3Dashboard(inputObject, "studentData");
-        $scope.view.iframeSrc = '/dashboards/' + $scope.view.dashMschoolCode + "/" + $scope.data.currentDashboardDataObject._id;
+        $scope.data.dashboardUrl = '/dashboards/' + $scope.view.dashMschoolCode + "/" + $scope.data.currentDashboardDataObject._id;
         $scope.view.showMDashboard = true;
-        responsiveAdaptationDM();
+        RWD.responsiveAdaptationDM();
         $scope.$apply();
       }).catch(function(error) {
         console.log(error);
@@ -71,32 +58,9 @@ app.controller('DashboardManager', ['$compile', '$scope', '$location', '$state',
     }
   };
 
-  // if no dash-data set has been specified from manager, load based on full screen params
-  $scope.data.loadVersionFS = function() {
-    return new Promise(function(resolve, reject) {
-      DashboardService.retrieveStoredDashboardVersionDataObject($stateParams.collection, null, $stateParams.id)
-      .then(function(data) {
-        console.log(data);
-        $scope.data.currentDashboardDataObject = data
-        localStorageService.set('currentDashboardData', data, $scope.view.dashMschoolCode);
-        var inputObject = { data: $scope.data.currentDashboardDataObject, schoolName: $scope.view.dashMschoolCode };
-        DashboardService.generateD3Dashboard(inputObject, "studentData");
-        // $scope.view.iframeSrc = '/dashboards/' + $scope.view.dashMschoolCode + "/" + $scope.data.currentDashboardDataObject._id;
-        // $scope.view.showMDashboard = true;
-        responsiveAdaptationDM();
-        $scope.$apply();
-      }).catch(function(error) {
-        console.log(error);
-      })
-    })
-  }
-
   // Open new tab with full screen dashboard
   $scope.view.openFSDashboard = function() {
-    $scope.data.studentNumber = $scope.data.currentDashboardDataObject.compiledData.studentData.length;
-    var collection = $scope.view.dashMschoolCode;
-    var id = $scope.data.currentDashboardDataObject._id;
-    window.open('/dashboards/' + collection + '/' + id, '_blank');
+    window.open($scope.data.dashboardUrl);
   }
 
   // Dashboard Manager Initialization
@@ -147,6 +111,11 @@ app.controller('DashboardManager', ['$compile', '$scope', '$location', '$state',
       });
     });
 
+  }
+
+  $scope.data.generateiFrame = function() {
+    $scope.data.iFrameHTML = "<iframe src=\'" + $scope.data.dashboardUrl + "\' frameborder=\'0\' allowfullscreen=\'true\'></iframe>"
+    $scope.data.iFrameGenerated = true;
   }
 
   $scope.view.initializeDashboardManager();
