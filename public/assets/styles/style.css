@@ -642,6 +642,7 @@ p.reset-filters-cta {
   color: #6a8bff; }
   p.reset-filters-cta:hover {
     color: #1402f5;
+    cursor: pointer;
     cursor: hand; }
 
 section.dashboard-studentdetails {
