@@ -4,7 +4,7 @@ app.controller('TTIBatchDownloader', ['$scope', '$state', '$http', 'siteNavigati
   $scope.view = {};
   $scope.form = {};
 
-  $scope.view.selectedFunction = "tti_massdl";
+  $scope.view.selectedFunction = "tti_batchdl";
 
   $scope.data.linkStatusMeta = false;
   $scope.data.downloadStatus = "";

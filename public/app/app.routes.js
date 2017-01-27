@@ -19,8 +19,8 @@ app.config(function($stateProvider, $urlRouterProvider) {
       url: '/ent_list',
       templateUrl: "views/ent_list_generator.html",
     })
-    .state('tti_massdl', {
-      url: '/tti_massdl',
+    .state('tti_batchdl', {
+      url: '/tti_batchdl',
       templateUrl: "views/tti_batch_downloader.html",
     })
     .state('sum_page', {
@@ -42,16 +42,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
     .state('dashboard', {
       url: '/dashboards/:collection/:id',
       templateUrl: "views/dashboard.html",
-      // resolve: {
-      //   stateLoaded: function() {
-      //     return false;
-      //   }
-      // },
-      // controller: function($rootScope, stateLoaded) {
-      //   console.log(stateLoaded);
-      //   console.log($rootScope.stateIsLoading);
-      //   // $rootScope.stateIsLoading = stateLoaded;
-      // }
     })
     .state('dashboard.dashboard_student_detail', {
       url: '/:studentpath',

@@ -6,8 +6,8 @@ app.factory('siteNavigation', ['$state', function($state) {
         $state.go("blue_list");
       } else if (selectedFunction === "ent_list") {
         $state.go("ent_list");
-      } else if (selectedFunction === "tti_massdl") {
-        $state.go("tti_massdl");
+      } else if (selectedFunction === "tti_batchdl") {
+        $state.go("tti_batchdl");
       } else if (selectedFunction === "sum_page") {
         $state.go("sum_page");
       } else if (selectedFunction === "sum_stats") {
