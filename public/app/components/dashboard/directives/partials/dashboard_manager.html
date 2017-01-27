@@ -31,10 +31,12 @@
       </section>
 
       <section class="dashboard-manager-data">
-        <div class="dashboard-manager-title" ng-model="data.currentVersionData.versionName"></div>
+        <div class="dashboard-manager-title">
+          <h3 ng-model="data.currentVersionData.versionName">{{data.currentVersionData.versionName}}</h3>
+        </div>
         <div class="dashboard-manager-metadata">
-          <p ng-model="data.currentVersionData.schoolName"></p>
-          <p ng-model="data.currentVersionData.dateCreated"></p>
+          <p>{{data.currentVersionData.schoolName}}</p>
+          <p>{{data.currentVersionData.dateCreated}}</p>
         </div>
         <div class="dashboard-manager-notes">
           <input class="dashboard-manager-notes"></input>

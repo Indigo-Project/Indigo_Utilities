@@ -37,7 +37,7 @@ app.controller('DashboardManager', ['$compile', '$scope', '$location', '$state',
     $scope.view.showMDashboard = false;
     if ($scope.view.dashMschoolVersion) {
       $scope.data.currentVersionData.versionName = $scope.view.dashMschoolVersion;
-      // console.log($scope.view.dashMschoolCode, $scope.view.dashMschoolVersion);
+      console.log($scope.data.availableCollections, $scope.view.dashMschoolVersion, $scope.data.currentVersionData.versionName);
       DashboardService.retrieveStoredDashboardVersionDataObject($scope.view.dashMschoolCode, $scope.view.dashMschoolVersion)
       .then(function(data) {
         console.log('got data', data);
@@ -61,7 +61,6 @@ app.controller('DashboardManager', ['$compile', '$scope', '$location', '$state',
   $scope.view.openFSDashboard = function() {
     window.open($scope.data.dashboardUrl);
   }
-
 
   $scope.view.refreshDMiFrame = function() {
     angular.element('iframe.dashM-iframe')[0].src = $scope.data.dashboardUrl;
