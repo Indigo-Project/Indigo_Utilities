@@ -10,6 +10,10 @@ app.controller('DashboardManager', ['$compile', '$scope', '$location', '$state',
   $scope.view.dashMschoolVersion = "";
 
   $scope.data.schoolNameOptionsLoaded = false;
+  $scope.data.currentVersionData = {};
+  $scope.data.currentVersionData.schoolName;
+  $scope.data.currentVersionData.versionName;
+  $scope.data.currentVersionData.dateCreated;
   $scope.data.dashboardUrl = '';
   $scope.data.showiFrame;
   $scope.data.iFrameHTML;
@@ -23,15 +27,8 @@ app.controller('DashboardManager', ['$compile', '$scope', '$location', '$state',
   // On Dashboard Manager school selection, configure available versions for selected school
   $scope.view.updateVersionOptions = function() {
     if ($scope.view.dashMschoolCode) {
-
       $scope.view.showMDashboard ? $scope.view.showMDashboard = false : null;
-
-      var returnVersions = {};
       $scope.view.currentVersions = $scope.data.availableVersions[$scope.view.dashMschoolCode];
-      $scope.view.dashMschoolVersion = "";
-      console.log($scope.view.currentVersions);
-    } else {
-      console.log('NO COLLECTION SELECTED');
     }
   };
 
@@ -39,6 +36,7 @@ app.controller('DashboardManager', ['$compile', '$scope', '$location', '$state',
   $scope.view.loadVersion = function() {
     $scope.view.showMDashboard = false;
     if ($scope.view.dashMschoolVersion) {
+      $scope.data.currentVersionData.versionName = $scope.view.dashMschoolVersion;
       // console.log($scope.view.dashMschoolCode, $scope.view.dashMschoolVersion);
       DashboardService.retrieveStoredDashboardVersionDataObject($scope.view.dashMschoolCode, $scope.view.dashMschoolVersion)
       .then(function(data) {
@@ -62,6 +60,40 @@ app.controller('DashboardManager', ['$compile', '$scope', '$location', '$state',
   // Open new tab with full screen dashboard
   $scope.view.openFSDashboard = function() {
     window.open($scope.data.dashboardUrl);
+  }
+
+
+  $scope.view.refreshDMiFrame = function() {
+    angular.element('iframe.dashM-iframe')[0].src = $scope.data.dashboardUrl;
+  }
+
+  $scope.data.generateiFrame = function() {
+    $scope.data.iFrameHTML = "<iframe src=\'" + $scope.data.dashboardUrl + "\' frameborder=\'0\' allowfullscreen=\'true\'></iframe>"
+    $scope.data.showiFrame = true;
+  }
+
+  $scope.data.copyiFrame = function() {
+    var copyText = $('input.iframe-html');
+    copyText.select();
+
+    var messageContainer = angular.element('div.iframe-html');
+
+    try {
+      var successful = document.execCommand('copy');
+      $scope.data.copyStatusMessage = successful ? 'success' : 'failure';
+    } catch (err) {
+      $scope.data.copyStatusMessage = 'failure';
+    }
+
+    $timeout(function() {
+      $scope.data.copyStatusMessage = 'hidden';
+    }, 5000);
+
+  }
+
+  $scope.view.hideiFrame = function() {
+    $scope.data.showiFrame = false;
+    $scope.data.copyStatusMessage = 'hidden';
   }
 
   // Dashboard Manager Initialization
@@ -113,36 +145,6 @@ app.controller('DashboardManager', ['$compile', '$scope', '$location', '$state',
     });
 
   }
-
-  $scope.data.generateiFrame = function() {
-    $scope.data.iFrameHTML = "<iframe src=\'" + $scope.data.dashboardUrl + "\' frameborder=\'0\' allowfullscreen=\'true\'></iframe>"
-    $scope.data.showiFrame = true;
-  }
-
-  $scope.data.copyiFrame = function() {
-    var copyText = $('input.iframe-html');
-    copyText.select();
-
-    var messageContainer = angular.element('div.iframe-html');
-
-    try {
-      var successful = document.execCommand('copy');
-      $scope.data.copyStatusMessage = successful ? 'success' : 'failure';
-    } catch (err) {
-      $scope.data.copyStatusMessage = 'failure';
-    }
-
-    $timeout(function() {
-      $scope.data.copyStatusMessage = 'hidden';
-    }, 5000);
-
-  }
-
-  $scope.view.hideiFrame = function() {
-    $scope.data.showiFrame = false;
-    $scope.data.copyStatusMessage = 'hidden';
-  }
-
 
   $scope.view.initializeDashboardManager();
 

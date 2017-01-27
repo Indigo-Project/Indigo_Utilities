@@ -304,30 +304,47 @@ section.dash-selection {
 button.full-screen-dash {
   width: 200px; }
 
-section.manager-interface {
+section.dashboard-manager-interface {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
   margin-top: 25px; }
-  section.manager-interface .row-1 {
+  section.dashboard-manager-interface .row-1 {
     display: flex;
     justify-content: space-between;
     width: 100%; }
-  section.manager-interface .row-2 {
+  section.dashboard-manager-interface .row-2 {
     display: flex;
     width: 100%;
     padding: 10px 0 20px 0; }
-
-section.manager-dashboard-data {
-  display: flex;
-  flex-direction: column;
-  width: 43%; }
 
 iframe.dashM-iframe {
   width: 55%;
   overflow: hidden;
   border: 1px solid black; }
+
+section.dashboard-manager-data {
+  display: flex;
+  flex-direction: column;
+  width: 40%; }
+
+section.dashboard-manager-options {
+  display: flex;
+  flex-direction: column;
+  width: 4.86111111111111%; }
+  section.dashboard-manager-options div:hover span {
+    cursor: pointer;
+    cursor: hand; }
+  section.dashboard-manager-options div {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 0; }
+    section.dashboard-manager-options div span {
+      top: 0;
+      padding: 0;
+      margin: 0; }
 
 button.generate-frame {
   width: 175px;
@@ -377,10 +394,7 @@ section.dashboard-outer-frame {
 
 span.fullscreen-toggle {
   position: absolute;
-  top: 10px;
-  right: 10px;
   color: #9c9c9c;
-  font-size: 16px;
   width: fit-content;
   height: fit-content;
   padding: 0;

@@ -21,7 +21,7 @@ app.factory('TTI_API', ['$state', '$http', 'FileSaver', 'Blob', function($state,
       return new Promise(function(resolve, reject) {
         $http({
           method: "POST",
-          url: "/TTI_API/validate-request-endpoint",
+          url: "/TTI-API/validate-request-endpoint",
           // url: "/api/validate-tti-request",
           data: { login: login, password: password, accountID: accountID, linkID: linkID, reportTypeFilter: reportTypeFilter, mode: mode, currentLinkReportList: currentLinkReportList }
         }).then(function(data) {

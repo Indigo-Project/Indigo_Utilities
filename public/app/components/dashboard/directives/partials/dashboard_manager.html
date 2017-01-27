@@ -1,15 +1,16 @@
 <section class="function-section dashboard-manager">
 
+
   <section class="dash-selection">
 
     <h4 class="loading-manager-options" ng-show="!data.schoolNameOptionsLoaded" ng-cloak>Loading Schools...</h4>
 
-    <select class="form-control dash-school-selection ng-cloak" ng-show="data.schoolNameOptionsLoaded" ng-change="view.updateVersionOptions()" ng-model="view.dashMschoolCode" ng-cloak>
+    <select class="form-control dash-school-selection ng-cloak" ng-show="data.schoolNameOptionsLoaded" ng-change="view.updateVersionOptions()" ng-model="view.dashMschoolCode">
       <option value=""> -- Select School -- </option>
       <option ng-repeat="school in data.availableCollections" value="{{school.code}}">{{school.optionDisplay}}</option>
     </select>
 
-    <select ng-hide="!view.dashMschoolCode" class="form-control dash-version-selection" ng-change="view.loadVersion()" ng-model="view.dashMschoolVersion" ng-cloak>
+    <select ng-hide="!view.dashMschoolCode" class="form-control dash-version-selection" ng-change="view.loadVersion()" ng-model="view.dashMschoolVersion">
       <option value=""> -- Select Version -- </option>
       <option ng-repeat="version in view.currentVersions" value="{{version.version}}">{{version.version}} -- {{version.dateCreated}}</option>
     </select>
@@ -18,30 +19,50 @@
 
   </section>
 
-  <section class="manager-interface" ng-show="view.showMDashboard">
+
+  <section class="dashboard-manager-interface" ng-show="view.showMDashboard">
 
     <section class="row-1">
-      <iframe class="dashM-iframe" src="{{data.dashboardUrl}}" frameborder="0"></iframe>
-      <section class="manager-dashboard-data">
-        <div class="manager-dashboard-title"></div>
-        <div class="manager-dashboard-metadata"></div>
-        <div class="manager-dashboard-notes">
-          <textarea class="manager-dashboard-notes"></textarea>
+
+      <iframe class="dashM-iframe" src="{{data.dashboardUrl}}" frameborder="0" allowfullscreen="true"></iframe>
+
+      <section class="dashboard-manager-options">
+        <div class="dashboard-manager-option"><span class="glyphicon glyphicon-refresh" title="Refresh Dashboard iFrame" ng-click="view.refreshDMiFrame()"></span></div>
+      </section>
+
+      <section class="dashboard-manager-data">
+        <div class="dashboard-manager-title" ng-model="data.currentVersionData.versionName"></div>
+        <div class="dashboard-manager-metadata">
+          <p ng-model="data.currentVersionData.schoolName"></p>
+          <p ng-model="data.currentVersionData.dateCreated"></p>
+        </div>
+        <div class="dashboard-manager-notes">
+          <input class="dashboard-manager-notes"></input>
+          <div class="dashboard-manager-notes-options">
+            <button class="edit-notes"></button>
+            <p class="notes-last-edit-date"></p>
+          </div>
         </div>
       </section>
+
     </section>
 
+
     <section class="row-2">
+
       <button class="generate-frame form-control" ng-click="data.generateiFrame()">Generate iFrame</button>
+
       <div class="iframe-html">
         <input class="iframe-html form-control" ng-show="data.showiFrame" ng-model="data.iFrameHTML" readonly>
         <div class="clip-copy-msg copy-success" ng-show="data.copyStatusMessage === 'success' "><span class="glyphicon glyphicon-ok"></span><p>copied to clipboard successfully</p></div>
         <div class="clip-copy-msg copy-failure" ng-show="data.copyStatusMessage === 'failure' "><span class="glyphicon glyphicon-remove"></span><p>failed to copy to clipboard. Copy selection manually with CTRL+C</p></div>
       </div>
+
       <div ng-show="data.showiFrame" class="iframe-options">
         <p class="copy-iframe" ng-click="data.copyiFrame()">Copy to Clipboard</p>
         <p class="hide-iframe" ng-click="view.hideiFrame()">Hide</p>
       </div>
+
     </section>
 
   </section>

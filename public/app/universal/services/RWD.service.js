@@ -22,16 +22,24 @@ app.factory('RWD', ['$compile', '$state', function($state) {
 
     responsiveAdaptationDM: function() {
 
-      console.log('responsiveAdaptationDM');
-
       var managerSection = $('section.dashboard-manager')
       var managerInterface = $('section.manager-interface')
       var dashboardIframe = $('iframe.dashM-iframe');
       var baseDimensionsDM = RWD.calculateBaseDimensions(dashboardIframe);
 
+      var vw = baseDimensionsDM.viewportWidth;
+      var vh = baseDimensionsDM.viewportHeight;
+
       var dFERatio = 723/1440;
+
       dashboardIframe.height(((managerSection.width() - 40) * .55) * dFERatio);
       managerInterface.height(dashboardIframe.height);
+
+      var dashManagerOption = $('div.dashboard-manager-option');
+      var dashManageriFrameRefresh = $('div.dashboard-manager-option > span.glyphicon-refresh');
+
+      dashManagerOption.css('padding-left', Math.min(10/1440 * vw, 10/723 * vh))
+      dashManageriFrameRefresh.css('font-size', Math.min(22/1440 * vw, 22/723 * vh))
 
     },
 

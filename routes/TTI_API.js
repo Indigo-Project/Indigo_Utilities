@@ -18,9 +18,10 @@ var fsE = require('fs-extra');
 var mongo = require('../Database/mongo-db');
 
 var TTI = require('../internalModules/TTI_Module');
-
+console.log('inside 1');
 
 router.post("/validate-request-endpoint", function(req, res, next) {
+  console.log('inside');
   if (req.body.mode === "verify") {
     var listReportsEndpoint = TTI.APIs.listReports.generateEndpoint(req.body.accountID, req.body.linkID);
     TTI.APIs.requestFormat("GET", listReportsEndpoint, req.body.login, req.body.password)
@@ -56,7 +57,7 @@ router.post("/validate-request-endpoint", function(req, res, next) {
     }).catch(function(error) {
       res.send({ error: error });
     })
-  } else if (req.body.mode === "filter"){
+  } else if (req.body.mode === "filter") {
     var reportList = req.body.currentLinkReportList;
     var reportTypeFilter = req.body.reportTypeFilter;
     var filteredReportList = [];

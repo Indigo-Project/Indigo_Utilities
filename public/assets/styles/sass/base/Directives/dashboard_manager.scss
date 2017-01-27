@@ -17,7 +17,7 @@ button.full-screen-dash {
   width: 200px;
 }
 
-section.manager-interface {
+section.dashboard-manager-interface {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -35,16 +35,39 @@ section.manager-interface {
   }
 }
 
-section.manager-dashboard-data {
-  display: flex;
-  flex-direction: column;
-  width: 43%;
-}
-
 iframe.dashM-iframe {
   width: 55%;
   overflow: hidden;
   border: 1px solid black;
+}
+
+section.dashboard-manager-data {
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+}
+
+section.dashboard-manager-options {
+  display: flex;
+  flex-direction: column;
+  width: 4.86111111111111%;
+  div:hover span {
+    cursor: pointer;
+    cursor: hand;
+  }
+  div {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    // padding: 0 0 0 10px;
+    margin: 0;
+    span {
+      top: 0;
+      // font-size: 22px;
+      padding: 0;
+      margin: 0;
+    }
+  }
 }
 
 button.generate-frame {
