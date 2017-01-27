@@ -33,10 +33,14 @@
 
     <section class="row-2">
       <button class="generate-frame form-control" ng-click="data.generateiFrame()">Generate iFrame</button>
-      <input class="iframe-html form-control" ng-show="data.iFrameGenerated" ng-model="data.iFrameHTML" readonly>
-      <div ng-show="data.iFrameGenerated" class="iframe-options">
-        <p class="copy-iframe">Copy to Clipboard</p>
-        <p class="hide-iframe">Hide</p>
+      <div class="iframe-html">
+        <input class="iframe-html form-control" ng-show="data.showiFrame" ng-model="data.iFrameHTML" readonly>
+        <div class="clip-copy-msg copy-success" ng-show="data.copyStatusMessage === 'success' "><span class="glyphicon glyphicon-ok"></span><p>copied to clipboard successfully</p></div>
+        <div class="clip-copy-msg copy-failure" ng-show="data.copyStatusMessage === 'failure' "><span class="glyphicon glyphicon-remove"></span><p>failed to copy to clipboard. Copy selection manually with CTRL+C</p></div>
+      </div>
+      <div ng-show="data.showiFrame" class="iframe-options">
+        <p class="copy-iframe" ng-click="data.copyiFrame()">Copy to Clipboard</p>
+        <p class="hide-iframe" ng-click="view.hideiFrame()">Hide</p>
       </div>
     </section>
 

@@ -28,15 +28,8 @@ app.factory('RWD', ['$compile', '$state', function($state) {
       var managerInterface = $('section.manager-interface')
       var dashboardIframe = $('iframe.dashM-iframe');
       var baseDimensionsDM = RWD.calculateBaseDimensions(dashboardIframe);
-      //
-      // var iframeWidth = $scope.view.baseDimensionsDM.viewportWidth - 40
-      // // var dFERatio = dashboardFrameElement.height() / dashboardFrameElement.width();
-      // // console.log(dashboardFrameElement.width(), dashboardFrameElement.height(), dFERatio);
-      //
+
       var dFERatio = 723/1440;
-      // dashboardIframe.width(iframeWidth);
-      console.log(managerSection.width());
-      console.log((managerInterface.width() * .63) * dFERatio);
       dashboardIframe.height(((managerSection.width() - 40) * .55) * dFERatio);
       managerInterface.height(dashboardIframe.height);
 
@@ -437,6 +430,12 @@ app.factory('RWD', ['$compile', '$state', function($state) {
       var resetFiltersCTA = $('p.reset-filters-cta');
       resetFiltersCTA.css('font-size', Math.min(12/683 * dashboardInnerHeight, 12/1380 * dashboardInnerWidth))
       resetFiltersCTA.css('bottom', (Row2_Column1.height() - Table_Container.height()) + 'px');
+
+      var fullscreenGlyphicon = $('span.fullscreen-toggle');
+      fullscreenGlyphicon.css('top', Math.min(10/683 * dashboardInnerHeight, 10/1380 * dashboardInnerWidth) + 'px')
+      fullscreenGlyphicon.css('right', Math.min(10/683 * dashboardInnerHeight, 10/1380 * dashboardInnerWidth) + 'px')
+      fullscreenGlyphicon.css('font-size', Math.min(16/683 * dashboardInnerHeight, 16/1380 * dashboardInnerWidth) + 'px')
+
     },
 
     responsiveAdaptationStudentDetails: function() {

@@ -21,7 +21,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
     })
     .state('tti_massdl', {
       url: '/tti_massdl',
-      templateUrl: "views/tti_mass_downloader.html",
+      templateUrl: "views/tti_batch_downloader.html",
     })
     .state('sum_page', {
       url: '/sum_page',

@@ -25,12 +25,13 @@ section.manager-interface {
   margin-top: 25px;
   .row-1 {
     display: flex;
+    justify-content: space-between;
     width: 100%;
   }
   .row-2 {
     display: flex;
     width: 100%;
-    padding: 20px 0 20px 0;
+    padding: 10px 0 20px 0;
   }
 }
 
@@ -51,9 +52,37 @@ button.generate-frame {
   margin-right: 20px;
 }
 
+div.iframe-html {
+  display: flex;
+  flex-direction: column;
+}
+
 input.iframe-html {
   width: 500px;
   margin-right: 20px;
+}
+
+div.clip-copy-msg {
+  display: flex;
+
+  p, span {
+    width: fit-content;
+    font-size: 12px;
+    padding: 0;
+  }
+  span {
+    margin-right: 5px;
+  }
+  &.copy-success {
+    p, span {
+      color: green;
+    }
+  }
+  &.copy-failure {
+    p, span {
+      color: red;
+    }
+  }
 }
 
 div.iframe-options {
@@ -63,5 +92,11 @@ div.iframe-options {
     font-size: 10px;
     margin: 0;
     padding: 0;
+    color: rgb(106, 139, 255);
+    &:hover {
+      color: rgb(20, 2, 245);
+      cursor: pointer;
+      cursor: hand;
+    }
   }
 }

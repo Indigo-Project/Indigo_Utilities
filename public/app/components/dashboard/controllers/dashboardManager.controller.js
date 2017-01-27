@@ -1,4 +1,4 @@
-app.controller('DashboardManager', ['$compile', '$scope', '$location', '$state', '$stateParams', '$http', 'siteNavigation', 'TTI_API', 'socket', '$window', 'DashboardService', 'localStorageService', 'RWD', function($compile, $scope, $location, $state, $stateParams, $http, siteNavigation, TTI_API, socket, $window, DashboardService, localStorageService, RWD) {
+app.controller('DashboardManager', ['$compile', '$scope', '$location', '$state', '$stateParams', '$http', '$timeout', 'siteNavigation', 'TTI_API', 'socket', '$window', 'DashboardService', 'localStorageService', 'RWD', function($compile, $scope, $location, $state, $stateParams, $http, $timeout, siteNavigation, TTI_API, socket, $window, DashboardService, localStorageService, RWD) {
 
   // $scope object instantiation
   $scope.view = {};
@@ -11,8 +11,9 @@ app.controller('DashboardManager', ['$compile', '$scope', '$location', '$state',
 
   $scope.data.schoolNameOptionsLoaded = false;
   $scope.data.dashboardUrl = '';
-  $scope.data.iFrameGenerated;
+  $scope.data.showiFrame;
   $scope.data.iFrameHTML;
+  $scope.data.copyStatusMessage = 'hidden';
 
   // dynamically change options based on selected function
   $scope.view.accessFunction = function () {
@@ -115,8 +116,33 @@ app.controller('DashboardManager', ['$compile', '$scope', '$location', '$state',
 
   $scope.data.generateiFrame = function() {
     $scope.data.iFrameHTML = "<iframe src=\'" + $scope.data.dashboardUrl + "\' frameborder=\'0\' allowfullscreen=\'true\'></iframe>"
-    $scope.data.iFrameGenerated = true;
+    $scope.data.showiFrame = true;
   }
+
+  $scope.data.copyiFrame = function() {
+    var copyText = $('input.iframe-html');
+    copyText.select();
+
+    var messageContainer = angular.element('div.iframe-html');
+
+    try {
+      var successful = document.execCommand('copy');
+      $scope.data.copyStatusMessage = successful ? 'success' : 'failure';
+    } catch (err) {
+      $scope.data.copyStatusMessage = 'failure';
+    }
+
+    $timeout(function() {
+      $scope.data.copyStatusMessage = 'hidden';
+    }, 5000);
+
+  }
+
+  $scope.view.hideiFrame = function() {
+    $scope.data.showiFrame = false;
+    $scope.data.copyStatusMessage = 'hidden';
+  }
+
 
   $scope.view.initializeDashboardManager();
 

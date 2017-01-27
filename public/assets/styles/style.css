@@ -312,11 +312,12 @@ section.manager-interface {
   margin-top: 25px; }
   section.manager-interface .row-1 {
     display: flex;
+    justify-content: space-between;
     width: 100%; }
   section.manager-interface .row-2 {
     display: flex;
     width: 100%;
-    padding: 20px 0 20px 0; }
+    padding: 10px 0 20px 0; }
 
 section.manager-dashboard-data {
   display: flex;
@@ -332,9 +333,26 @@ button.generate-frame {
   width: 175px;
   margin-right: 20px; }
 
+div.iframe-html {
+  display: flex;
+  flex-direction: column; }
+
 input.iframe-html {
   width: 500px;
   margin-right: 20px; }
+
+div.clip-copy-msg {
+  display: flex; }
+  div.clip-copy-msg p, div.clip-copy-msg span {
+    width: fit-content;
+    font-size: 12px;
+    padding: 0; }
+  div.clip-copy-msg span {
+    margin-right: 5px; }
+  div.clip-copy-msg.copy-success p, div.clip-copy-msg.copy-success span {
+    color: green; }
+  div.clip-copy-msg.copy-failure p, div.clip-copy-msg.copy-failure span {
+    color: red; }
 
 div.iframe-options {
   display: flex;
@@ -342,7 +360,12 @@ div.iframe-options {
   div.iframe-options p {
     font-size: 10px;
     margin: 0;
-    padding: 0; }
+    padding: 0;
+    color: #6a8bff; }
+    div.iframe-options p:hover {
+      color: #1402f5;
+      cursor: pointer;
+      cursor: hand; }
 
 section.dashboard-outer-frame {
   width: 100%;
