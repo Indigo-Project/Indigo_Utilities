@@ -30,7 +30,8 @@ module.exports = function(io) {
     router.post("/validate-local-dir", function(req, res, next) {
       tilde('~/', function(userHome) {
         if (process.env.NODE_ENV === "development") {
-          var localDir = userHome + req.body.localDir;
+          var localDir = userHome + 'Documents/IndigoProject/Indigo_Utilities/Output_Files/Assessments/';
+          console.log(userHome, localDir);
           fs.access(localDir, function(error) {
             if (!error) {
               res.send(localDir);
@@ -125,7 +126,7 @@ module.exports = function(io) {
           tilde('~', function(userHome) {
             if (process.env.NODE_ENV === "production") {
               var removeZip =  userHome + '/Output_Files/Assessments/Zips/assessments.zip'
-            } else if (process.env.NODE_ENV === "development_test") {
+            } else if (process.env.NODE_ENV === "development") {
               var removeZip = userHome + '/Documents/IndigoProject/Indigo_Utilities/Output_Files/Assessments/Zips/assessments.zip'
             }
             fsE.remove(removeZip, function(error) {
@@ -270,7 +271,7 @@ module.exports = function(io) {
             var sendDir = userHome + '/Output_Files/Assessments/Indigo_Assessments_Tmp/';
             var removeDir = userHome + '/Output_Files/Assessments/Indigo_Assessments_Tmp';
             var makeDir = userHome + '/Output_Files/Assessments/Zips'
-          } else if (process.env.NODE_ENV === "development_test") {
+          } else if (process.env.NODE_ENV === "development") {
             var destDir = userHome + '/Documents/IndigoProject/Indigo_Utilities/Output_Files/Assessments/Zips/';
             var sendDir = userHome + '/Documents/IndigoProject/Indigo_Utilities/Output_Files/Assessments/Indigo_Assessments_Tmp/';
             var removeDir = userHome + '/Documents/IndigoProject/Indigo_Utilities/Output_Files/Assessments/Indigo_Assessments_Tmp';
@@ -322,7 +323,7 @@ module.exports = function(io) {
             tilde('~', function(userHome) {
               if (process.env.NODE_ENV === "production") {
                 makeDir = userHome + '/Output_Files/Assessments/Indigo_Assessments_Tmp/';
-              } else if (process.env.NODE_ENV === "development_test") {
+              } else if (process.env.NODE_ENV === "development") {
                 makeDir = userHome + '/Documents/IndigoProject/Indigo_Utilities/Output_Files/Assessments/Indigo_Assessments_Tmp/';
               }
               mkdirp(makeDir, function(err) {
@@ -462,7 +463,7 @@ module.exports = function(io) {
 
               tilde('~', function(userHome) {
                 if (process.env.NODE_ENV === "production") destination = userHome + '/Output_Files/Assessments/Indigo_Assessments_Tmp/' + lastName + ", " + firstName + suffix + ".pdf";
-                else if (process.env.NODE_ENV === "development_test") destination = userHome + '/Documents/IndigoProject/Indigo_Utilities/Output_Files/Assessments/Indigo_Assessments_Tmp/' + lastName + ", " + firstName + suffix + ".pdf";
+                else if (process.env.NODE_ENV === "development") destination = userHome + '/Documents/IndigoProject/Indigo_Utilities/Output_Files/Assessments/Indigo_Assessments_Tmp/' + lastName + ", " + firstName + suffix + ".pdf";
 
                 var options = {
                   method: "GET",

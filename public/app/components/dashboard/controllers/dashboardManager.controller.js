@@ -1,4 +1,4 @@
-app.controller('DashboardManager', ['$compile', '$scope', '$location', '$state', '$stateParams', '$http', '$timeout', 'siteNavigation', 'TTI_API', 'socket', '$window', 'DashboardService', 'localStorageService', 'RWD', function($compile, $scope, $location, $state, $stateParams, $http, $timeout, siteNavigation, TTI_API, socket, $window, DashboardService, localStorageService, RWD) {
+app.controller('DashboardManager', ['$compile', '$scope', '$location', '$state', '$stateParams', '$http', '$timeout', 'siteNavigation', 'TTI_API', 'socket', '$window', 'DashboardService', 'DashboardManagerService', 'localStorageService', 'RWD', function($compile, $scope, $location, $state, $stateParams, $http, $timeout, siteNavigation, TTI_API, socket, $window, DashboardService, DashboardManagerService, localStorageService, RWD) {
 
   // $scope object instantiation
   $scope.view = {};
@@ -8,6 +8,7 @@ app.controller('DashboardManager', ['$compile', '$scope', '$location', '$state',
 
   $scope.view.dashMschoolCode = "";
   $scope.view.dashMschoolVersion = "";
+  $scope.view.notesCTA = "edit";
 
   $scope.data.schoolNameOptionsLoaded = false;
   $scope.data.currentVersionData = {};
@@ -36,19 +37,27 @@ app.controller('DashboardManager', ['$compile', '$scope', '$location', '$state',
   $scope.view.loadVersion = function() {
     $scope.view.showMDashboard = false;
     if ($scope.view.dashMschoolVersion) {
-      $scope.data.currentVersionData.versionName = $scope.view.dashMschoolVersion;
-      console.log($scope.data.availableCollections, $scope.view.dashMschoolVersion, $scope.data.currentVersionData.versionName);
       DashboardService.retrieveStoredDashboardVersionDataObject($scope.view.dashMschoolCode, $scope.view.dashMschoolVersion)
       .then(function(data) {
         console.log('got data', data);
+
+        // Dashboard Manager Data/Metadata Values
+        $scope.data.currentVersionData.schoolName = data.metaData.schoolInfo.name;
+        $scope.data.currentVersionData.versionName = data.metaData.version;
+        $scope.data.currentVersionData.dateCreated = data.metaData.dateCreated;
+        $scope.data.currentVersionData.managerNotes = data.metaData.managerNotes || "";
+
         $scope.data.currentDashboardDataObject = data
         localStorageService.set('currentDashboardData', data);
         var inputObject = { data: $scope.data.currentDashboardDataObject, schoolName: $scope.view.dashMschoolCode}
         DashboardService.generateD3Dashboard(inputObject, "studentData");
         $scope.data.dashboardUrl = '/dashboards/' + $scope.view.dashMschoolCode + "/" + $scope.data.currentDashboardDataObject._id;
         $scope.view.showMDashboard = true;
-        RWD.responsiveAdaptationDM();
         $scope.$apply();
+
+        $("textarea.dashboard-manager-notes").height($("textarea.dashboard-manager-notes")[0].scrollHeight);
+        RWD.responsiveAdaptationDM();
+
       }).catch(function(error) {
         console.log(error);
       })
@@ -61,6 +70,19 @@ app.controller('DashboardManager', ['$compile', '$scope', '$location', '$state',
   $scope.view.openFSDashboard = function() {
     window.open($scope.data.dashboardUrl);
   }
+
+  $scope.data.editNotes = function() {
+    $scope.view.notesCTA = 'save';
+    $('textarea.dashboard-manager-notes').attr('readonly', false);
+  };
+
+  $scope.data.saveNotes = function() {
+    $scope.view.notesCTA = 'edit';
+    $('textarea.dashboard-manager-notes').attr('readonly', true);
+    // $scope.data.currentVersionData.managerNotes;
+    // console.log($scope.view.dashMschoolCode, $scope.view.dashMschoolVersion, $scope.data.currentVersionData.managerNotes);
+    DashboardManagerService.saveNotes($scope.view.dashMschoolCode, $scope.view.dashMschoolVersion, $scope.data.currentVersionData.managerNotes);
+  };
 
   $scope.view.refreshDMiFrame = function() {
     angular.element('iframe.dashM-iframe')[0].src = $scope.data.dashboardUrl;

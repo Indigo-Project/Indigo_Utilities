@@ -144,6 +144,44 @@ var database = {
     })
   },
 
+  // Update notes for dashboard manager version
+  updateDashboardManagerNotes: function(db, collection, version, notes) {
+    console.log('notes data', collection, version, notes);
+
+    db.collection(collection, function(err, collection) {
+      if (err) {
+        // console.log('COLLECTION ERR', err);
+      } else {
+
+        console.log('COLLECTION FOUND');
+
+        collection.indexes(function(err, indexes) {
+          console.log(err, indexes);
+        })
+
+        collection.indexExists('_id_', function(err, result) {
+          console.log(err, result);
+        })
+
+        collection.findOneAndUpdate( {'metaData.version': version}, {$set: {'metaData.managerNotes': notes}}, function(err, result) {
+          // test.equal(null, err);
+          // test.equal(1, result.lastErrorObject.n);
+          // test.equal(1, result.value.b);
+          // test.equal(1, result.value.d);
+          if (err) {
+            console.log('findOneAndUpdate ERR', err);
+          } else {
+            console.log('findOneAndUpdate SUCCESS', result);
+          }
+        })
+
+      }
+
+    })
+
+
+  },
+
   // Get document by Id
   getDocumentById: function(db, schoolCode, id) {
     return new Promise(function(resolve, reject) {

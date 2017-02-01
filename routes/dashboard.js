@@ -585,6 +585,7 @@ router.post('/create-dashboard-data-object', function(req, res, next) {
 })
 
 router.get('/retrieve-school-dashboard-collections', function(req, res, next) {
+
   function getAllCollectionVersions(db, collectionNames) {
     return new Promise(function(resolve, reject) {
       var collectionReturn = {};

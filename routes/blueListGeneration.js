@@ -28,6 +28,11 @@ router.post('/generate', function(req, res, next) {
   function setColumnHeaders(data) {
     return new Promise(function(resolve, reject) {
       // console.log(data);
+
+      var fnIndex = "";
+      var lnIndex = "";
+      var genderIndex = "";
+
       var stressIndex = "";
       var confIndex = "";
       var selfIndex = "";
@@ -85,18 +90,19 @@ router.post('/generate', function(req, res, next) {
           }
         }
 
-        if (fnIndex === "" || lnIndex === "" || genderIndex === "" || stressIndex === "" || confIndex === "" || selfIndex === "" || belongIndex === "" || resilIndex === "" || dirIndex === "" || dirbIndex === "" || eoIndex === "" || ptIndex === "" || sjIndex === "") {
+        if (fnIndex === "" || lnIndex === "" || stressIndex === "" || confIndex === "" || selfIndex === "" || belongIndex === "" || resilIndex === "" || dirIndex === "" || dirbIndex === "" || eoIndex === "" || ptIndex === "" || sjIndex === "") {
           resolve({ errReason: "Client Error: Incorrect Report Type", internalMessage: "One or more indices is null", externalMessage: "One or more uploaded reports is the incorrect report type for blue list generation. Refresh and try again. List of acceptable Report Types:\n\n-Hartman Value Profile"})
         } else {
           var indexArr = [fnIndex, lnIndex, genderIndex, stressIndex, confIndex, selfIndex, belongIndex, resilIndex, dirIndex, dirbIndex, eoIndex, ptIndex, sjIndex];
           var body = { data: output, indexArr: indexArr };
           resolve(body);
+          console.log('column headers set');
         }
       });
     })
   }
 
-  // OUTPUT ENT LIST FOR INPUT FILE (TTI LINK) USING RELATIVE DATA INDICES
+  // OUTPUT BLUE LIST FOR INPUT FILE (TTI LINK) USING RELATIVE DATA INDICES
   function outputBlueData(data, indexArr) {
     return new Promise(function(resolve, reject) {
 
@@ -155,16 +161,19 @@ router.post('/generate', function(req, res, next) {
           }
         }
       }
+
       if (data) {
         resolve(blueListArr);
       } else {
         reject('no data');
       }
+
     })
   }
 
-  // COMPILE BLUE LISTS FROM ALL INSTANCES
+  // COMPILE BLUE LISTS FROM ALL SOURCES
   function compileBlueLists() {
+
     return new Promise(function(resolve, reject) {
 
       var count = 0;
@@ -197,8 +206,11 @@ router.post('/generate', function(req, res, next) {
           })
         }
       }
+
       forLoop(count);
+
     })
+
   }
 
   // FINAL EXECUTION FUNCTION

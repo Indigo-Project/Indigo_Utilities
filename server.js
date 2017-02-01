@@ -18,6 +18,7 @@ var sumStatsGeneration = require('./routes/sumStatsGeneration');
 var batchReportDownloader = require('./routes/batchReportDownloader')(io);
 var TTI_API = require('./routes/TTI_API');
 var dashboard = require('./routes/dashboard');
+var dashboardManager = require('./routes/dashboardManager');
 
 // app.set('views', path.join(__dirname, 'views'));
 // app.set('view engine', 'jade');
@@ -50,6 +51,7 @@ app.use('/summary-stats', sumStatsGeneration);
 app.use('/batch-download', batchReportDownloader);
 app.use('/TTI-API', TTI_API);
 app.use('/dashboard', dashboard);
+app.use('/dashboard-manager', dashboardManager);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

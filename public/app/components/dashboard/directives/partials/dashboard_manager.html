@@ -35,14 +35,14 @@
           <h3 ng-model="data.currentVersionData.versionName">{{data.currentVersionData.versionName}}</h3>
         </div>
         <div class="dashboard-manager-metadata">
-          <p>{{data.currentVersionData.schoolName}}</p>
-          <p>{{data.currentVersionData.dateCreated}}</p>
+          <p class="school-name">School: <strong>{{data.currentVersionData.schoolName}}</strong></p>
+          <p>Date Created: <strong>{{data.currentVersionData.dateCreated}}</strong></p>
         </div>
         <div class="dashboard-manager-notes">
-          <input class="dashboard-manager-notes"></input>
+          <textarea class="dashboard-manager-notes form-control" ng-model="data.currentVersionData.managerNotes" readonly></textarea>
           <div class="dashboard-manager-notes-options">
-            <button class="edit-notes"></button>
-            <p class="notes-last-edit-date"></p>
+            <button class="edit-notes form-control" ng-show="view.notesCTA === 'edit'" ng-click="data.editNotes()">Edit Notes</button>
+            <button class="edit-notes form-control" ng-show="view.notesCTA === 'save'" ng-click="data.saveNotes()">Save</button>
           </div>
         </div>
       </section>

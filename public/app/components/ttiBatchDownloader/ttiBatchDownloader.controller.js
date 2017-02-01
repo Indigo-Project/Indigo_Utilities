@@ -131,6 +131,7 @@ app.controller('TTIBatchDownloader', ['$scope', '$state', '$http', 'siteNavigati
           $scope.view.formStatus = "Download";
           $scope.$apply();
         } else {
+          console.log($scope.form.directory);
           TTI_API.validateLocalDir($scope.form.directory)
           .then(function(data2) {
             if (data2.data.error) {

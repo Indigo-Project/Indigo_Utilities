@@ -41,6 +41,14 @@ app.factory('RWD', ['$compile', '$state', function($state) {
       dashManagerOption.css('padding-left', Math.min(10/1440 * vw, 10/723 * vh))
       dashManageriFrameRefresh.css('font-size', Math.min(22/1440 * vw, 22/723 * vh))
 
+      var metaDataContainer = $('section.dashboard-manager-data')
+      var textarea = $('textarea.dashboard-manager-notes');
+
+      console.log(metaDataContainer);
+      console.log(metaDataContainer.height());
+      textarea.css('max-height', metaDataContainer.height() * .5);
+      // textarea.height(textarea[0].scrollHeight);
+
     },
 
     responsiveAdaptationDashboard: function() {
@@ -741,7 +749,6 @@ app.factory('RWD', ['$compile', '$state', function($state) {
       setRow4Dimensions();
 
     }
-
   }
 
   return RWD;
