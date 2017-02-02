@@ -9,6 +9,7 @@
     "angular-file-upload": "^2.3.4",
     "archiver": "^1.2.0",
     "base-64": "^0.1.0",
+    "bcrypt": "^1.0.2",
     "bluebird": "^3.4.6",
     "body-parser": "~1.16.0",
     "cookie-parser": "~1.4.3",
