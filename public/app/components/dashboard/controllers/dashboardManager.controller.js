@@ -122,12 +122,13 @@ app.controller('DashboardManager', ['$compile', '$scope', '$location', '$state',
 
     DashboardService.retrieveSchoolNameOptions()
     .then(function(data) {
+      console.log(1, data);
       $scope.view.schoolNameOptions = data.data;
       var schoolKeys = Object.keys($scope.view.schoolNameOptions);
       for (var i = 0; i < schoolKeys.length; i++) {
         $scope.view.schoolNameOptions[schoolKeys[i]].code = schoolKeys[i]
       }
-
+      console.log(2);
       DashboardService.retrieveSchoolsWithDashboards()
       .then(function(collections) {
         var collectionNames = Object.keys(collections.data);
@@ -162,7 +163,11 @@ app.controller('DashboardManager', ['$compile', '$scope', '$location', '$state',
         $scope.data.schoolNameOptionsLoaded = true;
 
         $scope.$apply();
+      }).catch(function(err) {
+        console.log('retrieveSchoolsWithDashboards Error', err);
       });
+    }).catch(function(err) {
+      console.log(err);
     });
 
   }

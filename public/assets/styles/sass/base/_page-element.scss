@@ -1,10 +1,11 @@
 body {
-  // padding: 0px 20px 0px 20px;
+  font-family: 'Open Sans', sans-serif;
 }
 
 a.head-logo {
   display: flex;
   text-decoration: none;
+  width: fit-content;
   h1 {
     margin: 0px;
     display: inline-block;
@@ -23,6 +24,7 @@ a.head-logo {
 }
 
 section.header {
+  position: relative;
   padding: 20px;
   background-color: rgba(79, 68, 152, 1);
   border-bottom: 3px solid rgb(64, 64, 64);

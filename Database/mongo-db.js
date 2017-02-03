@@ -57,6 +57,7 @@ var database = {
           } else {
             var metaDataReturn = {};
             for (var i = 0; i < documents.length; i++) {
+              console.log(documents[i]);
               metaDataReturn[documents[i].metaData.version] = documents[i].metaData;
             }
             resolve(metaDataReturn);
@@ -235,6 +236,22 @@ var database = {
               resolve(doc);
             }
           })
+        })
+      })
+    })
+  },
+
+  locateLoginCredentialsByUsername: function(db, username) {
+    return new Promise(function(resolve, reject) {
+      db.collection('indigo-users', function(err, collection) {
+        collection.findOne({ username: username }, function(err, doc) {
+          if (err) {
+            console.log('findOne Error', err);
+          } else if (!doc) {
+            reject('collection.findOne returned null')
+          } else {
+            resolve(doc);
+          }
         })
       })
     })

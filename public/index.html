@@ -23,6 +23,7 @@
     <script src="lib/angular-local-storage/dist/angular-local-storage.min.js"></script>
     <script src="lib/angular-fullscreen/src/angular-fullscreen.js"></script>
     <script src="lib/d3/d3.min.js"></script>
+    <script src="lib/angular-jwt/dist/angular-jwt.min.js"></script>
     <!-- <script src="lib/socket.io/lib/socket.js"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.5.1/socket.io.min.js"></script>
 
@@ -44,12 +45,21 @@
 
     <script src="app/universal/directives/fileread.directive.js"></script>
     <script src="app/universal/directives/header.directive.js"></script>
+    <script src="app/universal/directives/siteOptions.directive.js"></script>
     <script src="app/universal/directives/stateLoadingIndicator.directive.js"></script>
 
     <script src="app/universal/Main.controller.js"></script>
+    <script src="app/universal/Options.controller.js"></script>
 
 
     <!-- ***** FUNCTION SPECIFIC COMPONENTS ***** -->
+
+    <!-- LOGIN/JWT -->
+    <script src="app/universal/services/auth.service.js"></script>
+    <script src="app/universal/directives/login.directive.js"></script>
+    <script src="app/universal/Auth.controller.js"></script>
+
+    <script src="app/universal/services/jwt.service.js"></script>
 
     <!-- HOME -->
     <script src="app/components/home/directives/home.directive.js"></script>
@@ -90,7 +100,7 @@
 </head>
 <body>
 
-  <state-loading-indicator></state-loading-indicator>
+  <state-loading-indicator ng-show="stateIsLoading === 'dashboard'"></state-loading-indicator>
   <ui-view></ui-view>
 
 </body>

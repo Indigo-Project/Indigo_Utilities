@@ -6,12 +6,15 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var socket_io = require('socket.io');
+var jwt = require('jsonwebtoken');
+var bearerToken = require('express-bearer-token');
 
 var app = express();
 
 var io = socket_io();
 app.io = io;
 
+var auth = require('./routes/auth');
 var entListGeneration = require('./routes/entListGeneration');
 var blueListGeneration = require('./routes/blueListGeneration');
 var sumStatsGeneration = require('./routes/sumStatsGeneration');
@@ -31,19 +34,45 @@ app.use(logger('dev'));
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+app.use(bearerToken());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+app.use('/auth', auth);
+
 // reroute url parameters of angular ui-router routes
-app.use("/logo", express.static(__dirname + "/public/index.html"));
+app.use("/login", express.static(__dirname + "/public/index.html"));
+app.use("/dashboard_manager", express.static(__dirname + "/public/index.html"));
 app.use("/blue_list", express.static(__dirname + "/public/index.html"));
 app.use("/ent_list", express.static(__dirname + "/public/index.html"));
 app.use("/tti_batchdl", express.static(__dirname + "/public/index.html"));
 app.use("/sum_page", express.static(__dirname + "/public/index.html"));
 app.use("/sum_stats", express.static(__dirname + "/public/index.html"));
 app.use("/dashboard_gen", express.static(__dirname + "/public/index.html"));
-app.use("/dashboard_manager", express.static(__dirname + "/public/index.html"));
 app.use("/dashboards/:collection/:id", express.static(__dirname + "/public/index.html"));
 app.use("/dashboards/:collection/:id/:studentpath", express.static(__dirname + "/public/index.html"));
+
+// On each request to server route, verify jwt token before access
+app.use(function (req,res,next) {
+
+  console.log(req.token);
+  if (req.token) {
+    jwt.verify(JSON.parse(req.token), process.env.JWT_SECRET, function(err, decoded) {
+      if (!err) {
+        next();
+      } else {
+        console.log(err);
+        // res.status(401).send('Unauthorized');
+        res.redirect('/login');
+      }
+    })
+  } else {
+    res.redirect('/login');
+  }
+
+});
+
 
 app.use('/ent-list', entListGeneration);
 app.use('/blue-list', blueListGeneration);
@@ -52,6 +81,7 @@ app.use('/batch-download', batchReportDownloader);
 app.use('/TTI-API', TTI_API);
 app.use('/dashboard', dashboard);
 app.use('/dashboard-manager', dashboardManager);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
