@@ -1,18 +1,16 @@
-// app.factory('jwtInterceptor', ['localStorageService', function(localStorageService){
-//
-//   var interceptor = {
-//     request: function(config) {
-//       console.log(config.headers);
-//       var jwt = localStorageService.get('jwt');
-//       if (jwt) {
-//         console.log('Bearer ' + jwt);
-//         config.headers.authorization = 'Bearer ' + jwt;
-//         console.log(config.headers.authorization);
-//       }
-//       return config;
-//     }
-//   };
-//
-//   return interceptor;
-//
-// }])
+app.factory('jwtService', ['localStorageService', 'jwtHelper', function(localStorageService, jwtHelper){
+
+  var jwtService = {
+    getDecodedJWT: function() {
+      var jwt = localStorageService.get('jwt');
+      var jwtDecoded = jwtHelper.decodeToken(jwt);
+      return jwtDecoded;
+    },
+    clearJWT: function() {
+      return localStorageService.remove('jwt')
+    }
+  };
+
+  return jwtService;
+
+}])

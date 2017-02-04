@@ -3,14 +3,15 @@ app.config(function($stateProvider, $urlRouterProvider) {
   $urlRouterProvider.otherwise("/");
 
   var url = (window.location != window.parent.location) ? document.referrer : document.location.host;
-  console.log(url, document.referrer, document.location.host);
   var fathymParent = url.substring(7,20) === "indigo.fathym" ? true : false;
-  console.log(url.substring(7,20), fathymParent);
 
   $stateProvider
     .state('login', {
       url: '/login',
       templateUrl: "views/login.html",
+      params: {
+        inactivityLogout: null
+      }
     })
     .state('home', {
       url: '/',

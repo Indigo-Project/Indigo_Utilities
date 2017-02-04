@@ -1,7 +1,12 @@
-app.controller('Auth', ['$scope', '$state', '$http','localStorageService', 'jwtHelper', 'authService', function($scope, $state, $http, localStorageService, jwtHelper, authService) {
+app.controller('Auth', ['$scope', '$state', '$http','localStorageService', 'jwtHelper', 'authService', 'jwtService', function($scope, $state, $http, localStorageService, jwtHelper, authService, jwtService) {
 
   $scope.data = {};
   $scope.view = {};
+
+  $scope.data.inactivityLogout = $state.params.inactivityLogout === true ? true : false;
+  angular.element('form.login-form > input').on('change', function() {
+    $scope.data.inactivityLogout = false;
+  })
 
   $scope.data.ifLoggedInRedirectHome = function() {
     authService.verifyJWT()
@@ -20,13 +25,10 @@ app.controller('Auth', ['$scope', '$state', '$http','localStorageService', 'jwtH
     .then(function(token) {
 
       // Store JWT Token
-      localStorageService.set('jwt', token.data);
+      // localStorageService.set('jwt', token.data);
 
       var payload = jwtHelper.decodeToken(token.data);
       console.log(payload);
-      console.log(jwtHelper.getTokenExpirationDate(token.data));
-      console.log(jwtHelper.isTokenExpired(token.data));
-
 
       // Redirect based on authorization
       $scope.view.authorizationRedirectUponLogin(payload.ass, payload.role);
@@ -49,17 +51,8 @@ app.controller('Auth', ['$scope', '$state', '$http','localStorageService', 'jwtH
     }
   }
 
-  // $scope.view.test = 'testtesttest'
-  //
-  // $scope.data.testRequest = function() {
-  //   $http({
-  //     method: 'get',
-  //     url: '/dashboard/retrieve-school-name-options'
-  //   }).then(function(data) {
-  //     console.log(data.data);
-  //   }).catch(function(err) {
-  //     console.log(err);
-  //   })
-  // }
+  $scope.view.closeInactivityNotification = function() {
+    $scope.data.inactivityLogout = false;
+  }
 
 }])

@@ -4,9 +4,8 @@ app.config(['$locationProvider', '$httpProvider', 'jwtOptionsProvider', 'localSt
   .setPrefix('indigo-utility');
 
   var url = (window.location != window.parent.location) ? document.referrer : document.location.host;
-  console.log(url, document.referrer, document.location.host);
   var fathymParent = url.substring(7,20) === "indigo.fathym" ? true : false;
-  console.log(url.substring(7,20), fathymParent);
+
 
   if (!fathymParent) {
     jwtOptionsProvider.config({
@@ -14,12 +13,8 @@ app.config(['$locationProvider', '$httpProvider', 'jwtOptionsProvider', 'localSt
       tokenGetter: ['options', function(options) {
 
         // Don't send token upon template request (returns undefined after jwtIntercepted)
-        // console.log(options);
         // if (options.url.substr(options.url.length - 5) === '.html') {
-        //   console.log('temp request');
-        //   if (confirm('proceed')) {
-        //     return 'template request';
-        //   }
+        //    return 'template request';
         // }
 
         var jwt = localStorage['indigo-utility.jwt']

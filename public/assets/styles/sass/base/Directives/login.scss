@@ -31,3 +31,35 @@ div.indigo-logo-login {
   background-size: 6.944444444444vw 22.959889349931vh;
   margin-bottom: 40px;
 }
+
+div.inactivity-logout-message {
+  display: flex;
+  position: absolute;
+  top: 2vh;
+  left: 2vw;
+  width: 20vw;
+  height: fit-content;
+  padding: 10px;
+  background-color: rgb(250, 250, 250);
+  border: 2px solid rgb(127, 0, 127);
+  border-radius: 5px;
+  h6 {
+    margin: 0;
+    padding: 0;
+  }
+  p {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    height: fit-content;
+    width: fit-content;
+    color: rgb(210, 210, 210);
+    line-height: 10px;
+    padding: 0;
+    &:hover {
+      color: red;
+      cursor: pointer;
+      cursor: hand;
+    }
+  }
+}

@@ -1,5 +1,10 @@
 <section class="login-page">
 
+  <div ng-show="data.inactivityLogout" class="inactivity-logout-message">
+    <h6>You have been logged out due to inactivity, please login again.</h6>
+    <p ng-click="view.closeInactivityNotification()">x</p>
+  </div>
+
   <div class="login-container">
 
     <div class="indigo-logo-login"></div>

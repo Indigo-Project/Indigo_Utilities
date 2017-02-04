@@ -984,6 +984,34 @@ div.indigo-logo-login {
   background-size: 6.944444444444vw 22.959889349931vh;
   margin-bottom: 40px; }
 
+div.inactivity-logout-message {
+  display: flex;
+  position: absolute;
+  top: 2vh;
+  left: 2vw;
+  width: 20vw;
+  height: fit-content;
+  padding: 10px;
+  background-color: #fafafa;
+  border: 2px solid #7f007f;
+  border-radius: 5px; }
+  div.inactivity-logout-message h6 {
+    margin: 0;
+    padding: 0; }
+  div.inactivity-logout-message p {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    height: fit-content;
+    width: fit-content;
+    color: #d2d2d2;
+    line-height: 10px;
+    padding: 0; }
+    div.inactivity-logout-message p:hover {
+      color: red;
+      cursor: pointer;
+      cursor: hand; }
+
 @keyframes opacityTransition {
   0% {
     opacity: 1; }
