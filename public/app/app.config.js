@@ -5,8 +5,8 @@ app.config(['$locationProvider', '$httpProvider', 'jwtOptionsProvider', 'localSt
 
   var url = (window.location != window.parent.location) ? document.referrer : document.location.host;
   console.log(url, document.referrer, document.location.host);
-  var fathymParent = url.substring(0,13) === "indigo.fathym" ? true : false;
-  console.log(url.substring(0,13), fathymParent);
+  var fathymParent = url.substring(7,20) === "indigo.fathym" ? true : false;
+  console.log(url.substring(7,20), fathymParent);
 
   if (!fathymParent) {
     jwtOptionsProvider.config({
