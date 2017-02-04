@@ -17,16 +17,16 @@ app.run(['$window', '$rootScope', '$interval', '$state', 'jwtHelper', 'localStor
 
     if (toState.name === "dashboard" && $rootScope.currentJWT) {
       $rootScope.stateIsLoading = 'dashboard';
-    } else if (toState.name !== "login" && $rootScope.currentJWT.ass === "internal" && !$rootScope.fathymParent) {
+    } else if (toState.name !== "login" && $rootScope.currentJWT.ass !== "internal" && !$rootScope.fathymParent) {
       angular.element($window).on('mousemove click wheel keydown', function() {
         $rootScope.$broadcast('user-event')
       })
 
       $rootScope.$on('user-event', function() {
-        $rootScope.inactivityTimer = 0.05 * 60;
+        $rootScope.inactivityTimer = 5 * 60;
       })
 
-      $rootScope.inactivityTimer = 0.05 * 60;
+      $rootScope.inactivityTimer = 5 * 60;
 
       var interval;
       function countDown() {

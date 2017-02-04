@@ -7,6 +7,8 @@ app.controller('Auth', ['$scope', '$state', '$http','localStorageService', 'jwtH
   angular.element('form.login-form > input').on('change', function() {
     $scope.data.inactivityLogout = false;
   })
+  var submitButton = angular.element('form.login-form > input.login-submit')
+  $scope.view.submitButtonValue = 'Login';
 
   $scope.data.ifLoggedInRedirectHome = function() {
     authService.verifyJWT()
@@ -21,19 +23,20 @@ app.controller('Auth', ['$scope', '$state', '$http','localStorageService', 'jwtH
 
   $scope.data.submitLoginCredentials = function() {
 
+    $scope.view.submitButtonValue = 'Authenticating...';
+
     authService.submitLoginCredentials($scope.data.username, $scope.data.password)
     .then(function(token) {
 
-      // Store JWT Token
-      // localStorageService.set('jwt', token.data);
-
       var payload = jwtHelper.decodeToken(token.data);
-      console.log(payload);
 
       // Redirect based on authorization
       $scope.view.authorizationRedirectUponLogin(payload.ass, payload.role);
+      $scope.view.submitButtonValue = 'Login';
 
     }).catch(function(error) {
+      $scope.view.submitButtonValue = 'Login';
+      $scope.$apply();
       alert('login error: ' + error.data);
     })
 
