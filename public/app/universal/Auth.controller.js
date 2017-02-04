@@ -39,10 +39,10 @@ app.controller('Auth', ['$scope', '$state', '$http','localStorageService', 'jwtH
 
   $scope.view.authorizationRedirectUponLogin = function(association, role) {
     if (association === 'internal') {
-      if (role === 'super-user') {
+      if (role === 'super-user' || role === 'team-user') {
         $state.go('home');
       } else {
-        console.log('current only supports super-user role');
+        console.log('current only supports super-user & team-user roles');
       }
     } else {
       console.log('current only supports internal association');

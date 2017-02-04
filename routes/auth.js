@@ -43,7 +43,6 @@ router.post('/login', function(req, res, next) {
   })
 
   // MISC password creation
-  // var bcrypt = require('bcrypt');
   // bcrypt.hash('password', 13, function(err, hash) {
   //   console.log(hash);
   // })
