@@ -10,11 +10,11 @@ app.factory('authService', ['$http', '$q', 'localStorageService', function($http
           url: '/auth/login',
           data: { username: username, password: password }
         }).then(function(token) {
-          console.log(token.data);
+          // console.log(token.data);
           function storeToken() {
             return $q(function(resolve, reject) {
               localStorageService.set('jwt', token.data);
-              console.log(localStorageService.get('jwt'));
+              // console.log(localStorageService.get('jwt'));
               localStorageService.get('jwt') ? resolve() : storeToken();
             })
           }
@@ -42,11 +42,11 @@ app.factory('authService', ['$http', '$q', 'localStorageService', function($http
           }).then(function(response) {
             resolve(response);
           }).catch(function(error) {
-            console.log(error);
+            // console.log(error);
             reject(error);
           })
         } else {
-          console.log('no token');
+          // console.log('no token');
         }
 
       })

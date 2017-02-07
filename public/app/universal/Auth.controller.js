@@ -1,10 +1,10 @@
-app.controller('Auth', ['$scope', '$state', '$http','localStorageService', 'jwtHelper', 'authService', 'jwtService', function($scope, $state, $http, localStorageService, jwtHelper, authService, jwtService) {
+app.controller('Auth', ['$rootScope', '$scope', '$state', '$http','localStorageService', 'jwtHelper', 'authService', 'jwtService', function($rootScope, $scope, $state, $http, localStorageService, jwtHelper, authService, jwtService) {
 
   $scope.data = {};
   $scope.view = {};
 
   $scope.data.inactivityLogout = $state.params.inactivityLogout === true ? true : false;
-  angular.element('form.login-form > input').on('change', function() {
+  angular.element('form.login-form > input').on('change keydown', function() {
     $scope.data.inactivityLogout = false;
   })
   var submitButton = angular.element('form.login-form > input.login-submit')
@@ -32,7 +32,6 @@ app.controller('Auth', ['$scope', '$state', '$http','localStorageService', 'jwtH
 
       // Redirect based on authorization
       $scope.view.authorizationRedirectUponLogin(payload.ass, payload.role);
-      $scope.view.submitButtonValue = 'Login';
 
     }).catch(function(error) {
       $scope.view.submitButtonValue = 'Login';
@@ -46,11 +45,13 @@ app.controller('Auth', ['$scope', '$state', '$http','localStorageService', 'jwtH
     if (association === 'internal') {
       if (role === 'super-user' || role === 'team-user') {
         $state.go('home');
+      } else if (role === 'sample') {
+        $state.go('dashboard', { collection: 'indigo-school', id: '587976ce6d03cc5f483e299b' });
       } else {
-        console.log('current only supports super-user & team-user roles');
+        console.log('role not currently supported');
       }
     } else {
-      console.log('current only supports internal association');
+      console.log('currently only supports internal association');
     }
   }
 

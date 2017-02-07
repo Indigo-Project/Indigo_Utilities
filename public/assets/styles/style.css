@@ -993,7 +993,7 @@ div.inactivity-logout-message {
   height: fit-content;
   padding: 10px;
   background-color: #fafafa;
-  border: 2px solid #7f007f;
+  border: 1px solid #7f007f;
   border-radius: 5px; }
   div.inactivity-logout-message h6 {
     margin: 0;
