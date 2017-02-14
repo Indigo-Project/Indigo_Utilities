@@ -1,7 +1,7 @@
 app.factory('siteNavigation', ['$state', function($state) {
 
   return {
-    accessFunction: function(selectedFunction) {
+    accessFunction: function(selectedFunction, functionType) {
       if (selectedFunction === "blue_list") {
         $state.go("blue_list");
       } else if (selectedFunction === "ent_list") {

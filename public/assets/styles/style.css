@@ -31,11 +31,14 @@ section.header {
   background-color: #4f4498;
   border-bottom: 3px solid #404040; }
 
+section.select-functions {
+  display: flex; }
+
 section.select-function {
-  margin-top: 30px;
+  margin-right: 30px;
   color: white; }
 
-h4.select-function {
+h5.select-function {
   margin: 30px 0px 5px 0px;
   padding: 0px; }
 

@@ -11,6 +11,24 @@ var database = {
     name: 'indigodashboards'
   },
 
+  indigoUsersCollKey: {
+    // Internal Users
+    'indigoAdmin': '_internal-users',
+    'indigoTeam': '_internal-users',
+    'indigoSample': '_internal-users',
+    // Indigo School (Sample) Users
+    'indigoSchoolAdmin': 'indigo-school-users',
+    'indigoSchoolCounselor': 'indigo-school-users',
+    'indigoSchoolTeacher': 'indigo-school-users',
+
+    // SCHOOL USERS
+
+    // ASU Prep
+    // GALS
+  },
+
+  dashCollExceptions: ["system.indexes", "objectlabs-system", "objectlabs-system.admin.collections", "_internal-users", "asu-prep-data", "asu-prep-users", "gals-data", "gals-users", "indigo-school-data", "indigo-school-users", "indigo-test-data"],
+
   // Establish connection to Mongo Database
   mongoDBConnect: function(url) {
     return new Promise(function(resolve,reject) {
@@ -57,7 +75,7 @@ var database = {
           } else {
             var metaDataReturn = {};
             for (var i = 0; i < documents.length; i++) {
-              console.log(documents[i]);
+              console.log(documents[i].metaData);
               metaDataReturn[documents[i].metaData.version] = documents[i].metaData;
             }
             resolve(metaDataReturn);
@@ -243,7 +261,10 @@ var database = {
 
   locateLoginCredentialsByUsername: function(db, username) {
     return new Promise(function(resolve, reject) {
-      db.collection('indigo-users', function(err, collection) {
+      var collection = database.indigoUsersCollKey[username]
+      console.log(collection);
+
+      db.collection(collection, function(err, collection) {
         collection.findOne({ username: username }, function(err, doc) {
           if (err) {
             console.log('findOne Error', err);

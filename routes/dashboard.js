@@ -602,10 +602,14 @@ router.get('/retrieve-school-dashboard-collections', function(req, res, next) {
       // console.log('COLLECTIONS RETURNED', collections);
       var collectionNames = [];
 
+      function checkSName(element, index, array) {
+        return collection.s.name === element;
+      }
+
       // Create filtered array of school collection names for reference
       for (var key in collections) {
         var collection = collections[key];
-        if (collection.s.name !== "system.indexes" && collection.s.name !== "objectlabs-system" && collection.s.name !== "objectlabs-system.admin.collections" && collection.s.name !== "indigo-users") {
+        if (!mongo.dashCollExceptions.some(checkSName)) {
           collectionNames.push(collection.s.name);
         }
       }

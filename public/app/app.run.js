@@ -1,4 +1,4 @@
-app.run(['$window', '$rootScope', '$interval', '$state', 'jwtHelper', 'localStorageService', 'authManager', 'authService', function($window, $rootScope, $interval, $state, jwtHelper, localStorageService, authManager, authService){
+app.run(['$window', '$rootScope', '$interval', '$state', 'jwtHelper', 'localStorageService', 'authManager', 'authService', 'siteNavigation', function($window, $rootScope, $interval, $state, jwtHelper, localStorageService, authManager, authService, siteNavigation){
 
   authManager.checkAuthOnRefresh();
   authManager.redirectWhenUnauthenticated();
@@ -7,9 +7,54 @@ app.run(['$window', '$rootScope', '$interval', '$state', 'jwtHelper', 'localStor
   $rootScope.stateIsLoading = '';
   $rootScope.currentJWT = localStorageService.get('jwt') ? jwtHelper.decodeToken(localStorageService.get('jwt')) : null;
 
+  $rootScope.businessFunctionSelected;
+  $rootScope.dashboardFunctionSelected;
+
+  // Header Navigation Trigger
+  $rootScope.viewNavigation = function(functionType) {
+
+    var selectedFunction;
+
+    if (functionType === 'businessUtility') {
+      $rootScope.selectedDashboardFunction = 'home';
+      $rootScope.businessFunctionSelected = true;
+      $rootScope.dashboardFunctionSelected = false;
+      selectedFunction = $rootScope.selectedBusinessFunction;
+    } else if (functionType === 'dashboardManagement') {
+      $rootScope.selectedBusinessFunction = 'home';
+      $rootScope.businessFunctionSelected = false;
+      $rootScope.dashboardFunctionSelected = true;
+      selectedFunction = $rootScope.selectedDashboardFunction;
+    }
+
+    siteNavigation.accessFunction(selectedFunction, functionType);
+
+  }
+
   $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
 
-    console.log(toState.name);
+    console.log('toState:', toState.name);
+
+    // On State Change/Refresh, Maintain Function Selection Params
+    var functionSelectionKey = {
+      'ent_list': 'businessUtility',
+      'blue_list': 'businessUtility',
+      'tti_batchdl': 'businessUtility',
+      'sum_page': 'businessUtility',
+      'sum_stats': 'businessUtility',
+      'dashboard_gen': 'dashboardManagement',
+      'dashboard_manager': 'dashboardManagement'
+    };
+
+    $rootScope.currentState = toState.name;
+
+    if ($rootScope.currentState === 'home') {
+      $rootScope.selectedDashboardFunction = 'home';
+      $rootScope.selectedBusinessFunction = 'home';
+    } else {
+      $rootScope.selectedBusinessFunction = functionSelectionKey[$rootScope.currentState] === 'businessUtility' ? $rootScope.currentState : 'home';
+      $rootScope.selectedDashboardFunction = functionSelectionKey[$rootScope.currentState] === 'dashboardManagement' ? $rootScope.currentState : 'home';
+    }
 
     // Set decoded JWT on rootscope
     $rootScope.currentJWT = localStorageService.get('jwt') ? jwtHelper.decodeToken(localStorageService.get('jwt')) : null;
@@ -56,8 +101,6 @@ app.run(['$window', '$rootScope', '$interval', '$state', 'jwtHelper', 'localStor
         }
       }
       interval = $interval(countDown, 1000);
-
-
 
     }
 

@@ -7,18 +7,30 @@
     <h1 class="head-logo-2"> Business Utilities</h1>
   </a>
 
-  <section class="select-function">
-    <h4 class="select-function">Select Function:</h4>
-    <select class="form-control" ng-model="view.selectedFunction" ng-change="view.accessFunction()">
-      <option value="home"> -- no selection -- </option>
-      <option value="ent_list">Entrepreneur List Generator</option>
-      <option value="blue_list">Blue List Generator</option>
-      <option value="tti_batchdl">TTI Batch Downloader</option>
-      <option value="sum_page">Summary Page Generator</option>
-      <option value="sum_stats">Summary Stats Generator</option>
-      <option value="dashboard_gen">Dashboard Generator</option>
-      <option value="dashboard_manager">Dashboard Manager</option>
-    </select>
+  <section class="select-functions">
+
+    <section class="select-function">
+      <h5 class="select-function">Business Utilities:</h5>
+      <select class="form-control" ng-model="$root.selectedBusinessFunction" ng-change="viewNavigation('businessUtility')">
+        <option value="home"> -- no selection -- </option>
+        <option value="ent_list">Entrepreneur List Generator</option>
+        <option value="blue_list">Blue List Generator</option>
+        <option value="tti_batchdl">TTI Batch Downloader</option>
+        <option value="sum_page">Summary Page Generator</option>
+        <option value="sum_stats">Summary Stats Generator</option>
+      </select>
+    </section>
+
+    <section class="select-function">
+      <h5 class="select-function">Dashboard Management:</h5>
+      <select class="form-control" ng-model="$root.selectedDashboardFunction" ng-change="viewNavigation('dashboardManagement')">
+        <option value="home"> -- no selection -- </option>
+        <option value="dashboard_gen">Dashboard Generator</option>
+        <option value="dashboard_manager">Dashboard Manager</option>
+      </select>
+    </section>
+
   </section>
+
 
 </section>
