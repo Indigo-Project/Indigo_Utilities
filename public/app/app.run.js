@@ -31,9 +31,15 @@ app.run(['$window', '$rootScope', '$interval', '$state', 'jwtHelper', 'localStor
 
   }
 
+  // Logout Function
+  $rootScope.logout = function() {
+    localStorageService.clearAll();
+    $state.go('login');
+  }
+
   $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
 
-    console.log('toState:', toState.name);
+    // console.log('toState:', toState.name);
 
     // On State Change/Refresh, Maintain Function Selection Params
     var functionSelectionKey = {

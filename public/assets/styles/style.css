@@ -946,7 +946,7 @@ div.sort-option {
   flex-direction: column;
   margin-left: auto; }
 
-site-options {
+section.site-options {
   width: fit-content;
   position: absolute;
   top: 7px;
@@ -955,7 +955,7 @@ site-options {
   font-weight: 300;
   margin: 0;
   padding: 0; }
-  site-options:hover {
+  section.site-options div:hover {
     cursor: pointer;
     cursor: hand; }
 

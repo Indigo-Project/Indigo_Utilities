@@ -1,4 +1,4 @@
-site-options {
+section.site-options {
   width: fit-content;
   position: absolute;
   top: 7px;
@@ -7,8 +7,10 @@ site-options {
   font-weight: 300;
   margin: 0;
   padding: 0;
-  &:hover {
-    cursor: pointer;
-    cursor: hand;
+  div {
+    &:hover {
+      cursor: pointer;
+      cursor: hand;
+    }
   }
 }
