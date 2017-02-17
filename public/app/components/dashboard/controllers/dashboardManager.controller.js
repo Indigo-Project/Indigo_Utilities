@@ -4,8 +4,6 @@ app.controller('DashboardManager', ['$compile', '$scope', '$location', '$state',
   $scope.view = {};
   $scope.data = {};
 
-  $scope.view.selectedFunction = "dashboard_manager";
-
   $scope.view.dashMschoolCode = "";
   $scope.view.dashMschoolVersion = "";
   $scope.view.notesCTA = "edit";
@@ -20,32 +18,35 @@ app.controller('DashboardManager', ['$compile', '$scope', '$location', '$state',
   $scope.data.iFrameHTML;
   $scope.data.copyStatusMessage = 'hidden';
 
-  // dynamically change options based on selected function
-  $scope.view.accessFunction = function () {
-    siteNavigation.accessFunction($scope.view.selectedFunction);
+  $scope.view.openCreateDashboard = function() {
+    $state.go('dashboard_manager.create_dashboard');
   }
 
   // On Dashboard Manager school selection, configure available versions for selected school
   $scope.view.updateVersionOptions = function() {
     if ($scope.view.dashMschoolCode) {
       $scope.view.showMDashboard ? $scope.view.showMDashboard = false : null;
-      $scope.view.currentVersions = $scope.data.availableVersions[$scope.view.dashMschoolCode];
+      $scope.view.currentSchoolVersions = $scope.data.availableVersions[$scope.view.dashMschoolCode];
     }
   };
 
   // load current dashboard version data object into $scope variable and local storage from dashboard manager, then create dashboard
   $scope.view.loadVersion = function() {
+
     $scope.view.showMDashboard = false;
+
+    var dataObjectId = $scope.data.availableVersions[$scope.view.dashMschoolCode][$scope.view.dashMschoolVersion].dataReference[1]
+
     if ($scope.view.dashMschoolVersion) {
-      DashboardService.retrieveStoredDashboardVersionDataObject($scope.view.dashMschoolCode, $scope.view.dashMschoolVersion)
+      DashboardService.retrieveDataObjectForCurrentDashboard($scope.view.dashMschoolCode, dataObjectId)
       .then(function(data) {
-        console.log('got data', data);
+        console.log('got data:', data);
 
         // Dashboard Manager Data/Metadata Values
         $scope.data.currentVersionData.schoolName = data.metaData.schoolInfo.name;
-        $scope.data.currentVersionData.versionName = data.metaData.version;
+        $scope.data.currentVersionData.versionName = data.metaData.dashboardTitle;
         $scope.data.currentVersionData.dateCreated = data.metaData.dateCreated;
-        $scope.data.currentVersionData.managerNotes = data.metaData.managerNotes || "";
+        $scope.data.currentVersionData.managerNotes = data.metaData.notes || "";
 
         $scope.data.currentDashboardDataObject = data
         localStorageService.set('currentDashboardData', data);
@@ -127,36 +128,36 @@ app.controller('DashboardManager', ['$compile', '$scope', '$location', '$state',
       for (var i = 0; i < schoolKeys.length; i++) {
         $scope.view.schoolNameOptions[schoolKeys[i]].code = schoolKeys[i]
       }
-      DashboardService.retrieveSchoolsWithDashboards()
+
+      DashboardService.retrieveSchoolDataOrDashboardRef('dash')
       .then(function(collections) {
+
         var collectionNames = Object.keys(collections.data);
         $scope.data.dbCollections = {};
         for (var i = 0; i < collectionNames.length; i++) {
+          var unifiedCollName = collectionNames[i].slice(0, -5);
           for (var j = 0; j < schoolKeys.length; j++) {
-            if (collectionNames[i] === schoolKeys[j]) {
-              $scope.data.dbCollections[collectionNames[i]] = collections.data[collectionNames[i]];
-              $scope.data.dbCollections[collectionNames[i]].nameOptions = $scope.view.schoolNameOptions[collectionNames[i]];
+            if (unifiedCollName === schoolKeys[j]) {
+              $scope.data.dbCollections[unifiedCollName] = collections.data[collectionNames[i]];
+              $scope.data.dbCollections[unifiedCollName].nameOptions = $scope.view.schoolNameOptions[unifiedCollName];
             }
           }
         }
+        console.log($scope.data.dbCollections);
 
-        var dbCollections = Object.keys($scope.data.dbCollections);
-        $scope.data.availableCollections = {};
-        for (var i = 0; i < dbCollections.length; i++) {
-          $scope.data.availableCollections[dbCollections[i]] = $scope.data.dbCollections[dbCollections[i]].nameOptions;
-        }
-
+        var dbCollectionKeys = Object.keys($scope.data.dbCollections);
         $scope.data.availableVersions = {};
-        for (var i = 0; i < dbCollections.length; i++) {
-          var currentCollection = $scope.data.dbCollections[dbCollections[i]];
-          var collectionVKeys = Object.keys(currentCollection)
-          $scope.data.availableVersions[dbCollections[i]] = {};
-          for (var j = 0; j < collectionVKeys.length; j++) {
-            if (collectionVKeys[j] !== "nameOptions") {
-              $scope.data.availableVersions[dbCollections[i]][collectionVKeys[j]] = currentCollection[collectionVKeys[j]];
+        for (var i = 0; i < dbCollectionKeys.length; i++) {
+          var currentCollection = $scope.data.dbCollections[dbCollectionKeys[i]];
+          var collectionObjectKeys = Object.keys(currentCollection)
+          $scope.data.availableVersions[dbCollectionKeys[i]] = {};
+          for (var j = 0; j < collectionObjectKeys.length; j++) {
+            if (collectionObjectKeys[j] !== "nameOptions") {
+              $scope.data.availableVersions[dbCollectionKeys[i]][collectionObjectKeys[j]] = currentCollection[collectionObjectKeys[j]];
             }
           }
         }
+        console.log($scope.data.availableVersions);
 
         $scope.data.schoolNameOptionsLoaded = true;
 

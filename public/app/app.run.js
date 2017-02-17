@@ -39,7 +39,6 @@ app.run(['$window', '$rootScope', '$interval', '$state', 'jwtHelper', 'localStor
 
   $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
 
-    // console.log('toState:', toState.name);
 
     // On State Change/Refresh, Maintain Function Selection Params
     var functionSelectionKey = {
@@ -49,7 +48,9 @@ app.run(['$window', '$rootScope', '$interval', '$state', 'jwtHelper', 'localStor
       'sum_page': 'businessUtility',
       'sum_stats': 'businessUtility',
       'dashboard_gen': 'dashboardManagement',
-      'dashboard_manager': 'dashboardManagement'
+      'dashboard_manager': 'dashboardManagement',
+      'school_data_manager': 'dashboardManagement',
+      'user_manager': 'dashboardManagement',
     };
 
     $rootScope.currentState = toState.name;
@@ -74,15 +75,31 @@ app.run(['$window', '$rootScope', '$interval', '$state', 'jwtHelper', 'localStor
       $rootScope.stateIsLoading = 'dashboard';
     }
 
+    // ROLE AUTHORIZATION
     // If not navigating to login, if association is within set or current associations, and if not in Fathym
-    if (toState.name !== "login" && $rootScope.currentJWT.ass === "internal" && !$rootScope.fathymParent) {
+    if (toState.name !== "login" && !$rootScope.fathymParent) {
 
-      // If role is sample, only authorizes dashboard access
-      if ($rootScope.currentJWT.role === 'sample') {
-        if (toState.name !== 'dashboard' && toState.name !== 'dashboard.dashboard_student_detail' && toState.name !== 'login') {
-          event.preventDefault();
-          $state.go('dashboard', { collection: 'indigo-school', id: '587976ce6d03cc5f483e299b' });
+      if ($rootScope.currentJWT.ass === "internal") {
+      // admin/team/sample
+      console.log($rootScope.currentJWT.role);
+
+        if ($rootScope.currentJWT.role === 'super-user') {
+
+        } else if ($rootScope.currentJWT.role === 'team-user') {
+          // restrict access to school data manager and user manager
+          if (toState.name === 'school_data_manager' || toState.name === 'user_manager') {
+            event.preventDefault();
+            $state.reload();
+          }
+
+        } else if ($rootScope.currentJWT.role === 'sample') {
+          // If role is sample, only authorizes dashboard access
+          if (toState.name !== 'dashboard' && toState.name !== 'dashboard.dashboard_student_detail' && toState.name !== 'login') {
+            event.preventDefault();
+            $state.go('dashboard', { collection: 'indigo-school', id: '587976ce6d03cc5f483e299b' });
+          }
         }
+
       }
 
       // Initiate inactivity timer
@@ -99,6 +116,7 @@ app.run(['$window', '$rootScope', '$interval', '$state', 'jwtHelper', 'localStor
       var interval;
       function countDown() {
         $rootScope.inactivityTimer -= 1;
+        // console.log($rootScope.inactivityTimer);
         if ($rootScope.inactivityTimer < 1) {
           $interval.cancel(interval);
           localStorageService.clearAll();

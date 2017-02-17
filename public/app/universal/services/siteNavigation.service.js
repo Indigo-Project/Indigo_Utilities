@@ -16,6 +16,10 @@ app.factory('siteNavigation', ['$state', function($state) {
         $state.go("dashboard_gen");
       } else if (selectedFunction === "dashboard_manager"){
         $state.go("dashboard_manager");
+      } else if (selectedFunction === "school_data_manager"){
+        $state.go("school_data_manager");
+      } else if (selectedFunction === "user_manager"){
+        $state.go("user_manager");
       } else if (selectedFunction === "home"){
         $state.go("home");
       }

@@ -15,11 +15,12 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
       })
     },
 
-    retrieveSchoolsWithDashboards: function() {
+    retrieveSchoolDataOrDashboardRef: function(collType) {
       return new Promise(function(resolve, reject) {
         $http({
           method: 'GET',
-          url: '/dashboard/retrieve-school-dashboard-collections'
+          url: '/dashboard/retrieve-school-dashboard-collections',
+          params: {collType: collType}
         }).then(function(collections) {
           resolve(collections)
         }).catch(function(error) {
@@ -28,12 +29,12 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
       })
     },
 
-    createDashboardVersionDataObject: function(loadedFiles, schoolCode, dashboardVersionName) {
+    createDashboardDataObject: function(loadedFiles, schoolCode, dashboardDataObjectName) {
       return new Promise(function(resolve, reject) {
         $http({
           method: 'POST',
           url: '/dashboard/create-dashboard-data-object',
-          data: { inputFiles: loadedFiles, schoolCode: schoolCode, dashboardVersionName: dashboardVersionName }
+          data: { inputFiles: loadedFiles, schoolCode: schoolCode, dashboardDataObjectName: dashboardDataObjectName }
         }).then(function(data) {
           if (data) resolve(data);
         }).catch(function(error) {
@@ -42,12 +43,12 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
       })
     },
 
-    retrieveStoredDashboardVersionDataObject: function(schoolCode, version, id) {
+    retrieveDataObjectForCurrentDashboard: function(schoolCode, id) {
       return new Promise(function(resolve, reject) {
         $http({
           method: 'POST',
-          url: '/dashboard/retreive-stored-dashboard-data-object',
-          data: { schoolCode: schoolCode, version: version, id: id }
+          url: '/dashboard/retrieve-stored-dashboard-data-object',
+          data: { schoolCode: schoolCode, id: id }
         }).then(function(data) {
           resolve(data.data);
         }).catch(function(err) {

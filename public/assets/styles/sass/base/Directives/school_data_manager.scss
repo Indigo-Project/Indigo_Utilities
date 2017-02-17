@@ -1,0 +1,216 @@
+section.sdm-selection {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid black;
+  padding-bottom: 15px;
+}
+
+button.create-data-set {
+  width: fit-content;
+  font-weight: bold;
+  background-color: rgb(152, 254, 162);
+  border: 1px solid black;
+  box-shadow: -1px 1px 1px 0px black;
+}
+
+section.data-manager-interface {
+  display: flex;
+  width: 100%;
+  height: 465px;
+  max-height: 465px;
+  border-bottom: 1px solid black;
+  border-right: 1px solid black;
+}
+
+section.data-manager-objects-sidebar {
+  display: flex;
+  flex-direction: column;
+  width: 15%;
+  background-color: rgba(79, 68, 152, 0.5);
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  padding: 4px;
+}
+
+section.data-manager-object-interface {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 85%;
+  padding: 0 10px 0 10px;
+  h3 {
+    width: fit-content;
+    margin: 0;
+    &.do-select-cta {
+      margin-top: 5px;
+    }
+  }
+  section.data-object-header {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 90px;
+    padding: 5px;
+    border-bottom: 1px solid black;
+    p.do-date-created {
+      margin-bottom: 5px;
+      width: fit-content;
+    }
+    h3.do-title {
+      margin-bottom: 5px;
+    }
+    span.settings-action {
+      position: absolute;
+      top: 10px;
+      right: 0px;
+      color: rgb(163, 163, 163);
+      font-size: 16px;
+      &:hover {
+        color: black;
+        cursor: pointer;
+        cursor: hand;
+      }
+    }
+  }
+  section.data-object-analysis {
+    display: flex;
+    width: 100%;
+    height: 385px;
+    padding: 5px;
+  }
+  section.data-object-settings {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    top: 5px;
+    right: 5px;
+    display: flex;
+    width: 40%;
+    height: 455px;
+    background-color: rgb(49, 50, 57);
+    border: 1px solid black;
+    padding: 5px;
+    div {
+      width: fit-content;
+      height: fit-content;
+      color: white;
+      &.do-settings-header {
+        border-bottom: 1px solid white;
+        margin-bottom: 15px;
+        h4 {
+          margin: 0;
+        }
+      }
+      p {
+        font-size: 10px;
+      }
+    }
+    span.exit-button {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      width: fit-content;
+      height: fit-content;
+      font-size: 16px;
+      line-height: 14px;
+      margin: 0;
+      color: rgb(195, 195, 195);
+      &:hover {
+        color: white;
+        cursor: pointer;
+        cursor: hand;
+      }
+    }
+  }
+}
+
+div.data-object-thumbnail {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: fit-content;
+  background-color: rgb(240, 240, 240);
+  border: 2px solid black;
+  border-radius: 5px;
+  padding: 3px;
+  margin-bottom: 3px;
+  p {
+    margin: 0;
+  }
+  p.do-name {
+    font-size: 12px;
+    font-weight: bold;
+  }
+  p.do-date {
+    font-size: 10px;
+  }
+  div.thumbnail-status-indicators {
+    display: flex;
+  }
+  &:hover {
+    cursor: pointer;
+    cursor: hand;
+    background-color: white;
+  }
+}
+
+div.do-selected {
+  background-color: white;
+  border: 2px solid rgb(53, 237, 77);
+}
+
+div.thumbnail-status-indicators {
+  display: flex;
+  // height: fit-content;
+  div {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+    span {
+      font-size: 10px;
+      margin-right: 5px;
+      height: fit-content;
+    }
+    p {
+      font-size: 10px;
+    }
+  }
+}
+
+div.status-indicators {
+  display: flex;
+  width: fit-content;
+  div {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+    span {
+      font-size: 16px;
+      margin-right: 6px;
+      height: fit-content;
+    }
+    p {
+      text-align: center;
+      align-self: center;
+      font-size: 13px;
+      margin: 0;
+    }
+  }
+}
+
+span.encrypted {
+  color: green;
+}
+
+span.not-encrypted {
+  color: red;
+}
+
+span.active {
+  color: green;
+}
+
+span.inactive {
+  color: red;
+}

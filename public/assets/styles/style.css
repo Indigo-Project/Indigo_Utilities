@@ -46,6 +46,7 @@ select.form-control {
   width: 300px; }
 
 section.function-section {
+  position: relative;
   padding: 20px; }
 
 input.upload-csv {
@@ -297,12 +298,49 @@ p.dashboard-nav {
 button.format-data {
   margin-right: 20px; }
 
+section.manager-create-dashboard {
+  position: absolute;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0px;
+  left: 0px;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.65); }
+
+section.create-window {
+  position: relative;
+  display: flex;
+  width: 60vw;
+  height: 60vh;
+  border: 1px solid #7f007f;
+  border-radius: 5px;
+  background-color: white; }
+
+div.cd-exit-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: fit-content;
+  width: fit-content;
+  font-size: 16px;
+  line-height: 12px;
+  padding: 2px;
+  color: black; }
+  div.cd-exit-button:hover {
+    color: red;
+    cursor: pointer;
+    cursor: hand; }
+
 h4.loading-manager-options {
   font-size: 24px;
   line-height: 34px;
   margin: 0; }
 
 section.dash-selection {
+  position: relative;
   display: flex;
   border-bottom: 1px solid black;
   padding-bottom: 15px; }
@@ -311,6 +349,15 @@ section.dash-selection {
 
 button.full-screen-dash {
   width: 200px; }
+
+button.create-dashboard-action {
+  position: absolute;
+  right: 0px;
+  width: fit-content;
+  font-weight: bold;
+  background-color: #98fea2;
+  border: 1px solid black;
+  box-shadow: -1px 1px 1px 0px black; }
 
 section.dashboard-manager-interface {
   display: flex;
@@ -1014,6 +1061,183 @@ div.inactivity-logout-message {
       color: red;
       cursor: pointer;
       cursor: hand; }
+
+section.sdm-selection {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid black;
+  padding-bottom: 15px; }
+
+button.create-data-set {
+  width: fit-content;
+  font-weight: bold;
+  background-color: #98fea2;
+  border: 1px solid black;
+  box-shadow: -1px 1px 1px 0px black; }
+
+section.data-manager-interface {
+  display: flex;
+  width: 100%;
+  height: 465px;
+  max-height: 465px;
+  border-bottom: 1px solid black;
+  border-right: 1px solid black; }
+
+section.data-manager-objects-sidebar {
+  display: flex;
+  flex-direction: column;
+  width: 15%;
+  background-color: rgba(79, 68, 152, 0.5);
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  padding: 4px; }
+
+section.data-manager-object-interface {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 85%;
+  padding: 0 10px 0 10px; }
+  section.data-manager-object-interface h3 {
+    width: fit-content;
+    margin: 0; }
+    section.data-manager-object-interface h3.do-select-cta {
+      margin-top: 5px; }
+  section.data-manager-object-interface section.data-object-header {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 90px;
+    padding: 5px;
+    border-bottom: 1px solid black; }
+    section.data-manager-object-interface section.data-object-header p.do-date-created {
+      margin-bottom: 5px;
+      width: fit-content; }
+    section.data-manager-object-interface section.data-object-header h3.do-title {
+      margin-bottom: 5px; }
+    section.data-manager-object-interface section.data-object-header span.settings-action {
+      position: absolute;
+      top: 10px;
+      right: 0px;
+      color: #a3a3a3;
+      font-size: 16px; }
+      section.data-manager-object-interface section.data-object-header span.settings-action:hover {
+        color: black;
+        cursor: pointer;
+        cursor: hand; }
+  section.data-manager-object-interface section.data-object-analysis {
+    display: flex;
+    width: 100%;
+    height: 385px;
+    padding: 5px; }
+  section.data-manager-object-interface section.data-object-settings {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    top: 5px;
+    right: 5px;
+    display: flex;
+    width: 40%;
+    height: 455px;
+    background-color: #313239;
+    border: 1px solid black;
+    padding: 5px; }
+    section.data-manager-object-interface section.data-object-settings div {
+      width: fit-content;
+      height: fit-content;
+      color: white; }
+      section.data-manager-object-interface section.data-object-settings div.do-settings-header {
+        border-bottom: 1px solid white;
+        margin-bottom: 15px; }
+        section.data-manager-object-interface section.data-object-settings div.do-settings-header h4 {
+          margin: 0; }
+      section.data-manager-object-interface section.data-object-settings div p {
+        font-size: 10px; }
+    section.data-manager-object-interface section.data-object-settings span.exit-button {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      width: fit-content;
+      height: fit-content;
+      font-size: 16px;
+      line-height: 14px;
+      margin: 0;
+      color: #c3c3c3; }
+      section.data-manager-object-interface section.data-object-settings span.exit-button:hover {
+        color: white;
+        cursor: pointer;
+        cursor: hand; }
+
+div.data-object-thumbnail {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: fit-content;
+  background-color: #f0f0f0;
+  border: 2px solid black;
+  border-radius: 5px;
+  padding: 3px;
+  margin-bottom: 3px; }
+  div.data-object-thumbnail p {
+    margin: 0; }
+  div.data-object-thumbnail p.do-name {
+    font-size: 12px;
+    font-weight: bold; }
+  div.data-object-thumbnail p.do-date {
+    font-size: 10px; }
+  div.data-object-thumbnail div.thumbnail-status-indicators {
+    display: flex; }
+  div.data-object-thumbnail:hover {
+    cursor: pointer;
+    cursor: hand;
+    background-color: white; }
+
+div.do-selected {
+  background-color: white;
+  border: 2px solid #35ed4d; }
+
+div.thumbnail-status-indicators {
+  display: flex; }
+  div.thumbnail-status-indicators div {
+    display: flex;
+    align-items: center;
+    margin-right: 10px; }
+    div.thumbnail-status-indicators div span {
+      font-size: 10px;
+      margin-right: 5px;
+      height: fit-content; }
+    div.thumbnail-status-indicators div p {
+      font-size: 10px; }
+
+div.status-indicators {
+  display: flex;
+  width: fit-content; }
+  div.status-indicators div {
+    display: flex;
+    align-items: center;
+    margin-right: 20px; }
+    div.status-indicators div span {
+      font-size: 16px;
+      margin-right: 6px;
+      height: fit-content; }
+    div.status-indicators div p {
+      text-align: center;
+      align-self: center;
+      font-size: 13px;
+      margin: 0; }
+
+span.encrypted {
+  color: green; }
+
+span.not-encrypted {
+  color: red; }
+
+span.active {
+  color: green; }
+
+span.inactive {
+  color: red; }
 
 @keyframes opacityTransition {
   0% {

@@ -31,6 +31,8 @@
         <option value="home"> -- no selection -- </option>
         <option value="dashboard_gen">Dashboard Generator</option>
         <option value="dashboard_manager">Dashboard Manager</option>
+        <option ng-show="$root.currentJWT.role === 'super-user'" value="school_data_manager">School Data Manager</option>
+        <option ng-show="$root.currentJWT.role === 'super-user'" value="user_manager">User Manager</option>
       </select>
     </section>
 

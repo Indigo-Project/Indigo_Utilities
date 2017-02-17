@@ -7,7 +7,7 @@ app.controller('DashboardGenerator', ['$compile', '$scope', '$location', '$state
 
   $scope.data.schoolName = "";
   $scope.data.schoolCode = "";
-  $scope.data.dashboardVersionName = "";
+  $scope.data.dashboardDataObjectName = "";
 
   $scope.view.selectedFunction = "dashboard_gen";
   $scope.view.dashboardCreationStatus = "";
@@ -100,7 +100,7 @@ app.controller('DashboardGenerator', ['$compile', '$scope', '$location', '$state
         }
         // $scope.data.schoolName = $scope.view.dashboardNameOptions[$scope.data.schoolCode].name;
 
-        DashboardService.createDashboardVersionDataObject($scope.uploader.loadedFiles, $scope.data.schoolCode, $scope.data.dashboardVersionName)
+        DashboardService.createDashboardDataObject($scope.uploader.loadedFiles, $scope.data.schoolCode, $scope.data.dashboardDataObjectName)
         .then(function(data) {
           console.log('dashboard data object', data);
           var data = data.data;
@@ -111,15 +111,17 @@ app.controller('DashboardGenerator', ['$compile', '$scope', '$location', '$state
           // generate class array
           for (var i = 0; i < dataObjKeys.length; i++) {
             if (dataObjKeys[i] === "Staff" || dataObjKeys[i] === "compiledData" || dataObjKeys[i] === "metaData" || dataObjKeys[i] === "_id") {
-              console.log('not a student group - not added to class options');
+              console.log(dataObjKeys[i] + ' not a student group - not added to class options');
             } else {
               $scope.data.studentClasses.push(dataObjKeys[i].substring(0,4))
             }
           }
-          DashboardService.generateD3Dashboard({ data: data }, "studentData")
-          $('span.sd-title-name').html($scope.data.schoolName + " ");
+
+          // DashboardService.generateD3Dashboard({ data: data }, "studentData")
+          // $('span.sd-title-name').html($scope.data.schoolName + " ");
+
           $scope.view.dashboardCreationStatus = "success";
-          $scope.view.dashboardGeneratedVersion = data.metaData.version;
+          $scope.view.dashboardGeneratedVersion = data.metaData.dataObjectTitle;
           $scope.view.dashboardGeneratedSchool = data.metaData.schoolInfo.optionDisplay;
           $scope.view.dashboardDateCreated = data.metaData.dateCreated;
           $scope.$apply();

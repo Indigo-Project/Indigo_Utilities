@@ -43,13 +43,16 @@ app.use('/auth', auth);
 
 // reroute url parameters of angular ui-router routes
 app.use("/login", express.static(__dirname + "/public/index.html"));
-app.use("/dashboard_manager", express.static(__dirname + "/public/index.html"));
 app.use("/blue_list", express.static(__dirname + "/public/index.html"));
 app.use("/ent_list", express.static(__dirname + "/public/index.html"));
 app.use("/tti_batchdl", express.static(__dirname + "/public/index.html"));
 app.use("/sum_page", express.static(__dirname + "/public/index.html"));
 app.use("/sum_stats", express.static(__dirname + "/public/index.html"));
+app.use("/dashboard_manager", express.static(__dirname + "/public/index.html"));
+app.use("/dashboard_manager/create_dashboard", express.static(__dirname + "/public/index.html"));
 app.use("/dashboard_gen", express.static(__dirname + "/public/index.html"));
+app.use("/school_data_manager", express.static(__dirname + "/public/index.html"));
+app.use("/user_manager", express.static(__dirname + "/public/index.html"));
 app.use("/dashboards/:collection/:id", express.static(__dirname + "/public/index.html"));
 app.use("/dashboards/:collection/:id/:studentpath", express.static(__dirname + "/public/index.html"));
 

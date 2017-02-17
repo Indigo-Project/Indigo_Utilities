@@ -76,6 +76,27 @@ app.config(function($stateProvider, $urlRouterProvider) {
         requiresLogin: true
       }
     })
+    .state('dashboard_manager.create_dashboard', {
+      url: '/create_dashboard',
+      templateUrl: "views/dashboard_manager_create_dash.html",
+      data: {
+        requiresLogin: true
+      }
+    })
+    .state('school_data_manager', {
+      url: '/school_data_manager',
+      templateUrl: "views/school_data_manager.html",
+      data: {
+        requiresLogin: true
+      }
+    })
+    .state('user_manager', {
+      url: '/user_manager',
+      templateUrl: "views/user_manager.html",
+      data: {
+        requiresLogin: true
+      }
+    })
     .state('dashboard', {
       url: '/dashboards/:collection/:id',
       templateUrl: "views/dashboard.html",

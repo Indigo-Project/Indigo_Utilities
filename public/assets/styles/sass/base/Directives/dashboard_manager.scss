@@ -5,6 +5,7 @@ h4.loading-manager-options {
 }
 
 section.dash-selection {
+  position: relative;
   display: flex;
   border-bottom: 1px solid black;
   padding-bottom: 15px;
@@ -15,6 +16,16 @@ section.dash-selection {
 
 button.full-screen-dash {
   width: 200px;
+}
+
+button.create-dashboard-action {
+  position: absolute;
+  right: 0px;
+  width: fit-content;
+  font-weight: bold;
+  background-color: rgb(152, 254, 162);
+  border: 1px solid black;
+  box-shadow: -1px 1px 1px 0px black;
 }
 
 section.dashboard-manager-interface {

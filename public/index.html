@@ -1,6 +1,9 @@
 <!DOCTYPE html>
+
 <html lang="en" ng-app="Indigo_Utilities">
+
 <head>
+
     <meta charset="UTF-8">
     <title>Indigo Business Utilities</title>
     <base href="/">
@@ -66,14 +69,22 @@
     <!-- DASHBOARD -->
     <script src="app/components/dashboard/dashboard.service.js"></script>
     <script src="app/components/dashboard/dashboard_manager.service.js"></script>
+
     <script src="app/components/dashboard/controllers/dashboard.controller.js"></script>
     <script src="app/components/dashboard/controllers/dashboardGenerator.controller.js"></script>
     <script src="app/components/dashboard/controllers/dashboardManager.controller.js"></script>
+    <script src="app/components/dashboard/controllers/dashboardManagerCreateDash.controller.js"></script>
     <script src="app/components/dashboard/controllers/dashboardStudentDetails.controller.js"></script>
+    <script src="app/components/dashboard/controllers/schoolDataManager.controller.js"></script>
+    <script src="app/components/dashboard/controllers/userManager.controller.js"></script>
+
     <script src="app/components/dashboard/directives/dashboard.directive.js"></script>
     <script src="app/components/dashboard/directives/dashboardGenerator.directive.js"></script>
     <script src="app/components/dashboard/directives/dashboardManager.directive.js"></script>
+    <script src="app/components/dashboard/directives/dashboardManagerCreateDash.directive.js"></script>
     <script src="app/components/dashboard/directives/dashboardStudentDetails.directive.js"></script>
+    <script src="app/components/dashboard/directives/schoolDataManager.directive.js"></script>
+    <script src="app/components/dashboard/directives/userManager.directive.js"></script>
 
     <!-- TTI BATCH DOWNLOADER -->
     <script src="app/components/ttiBatchDownloader/ttiBatchDownloader.controller.js"></script>
@@ -96,10 +107,12 @@
     <script src="app/components/sumStatsGenerator/directives/sumStatsGenerator.directive.js"></script>
 
 </head>
+
 <body>
 
   <state-loading-indicator ng-show="stateIsLoading === 'dashboard'"></state-loading-indicator>
   <ui-view></ui-view>
 
 </body>
+
 </html>

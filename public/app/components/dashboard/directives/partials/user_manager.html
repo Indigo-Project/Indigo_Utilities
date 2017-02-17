@@ -1,0 +1,21 @@
+<section class="function-section">
+
+  <section class="dash-selection">
+
+    <h4 class="loading-manager-options" ng-show="!data.schoolNameOptionsLoaded" ng-cloak>Loading Schools...</h4>
+
+    <select class="form-control dash-school-selection" ng-show="data.schoolNameOptionsLoaded" ng-change="view.loadUsersForSelection()" ng-model="view.schoolSelection">
+      <option value=""> -- Select School -- </option>
+      <option ng-repeat="school in data.availableCollections" value="{{school.code}}">{{school.optionDisplay}}</option>
+    </select>
+
+    <!-- <p>or</p> -->
+
+    <!-- <select class="form-control dash-school-selection" ng-show="data.internalUsersLoaded" ng-change="view.loadUsersForSelection()" ng-model="view.internalUserSelection">
+      <option value=""> -- Select Internal User -- </option>
+      <option ng-repeat="school in data.internalUsers" value="{{school.code}}">{{school.optionDisplay}}</option>
+    </select> -->
+
+  </section>
+
+</section>

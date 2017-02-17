@@ -1,21 +1,22 @@
 <section class="function-section dashboard-manager">
 
-
   <section class="dash-selection">
 
     <h4 class="loading-manager-options" ng-show="!data.schoolNameOptionsLoaded" ng-cloak>Loading Schools...</h4>
 
-    <select class="form-control dash-school-selection ng-cloak" ng-show="data.schoolNameOptionsLoaded" ng-change="view.updateVersionOptions()" ng-model="view.dashMschoolCode">
+    <select class="form-control dash-school-selection" ng-show="data.schoolNameOptionsLoaded" ng-change="view.updateVersionOptions()" ng-model="view.dashMschoolCode">
       <option value=""> -- Select School -- </option>
-      <option ng-repeat="school in data.availableCollections" value="{{school.code}}">{{school.optionDisplay}}</option>
+      <option ng-repeat="school in data.dbCollections" value="{{school.nameOptions.code}}">{{school.nameOptions.optionDisplay}}</option>
     </select>
 
     <select ng-hide="!view.dashMschoolCode" class="form-control dash-version-selection" ng-change="view.loadVersion()" ng-model="view.dashMschoolVersion">
       <option value=""> -- Select Version -- </option>
-      <option ng-repeat="version in view.currentVersions" value="{{version.version}}">{{version.version}} -- {{version.dateCreated}}</option>
+      <option ng-repeat="version in view.currentSchoolVersions" value="{{version.dashboardTitle}}">{{version.dashboardTitle}} -- {{version.dateCreated}}</option>
     </select>
 
-    <button class="form-control full-screen-dash" ng-hide="!view.dashMschoolVersion" ng-click="view.openFSDashboard()" ng-cloak>View in Full Screen</button>
+    <button class="form-control full-screen-dash" ng-hide="!view.dashMschoolVersion" ng-click="view.openFSDashboard()">View in Full Screen</button>
+
+    <button class="form-control create-dashboard-action" ng-click="view.openCreateDashboard()">Create Dashboard</button>
 
   </section>
 
