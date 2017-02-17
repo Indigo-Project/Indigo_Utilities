@@ -39,7 +39,6 @@ app.run(['$window', '$rootScope', '$interval', '$state', 'jwtHelper', 'localStor
 
   $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
 
-
     // On State Change/Refresh, Maintain Function Selection Params
     var functionSelectionKey = {
       'ent_list': 'businessUtility',
@@ -112,19 +111,23 @@ app.run(['$window', '$rootScope', '$interval', '$state', 'jwtHelper', 'localStor
       })
 
       $rootScope.inactivityTimer = 10 * 60;
+      $rootScope.inactivityInterval;
 
-      var interval;
       function countDown() {
         $rootScope.inactivityTimer -= 1;
-        // console.log($rootScope.inactivityTimer);
         if ($rootScope.inactivityTimer < 1) {
-          $interval.cancel(interval);
+          $interval.cancel($rootScope.inactivityInterval);
           localStorageService.clearAll();
           $rootScope.currentJWT = null;
           $state.go('login', { inactivityLogout: true });
         }
       }
-      interval = $interval(countDown, 1000);
+
+      // cancels current $interval on state change (avoids multiplication of $interval countdown)
+      $interval.cancel($rootScope.inactivityInterval);
+
+      // reset countdown
+      $rootScope.inactivityInterval = $interval(countDown, 1000);
 
     }
 

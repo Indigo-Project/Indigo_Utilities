@@ -313,11 +313,13 @@ section.manager-create-dashboard {
 section.create-window {
   position: relative;
   display: flex;
+  flex-direction: column;
   width: 60vw;
   height: 60vh;
   border: 1px solid #7f007f;
   border-radius: 5px;
-  background-color: white; }
+  background-color: white;
+  padding: 20px; }
 
 div.cd-exit-button {
   position: absolute;
@@ -333,6 +335,46 @@ div.cd-exit-button {
     color: red;
     cursor: pointer;
     cursor: hand; }
+
+section.mcd-header {
+  padding-bottom: 2px;
+  border-bottom: 1px solid black;
+  margin-bottom: 20px; }
+  section.mcd-header h4 {
+    width: fit-content;
+    margin: 0;
+    margin-bottom: 5px; }
+  section.mcd-header p {
+    font-size: 12px;
+    font-style: italic;
+    font-weight: 300;
+    margin: 0; }
+
+form.mcd-form select, form.mcd-form input, form.mcd-form h4 {
+  width: 45%;
+  margin-bottom: 15px; }
+form.mcd-form input[type=submit] {
+  width: fit-content;
+  background-color: #98fea2;
+  border: 1px solid black;
+  box-shadow: -1px 1px 1px 0px black;
+  margin-top: 30px; }
+
+div.no-activated-data-sets {
+  display: flex;
+  flex-direction: column;
+  width: 100%; }
+  div.no-activated-data-sets p {
+    width: fit-content;
+    margin: 0; }
+    div.no-activated-data-sets p.message {
+      color: red; }
+    div.no-activated-data-sets p.cta {
+      color: #6a8bff; }
+      div.no-activated-data-sets p.cta:hover {
+        color: #1402f5;
+        cursor: pointer;
+        cursor: hand; }
 
 h4.loading-manager-options {
   font-size: 24px;

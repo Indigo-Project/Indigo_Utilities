@@ -103,7 +103,7 @@ app.controller('SchoolDataManager', ['$scope', '$state', 'DashboardService', fun
         $scope.view.schoolNameOptions[schoolKeys[i]].code = schoolKeys[i]
       }
 
-      DashboardService.retrieveSchoolDataOrDashboardRef('data')
+      DashboardService.retrieveSchoolDataOrDashboardRefs('data')
       .then(function(collections) {
 
         var collectionNames = Object.keys(collections.data);

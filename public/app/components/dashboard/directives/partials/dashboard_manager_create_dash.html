@@ -1,10 +1,35 @@
-<section class="manager-create-dashboard" ng-click="view.closeCreateDashboard()">
+<section class="manager-create-dashboard" ng-click="view.closeCreateDashboard($event)">
 
   <section class="create-window">
 
     <div class="cd-exit-button">x</div>
 
-    
+    <section class="mcd-header">
+      <h4>Create Dashboard</h4>
+      <p>Dashboards are created by assigning a 'school data set' to a new dashboard instance</p>
+    </section>
+
+    <form class="mcd-form" ng-submit="data.createDashboard">
+      <h4 class="loading-manager-options" ng-show="!data.schoolNameOptionsLoaded">Loading Schools...</h4>
+      <select class="form-control mcd-school-selection" ng-show="data.schoolNameOptionsLoaded" ng-model="data.dashCreationSchoolCode" ng-change="view.loadSchoolDataObjects()" required>
+        <option value=""> -- Select School -- </option>
+        <option ng-repeat="school in data.dbCollections" value="{{school.nameOptions.code}}">{{school.nameOptions.optionDisplay}}</option>
+      </select>
+      <input class="form-control" type="text" placeholder="Enter New Dashboard Name" required>
+      <h4 class="loading-manager-options" ng-show="data.schoolDataObjectsStatus === 'loading'">Loading Activated Data Sets...</h4>
+      <div class="no-activated-data-sets" ng-show="data.schoolDataObjectsStatus === 'no activated data'">
+        <p class="message">No Activated Data Sets for Current School.</p>
+        <p class="cta" ng-click="view.navigateToDataObjCreation()"><strong>Click Here</strong> to Create Data Set</p>
+      </div>
+      <select class="form-control" ng-show="data.schoolDataObjectsStatus === 'loaded'" ng-model="data.dashCreationSchoolDataObj" required>
+        <option value=""> -- Select Data Set -- </option>
+        <option ng-repeat="dataObject in data.schoolDataObjects" value="{{dataObject.dataObjectTitle + ' - ' + dataObject.dateCreated}}">{{dataObject.dataObjectTitle}}</option>
+      </select>
+      <input class="form-control" type="submit" value="Create Dashboard">
+    </form>
+
+
+
 
   </section>
 

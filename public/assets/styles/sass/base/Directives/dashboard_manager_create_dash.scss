@@ -14,11 +14,13 @@ section.manager-create-dashboard {
 section.create-window {
   position: relative;
   display: flex;
+  flex-direction: column;
   width: 60vw;
   height: 60vh;
   border: 1px solid rgb(127, 0, 127);
   border-radius: 5px;
   background-color: white;
+  padding: 20px;
 }
 
 div.cd-exit-button {
@@ -35,5 +37,57 @@ div.cd-exit-button {
     color: rgb(255, 0, 0);
     cursor: pointer;
     cursor: hand;
+  }
+}
+
+section.mcd-header {
+  padding-bottom: 2px;
+  border-bottom: 1px solid black;
+  margin-bottom: 20px;
+  h4 {
+    width: fit-content;
+    margin: 0;
+    margin-bottom: 5px;
+  }
+  p {
+    font-size: 12px;
+    font-style: italic;
+    font-weight: 300;
+    margin: 0;
+  }
+}
+
+form.mcd-form {
+  select, input, h4 {
+    width: 45%;
+    margin-bottom: 15px;
+  }
+  input[type=submit] {
+    width: fit-content;
+    background-color: rgb(152, 254, 162);
+    border: 1px solid black;
+    box-shadow: -1px 1px 1px 0px black;
+    margin-top: 30px;
+  }
+}
+
+div.no-activated-data-sets {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  p {
+    width: fit-content;
+    margin: 0;
+    &.message {
+      color: red;
+    }
+    &.cta {
+      color: rgb(106, 139, 255);
+      &:hover {
+        color: rgb(20, 2, 245);
+        cursor: pointer;
+        cursor: hand;
+      }
+    }
   }
 }

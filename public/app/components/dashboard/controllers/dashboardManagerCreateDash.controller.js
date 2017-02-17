@@ -4,8 +4,4 @@ app.controller('CreateDashboard', ['$compile', '$scope', '$location', '$state', 
   $scope.view = {};
   $scope.data = {};
 
-  $scope.view.closeCreateDashboard = function() {
-    $state.go('dashboard_manager');
-  }
-
 }])

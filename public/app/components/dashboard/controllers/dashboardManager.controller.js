@@ -1,4 +1,4 @@
-app.controller('DashboardManager', ['$compile', '$scope', '$location', '$state', '$stateParams', '$http', '$timeout', 'siteNavigation', 'TTI_API', 'socket', '$window', 'DashboardService', 'DashboardManagerService', 'localStorageService', 'RWD', function($compile, $scope, $location, $state, $stateParams, $http, $timeout, siteNavigation, TTI_API, socket, $window, DashboardService, DashboardManagerService, localStorageService, RWD) {
+app.controller('DashboardManager', ['$compile', '$rootScope', '$scope', '$location', '$state', '$stateParams', '$http', '$timeout', 'siteNavigation', 'TTI_API', 'socket', '$window', 'DashboardService', 'DashboardManagerService', 'localStorageService', 'RWD', function($compile, $rootScope, $scope, $location, $state, $stateParams, $http, $timeout, siteNavigation, TTI_API, socket, $window, DashboardService, DashboardManagerService, localStorageService, RWD) {
 
   // $scope object instantiation
   $scope.view = {};
@@ -18,16 +18,42 @@ app.controller('DashboardManager', ['$compile', '$scope', '$location', '$state',
   $scope.data.iFrameHTML;
   $scope.data.copyStatusMessage = 'hidden';
 
+  $scope.data.dbCollections;
+  $scope.data.availableVersions;
+
+  $scope.data.schoolDataObjectsStatus = "no school selection";
+  $scope.data.schoolDataObjects;
+  $scope.data.dashCreationSchoolCode;
+  $scope.data.dashCreationSchoolDataObj;
+
+
+
   $scope.view.openCreateDashboard = function() {
-    $state.go('dashboard_manager.create_dashboard');
+    $state.go('dashboard_manager.create_dashboard')
+    .then(function() {
+      $rootScope.dashManagerSchoolSelection ? $scope.data.dashCreationSchoolCode = $rootScope.dashManagerSchoolSelection : null;
+    })
   }
 
-  // On Dashboard Manager school selection, configure available versions for selected school
+  $scope.view.closeCreateDashboard = function(event) {
+    event.target.className === "manager-create-dashboard" || event.target.className === "cd-exit-button" ? $state.go('dashboard_manager') : null;
+  }
+
+  $scope.view.navigateToDataObjCreation = function() {
+    $state.go('dashboard_gen');
+  }
+
+  // On Dashboard Manager 'school' selection change, configure available versions for selected school
   $scope.view.updateVersionOptions = function() {
+
     if ($scope.view.dashMschoolCode) {
       $scope.view.showMDashboard ? $scope.view.showMDashboard = false : null;
       $scope.view.currentSchoolVersions = $scope.data.availableVersions[$scope.view.dashMschoolCode];
     }
+
+    // Set global 'dashboard manager school selection' school code, for reference in dashboard creator and elsewhere
+    $state.current.name === 'dashboard_manager' ? $rootScope.dashManagerSchoolSelection = $scope.view.dashMschoolCode : null;
+
   };
 
   // load current dashboard version data object into $scope variable and local storage from dashboard manager, then create dashboard
@@ -129,7 +155,7 @@ app.controller('DashboardManager', ['$compile', '$scope', '$location', '$state',
         $scope.view.schoolNameOptions[schoolKeys[i]].code = schoolKeys[i]
       }
 
-      DashboardService.retrieveSchoolDataOrDashboardRef('dash')
+      DashboardService.retrieveSchoolDataOrDashboardRefs('dash')
       .then(function(collections) {
 
         var collectionNames = Object.keys(collections.data);
@@ -143,7 +169,6 @@ app.controller('DashboardManager', ['$compile', '$scope', '$location', '$state',
             }
           }
         }
-        console.log($scope.data.dbCollections);
 
         var dbCollectionKeys = Object.keys($scope.data.dbCollections);
         $scope.data.availableVersions = {};
@@ -157,7 +182,8 @@ app.controller('DashboardManager', ['$compile', '$scope', '$location', '$state',
             }
           }
         }
-        console.log($scope.data.availableVersions);
+
+        $state.current.name === "dashboard_manager.create_dashboard" ? $scope.view.initializeDashboardCreator() : null;
 
         $scope.data.schoolNameOptionsLoaded = true;
 
@@ -171,6 +197,53 @@ app.controller('DashboardManager', ['$compile', '$scope', '$location', '$state',
 
   }
 
+  $scope.view.initializeDashboardCreator = function() {
+
+    // if dashManagerSchoolSelection exists on rootScope, set dashCreationSchoolCode on scope
+    $rootScope.dashManagerSchoolSelection ? $scope.data.dashCreationSchoolCode = $rootScope.dashManagerSchoolSelection : null;
+
+    // set schoolSelectionDropdown value to dashCreationSchoolCode (whether "" or not)
+    var schoolSelectionDropdown = angular.element('select.mcd-school-selection');
+    schoolSelectionDropdown.value = $scope.data.dashCreationSchoolCode;
+
+    // if dashCreationSchoolCode, load school data objects
+    $scope.data.dashCreationSchoolCode ? $scope.view.loadSchoolDataObjects() : null;
+
+  }
+
+  // Upon selection of 'school' within Dashboard Creator, load activated data objects for school
+  $scope.view.loadSchoolDataObjects = function() {
+
+    // console.log($scope.data.dashCreationSchoolCode);
+    // var schoolSelectionDropdown = angular.element('select.mcd-school-selection');
+    // console.log(schoolSelectionDropdown);
+
+    if ($scope.data.dashCreationSchoolCode) {
+      $scope.data.schoolDataObjectsStatus = 'loading';
+      DashboardService.retrieveSchoolDataOrDashboardRefs('data', $scope.data.dashCreationSchoolCode)
+      .then(function(data) {
+        var dataColl = data.data;
+        $scope.data.schoolDataObjects = [];
+        for (var dataObjKey in dataColl) {
+          $scope.data.schoolDataObjects.push(dataColl[dataObjKey])
+        }
+
+        if ($scope.data.schoolDataObjects.length) {
+          $scope.data.schoolDataObjectsStatus = 'loaded';
+        } else {
+          $scope.data.schoolDataObjectsStatus = 'no activated data'
+        }
+
+      })
+    } else {
+      $scope.data.schoolDataObjectsStatus = "no school selection";
+    }
+    // $scope.data.dashCreationSchoolDataObj;
+
+  }
+
+  // console.log($state.current.name);
+  // $state.current.name === "dashboard_manager" ? $scope.view.initializeDashboardManager() : null;
   $scope.view.initializeDashboardManager();
 
 }])

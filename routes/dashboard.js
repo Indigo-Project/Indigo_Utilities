@@ -582,7 +582,8 @@ router.post('/create-dashboard-data-object', function(req, res, next) {
 
 router.get('/retrieve-school-dashboard-collections', function(req, res, next) {
 
-  var collType = req.query.collType
+  var collType = req.query.collType;
+  var optSchoolCode = req.query.optSchoolCode;
 
   function getAllCollectionObjects(db, collectionNames) {
     return new Promise(function(resolve, reject) {
@@ -644,8 +645,21 @@ router.get('/retrieve-school-dashboard-collections', function(req, res, next) {
       // Create collection obj with all collections and associated metadata object tied to each
       getAllCollectionObjects(data.db, collectionNames)
       .then(function(collectionObj) {
-        console.log(639, collectionObj);
-        res.send(collectionObj)
+
+        var returnCollectionObj;
+
+        if (optSchoolCode) {
+          for (var collKey in collectionObj) {
+            if (collKey === optSchoolCode + '-data') {
+              returnCollectionObj = collectionObj[collKey];
+              break;
+            }
+          }
+        } else {
+          returnCollectionObj = collectionObj;
+        }
+
+        res.send(returnCollectionObj);
         mongo.mongoDBDisconnect(data.db);
       })
 

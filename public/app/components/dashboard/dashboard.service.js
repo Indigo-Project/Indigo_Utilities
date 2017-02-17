@@ -15,12 +15,12 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
       })
     },
 
-    retrieveSchoolDataOrDashboardRef: function(collType) {
+    retrieveSchoolDataOrDashboardRefs: function(collType, optSchoolCode) {
       return new Promise(function(resolve, reject) {
         $http({
           method: 'GET',
           url: '/dashboard/retrieve-school-dashboard-collections',
-          params: {collType: collType}
+          params: {collType: collType, optSchoolCode: optSchoolCode}
         }).then(function(collections) {
           resolve(collections)
         }).catch(function(error) {
