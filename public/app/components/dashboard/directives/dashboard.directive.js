@@ -9,7 +9,7 @@ app.directive('dashboard', ['$compile', '$rootScope', '$state', '$stateParams', 
 
         return new Promise(function(resolve, reject) {
 
-          DashboardService.retrieveStoredDashboardVersionDataObject($stateParams.collection, null, $stateParams.id)
+          DashboardService.retrieveDataObjectForCurrentDashboard($stateParams.collection, null, $stateParams.id)
           .then(function(data) {
 
             scope.data.currentDashboardDataObject = data;
