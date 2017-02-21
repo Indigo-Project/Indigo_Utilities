@@ -22,6 +22,7 @@ var batchReportDownloader = require('./routes/batchReportDownloader')(io);
 var TTI_API = require('./routes/TTI_API');
 var dashboard = require('./routes/dashboard');
 var dashboardManager = require('./routes/dashboardManager');
+var dashboardData= require('./routes/dashboardData');
 
 // app.set('views', path.join(__dirname, 'views'));
 // app.set('view engine', 'jade');
@@ -59,7 +60,7 @@ app.use("/dashboards/:collection/:id/:studentpath", express.static(__dirname + "
 // On each request to server route, verify jwt token before access
 app.use(function (req,res,next) {
 
-  console.log(req.token);
+  // console.log(req.token);
   if (req.token) {
     jwt.verify(JSON.parse(req.token), process.env.JWT_SECRET, function(err, decoded) {
       if (!err) {
@@ -84,6 +85,7 @@ app.use('/batch-download', batchReportDownloader);
 app.use('/TTI-API', TTI_API);
 app.use('/dashboard', dashboard);
 app.use('/dashboard-manager', dashboardManager);
+app.use('/dashboard-data', dashboardData);
 
 
 // catch 404 and forward to error handler

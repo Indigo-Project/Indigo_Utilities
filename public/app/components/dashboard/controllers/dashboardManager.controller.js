@@ -22,17 +22,17 @@ app.controller('DashboardManager', ['$compile', '$rootScope', '$scope', '$locati
   $scope.data.availableVersions;
 
   $scope.data.schoolDataObjectsStatus = "no school selection";
-  $scope.data.schoolDataObjects;
+  $scope.data.activeSchoolDataObjects;
   $scope.data.dashCreationSchoolCode;
-  $scope.data.dashCreationSchoolDataObj;
+  $scope.data.dashCreationSchoolDataObjId;
 
 
 
   $scope.view.openCreateDashboard = function() {
     $state.go('dashboard_manager.create_dashboard')
-    .then(function() {
-      $rootScope.dashManagerSchoolSelection ? $scope.data.dashCreationSchoolCode = $rootScope.dashManagerSchoolSelection : null;
-    })
+    // .then(function() {
+    //   $rootScope.dashManagerSchoolSelection ? $scope.data.dashCreationSchoolCode = $rootScope.dashManagerSchoolSelection : null;
+    // })
   }
 
   $scope.view.closeCreateDashboard = function(event) {
@@ -41,6 +41,10 @@ app.controller('DashboardManager', ['$compile', '$rootScope', '$scope', '$locati
 
   $scope.view.navigateToDataObjCreation = function() {
     $state.go('dashboard_gen');
+  }
+
+  $scope.view.navigateToSchoolDataManager = function() {
+    $state.go('school_data_manager');
   }
 
   // On Dashboard Manager 'school' selection change, configure available versions for selected school
@@ -69,8 +73,9 @@ app.controller('DashboardManager', ['$compile', '$rootScope', '$scope', '$locati
         console.log('got data:', data);
 
         // Dashboard Manager Data/Metadata Values
+        $scope.data.currentVersionData.dataObjectTitle = data.metaData.dataObjectTitle;
         $scope.data.currentVersionData.schoolName = data.metaData.schoolInfo.name;
-        $scope.data.currentVersionData.versionName = data.metaData.dashboardTitle;
+        $scope.data.currentVersionData.versionName = $scope.data.availableVersions[$scope.view.dashMschoolCode][$scope.view.dashMschoolVersion].dashboardTitle;
         $scope.data.currentVersionData.dateCreated = data.metaData.dateCreated;
         $scope.data.currentVersionData.managerNotes = data.metaData.notes || "";
 
@@ -197,6 +202,7 @@ app.controller('DashboardManager', ['$compile', '$rootScope', '$scope', '$locati
 
   }
 
+  //
   $scope.view.initializeDashboardCreator = function() {
 
     // if dashManagerSchoolSelection exists on rootScope, set dashCreationSchoolCode on scope
@@ -223,22 +229,45 @@ app.controller('DashboardManager', ['$compile', '$rootScope', '$scope', '$locati
       DashboardService.retrieveSchoolDataOrDashboardRefs('data', $scope.data.dashCreationSchoolCode)
       .then(function(data) {
         var dataColl = data.data;
-        $scope.data.schoolDataObjects = [];
+        console.log(dataColl);
+        $scope.data.activeSchoolDataObjects = [];
         for (var dataObjKey in dataColl) {
-          $scope.data.schoolDataObjects.push(dataColl[dataObjKey])
+          console.log(dataColl[dataObjKey].activated);
+          dataColl[dataObjKey].activated ? $scope.data.activeSchoolDataObjects.push(dataColl[dataObjKey]) : null;
         }
 
-        if ($scope.data.schoolDataObjects.length) {
+        if ($scope.data.activeSchoolDataObjects.length) {
           $scope.data.schoolDataObjectsStatus = 'loaded';
         } else {
           $scope.data.schoolDataObjectsStatus = 'no activated data'
         }
 
+        console.log($scope.data.schoolDataObjectsStatus);
+
+      }).catch(function(error) {
+        console.log(error);
       })
     } else {
       $scope.data.schoolDataObjectsStatus = "no school selection";
+      console.log($scope.data.schoolDataObjectsStatus);
     }
-    // $scope.data.dashCreationSchoolDataObj;
+
+
+  }
+
+  $scope.data.createDashboard = function() {
+
+    var schoolDataObjInfo;
+    for (var i = 0; i < $scope.data.activeSchoolDataObjects.length; i++) {
+      if ($scope.data.activeSchoolDataObjects[i].id === $scope.data.dashCreationSchoolDataObjId) {
+        schoolDataObjInfo = $scope.data.activeSchoolDataObjects[i];
+        break;
+      }
+    }
+
+    console.log($scope.data.dashCreationTitle, schoolDataObjInfo);
+
+    DashboardService.createDashboard($scope.data.dashCreationTitle, schoolDataObjInfo)
 
   }
 

@@ -50,11 +50,11 @@ section.data-manager-object-interface {
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 90px;
+    height: 100px;
     padding: 5px;
     border-bottom: 1px solid black;
     p.do-date-created {
-      margin-bottom: 5px;
+      // margin-bottom: 5px;
       width: fit-content;
     }
     h3.do-title {
@@ -76,7 +76,7 @@ section.data-manager-object-interface {
   section.data-object-analysis {
     display: flex;
     width: 100%;
-    height: 385px;
+    height: 375px;
     padding: 5px;
   }
   section.data-object-settings {
@@ -92,8 +92,6 @@ section.data-manager-object-interface {
     border: 1px solid black;
     padding: 5px;
     div {
-      width: fit-content;
-      height: fit-content;
       color: white;
       &.do-settings-header {
         border-bottom: 1px solid white;
@@ -101,6 +99,11 @@ section.data-manager-object-interface {
         h4 {
           margin: 0;
         }
+      }
+      &.do-settings-activate {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 15px;
       }
       p {
         font-size: 10px;
@@ -199,6 +202,21 @@ div.status-indicators {
   }
 }
 
+div.doh-sub-1 {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  p.do-date-created {
+    font-size: 10px;
+    margin: 0 0 5px 0;
+    height: fit-content;
+    padding: 0
+  }
+  p.do-dash-assign {
+    font-size: 12px;
+  }
+}
+
 span.encrypted {
   color: green;
 }
@@ -213,4 +231,54 @@ span.active {
 
 span.inactive {
   color: red;
+}
+
+div.data-activation-toggle {
+  display: flex;
+  width: 20%;
+  height: 35px;
+  border: 1px solid black;
+  border-radius: 5px;
+  -webkit-box-shadow: inset 2px 2px 10px 0px rgba(0,0,0,0.75);
+  -moz-box-shadow: inset 2px 2px 10px 0px rgba(0,0,0,0.75);
+  box-shadow: inset 2px 2px 10px 0px rgba(0,0,0,0.75);
+  &:hover {
+    cursor: pointer;
+    cursor: hand;
+  }
+  div.toggle-bar {
+    width: 20%;
+    height: 33px;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 5px;
+    -webkit-box-shadow: inset 2px 2px 10px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: inset 2px 2px 10px 0px rgba(0,0,0,0.75);
+    box-shadow: inset 2px 2px 10px 0px rgba(0,0,0,0.75);
+    &:hover {
+      background-color: rgb(221, 221, 221);
+    }
+  }
+  div.toggle-status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    width: 80%;
+    height: 35px;
+    background-color: rgba(0, 0, 0, 0);
+    p.status {
+      font-size: 14px;
+      font-weight: 300;
+      color: white;
+      margin: 0;
+    }
+  }
+}
+
+.toggle-active {
+  background-color: green;
+}
+.toggle-inactive {
+  background-color: red;
 }

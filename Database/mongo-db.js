@@ -2,6 +2,7 @@ require('dotenv').config();
 
 var MongoClient = require('mongodb').MongoClient
 , assert = require('assert');
+var ObjectId = require('mongodb').ObjectID;
 
 var database = {
 
@@ -77,8 +78,11 @@ var database = {
             for (var i = 0; i < documents.length; i++) {
               if (collType === 'dash') {
                 metaDataReturn[documents[i].metaData.dashboardTitle] = documents[i].metaData;
+                metaDataReturn[documents[i].metaData.dashboardTitle].id = documents[i]._id;
+                // metaDataReturn[documents[i].id] = documents[i]._id;
               } else if (collType === 'data') {
                 metaDataReturn[documents[i].metaData.dataObjectTitle] = documents[i].metaData;
+                metaDataReturn[documents[i].metaData.dataObjectTitle].id = documents[i]._id;
               }
             }
             console.log('metaDataReturn', metaDataReturn);
@@ -90,10 +94,12 @@ var database = {
   },
 
   // Add new dashboard object to school collection (already connected to DB)
-  addDashboard: function(db, data, dataColl, dashboardVersionName) {
+  addDashboardDataObj: function(db, data, dataColl, dashboardVersionName) {
     return new Promise(function(resolve, reject) {
+
       // console.log('adding dashboard...');
       console.log(dataColl);
+
       // Access collection. If collection does not exist, create it and access it.
       function enterCollection() {
         return new Promise(function(resolve, reject) {
@@ -159,6 +165,65 @@ var database = {
     })
   },
 
+  addDashboardRefAndDashDataAssignment: function(db, dashboardRefObj) {
+    return new Promise(function(resolve, reject) {
+      var dashCollection = dashboardRefObj.metaData.schoolInfo.code + '-dash';
+      var dataCollection = dashboardRefObj.metaData.schoolInfo.code + '-data'
+      var currentDataObjDashboardAssignment = [dashboardRefObj.metaData.dashboardTitle, ""];
+      var allDataObjDashboardAssignments;
+
+      // Enter dashboard collection and insert dashboard reference object
+      db.collection(dashCollection, function(err, collection) {
+
+        if (err) {
+          console.log('COLLECTION ERR', err);
+        } else {
+
+          collection.insertOne(dashboardRefObj, function(err, result) {
+
+            if (assert.equal(err, null) === undefined) {
+
+              // set new dashboardAssignment array to be added to Data Obj
+              currentDataObjDashboardAssignment[1] = ObjectId(result.insertedId).toString();
+
+              // enter data collection and update dashboardAssignments array
+              db.collection(dataCollection, function(err, collection) {
+
+                if (err) {
+                  console.log('COLLECTION ERR', err);
+                } else {
+
+                  var dataObjId = dashboardRefObj.metaData.dataReference[1];
+                  console.log('dataObjId', dataObjId);
+
+                  collection.findOneAndUpdate({"_id": ObjectId(dataObjId)}, {$push: {'metaData.dashboardAssignments': currentDataObjDashboardAssignment}}, function(err, result) {
+
+                    if (assert.equal(err, null) === undefined) {
+                      console.log(result);
+
+                        if (assert.equal(err, null) === undefined) {
+                          resolve({
+                            message: "inserted dashboardReference " + dashCollection +  " and updated dashboardAssignments for Data Object",
+                            result: result
+                          })
+                        } else {
+                          reject("Failed to update dashboardAssignments Object");
+                        }
+                    } else {
+                      reject("Failed to find dashboard data collection");
+                    }
+                  })
+                }
+              })
+            } else {
+              reject("Failed to add dashboard reference to -dash collection");
+            }
+          })
+        }
+      })
+    })
+  },
+
   // Update notes for dashboard manager version
   updateDashboardManagerNotes: function(db, collection, version, notes) {
     console.log('notes data', collection, version, notes);
@@ -189,12 +254,8 @@ var database = {
             console.log('findOneAndUpdate SUCCESS', result);
           }
         })
-
       }
-
     })
-
-
   },
 
   // Get document by Id
@@ -272,8 +333,33 @@ var database = {
         })
       })
     })
-  }
+  },
 
+  toggleDashboardDataActivationStatus: function(db, status, schoolCode, id) {
+    return new Promise(function(resolve, reject) {
+      var collection = schoolCode + '-data';
+      console.log(status, collection, id);
+
+      db.collection(collection, function(err, collection) {
+        if (err) {
+          console.log('COLLECTION ERR', err);
+        } else {
+          collection.findOneAndUpdate({ "_id": ObjectId(id) }, { $set: { 'metaData.activated': status }}, function(err, doc) {
+            if (err) {
+              console.log('findOne Error', err);
+            } else if (!doc) {
+              reject('collection.findOne returned null')
+            } else {
+              // console.log('doc', doc);
+              resolve(doc);
+            }
+          })
+        }
+      })
+    })
+  }
 }
+
+
 
 module.exports = database;

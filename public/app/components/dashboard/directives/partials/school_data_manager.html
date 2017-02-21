@@ -26,25 +26,25 @@
 
         <div class="thumbnail-status-indicators">
 
-          <div class="active-indicator" title="data-set is set to active">
+          <div class="active-indicator" ng-show="dataObject.activated" title="data-set is set to active">
             <span class="active glyphicon glyphicon-ok-circle"></span>
             <p>active</p>
           </div>
 
-          <!-- <div class="inactive-indicator" title="data-set is set to inactive">
-          <span class="inactive glyphicon glyphicon-ok-circle"></span>
-          <p>active</p>
-        </div> -->
+          <div class="inactive-indicator" ng-show="!dataObject.activated" title="data-set is set to inactive">
+          <span class="inactive glyphicon glyphicon-remove-circle"></span>
+          <p>inactive</p>
+        </div>
 
-          <div class="encrypted-indicator" title="data is encrypted">
+          <div class="encrypted-indicator" ng-show="dataObject.encrypted" title="data is encrypted">
             <span class="encrypted glyphicon glyphicon-eye-close"></span>
             <p>secure</p>
           </div>
 
-          <!-- <div class="unencrypted-indicator" title="data is not encrypted">
+          <div class="unencrypted-indicator" ng-show="!dataObject.encrypted" title="data is not encrypted">
             <span class="not-encrypted glyphicon glyphicon-eye-open"></span>
             <p>not secure</p>
-          </div> -->
+          </div>
 
         </div>
 
@@ -61,29 +61,33 @@
         <section class="data-object-header">
 
           <h3>{{view.currentDataObject.dataObjectTitle}}</h3>
-          <p class="do-date-created">{{view.currentDataObject.dateCreated}}</p>
+          <div class="doh-sub-1">
+            <p class="do-date-created">Created: {{view.currentDataObject.dateCreated}}</p>
+            <p ng-show="view.dashAssignLength" class="do-dash-assign">Currently in use by the following dashboards: <strong>{{view.cdoDashboardsAssigned}}</strong></p>
+            <p ng-show="!view.dashAssignLength" class="do-dash-assign">Not currently in use by a dashboard</p>
+          </div>
 
           <div class="status-indicators">
 
-            <div class="active-indicator" title="data-set is set to active">
+            <div class="active-indicator" ng-show="view.cdoActive" title="data-set is set to active">
               <span class="active glyphicon glyphicon-ok-circle"></span>
               <p>active</p>
             </div>
 
-            <!-- <div class="inactive-indicator" title="data-set is set to inactive">
-              <span class="inactive glyphicon glyphicon-ok-circle"></span>
-              <p>active</p>
-            </div> -->
+            <div class="inactive-indicator" ng-show="!view.cdoActive" title="data-set is set to inactive">
+              <span class="inactive glyphicon glyphicon-remove-circle"></span>
+              <p>inactive</p>
+            </div>
 
-            <div class="encrypted-indicator" title="data is encrypted">
+            <div class="encrypted-indicator" ng-show="view.cdoEncrypted" title="data is encrypted">
               <span class="encrypted glyphicon glyphicon-eye-close"></span>
               <p>secure</p>
             </div>
 
-            <!-- <div class="unencrypted-indicator" title="data is not encrypted">
+            <div class="unencrypted-indicator" ng-show="!view.cdoEncrypted" title="data is not encrypted">
             <span class="not-encrypted glyphicon glyphicon-eye-open"></span>
             <p>not secure</p>
-          </div> -->
+          </div>
 
           </div>
 
@@ -98,19 +102,25 @@
         <section ng-show="view.settingsOpen" class="data-object-settings">
 
           <div class="do-settings-header">
-            <h4>Configuration</h4>
+            <h4>Settings & Configuration</h4>
           </div>
 
           <div class="do-settings-activate">
             <h5>Activation/Deactivation</h5>
             <p>In order to be eligible for activation, data sets must meet basic security standards and dashboard data validation requirements.</p>
+            <div class="data-activation-toggle" ng-class="{'toggle-active': view.settingsActivation, 'toggle-inactive': !view.settingsActivation }" ng-click="view.toggleDataActivation()">
+              <div ng-show="view.settingsActivation" class="toggle-status"><p class="status">active</p></div>
+              <div class="toggle-bar"></div>
+              <!-- <div ng-show="!data.dataObjActive" class="toggle-bar"></div> -->
+              <div ng-show="!view.settingsActivation" class="toggle-status"><p class="status">inactive</p></div>
+            </div>
           </div>
+
 
           <div class="do-settings-security">
             <h5>Security</h5>
             <p>Data will be automatically encrypted during 'Data Set Creation' as of the beginning of Sprint 2, using the bcrypt standard. Previous data sets may or may not be encrypted. For Data Sets which are not encrypted, an encryption mechanism will be made available through the School Data Manager.</p>
           </div>
-
 
           <span class="exit-button" ng-click="view.closeSettings()">x</span>
 

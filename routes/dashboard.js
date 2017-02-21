@@ -14,6 +14,40 @@ router.get('/retrieve-school-name-options', function(req, res, next) {
   res.send(TTI.dashboardSchoolNames)
 })
 
+router.post('/create-dashboard', function(req, res, next) {
+
+  console.log(req.body.title);
+  console.log(req.body.dataObjInfo);
+
+  mongo.mongoDBConnect(mongo.indigoDashboardsURI)
+  .then(function(data) {
+
+    var newDateObj = new Date();
+    var dateCreated = (newDateObj.getMonth() + 1) + "/" + newDateObj.getDate() + "/" + newDateObj.getFullYear() + " - " + newDateObj.getHours() + ":" + newDateObj.getMinutes() + ":" + newDateObj.getSeconds();
+
+    var dashboardRefObj = {
+      metaData: {
+        dashboardTitle: req.body.title,
+        dataReference: [req.body.dataObjInfo.dataObjectTitle, req.body.dataObjInfo.id],
+        schoolInfo: req.body.dataObjInfo.schoolInfo,
+        dateCreated: dateCreated,
+        dateCreatedMS: newDateObj,
+        notes: "These are sample notes"
+      }
+    };
+
+    mongo.addDashboardRefAndDashDataAssignment(data.db, dashboardRefObj)
+    .then(function(data) {
+      console.log(data);
+
+    }).catch(function(error) {
+      console.log(error);
+    })
+  })
+
+
+})
+
 router.post('/create-dashboard-data-object', function(req, res, next) {
 
   // STEP 1 of raw input preparation:
@@ -530,7 +564,7 @@ router.post('/create-dashboard-data-object', function(req, res, next) {
     return new Promise(function(resolve, reject) {
       mongo.mongoDBConnect(mongo.indigoDashboardsURI)
       .then(function(data) {
-        mongo.addDashboard(data.db, input2, dataColl, req.body.dashboardDataObjectName)
+        mongo.addDashboardDataObj(data.db, input2, dataColl, req.body.dashboardDataObjectName)
         .then(function(documentId) {
           mongo.getDocumentById(data.db, dataColl, documentId)
           .then(function(dashObj) {
@@ -614,6 +648,7 @@ router.get('/retrieve-school-dashboard-collections', function(req, res, next) {
 
   mongo.mongoDBConnect(mongo.indigoDashboardsURI)
   .then(function(data) {
+
     mongo.getDashboardCollections(data.db)
     .then(function(collections) {
 

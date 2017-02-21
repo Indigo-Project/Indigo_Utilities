@@ -353,12 +353,16 @@ section.mcd-header {
 form.mcd-form select, form.mcd-form input, form.mcd-form h4 {
   width: 45%;
   margin-bottom: 15px; }
-form.mcd-form input[type=submit] {
+form.mcd-form input.create-dash-submit {
   width: fit-content;
   background-color: #98fea2;
   border: 1px solid black;
   box-shadow: -1px 1px 1px 0px black;
   margin-top: 30px; }
+  form.mcd-form input.create-dash-submit:active {
+    -webkit-box-shadow: inset 2px 2px 10px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: inset 2px 2px 10px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: inset 2px 2px 10px 0px rgba(0, 0, 0, 0.75); }
 
 div.no-activated-data-sets {
   display: flex;
@@ -369,12 +373,18 @@ div.no-activated-data-sets {
     margin: 0; }
     div.no-activated-data-sets p.message {
       color: red; }
-    div.no-activated-data-sets p.cta {
-      color: #6a8bff; }
-      div.no-activated-data-sets p.cta:hover {
-        color: #1402f5;
-        cursor: pointer;
-        cursor: hand; }
+
+div.mcd-header-sub {
+  display: flex; }
+  div.mcd-header-sub p.text-1 {
+    margin-right: 5px; }
+
+span.cds-cta, p.cds-cta {
+  color: #6a8bff; }
+  span.cds-cta:hover, p.cds-cta:hover {
+    color: #1402f5;
+    cursor: pointer;
+    cursor: hand; }
 
 h4.loading-manager-options {
   font-size: 24px;
@@ -1150,11 +1160,10 @@ section.data-manager-object-interface {
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 90px;
+    height: 100px;
     padding: 5px;
     border-bottom: 1px solid black; }
     section.data-manager-object-interface section.data-object-header p.do-date-created {
-      margin-bottom: 5px;
       width: fit-content; }
     section.data-manager-object-interface section.data-object-header h3.do-title {
       margin-bottom: 5px; }
@@ -1171,7 +1180,7 @@ section.data-manager-object-interface {
   section.data-manager-object-interface section.data-object-analysis {
     display: flex;
     width: 100%;
-    height: 385px;
+    height: 375px;
     padding: 5px; }
   section.data-manager-object-interface section.data-object-settings {
     position: absolute;
@@ -1186,14 +1195,16 @@ section.data-manager-object-interface {
     border: 1px solid black;
     padding: 5px; }
     section.data-manager-object-interface section.data-object-settings div {
-      width: fit-content;
-      height: fit-content;
       color: white; }
       section.data-manager-object-interface section.data-object-settings div.do-settings-header {
         border-bottom: 1px solid white;
         margin-bottom: 15px; }
         section.data-manager-object-interface section.data-object-settings div.do-settings-header h4 {
           margin: 0; }
+      section.data-manager-object-interface section.data-object-settings div.do-settings-activate {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 15px; }
       section.data-manager-object-interface section.data-object-settings div p {
         font-size: 10px; }
     section.data-manager-object-interface section.data-object-settings span.exit-button {
@@ -1269,6 +1280,18 @@ div.status-indicators {
       font-size: 13px;
       margin: 0; }
 
+div.doh-sub-1 {
+  display: flex;
+  flex-direction: column;
+  margin: 0; }
+  div.doh-sub-1 p.do-date-created {
+    font-size: 10px;
+    margin: 0 0 5px 0;
+    height: fit-content;
+    padding: 0; }
+  div.doh-sub-1 p.do-dash-assign {
+    font-size: 12px; }
+
 span.encrypted {
   color: green; }
 
@@ -1280,6 +1303,49 @@ span.active {
 
 span.inactive {
   color: red; }
+
+div.data-activation-toggle {
+  display: flex;
+  width: 20%;
+  height: 35px;
+  border: 1px solid black;
+  border-radius: 5px;
+  -webkit-box-shadow: inset 2px 2px 10px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: inset 2px 2px 10px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: inset 2px 2px 10px 0px rgba(0, 0, 0, 0.75); }
+  div.data-activation-toggle:hover {
+    cursor: pointer;
+    cursor: hand; }
+  div.data-activation-toggle div.toggle-bar {
+    width: 20%;
+    height: 33px;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 5px;
+    -webkit-box-shadow: inset 2px 2px 10px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: inset 2px 2px 10px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: inset 2px 2px 10px 0px rgba(0, 0, 0, 0.75); }
+    div.data-activation-toggle div.toggle-bar:hover {
+      background-color: #dddddd; }
+  div.data-activation-toggle div.toggle-status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    width: 80%;
+    height: 35px;
+    background-color: transparent; }
+    div.data-activation-toggle div.toggle-status p.status {
+      font-size: 14px;
+      font-weight: 300;
+      color: white;
+      margin: 0; }
+
+.toggle-active {
+  background-color: green; }
+
+.toggle-inactive {
+  background-color: red; }
 
 @keyframes opacityTransition {
   0% {

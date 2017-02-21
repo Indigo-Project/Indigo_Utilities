@@ -6,26 +6,29 @@
 
     <section class="mcd-header">
       <h4>Create Dashboard</h4>
-      <p>Dashboards are created by assigning a 'school data set' to a new dashboard instance</p>
+      <div class="mcd-header-sub">
+        <p class="text-1">Dashboards are created by assigning a 'school data set' to a new dashboard instance. You must have at least one activated 'school data set' connected to a school, to create a dashboard for that school. If you need to create a 'school data set', <span class="cds-cta" ng-click="view.navigateToDataObjCreation()"><strong>Click Here</strong></span></p>
+      </div>
     </section>
 
-    <form class="mcd-form" ng-submit="data.createDashboard">
+    <form class="mcd-form" name="create-dashboard" ng-submit="data.createDashboard()">
       <h4 class="loading-manager-options" ng-show="!data.schoolNameOptionsLoaded">Loading Schools...</h4>
       <select class="form-control mcd-school-selection" ng-show="data.schoolNameOptionsLoaded" ng-model="data.dashCreationSchoolCode" ng-change="view.loadSchoolDataObjects()" required>
         <option value=""> -- Select School -- </option>
         <option ng-repeat="school in data.dbCollections" value="{{school.nameOptions.code}}">{{school.nameOptions.optionDisplay}}</option>
       </select>
-      <input class="form-control" type="text" placeholder="Enter New Dashboard Name" required>
-      <h4 class="loading-manager-options" ng-show="data.schoolDataObjectsStatus === 'loading'">Loading Activated Data Sets...</h4>
+      <input class="form-control" type="text" ng-model="data.dashCreationTitle" placeholder="Enter New Dashboard Name" required>
+      <h4 class="loading-manager-options" ng-show="data.schoolDataObjectsStatus === 'loading'">Loading Active Data Sets...</h4>
       <div class="no-activated-data-sets" ng-show="data.schoolDataObjectsStatus === 'no activated data'">
         <p class="message">No Activated Data Sets for Current School.</p>
-        <p class="cta" ng-click="view.navigateToDataObjCreation()"><strong>Click Here</strong> to Create Data Set</p>
+        <p class="cds-cta" ng-click="view.navigateToDataObjCreation()"><strong>Click Here</strong> to create new data set</p>
+        <p class="cds-cta" ng-click="view.navigateToSchoolDataManager()"><strong>Click Here</strong> to Activate existing data set</p>
       </div>
-      <select class="form-control" ng-show="data.schoolDataObjectsStatus === 'loaded'" ng-model="data.dashCreationSchoolDataObj" required>
+      <select class="form-control" ng-show="data.schoolDataObjectsStatus === 'loaded'" ng-model="data.dashCreationSchoolDataObjId">
         <option value=""> -- Select Data Set -- </option>
-        <option ng-repeat="dataObject in data.schoolDataObjects" value="{{dataObject.dataObjectTitle + ' - ' + dataObject.dateCreated}}">{{dataObject.dataObjectTitle}}</option>
+        <option ng-repeat="dataObject in data.activeSchoolDataObjects" value="{{dataObject.id}}">{{dataObject.dataObjectTitle}}</option>
       </select>
-      <input class="form-control" type="submit" value="Create Dashboard">
+      <input class="create-dash-submit form-control" value="Create Dashboard" type="submit">
     </form>
 
 

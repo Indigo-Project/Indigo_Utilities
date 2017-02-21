@@ -2,6 +2,7 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
 
   return {
 
+    // retrieve all manually hard-coded school name options
     retrieveSchoolNameOptions: function() {
       return new Promise(function(resolve, reject) {
         $http({
@@ -15,12 +16,14 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
       })
     },
 
+    // retrieve all data object or dashboard document collections
+    // if optSchoolCode is specified, only retrieve data object or dashboard for specified school
     retrieveSchoolDataOrDashboardRefs: function(collType, optSchoolCode) {
       return new Promise(function(resolve, reject) {
         $http({
           method: 'GET',
           url: '/dashboard/retrieve-school-dashboard-collections',
-          params: {collType: collType, optSchoolCode: optSchoolCode}
+          params: { collType: collType, optSchoolCode: optSchoolCode }
         }).then(function(collections) {
           resolve(collections)
         }).catch(function(error) {
@@ -29,6 +32,7 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
       })
     },
 
+    // create and store new dashboard data object
     createDashboardDataObject: function(loadedFiles, schoolCode, dashboardDataObjectName) {
       return new Promise(function(resolve, reject) {
         $http({
@@ -43,6 +47,22 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
       })
     },
 
+    // create new dashboard reference object and assign data object
+    createDashboard: function(title, dataObjInfo) {
+      return new Promise(function(resolve, reject) {
+        $http({
+          method: 'POST',
+          url: '/dashboard/create-dashboard',
+          data: { title: title, dataObjInfo: dataObjInfo }
+        }).then(function(data) {
+          if (data) resolve(data);
+        }).catch(function(error) {
+          console.log(error);
+        })
+      })
+    },
+
+    // retrieve dashboard data object tied to current dashboard
     retrieveDataObjectForCurrentDashboard: function(schoolCode, id) {
       return new Promise(function(resolve, reject) {
         $http({
