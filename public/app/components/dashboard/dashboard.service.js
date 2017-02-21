@@ -90,6 +90,7 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
             classSelections = [];
             genderSelections = [];
 
+            console.log(data);
             dashData = data.compiledData.studentData;
             sdCHs = data.compiledData.columnHeaders[0];
             dataKeys = Object.keys(data)
