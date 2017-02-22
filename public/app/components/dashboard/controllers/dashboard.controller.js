@@ -1,6 +1,6 @@
 app.controller('Dashboard', ['$rootScope','$compile', '$scope', '$location', '$state', '$stateParams', '$http', 'siteNavigation', 'TTI_API', 'socket', '$window', 'DashboardService', 'localStorageService', 'RWD', 'Fullscreen', function($rootScope, $compile, $scope, $location, $state, $stateParams, $http, siteNavigation, TTI_API, socket, $window, DashboardService, localStorageService, RWD, Fullscreen) {
 
-  console.log($rootscope.stateIsLoading);
+  console.log($rootScope.stateIsLoading);
 
   $scope.data = {};
   $scope.view = {};
