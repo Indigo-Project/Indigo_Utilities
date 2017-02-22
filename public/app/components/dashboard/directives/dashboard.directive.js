@@ -5,14 +5,14 @@ app.directive('dashboard', ['$compile', '$rootScope', '$state', '$stateParams', 
     function loadDashboardData() {
 
       // If no dashboard data object has been specified into local storage from manager, locate and load from url parameters
-      function reloadDashboardData() {
-        console.log('reloadDashboardData');
+      function loadDashboardDataFromDB() {
+        console.log('loadDashboardDataFromDB');
         return new Promise(function(resolve, reject) {
 
           DashboardService.retrieveDataObjectForCurrentDashboard($stateParams.collection, $stateParams.id)
           .then(function(dashboardData) {
 
-            console.log('reloadDashboardData data', dashboardData);
+            console.log('loadDashboardDataFromDB data', dashboardData);
             scope.data.currentDashboardDataObject = dashboardData;
 
             // scope.data.studentNumber = dashboardData.compiledData.studentData.length;
@@ -58,7 +58,7 @@ app.directive('dashboard', ['$compile', '$rootScope', '$state', '$stateParams', 
 
         if (!localStorageService.get('currentDashboardData') || localStorageService.get('currentDashboardData')._id !== $stateParams.id ) {
 
-          reloadDashboardData()
+          loadDashboardDataFromDB()
           .then(function() {
             resolve()
           })
@@ -85,18 +85,14 @@ app.directive('dashboard', ['$compile', '$rootScope', '$state', '$stateParams', 
     loadDashboardData()
     .then(function() {
 
-      console.log('data');
-      console.log(scope.data.currentDashboardDataObject);
-      DashboardService.generateD3Dashboard({ data: scope.data.currentDashboardDataObject }, 'studentData');
+      DashboardService.generateD3Dashboard({ data: scope.data.currentDashboardDataObject }, 'studentData')
+      .then(function() {
+        $rootScope.stateIsLoading = '';
+      }).catch(function(error) {
+        console.log(error);
+      })
 
-      console.log($rootScope.stateIsLoading);
-      $rootScope.stateIsLoading = '';
-      console.log($rootScope.stateIsLoading);
-
-      scope.$apply();
-
-    })
-    .catch(function(error) {
+    }).catch(function(error) {
       console.log(error);
     })
 
@@ -108,4 +104,5 @@ app.directive('dashboard', ['$compile', '$rootScope', '$state', '$stateParams', 
     controller: 'Dashboard',
     link: link
   }
+
 }])

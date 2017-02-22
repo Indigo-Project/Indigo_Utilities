@@ -52,7 +52,7 @@ app.run(['$window', '$rootScope', '$interval', '$state', 'jwtHelper', 'localStor
       'user_manager': 'dashboardManagement',
     };
 
-    $rootScope.currentState = toState.name;
+    $rootScope.currentState = toState.name
 
     if ($rootScope.currentState === 'home') {
       $rootScope.selectedDashboardFunction = 'home';

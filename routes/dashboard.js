@@ -709,8 +709,6 @@ router.get('/retrieve-school-dashboard-collections', function(req, res, next) {
 
 router.post('/retrieve-stored-dashboard-data-object', function(req, res, next) {
 
-  console.log('INSIDE INSIDE INSIDE INSIDE');
-
   mongo.mongoDBConnect(mongo.indigoDashboardsURI)
   .then(function(data) {
     var collection = req.body.schoolCode + '-data';

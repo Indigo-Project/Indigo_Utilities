@@ -6,8 +6,6 @@ app.config(['$locationProvider', '$httpProvider', 'jwtOptionsProvider', 'localSt
   var url = (window.location != window.parent.location) ? document.referrer : document.location.host;
   var fathymParent = url.substring(7,20) === "indigo.fathym" ? true : false;
 
-
-
   jwtOptionsProvider.config({
     // whiteListedDomains: ['localhost'],
     tokenGetter: ['options', function(options) {
