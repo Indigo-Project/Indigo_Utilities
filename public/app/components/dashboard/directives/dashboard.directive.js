@@ -15,6 +15,11 @@ app.directive('dashboard', ['$compile', '$rootScope', '$state', '$stateParams', 
             console.log('reloadDashboardData data', dashboardData);
             scope.data.currentDashboardDataObject = dashboardData;
 
+            // scope.data.studentNumber = dashboardData.compiledData.studentData.length;
+            scope.view.dashDisplayschoolName = dashboardData.metaData.schoolInfo.optionDisplay;
+            $('span.sd-title-name').html(scope.view.dashDisplayschoolName + " ");
+
+
             localStorageService.set('currentDashboardData', dashboardData);
 
             resolve();
@@ -37,7 +42,7 @@ app.directive('dashboard', ['$compile', '$rootScope', '$state', '$stateParams', 
           console.log('loadDashboardDataFromLS data', dashboardData);
           scope.data.currentDashboardDataObject = dashboardData;
 
-          scope.data.studentNumber = dashboardData.compiledData.studentData.length;
+          // scope.data.studentNumber = dashboardData.compiledData.studentData.length;
           scope.view.dashDisplayschoolName = dashboardData.metaData.schoolInfo.optionDisplay;
           $('span.sd-title-name').html(scope.view.dashDisplayschoolName + " ");
 
