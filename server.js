@@ -58,24 +58,24 @@ app.use("/dashboards/:collection/:id", express.static(__dirname + "/public/index
 app.use("/dashboards/:collection/:id/:studentpath", express.static(__dirname + "/public/index.html"));
 
 // On each request to server route, verify jwt token before access
-app.use(function (req,res,next) {
-
-  console.log('req.token', req.token);
-  if (req.token) {
-    jwt.verify(JSON.parse(req.token), process.env.JWT_SECRET, function(err, decoded) {
-      if (!err) {
-        next();
-      } else {
-        console.log(err);
-        // res.status(401).send('Unauthorized');
-        res.redirect('/login');
-      }
-    })
-  } else {
-    res.redirect('/login');
-  }
-
-});
+// app.use(function (req,res,next) {
+//
+//   console.log('req.token', req.token);
+//   if (req.token) {
+//     jwt.verify(JSON.parse(req.token), process.env.JWT_SECRET, function(err, decoded) {
+//       if (!err) {
+//         next();
+//       } else {
+//         console.log(err);
+//         // res.status(401).send('Unauthorized');
+//         res.redirect('/login');
+//       }
+//     })
+//   } else {
+//     res.redirect('/login');
+//   }
+//
+// });
 
 
 app.use('/ent-list', entListGeneration);
