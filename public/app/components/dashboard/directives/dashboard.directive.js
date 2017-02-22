@@ -84,7 +84,9 @@ app.directive('dashboard', ['$compile', '$rootScope', '$state', '$stateParams', 
       console.log(scope.data.currentDashboardDataObject);
       DashboardService.generateD3Dashboard({ data: scope.data.currentDashboardDataObject }, 'studentData');
 
+      console.log($rootScope.stateIsLoading);
       $rootScope.stateIsLoading = '';
+      console.log($rootScope.stateIsLoading);
 
     })
     .catch(function(error) {
