@@ -16,7 +16,8 @@ app.config(['$locationProvider', '$httpProvider', 'jwtOptionsProvider', 'localSt
       //    return 'template request';
       // }
 
-      var jwt = fathymParent ? btoa('fath.ymPar.ent') : localStorage['indigo-utility.jwt'];
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJsb2NhbGhvc3Q6MzAwMCIsIm5hbWUiOiJpbmRpZ29BZG1pbiIsInJvbGUiOiJzdXBlci11c2VyIiwiYXNzIjoiaW50ZXJuYWwiLCJpYXQiOjE0ODc3OTMyMjksImV4cCI6MTQ4Nzg3OTYyOX0.mnH1k0tg6KTiBVnQCwmHvZsdCTzN5j8Y5iqg_O32ypw"
+      var jwt = fathymParent ? btoa('fath') + '.' + btoa('yMPa') + '.' + btoa('rent') : localStorage['indigo-utility.jwt'];
       return jwt;
 
     }],
