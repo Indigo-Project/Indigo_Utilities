@@ -95,6 +95,7 @@ app.directive('dashboard', ['$compile', '$rootScope', '$state', '$stateParams', 
 
         scope.$apply();
         return;
+        
       }).catch(function(error) {
         console.log(error);
       })
