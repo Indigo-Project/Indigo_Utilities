@@ -12,7 +12,7 @@ app.directive('dashboard', ['$compile', '$rootScope', '$state', '$stateParams', 
           DashboardService.retrieveDataObjectForCurrentDashboard($stateParams.collection, $stateParams.id)
           .then(function(data) {
 
-
+            console.log('reloadDashboardData data', data);
             scope.data.currentDashboardDataObject = data;
 
             localStorageService.set('currentDashboardData', data);
@@ -34,6 +34,7 @@ app.directive('dashboard', ['$compile', '$rootScope', '$state', '$stateParams', 
 
           var dashboardData = localStorageService.get('currentDashboardData');
 
+          console.log('loadDashboardDataFromLS data', dashboardData);
           scope.data.currentDashboardDataObject = dashboardData;
 
           scope.data.studentNumber = dashboardData.compiledData.studentData.length;

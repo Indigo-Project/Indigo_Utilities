@@ -66,13 +66,14 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
     retrieveDataObjectForCurrentDashboard: function(schoolCode, id) {
 
       console.log(schoolCode, id);
-      
+
       return new Promise(function(resolve, reject) {
         $http({
           method: 'POST',
           url: '/dashboard/retrieve-stored-dashboard-data-object',
           data: { schoolCode: schoolCode, id: id }
         }).then(function(data) {
+          console.log('retrieveDataObjectForCurrentDashboard data', data);
           resolve(data.data);
         }).catch(function(err) {
           console.log(err);
