@@ -6,11 +6,12 @@ app.directive('dashboard', ['$compile', '$rootScope', '$state', '$stateParams', 
 
       // If no dashboard data object has been specified into local storage from manager, locate and load from url parameters
       function reloadDashboardData() {
-
+        console.log('reloadDashboardData');
         return new Promise(function(resolve, reject) {
 
           DashboardService.retrieveDataObjectForCurrentDashboard($stateParams.collection, null, $stateParams.id)
           .then(function(data) {
+
 
             scope.data.currentDashboardDataObject = data;
 
@@ -27,6 +28,7 @@ app.directive('dashboard', ['$compile', '$rootScope', '$state', '$stateParams', 
 
       // If dashboard data object exists within local storage, load to dashboard
       function loadDashboardDataFromLS() {
+        console.log('loadDashboardDataFromLS');
 
         return new Promise(function(resolve, reject) {
 
@@ -87,7 +89,6 @@ app.directive('dashboard', ['$compile', '$rootScope', '$state', '$stateParams', 
     .catch(function(error) {
       console.log(error);
     })
-
 
   }
 

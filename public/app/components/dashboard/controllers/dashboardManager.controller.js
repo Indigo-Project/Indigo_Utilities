@@ -65,6 +65,7 @@ app.controller('DashboardManager', ['$compile', '$rootScope', '$scope', '$locati
 
     $scope.view.showMDashboard = false;
 
+    console.log($scope.data.availableVersions[$scope.view.dashMschoolCode][$scope.view.dashMschoolVersion]);
     var dataObjectId = $scope.data.availableVersions[$scope.view.dashMschoolCode][$scope.view.dashMschoolVersion].dataReference[1]
 
     if ($scope.view.dashMschoolVersion) {
