@@ -93,6 +93,7 @@ app.directive('dashboard', ['$compile', '$rootScope', '$state', '$stateParams', 
         $rootScope.stateIsLoading = '';
         console.log($rootScope.stateIsLoading);
 
+        scope.$apply();
         return;
       }).catch(function(error) {
         console.log(error);
