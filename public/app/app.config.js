@@ -16,7 +16,7 @@ app.config(['$locationProvider', '$httpProvider', 'jwtOptionsProvider', 'localSt
       //    return 'template request';
       // }
 
-      var jwt = fathymParent ? 'fathymParent' : localStorage['indigo-utility.jwt'];
+      var jwt = fathymParent ? 'fath.ymPar.ent' : localStorage['indigo-utility.jwt'];
       return jwt;
 
     }],
