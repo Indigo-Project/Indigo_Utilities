@@ -70,7 +70,7 @@ app.run(['$window', '$rootScope', '$interval', '$state', 'jwtHelper', 'localStor
     $rootScope.fathymParent = url.substring(7,20) === "indigo.fathym" ? true : false;
 
     // Initiate dashboard loading animation
-    if (toState.name === 'dashboard' && $rootScope.currentJWT) {
+    if (toState.name === 'dashboard' && ($rootScope.currentJWT || $rootScope.fathymParent) {
       $rootScope.stateIsLoading = 'dashboard';
     }
 

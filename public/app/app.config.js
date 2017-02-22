@@ -7,29 +7,28 @@ app.config(['$locationProvider', '$httpProvider', 'jwtOptionsProvider', 'localSt
   var fathymParent = url.substring(7,20) === "indigo.fathym" ? true : false;
 
 
-  if (!fathymParent) {
-    jwtOptionsProvider.config({
-      // whiteListedDomains: ['localhost'],
-      tokenGetter: ['options', function(options) {
+  jwtOptionsProvider.config({
+    // whiteListedDomains: ['localhost'],
+    tokenGetter: ['options', function(options) {
 
-        // Don't send token upon template request (returns undefined after jwtIntercepted)
-        // if (options.url.substr(options.url.length - 5) === '.html') {
-        //    return 'template request';
-        // }
+      // Don't send token upon template request (returns undefined after jwtIntercepted)
+      // if (options.url.substr(options.url.length - 5) === '.html') {
+      //    return 'template request';
+      // }
 
-        var jwt = localStorage['indigo-utility.jwt']
-        return jwt;
+      var jwt = fathymParent ? 'fathymParent' : localStorage['indigo-utility.jwt'];
+      return jwt;
 
-      }],
+    }],
 
-      unauthenticatedRedirector: ['$state', function($state) {
-        $state.go('login');
-      }]
+    unauthenticatedRedirector: ['$state', function($state) {
+      $state.go('login');
+    }]
 
-    });
+  });
 
-    $httpProvider.interceptors.push('jwtInterceptor');
-  }
+  $httpProvider.interceptors.push('jwtInterceptor');
+
 
   $locationProvider.html5Mode(true);
 
