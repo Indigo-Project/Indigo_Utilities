@@ -10,12 +10,12 @@ app.directive('dashboard', ['$compile', '$rootScope', '$state', '$stateParams', 
         return new Promise(function(resolve, reject) {
 
           DashboardService.retrieveDataObjectForCurrentDashboard($stateParams.collection, $stateParams.id)
-          .then(function(data) {
+          .then(function(dashboardData) {
 
-            console.log('reloadDashboardData data', data);
-            scope.data.currentDashboardDataObject = data;
+            console.log('reloadDashboardData data', dashboardData);
+            scope.data.currentDashboardDataObject = dashboardData;
 
-            localStorageService.set('currentDashboardData', data);
+            localStorageService.set('currentDashboardData', dashboardData);
 
             resolve();
 
@@ -87,7 +87,8 @@ app.directive('dashboard', ['$compile', '$rootScope', '$state', '$stateParams', 
       console.log($rootScope.stateIsLoading);
       $rootScope.stateIsLoading = '';
       console.log($rootScope.stateIsLoading);
-      $scope.$apply();
+
+      scope.$apply();
 
     })
     .catch(function(error) {
