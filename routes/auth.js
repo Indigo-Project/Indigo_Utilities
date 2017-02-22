@@ -32,6 +32,7 @@ router.post('/login', function(req, res, next) {
           };
 
           var jwtToken = jwt.sign(user, process.env.JWT_SECRET, {expiresIn: 1440 * 60 });
+          
           res.send(jwtToken);
 
         }

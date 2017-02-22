@@ -7,6 +7,7 @@ app.config(['$locationProvider', '$httpProvider', 'jwtOptionsProvider', 'localSt
   var fathymParent = url.substring(7,20) === "indigo.fathym" ? true : false;
 
 
+
   jwtOptionsProvider.config({
     // whiteListedDomains: ['localhost'],
     tokenGetter: ['options', function(options) {
@@ -16,9 +17,8 @@ app.config(['$locationProvider', '$httpProvider', 'jwtOptionsProvider', 'localSt
       //    return 'template request';
       // }
 
-      var fathymJwt = btoa('fath') + '.' + btoa('yMPa') + '.' + btoa('rent');
-      console.log(fathymJwt);
-      var jwt = fathymParent ? btoa('fath') + '.' + btoa('yMPa') + '.' + btoa('rent') : localStorage['indigo-utility.jwt'];
+      var fathymJwt = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJpbmRpZ28tdXRpbGl0eS5oZXJva3VhcHAuY29tIiwibmFtZSI6ImZhdGh5bVVzZXIiLCJyb2xlIjoiZmF0aHltVXNlciIsImFzcyI6ImZhdGh5bSIsImlhdCI6MTQ4Nzc5NTMwMSwiZXhwIjoxNDg3ODgxNzAxfQ.GwrxhZbNwpumlJ7s4HBFnbpftTRrmyiUMQUoVPypdc0';
+      var jwt = fathymParent ? fathymJwt : localStorage['indigo-utility.jwt'];
       return jwt;
 
     }],
