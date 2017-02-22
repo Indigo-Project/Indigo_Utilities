@@ -63,12 +63,14 @@ app.controller('DashboardManager', ['$compile', '$rootScope', '$scope', '$locati
   // load current dashboard version data object into $scope variable and local storage from dashboard manager, then create dashboard
   $scope.view.loadVersion = function() {
 
+    // Hide dashboard manager interface (before data is ready to load)
     $scope.view.showMDashboard = false;
 
-    console.log($scope.data.availableVersions[$scope.view.dashMschoolCode][$scope.view.dashMschoolVersion]);
-    var dataObjectId = $scope.data.availableVersions[$scope.view.dashMschoolCode][$scope.view.dashMschoolVersion].dataReference[1]
-
     if ($scope.view.dashMschoolVersion) {
+
+      // sets dataObjectId from dashboardRef dataReference object
+      var dataObjectId = $scope.data.availableVersions[$scope.view.dashMschoolCode][$scope.view.dashMschoolVersion].dataReference[1]
+
       DashboardService.retrieveDataObjectForCurrentDashboard($scope.view.dashMschoolCode, dataObjectId)
       .then(function(data) {
         console.log('got data:', data);
