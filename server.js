@@ -60,7 +60,7 @@ app.use("/dashboards/:collection/:id/:studentpath", express.static(__dirname + "
 // On each request to server route, verify jwt token before access
 app.use(function (req,res,next) {
 
-  // console.log(req.token);
+  console.log('req.token', req.token);
   if (req.token) {
     jwt.verify(JSON.parse(req.token), process.env.JWT_SECRET, function(err, decoded) {
       if (!err) {
