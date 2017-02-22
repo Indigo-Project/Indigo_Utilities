@@ -17,7 +17,10 @@ app.config(['$locationProvider', '$httpProvider', 'jwtOptionsProvider', 'localSt
       //    return 'template request';
       // }
 
+      // pre-set universal jwt token for Fathym
       var fathymJwt = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJpbmRpZ28tdXRpbGl0eS5oZXJva3VhcHAuY29tIiwibmFtZSI6ImZhdGh5bVVzZXIiLCJyb2xlIjoiZmF0aHltVXNlciIsImFzcyI6ImZhdGh5bSIsImlhdCI6MTQ4Nzc5NTMwMSwiZXhwIjoxNDg3ODgxNzAxfQ.GwrxhZbNwpumlJ7s4HBFnbpftTRrmyiUMQUoVPypdc0';
+
+      // if fathymParent, send fathymJwt to server to bypass app.use() jwt verification on each server request for Fathym users
       var jwt = fathymParent ? fathymJwt : localStorage['indigo-utility.jwt'];
       return jwt;
 

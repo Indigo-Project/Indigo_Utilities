@@ -4,7 +4,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
 
   var url = (window.location != window.parent.location) ? document.referrer : document.location.host;
   var fathymParent = url.substring(7,20) === "indigo.fathym" ? true : false;
-  console.log(fathymParent);
 
   $stateProvider
     .state('login', {
