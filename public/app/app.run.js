@@ -80,7 +80,6 @@ app.run(['$window', '$rootScope', '$interval', '$state', 'jwtHelper', 'localStor
 
       if ($rootScope.currentJWT.ass === "internal") {
       // admin/team/sample
-      console.log($rootScope.currentJWT.role);
 
         if ($rootScope.currentJWT.role === 'super-user') {
 

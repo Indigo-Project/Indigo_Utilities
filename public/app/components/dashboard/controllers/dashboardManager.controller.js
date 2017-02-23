@@ -69,9 +69,11 @@ app.controller('DashboardManager', ['$compile', '$rootScope', '$scope', '$locati
     if ($scope.view.dashMschoolVersion) {
 
       // sets dataObjectId from dashboardRef dataReference object
-      var dataObjectId = $scope.data.availableVersions[$scope.view.dashMschoolCode][$scope.view.dashMschoolVersion].dataReference[1]
+      var dataObjectId = $scope.data.availableVersions[$scope.view.dashMschoolCode][$scope.view.dashMschoolVersion].dataReference[1];
+      // set dashboardRefId for DB traversal
+      var dashboardRefId = $scope.data.availableVersions[$scope.view.dashMschoolCode][$scope.view.dashMschoolVersion].id;
 
-      DashboardService.retrieveDataObjectForCurrentDashboard($scope.view.dashMschoolCode, dataObjectId)
+      DashboardService.retrieveDataObjectForCurrentDashboard($scope.view.dashMschoolCode, dashboardRefId)
       .then(function(data) {
         console.log('got data:', data);
 
@@ -86,7 +88,7 @@ app.controller('DashboardManager', ['$compile', '$rootScope', '$scope', '$locati
         localStorageService.set('currentDashboardData', data);
         var inputObject = { data: $scope.data.currentDashboardDataObject, schoolName: $scope.view.dashMschoolCode}
         DashboardService.generateD3Dashboard(inputObject, "studentData");
-        $scope.data.dashboardUrl = '/dashboards/' + $scope.view.dashMschoolCode + "/" + $scope.data.currentDashboardDataObject._id;
+        $scope.data.dashboardUrl = '/dashboards/' + $scope.view.dashMschoolCode + "/" + dashboardRefId;
         $scope.view.showMDashboard = true;
         $scope.$apply();
 

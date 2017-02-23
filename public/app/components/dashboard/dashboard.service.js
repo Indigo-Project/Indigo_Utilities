@@ -63,15 +63,15 @@ app.factory('DashboardService', ['$compile', '$http', '$rootScope', 'RWD', funct
     },
 
     // retrieve dashboard data object tied to current dashboard
-    retrieveDataObjectForCurrentDashboard: function(schoolCode, id) {
+    retrieveDataObjectForCurrentDashboard: function(schoolCode, dashRefId) {
 
-      console.log(schoolCode, id);
+      console.log(schoolCode, dashRefId);
 
       return new Promise(function(resolve, reject) {
         $http({
           method: 'POST',
           url: '/dashboard/retrieve-stored-dashboard-data-object',
-          data: { schoolCode: schoolCode, id: id }
+          data: { schoolCode: schoolCode, dashRefId: dashRefId }
         }).then(function(data) {
           console.log('retrieveDataObjectForCurrentDashboard data', data);
           resolve(data.data);

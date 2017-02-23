@@ -9,7 +9,7 @@ app.directive('dashboard', ['$compile', '$rootScope', '$state', '$stateParams', 
         console.log('loadDashboardDataFromDB');
         return new Promise(function(resolve, reject) {
 
-          DashboardService.retrieveDataObjectForCurrentDashboard($stateParams.collection, $stateParams.id)
+          DashboardService.retrieveDataObjectForCurrentDashboard($stateParams.collection, $stateParams.dashRefId)
           .then(function(dashboardData) {
 
             console.log('loadDashboardDataFromDB data', dashboardData);

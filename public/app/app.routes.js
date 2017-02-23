@@ -98,7 +98,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
       }
     })
     .state('dashboard', {
-      url: '/dashboards/:collection/:id',
+      url: '/dashboards/:collection/:dashRefId',
       templateUrl: "views/dashboard.html",
       data: {
         requiresLogin: fathymParent ? false : true

@@ -278,41 +278,36 @@ var database = {
   },
 
   // Get dashboard data with school code and collectionIdentifier
-  getDashboardData: function(db, schoolCode, dataId, idOption) {
-    // console.log('179', schoolCode, dataId, idOption);
+  getDashboardDataFromDashRef: function(db, schoolCode, dashRefId) {
+
     return new Promise(function(resolve, reject) {
-      db.collection(schoolCode, function(err, collection) {
-        collection.find().toArray(function(err, docs) {
-          // console.log('docs', docs);
-          var id;
-          if (idOption === "version") {
-            for (var i = 0; i < docs.length; i++) {
-              if(docs[i].metaData.version === dataId) {
-                id = docs[i]._id;
-                // console.log('id =', id);
+
+      var dataObjId;
+
+      db.collection(schoolCode + '-dash', function(err, collection) {
+        collection.findOne({"_id": ObjectId(dashRefId) }, function(err, doc) {
+          if (err) {
+            reject(err);
+          } else {
+            dataObjId = doc.metaData.dataReference[1];
+            db.collection(schoolCode + '-data', function(err, collection) {
+              if (err) {
+                reject(err);
+              } else {
+                collection.findOne({"_id": ObjectId(dataObjId)}, function(err, doc) {
+                  if (err) {
+                    reject(err);
+                  } else {
+                    var dashDataObj = { metaData: doc.metaData, compiledData: doc.compiledData };
+                    resolve(dashDataObj);
+                  }
+                });
               }
-            }
-          } else if (idOption === "id") {
-            for (var i = 0; i < docs.length; i++) {
-              // console.log(docs[i]._id.toString(), dataId);
-              if(docs[i]._id.toString() === dataId) {
-                // console.log('MATCH');
-                id = docs[i]._id;
-              }
-            }
+            });
           }
-          // console.log('ID', id, toString.call(id), id.length);
-          // console.log('docs', docs);
-          collection.findOne({_id: id}, function(err, doc) {
-            if (err) {
-              reject(err);
-            } else {
-              // console.log('doc', doc);
-              resolve(doc);
-            }
-          })
-        })
-      })
+        });
+      });
+
     })
   },
 

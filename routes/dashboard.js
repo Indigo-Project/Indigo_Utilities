@@ -711,13 +711,9 @@ router.post('/retrieve-stored-dashboard-data-object', function(req, res, next) {
 
   mongo.mongoDBConnect(mongo.indigoDashboardsURI)
   .then(function(data) {
-    var collection = req.body.schoolCode + '-data';
-    var dataId = req.body.id;
-    var IdOption = "id";
-    console.log('CCC', req.body.schoolCode, IdOption, dataId);
-    mongo.getDashboardData(data.db, collection, dataId, IdOption)
+    mongo.getDashboardDataFromDashRef(data.db, req.body.schoolCode, req.body.dashRefId)
     .then(function(dashData) {
-      console.log('dashData', dashData);
+      console.log(dashData);
       res.send(dashData);
     })
   })
